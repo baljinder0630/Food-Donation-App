@@ -8,7 +8,7 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height * 0.02;
+    final height = MediaQuery.of(context).size.height * 0.017;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,19 +18,27 @@ class SignupForm extends StatelessWidget {
         ),
         SizedBox(height: height),
         TextFormField(
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          keyboardType: TextInputType.name,
           decoration: const InputDecoration(label: Text("Name")),
         ),
         SizedBox(height: height),
         TextFormField(
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          keyboardType: TextInputType.emailAddress,
           decoration:
               const InputDecoration(label: Text("Email / Phone Number")),
         ),
         SizedBox(height: height),
         TextFormField(
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          keyboardType: TextInputType.visiblePassword,
           decoration: const InputDecoration(label: Text("Password")),
         ),
         SizedBox(height: height),
         TextFormField(
+          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+          keyboardType: TextInputType.visiblePassword,
           decoration: const InputDecoration(label: Text("Confirm Password")),
         ),
         SizedBox(height: height * 7),

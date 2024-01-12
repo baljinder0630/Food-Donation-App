@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       Duration(seconds: 2),
       () {
-        context.pushRoute(SignUpPageRoute());
+        context.replaceRoute(SignUpPageRoute());
       },
     );
     return Scaffold(

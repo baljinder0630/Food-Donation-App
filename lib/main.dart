@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_donation_app/Router/route.dart';
 import 'package:food_donation_app/constants.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,6 +20,7 @@ class MyApp extends StatelessWidget {
         routerConfig: _appRouter.config(),
         title: 'Food Donation App',
         theme: ThemeData(
+            fontFamily: 'Georgia',
             primarySwatch: Colors.teal,
             inputDecorationTheme: const InputDecorationTheme(
                 labelStyle: TextStyle(
@@ -43,6 +47,7 @@ class MyApp extends StatelessWidget {
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all<TextStyle>(
                       const TextStyle(
+                          fontFamily: 'Georgia',
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),

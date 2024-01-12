@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/constants.dart';
 
@@ -14,6 +16,42 @@ class Background extends StatelessWidget {
       children: [
         Container(
           color: primaryColor,
+        ),
+        Positioned(
+          top: -50,
+          right: -50,
+          child: Opacity(
+            opacity: 0.1,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: -150,
+          right: 50,
+          child: Opacity(
+            opacity: 0.1,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
