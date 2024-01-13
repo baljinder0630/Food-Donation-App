@@ -12,11 +12,17 @@ class AppRouter extends $AppRouter {
         ),
         CustomRoute(
           page: HomePageRoute.page,
+          path: "/home",
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
           page: SignUpPageRoute.page,
-          transitionsBuilder: TransitionsBuilders.fadeIn,
+          path: "/signup",
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: LoginPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
         ),
       ];
 }
