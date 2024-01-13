@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/Login/Components/LoginForm.dart';
 import 'package:food_donation_app/Pages/Widgets/background.dart';
-import 'package:food_donation_app/constants.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Background(
         title: "Sign In",
         customWidget: Scaffold(
