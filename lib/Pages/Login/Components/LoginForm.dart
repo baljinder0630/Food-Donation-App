@@ -20,7 +20,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     login(email, password) async {
-      if (await ref.read(authStateProvider.notifier).login(email, password)) {
+      if (await ref
+          .read(authStateProvider.notifier)
+          .login(email, password, context)) {
         context.router.replace(const HomePageRoute());
       }
     }
@@ -102,7 +104,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                       fontWeight: FontWeight.bold,
                       color: Colors.grey)),
               TextButton(
-                onPressed: () => context.pushRoute(SignUpPageRoute()),
+                onPressed: () => context.replaceRoute(SignUpPageRoute()),
                 child: const Text("Sign Up",
                     style: TextStyle(
                         fontSize: 16,
