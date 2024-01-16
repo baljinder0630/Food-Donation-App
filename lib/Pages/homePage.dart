@@ -17,6 +17,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: 1,
             itemBuilder: (context, index) {
               return Column(
@@ -99,6 +100,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: 320,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
@@ -144,6 +146,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: 350,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
