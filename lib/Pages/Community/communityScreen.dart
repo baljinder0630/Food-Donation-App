@@ -2,6 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Pages/Community/Components/Widgets/Spacer.dart';
+import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
 class CommunityHomePage extends StatefulWidget {
@@ -80,6 +84,29 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 8,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Color(0xffFEFEFE),
+          shape: OvalBorder(),
+          onPressed: () {
+            context.pushRoute(const PostArticleRoute());
+          },
+          elevation: 0.0,
+          child: Icon(Icons.add_circle_rounded,
+              size: 36.r, color: Color(0xFF5272FC)),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 23.98.w),
@@ -87,21 +114,15 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
             children: [
               customAppBarBg(
                   context, Searchbar(context), SearchHistory(context)),
-              Spacer(),
+              MySpacer(),
               categoryWidget(),
-              Spacer(),
+              MySpacer(),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-Widget Spacer({double? height}) {
-  return SizedBox(
-    height: height ?? 20.h,
-  );
 }
 
 Widget SearchHistory(context) {
@@ -251,38 +272,9 @@ Widget customAppBarBg(context, Widget centerWidget, Widget rightWidget) {
                   ),
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 2.w, right: 3, top: 2.h, bottom: 2.h),
-                      child: Container(
-                        width: 36.r,
-                        height: 36.r,
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: const ShapeDecoration(
-                              color: Color(0xFFFEFEFE),
-                              shape: OvalBorder(),
-                              shadows: [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(7.71.r),
-                              child: Icon(
-                                Icons.arrow_back_ios_rounded,
-                                size: 20.5.r,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                        padding: EdgeInsets.only(
+                            left: 2.w, right: 3, top: 2.h, bottom: 2.h),
+                        child: MyBackButton()),
                   ),
                 ),
               ),

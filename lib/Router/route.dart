@@ -28,5 +28,9 @@ class AppRouter extends $AppRouter {
           page: CommunityHomePageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         ),
+        CustomRoute(
+          page: PostArticleRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
       ];
 }
