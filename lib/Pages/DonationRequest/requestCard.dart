@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DonationCard extends StatelessWidget {
   const DonationCard({Key? key}) : super(key: key);
@@ -143,14 +144,8 @@ class DonationCard extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 35,
-                      ),
-                    ],
-                  ),
-                )
+                  child: getPercent(),
+                ),
               ],
             ),
             Row(
@@ -193,4 +188,23 @@ class DonationCard extends StatelessWidget {
           ],
         ));
   }
+}
+
+Widget getPercent() {
+  return Container(
+    child: Center(
+      child: CircularPercentIndicator(
+        radius: 40,
+        percent: 0.4,
+        progressColor: Colors.green,
+        lineWidth: 10,
+        backgroundColor: Colors.lightGreen,
+        circularStrokeCap: CircularStrokeCap.round,
+        center: const Text(
+          "40%",
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    ),
+  );
 }
