@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart';
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
 
+@RoutePage()
 class HomePage extends StatelessWidget {
   final List postId = [
     '11',
