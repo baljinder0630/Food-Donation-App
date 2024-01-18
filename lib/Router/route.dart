@@ -11,23 +11,34 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
-          page: HomePageRoute.page,
+          page: AppBottomNavigationBarRoute.page,
           path: "/home",
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
-          page: DashBoardRoute.page,
+          page: DashBoardPageRoute.page,
           path: "/dashboard",
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
-        
         CustomRoute(
           page: SignUpPageRoute.page,
           path: "/signup",
-          transitionsBuilder: TransitionsBuilders.slideTop,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         ),
         CustomRoute(
           page: LoginPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: CommunityHomePageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: PostArticleRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: DonationRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
       ];

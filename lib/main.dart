@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Router/route.dart';
 import 'package:food_donation_app/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,11 +23,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(
+      context,
+      designSize: const Size(428, 926),
+      minTextAdapt: true,
+      splitScreenMode: true,
+    );
     return MaterialApp.router(
         routerConfig: _appRouter.config(),
         title: 'Food Donation App',
         theme: ThemeData(
-            fontFamily: 'Georgia',
+            fontFamily: 'Poppins',
             primarySwatch: Colors.teal,
             inputDecorationTheme: const InputDecorationTheme(
                 labelStyle: TextStyle(
@@ -44,7 +51,7 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.grey, width: 0.8),
                 )),
             primaryColor: primaryColor,
-            scaffoldBackgroundColor: backgroundColor,
+            scaffoldBackgroundColor: Colors.white,
             appBarTheme: const AppBarTheme(
                 color: Colors.transparent,
                 elevation: 0,
@@ -53,7 +60,7 @@ class MyApp extends StatelessWidget {
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all<TextStyle>(
                       const TextStyle(
-                          fontFamily: 'Georgia',
+                          fontFamily: 'Poppins',
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),

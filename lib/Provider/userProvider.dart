@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authStateProvider = StateNotifierProvider<UserAuth, AuthState>((ref) {
@@ -39,22 +40,21 @@ class UserAuth extends StateNotifier<AuthState> {
     });
   }
 
-  Future<bool> signUp(email, password, name) async {
+  Future<bool> signUp(email, password, name, context) async {
     try {
       state = state.copyWith(authStatus: AuthStatus.processing);
       log(state.user.toString());
 
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      return await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
-
-      if (credential.user != null) {
+      )
+          .then((credential) async {
         log("User Created Successfully");
         state = state.copyWith(user: credential.user);
 
-        await FirebaseFirestore.instance
+        return await FirebaseFirestore.instance
             .collection('users')
             .doc(credential.user!.uid)
             .set({
@@ -67,68 +67,81 @@ class UserAuth extends StateNotifier<AuthState> {
             authStatus: AuthStatus.processed,
             appStatus: AppStatus.authenticated,
           );
+          showSnackBar("SignUp Successful", context, Colors.green);
+
           log("User name added to firebase");
           return true;
+        }).onError((error, stackTrace) {
+          showSnackBar("SignUp Failed", context, Colors.red);
+
+          state = state.copyWith(
+            authStatus: AuthStatus.processed,
+            appStatus: AppStatus.unAuthenticated,
+          );
+          log(error.toString());
+          return false;
         });
-      } else {
-        state = state.copyWith(
-          authStatus: AuthStatus.processed,
-          appStatus: AppStatus.unAuthenticated,
-        );
-        log("User Creation Failed");
-      }
-      return false;
+      });
     } on FirebaseAuthException catch (e) {
+      showSnackBar("SignUp Failed", context, Colors.red);
+      log(e.message.toString());
       state = state.copyWith(
         authStatus: AuthStatus.processed,
         appStatus: AppStatus.unAuthenticated,
       );
-      if (e.code == 'weak-password') {
-        log('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        log('The account already exists for that email.');
-      }
+
       return false;
     }
   }
 
-  Future<bool> login(email, password) async {
+  Future<bool> login(email, password, context) async {
     try {
       state = state.copyWith(authStatus: AuthStatus.processing);
 
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      return await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
-
-      if (credential.user != null) {
+      )
+          .then((value) {
         log("User Logged In Successfully");
-        state = state.copyWith(user: credential.user);
+        state = state.copyWith(user: value.user);
         state.copyWith(
           authStatus: AuthStatus.processed,
           appStatus: AppStatus.authenticated,
         );
+
+        showSnackBar("Login Successful", context, Colors.green);
         return true;
-      } else {
+      }).onError((error, stackTrace) {
         state = state.copyWith(
           authStatus: AuthStatus.processed,
           appStatus: AppStatus.unAuthenticated,
         );
         log("User Login Failed");
+        showSnackBar("Login Failed", context, Colors.red);
+
         return false;
-      }
+      });
     } on FirebaseAuthException catch (e) {
+      showSnackBar("Login Failed", context, Colors.red);
+
+      log(e.message.toString());
       state = state.copyWith(
         authStatus: AuthStatus.processed,
         appStatus: AppStatus.unAuthenticated,
       );
-      if (e.code == 'user-not-found') {
-        log('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        log('Wrong password provided for that user.');
-      }
       return false;
     }
+  }
+
+  showSnackBar(message, context, color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+      ),
+    );
   }
 }
 

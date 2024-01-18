@@ -12,7 +12,7 @@ class DashBoardPage extends StatefulWidget {
 
 class _DashBoardPageState extends State<DashBoardPage> {
   int _currentPage = 1;
- String? vThumbImage;
+  String? vThumbImage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +24,13 @@ class _DashBoardPageState extends State<DashBoardPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50.0,
-              backgroundImage: AssetImage('assets/profile_pic.jpg'),
+              // backgroundImage: AssetImage('assets/profile_pic.jpg'),
+              child: Icon(
+                Icons.person,
+                size: 50.0,
+              ),
             ),
             SizedBox(height: 10.0),
             ElevatedButton(
@@ -78,9 +82,6 @@ class _DashBoardPageState extends State<DashBoardPage> {
           ],
         ),
       ),
-       
-      
-
     );
   }
 }
@@ -103,26 +104,5 @@ class DashboardButton extends StatelessWidget {
         child: Text(text),
       ),
     );
-  }
-}
-
-void _handleNavigation(int index, BuildContext context) {
-  switch (index) {
-    case 0:
-      // Navigate to Home screen
-       context.router.replace(const HomePageRoute());
-      break;
-    case 1:
-      // Navigate to Dashboard screen
-      context.router.replace(const DashBoardRoute());
-      break;
-    case 2:
-      // Navigate to Profile screen
-      // context.router.replace(const ProfilePageRoute());
-      break;
-    case 3:
-      // Navigate to Notifications screen
-      // context.router.replace(const NotificationsPageRoute());
-      break;
   }
 }
