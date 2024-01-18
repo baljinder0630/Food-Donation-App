@@ -41,4 +41,25 @@ final List<PostModel> posts = [
           "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
       userId: "1234567890",
       username: "John Doe"),
+  PostModel(
+      id: 2,
+      subject: "Tehnology",
+      description: "How Technology is Helping to Reduce Food Waste",
+      imgUrl: "https://wallpaperaccess.com/full/266471.jpg",
+      createdTime: DateTime.parse("2024-01-01 19:01:02"),
+      createdByAvatar:
+          "https://th.bing.com/th/id/OIP.leRaZskYpTKA55a0St0tZgHaJa?rs=1&pid=ImgDetMain",
+      userId: "102392034923534",
+      username: "Mory Jone"),
+  PostModel(
+      id: 1,
+      subject: "Waste Reduction",
+      description: desc1,
+      imgUrl:
+          "https://th.bing.com/th/id/OIP.EIqCHlPiaz25sjy1E_Y4zgHaE8?rs=1&pid=ImgDetMain",
+      createdTime: DateTime.parse("2023-09-01 20:18:04"),
+      createdByAvatar:
+          "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
+      userId: "1234567890",
+      username: "John Doe"),
 ];
