@@ -16,6 +16,12 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
+          page: DashBoardRoute.page,
+          path: "/dashboard",
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+        ),
+        
+        CustomRoute(
           page: SignUpPageRoute.page,
           path: "/signup",
           transitionsBuilder: TransitionsBuilders.slideTop,
