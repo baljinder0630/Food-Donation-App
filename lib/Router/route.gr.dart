@@ -10,7 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i14;
 import 'package:flutter/material.dart' as _i15;
-import 'package:food_donation_app/bottomNavBar.dart' as _i1;
 import 'package:food_donation_app/Pages/Community/communityScreen.dart' as _i2;
 import 'package:food_donation_app/Pages/Community/postArticle.dart' as _i11;
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart' as _i3;
@@ -19,12 +18,13 @@ import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart
     as _i5;
 import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
     as _i6;
-import 'package:food_donation_app/Pages/homePage.dart' as _i7;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i8;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i10;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i9;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i12;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i13;
+import 'package:food_donation_app/Pages/homePage.dart' as _i7;
+import 'package:food_donation_app/bottomNavBar.dart' as _i1;
 
 abstract class $AppRouter extends _i14.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -91,7 +91,7 @@ abstract class $AppRouter extends _i14.RootStackRouter {
     PickUpReequestRoute.name: (routeData) {
       return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.PickUpReequest(),
+        child: const _i10.PickUpRequest(),
       );
     },
     PostArticleRoute.name: (routeData) {
@@ -272,7 +272,7 @@ class LoginPageRoute extends _i14.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.PickUpReequest]
+/// [_i10.PickUpRequest]
 class PickUpReequestRoute extends _i14.PageRouteInfo<void> {
   const PickUpReequestRoute({List<_i14.PageRouteInfo>? children})
       : super(

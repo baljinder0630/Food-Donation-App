@@ -168,7 +168,10 @@ class HomePage extends StatelessWidget {
                               width: 100,
                               height: 30,
                               child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // context
+                                  // .pushRoute(const DonationRequestRoute());
+                                },
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: null),
                                 child: Text(
@@ -195,6 +198,7 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: 320,
                     child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
@@ -278,6 +282,7 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: 380,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
