@@ -78,31 +78,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           ],
         ),
       ),
-       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPage,
-        onTap: (int index) {
-          // Handle button click for each index
-          _handleNavigation(index, context);
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.lightGreen),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              backgroundColor: Colors.lightGreen),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-              backgroundColor: const Color.fromARGB(255, 144, 231, 44)),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
-              backgroundColor: Colors.red),
-        ],
-      ),
+       
       
 
     );

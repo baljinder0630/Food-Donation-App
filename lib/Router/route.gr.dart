@@ -30,7 +30,7 @@ abstract class $AppRouter extends _i5.RootStackRouter {
     HomePageRoute.name: (routeData) {
       return _i5.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i1.HomePage(),
+        child: _i1.MyApp(),
       );
     },
     LoginPageRoute.name: (routeData) {
