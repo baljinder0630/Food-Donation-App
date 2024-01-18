@@ -2,6 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart';
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
+import 'package:auto_route/auto_route.dart';
+
+import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -12,11 +15,14 @@ class HomePage extends StatelessWidget {
     '14',
   ];
 
+  int _currentPage = 0;
+
   HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Dashboard')),
       body: SafeArea(
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
@@ -99,7 +105,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: mainOptions(context),
+                    // child: mainOptions(context),
                   ),
                   // Here 4 widgets are done.
 
@@ -150,7 +156,10 @@ class HomePage extends StatelessWidget {
                               width: 120,
                               height: 30,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context
+                                      .pushRoute(const DonationRequestRoute());
+                                },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green),
                                 child: const Text(
@@ -266,73 +275,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget mainOptions(BuildContext context) {
-  final List<Map<String, String>> gridMap = [
-    {
-      'title': "Donate",
-      'description': "1,11+ Requests",
-      'image': "lib/assets/images/exploreImages/donate.png",
-      'action': '/donate',
-    },
-    {
-      'title': "Articles",
-      'description': "know the consequences and tips",
-      'image': "lib/assets/images/exploreImages/articles.png",
-      'action': '/articles',
-    },
-    {
-      'title': "Community",
-      'description': "connect with people and seek help",
-      'image': "lib/assets/images/exploreImages/community.png",
-      'action': '/community',
-    },
-    {
-      'title': "Volunteer",
-      'description': "support with donation",
-      'image': "lib/assets/images/exploreImages/volunteer.png",
-      'action': '/volunteer',
-    }
-  ];
-  return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: 4,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-      itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.lightGreen,
-              borderRadius: BorderRadius.circular(16.0)),
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 6.0, left: 6.0),
-                child: Text(
-                  "${gridMap.elementAt(index)['title']}",
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text("${gridMap.elementAt(index)['description']}"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 1.0),
-                child: Image.asset("${gridMap.elementAt(index)['image']}",
-                    height: 90, width: double.infinity, fit: BoxFit.cover),
-              ),
-            ],
-          ),
-        );
-      });
 }

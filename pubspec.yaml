@@ -40,6 +40,10 @@ dependencies:
   flutter_riverpod: ^2.4.9
   cloud_firestore: ^4.14.0
   flutter_screenutil: ^5.1.1
+  percent_indicator: ^4.0.1
+  intl_phone_field: ^3.1.0
+  persistent_bottom_nav_bar: ^5.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,6 +70,7 @@ flutter:
   assets:
     - lib/assets/images/exploreImages/
     - lib/assets/Community/
+    - images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -78,11 +83,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
+        # - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

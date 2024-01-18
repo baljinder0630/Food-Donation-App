@@ -20,10 +20,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     login(email, password) async {
-      if (await ref
-          .read(authStateProvider.notifier)
-          .login(email, password, context)) {
-        context.router.replace(HomePageRoute());
+      if (await ref.read(authStateProvider.notifier).login(email, password)) {
+        context.router.replace(AppBottomNavigationBarRoute());
       }
     }
 

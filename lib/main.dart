@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         routerConfig: _appRouter.config(),
         title: 'Food Donation App',
         theme: ThemeData(
-            fontFamily: 'Georgia',
+            fontFamily: 'Poppins',
             primarySwatch: Colors.teal,
             inputDecorationTheme: const InputDecorationTheme(
                 labelStyle: TextStyle(
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all<TextStyle>(
                       const TextStyle(
-                          fontFamily: 'Georgia',
+                          fontFamily: 'Poppins',
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),

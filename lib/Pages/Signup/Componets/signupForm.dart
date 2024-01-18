@@ -24,8 +24,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     signup(email, password, name) async {
       if (await ref
           .read(authStateProvider.notifier)
-          .signUp(email, password, name, context)) {
-        context.router.replace(HomePageRoute());
+          .signUp(email, password, name)) {
+        context.router.replace(AppBottomNavigationBarRoute());
       }
     }
 

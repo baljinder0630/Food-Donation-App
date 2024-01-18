@@ -11,8 +11,13 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
-          page: HomePageRoute.page,
+          page: AppBottomNavigationBarRoute.page,
           path: "/home",
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+        ),
+        CustomRoute(
+          page: DashBoardPageRoute.page,
+          path: "/dashboard",
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
@@ -31,6 +36,10 @@ class AppRouter extends $AppRouter {
         CustomRoute(
           page: PostArticleRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: DonationRequestRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
         ),
       ];
 }
