@@ -31,8 +31,10 @@ class HomePage extends StatelessWidget {
               return Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
+                    decoration: const BoxDecoration(color: Colors.lightGreen),
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
+                    child: const Row(
                       children: [
                         CircleAvatar(
                           radius: 50,
@@ -69,10 +71,48 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Here Avatar and Name container ends.
+
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    padding: EdgeInsets.all(10),
-                    height: 80,
+                    width: double.infinity,
+                    height: 200,
+                    margin: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(color: Colors.lightGreen),
+                    child:
+                        const Center(child: Text("Space for some animation.")),
+                  ),
+                  // Animation ends here.
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.all(10),
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.lightGreen,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Text(
+                      "Explore",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                  //Explore Ends here.
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: mainOptions(context),
+                  ),
+                  // Here 4 widgets are done.
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.all(10),
+                    height: 90,
                     decoration: BoxDecoration(
                         color: Colors.lightGreen,
                         borderRadius: BorderRadius.circular(15)),
@@ -80,7 +120,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Nearby hunger spots you can serve in ",
                           style: TextStyle(
                               color: Colors.black,
@@ -88,23 +128,57 @@ class HomePage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.place),
+                            Container(
+                              width: 40,
+                              child: const Icon(Icons.place),
+                            ),
                             Expanded(
-                              child: Text(
-                                "Gulbai Tekra, Navrangpura.",
-                                style: TextStyle(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        8.0), // Adjust padding as needed
+                                child: const Text(
+                                  "Gulbai Tekra, Navrangpura.Navrangpura",
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow.ellipsis),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines:
+                                      1, // Set the maximum number of lines
+                                ),
                               ),
                             ),
+                            Container(
+                              width: 120,
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/donationRequest');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green),
+                                child: const Text(
+                                  "View All",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ],
                     ),
                   ),
+                  // Here hungerSpot text with view All button ends..
+
                   Container(
                     height: 320,
                     child: ListView.builder(
@@ -114,9 +188,12 @@ class HomePage extends StatelessWidget {
                           return HungerSpot(child: postId[index]);
                         }),
                   ),
+
+                  // Here HungerSpots cards ends.
+
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    padding: EdgeInsets.all(10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.all(10),
                     height: 80,
                     decoration: BoxDecoration(
                         color: Colors.lightGreen,
@@ -125,7 +202,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Food Pickup requests you can serve from",
                           style: TextStyle(
                               color: Colors.black,
@@ -133,16 +210,45 @@ class HomePage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.place),
+                            Container(
+                              width: 30,
+                              child: const Icon(Icons.place),
+                            ),
                             Expanded(
-                              child: Text(
-                                "Gulbai Tekra, Navrangpura.",
-                                style: TextStyle(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        3.0), // Adjust padding as needed
+                                child: const Text(
+                                  "Gulbai Tekra, Navrangpura.Navrangpura",
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow.ellipsis),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines:
+                                      1, // Set the maximum number of lines
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 120,
+                              height: 30,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green),
+                                child: const Text(
+                                  "View All",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -150,80 +256,21 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Here FoodPickup request text and viewAll button ends.
+
                   Container(
                     height: 350,
                     child: ListView.builder(
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return PickUpReequest();
+                          return const PickUpReequest();
                         }),
                   ),
                 ],
               );
             }),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPage,
-        onTap: (int index) {
-          // Handle button click for each index
-          _handleNavigation(index,context);
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor:Colors.lightGreen
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-            backgroundColor: const Color.fromARGB(255, 74, 139, 195)
-            
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-            backgroundColor: const Color.fromARGB(255, 144, 231, 44)
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-            backgroundColor: Colors.red
-          ),
-
-        ],
-
-      ),
-      
-
-
     );
   }
-
-
-  void _handleNavigation(int index, BuildContext context) {
-    switch (index) {
-      case 0:
-        // Navigate to Home screen
-        // context.router.replace(const SplashScreenRoute());
-        break;
-      case 1:
-        // Navigate to Dashboard screen
-        context.router.replace(const DashBoardRoute());
-        break;
-      case 2:
-        // Navigate to Profile screen
-        // context.router.replace(const ProfilePageRoute());
-        break;
-      case 3:
-        // Navigate to Notifications screen
-        // context.router.replace(const NotificationsPageRoute());
-        break;
-    }
-  }
-
-
 }
-
-
