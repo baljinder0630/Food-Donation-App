@@ -37,7 +37,6 @@ class _DonationRequestState extends State<DonationRequest> {
           customAppBarBg(context, Searchbar(context), SearchHistory(context)),
           MySpacer(),
           categoryWidget(),
-
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
