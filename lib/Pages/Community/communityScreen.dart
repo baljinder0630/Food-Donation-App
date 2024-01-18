@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Components/Widgets/Spacer.dart';
 import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Pages/Community/posts.dart';
@@ -27,6 +25,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
 
   Widget categoryWidget() {
     return Container(
+      margin: EdgeInsets.only(left: 24.w),
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
@@ -85,6 +84,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
 
   Widget FeaturedArticles() {
     return Container(
+      margin: EdgeInsets.only(left: 24.w),
       alignment: Alignment.centerLeft,
       height: 306.h,
       child: ListView.builder(
@@ -289,170 +289,138 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
 
   Widget Recommendations() {
     return Container(
-      width: 377.w,
-      height: 319.h,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Recommendations',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20.sp,
-              fontFamily: 'Outfit',
-              fontWeight: FontWeight.w500,
-              height: 0,
-              letterSpacing: 0.80.sp,
-            ),
-          ),
-          MySpacer(height: 20.h),
-          Expanded(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  // color: Colors.brown,
-                  width: 387.w,
-                  height: 130.h,
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 5.w, vertical: 10.h),
-                        width: 377.w,
-                        height: 110.h,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFFEFEFE),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          shadows: const [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 5,
-                              offset: Offset(0, 0),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        left: 10.w,
-                        top: 20.h,
-                        child: Container(
-                          width: 90.w,
-                          height: 89.h,
-                          decoration: ShapeDecoration(
-                            color: Colors.green,
-                            image: DecorationImage(
-                              image: NetworkImage(posts[index].imgUrl),
-                              fit: BoxFit.cover,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 114.w,
-                        top: 21.h,
-                        child: Container(
-                          width: 243.w,
-                          height: 89.h,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    posts[index].subject.length > 20
-                                        ? posts[index]
-                                                .subject
-                                                .substring(0, 20) +
-                                            "..."
-                                        : posts[index].subject,
-                                    style: TextStyle(
-                                      color: Color(0xFFBFAAAA),
-                                      fontSize: 14.sp,
-                                      fontFamily: 'Outfit',
-                                      fontWeight: FontWeight.w500,
-                                      height: 0,
-                                      letterSpacing: 0.56.sp,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 4.w,
-                                        height: 4.h,
-                                        decoration: ShapeDecoration(
-                                          color: Color(0xFFD9D9D9),
-                                          shape: OvalBorder(),
-                                        ),
-                                      ),
-                                      SizedBox(width: 4.w),
-                                      Text(
-                                        timeAgo(posts[index].createdTime),
-                                        style: TextStyle(
-                                          color: Color(0xFF8E7474),
-                                          fontSize: 12.sp,
-                                          fontFamily: 'Outfit',
-                                          fontWeight: FontWeight.w300,
-                                          height: 0,
-                                          letterSpacing: 0.48.sp,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 15.h),
-                              SizedBox(
-                                width: 241.w,
-                                child: Text(
-                                  posts[index].description.length > 100
-                                      ? posts[index]
-                                              .description
-                                              .substring(0, 100) +
-                                          "..."
-                                      : posts[index].description,
-                                  style: TextStyle(
-                                    color: Color(0xFF201F24),
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w500,
-                                    height: 0,
-                                    letterSpacing: 0.56.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+      height: posts.length * 130.h,
+      child: ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: posts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10.h),
+                  height: 110.h,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFFEFEFE),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 5,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
                     ],
                   ),
-                );
-              },
+                ),
+                Positioned(
+                  left: 10.w,
+                  top: 20.h,
+                  child: Container(
+                    width: 90.w,
+                    height: 89.h,
+                    decoration: ShapeDecoration(
+                      color: Colors.green,
+                      image: DecorationImage(
+                        image: NetworkImage(posts[index].imgUrl),
+                        fit: BoxFit.cover,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 114.w,
+                  top: 21.h,
+                  child: Container(
+                    width: 243.w,
+                    height: 89.h,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              posts[index].subject.length > 20
+                                  ? posts[index].subject.substring(0, 20) +
+                                      "..."
+                                  : posts[index].subject,
+                              style: TextStyle(
+                                color: Color(0xFFBFAAAA),
+                                fontSize: 14.sp,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                                letterSpacing: 0.56.sp,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 4.w,
+                                  height: 4.h,
+                                  decoration: ShapeDecoration(
+                                    color: Color(0xFFD9D9D9),
+                                    shape: OvalBorder(),
+                                  ),
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  timeAgo(posts[index].createdTime),
+                                  style: TextStyle(
+                                    color: Color(0xFF8E7474),
+                                    fontSize: 12.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w300,
+                                    height: 0,
+                                    letterSpacing: 0.48.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15.h),
+                        SizedBox(
+                          width: 241.w,
+                          child: Text(
+                            posts[index].description.length > 100
+                                ? posts[index].description.substring(0, 96) +
+                                    "..."
+                                : posts[index].description,
+                            style: TextStyle(
+                              color: Color(0xFF201F24),
+                              fontSize: 14.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.56.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).padding.top);
     return Scaffold(
       floatingActionButton: Container(
         decoration: const BoxDecoration(
@@ -479,20 +447,50 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(left: 23.98.w),
+        child: Container(
+          margin: EdgeInsets.only(top: 48.h),
           child: Column(
             children: [
               customAppBarBg(
                   context, Searchbar(context), SearchHistory(context)),
-              MySpacer(),
-              categoryWidget(),
-              MySpacer(),
-              Expanded(child: FeaturedArticles()),
               MySpacer(
-                height: 28.h,
+                height: 10.h,
               ),
-              Expanded(child: Recommendations())
+              Expanded(
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    MySpacer(
+                      height: 10.h,
+                    ),
+                    categoryWidget(),
+                    MySpacer(),
+                    FeaturedArticles(),
+                    MySpacer(
+                      height: 28.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 24.w),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          'Recommendations',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                            letterSpacing: 0.80.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                    MySpacer(height: 20.h),
+                    Recommendations()
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -556,7 +554,7 @@ Widget Searchbar(context) {
           ),
           SizedBox(width: 8.w),
           Text(
-            'Search For  ',
+            'Search For ',
             style: TextStyle(
               color: Color(0xFF201F24),
               fontSize: 18.sp,
@@ -566,13 +564,11 @@ Widget Searchbar(context) {
               letterSpacing: 0.36.sp,
             ),
           ),
-          SizedBox(width: 8.w),
           Container(
-            width: 62.w,
             height: 23.h,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
@@ -597,12 +593,11 @@ Widget Searchbar(context) {
 
 Widget customAppBarBg(context, Widget centerWidget, Widget rightWidget) {
   return Padding(
-    padding: EdgeInsets.only(
-      top: 21.h,
-    ),
+    padding: EdgeInsets.only(top: 0.h, left: 24.w),
     child: Container(
         width: double.infinity,
         child: Stack(
+          alignment: Alignment.center,
           children: [
             Container(
                 width: double.infinity,
