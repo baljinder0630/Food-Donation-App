@@ -1,12 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart';
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
-import 'package:food_donation_app/Router/route.gr.dart';
 
-import 'constants/constants.dart';
+import '../constants/constants.dart';
 
-@RoutePage()
 class HomePage extends StatelessWidget {
   final List postId = [
     '11',
@@ -15,17 +12,13 @@ class HomePage extends StatelessWidget {
     '14',
   ];
 
-  int _currentPage = 0;
-
   HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dashboard')),
       body: SafeArea(
         child: ListView.builder(
-            physics: BouncingScrollPhysics(),
             itemCount: 1,
             itemBuilder: (context, index) {
               return Column(
@@ -101,7 +94,7 @@ class HomePage extends StatelessWidget {
                     child:
                         const Center(child: Text("Space for some animation.")),
                   ),
-                  // Animation ends here.
+                  // Animation to be added later on.
 
                   Container(
                     margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -117,14 +110,14 @@ class HomePage extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  //Explore Ends here.
+                  // Here the explore text is placed.
 
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: mainOptions(context),
                   ),
-                  // Here 4 widgets are done.
+                  // Here 4 widgets are done. named Donate, Articles, Community, Volunteer.
 
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -172,12 +165,12 @@ class HomePage extends StatelessWidget {
                             //  Location is displayed, from here you can change the location. and get recommendation accordingly.
 
                             SizedBox(
-                              width: 120,
+                              width: 100,
                               height: 30,
                               child: OutlinedButton(
                                 onPressed: () {
-                                  context
-                                      .pushRoute(const DonationRequestRoute());
+                                  // context
+                                  // .pushRoute(const DonationRequestRoute());
                                 },
                                 style: OutlinedButton.styleFrom(
                                     backgroundColor: null),
@@ -212,7 +205,6 @@ class HomePage extends StatelessWidget {
                           return HungerSpot(child: postId[index]);
                         }),
                   ),
-
                   // Here HungerSpots cards ends.
 
                   Container(
@@ -261,7 +253,7 @@ class HomePage extends StatelessWidget {
                             //  Location is displayed, from here you can change the location. and get recommendation accordingly.
 
                             SizedBox(
-                              width: 120,
+                              width: 100,
                               height: 30,
                               child: OutlinedButton(
                                 onPressed: () {},
@@ -287,17 +279,17 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   // Here FoodPickup request text and viewAll button ends.
-
                   SizedBox(
                     height: 380,
                     child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return const PickUpRequest();
                         }),
                   ),
+                  //  Here the Food pickup request ends.
                 ],
               );
             }),
@@ -375,13 +367,18 @@ Widget mainOptions(BuildContext context) {
               ),
               Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 1.0),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                      child: Image.asset("${gridMap.elementAt(index)['image']}",
+                          height: 80,
+                          width: double.infinity,
+                          fit: BoxFit.cover),
                     ),
-                    child: Image.asset("${gridMap.elementAt(index)['image']}",
-                        height: 70, width: double.infinity, fit: BoxFit.cover),
                   ),
                 ],
               ),
