@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+@RoutePage()
 class DonateForm extends StatefulWidget {
   const DonateForm({super.key});
 

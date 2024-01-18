@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 
+@RoutePage()
 class DonationRequest extends StatefulWidget {
   const DonationRequest({Key? key}) : super(key: key);
 

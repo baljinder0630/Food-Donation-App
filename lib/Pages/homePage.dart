@@ -5,9 +5,6 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:food_donation_app/Router/route.gr.dart';
 
-
-
-
 class HomePage extends StatelessWidget {
   final List postId = [
     '11',
@@ -105,7 +102,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: mainOptions(context),
+                    // child: mainOptions(context),
                   ),
                   // Here 4 widgets are done.
 
@@ -157,8 +154,8 @@ class HomePage extends StatelessWidget {
                               height: 30,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, '/donationRequest');
+                                  context
+                                      .pushRoute(const DonationRequestRoute());
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green),
