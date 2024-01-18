@@ -1,11 +1,11 @@
 // lib/pages/main.dart
 
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:food_donation_app/Pages/HomePages/homepage.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
-import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart';
 import 'package:food_donation_app/Pages/Donate/donateform.dart';
+import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart';
+import 'package:food_donation_app/Pages/HomePages/homepage.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Your App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: AppBottomNavigationBar(),
@@ -38,8 +38,6 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     DonationRequest(),
     DonateForm(),
     DashBoardPage(),
-    
- 
   ];
 
   @override
@@ -75,7 +73,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
-          
+
           // PersistentBottomNavBarItem(
           //   icon: Icon(Icons.group),
           //   title: 'Community',
