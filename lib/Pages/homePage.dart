@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart';
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
@@ -5,6 +6,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:food_donation_app/Router/route.gr.dart';
 
+@RoutePage()
 class HomePage extends StatelessWidget {
   final List postId = [
     '11',
@@ -23,6 +25,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: Text('Dashboard')),
       body: SafeArea(
         child: ListView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: 1,
             itemBuilder: (context, index) {
               return Column(
@@ -179,6 +182,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: 320,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
@@ -258,6 +262,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     height: 350,
                     child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: postId.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {

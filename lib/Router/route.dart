@@ -23,11 +23,19 @@ class AppRouter extends $AppRouter {
         CustomRoute(
           page: SignUpPageRoute.page,
           path: "/signup",
-          transitionsBuilder: TransitionsBuilders.slideTop,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         ),
         CustomRoute(
           page: LoginPageRoute.page,
-          transitionsBuilder: TransitionsBuilders.slideTop,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: CommunityHomePageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        ),
+        CustomRoute(
+          page: PostArticleRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
         ),
         CustomRoute(
           page: DonationRequestRoute.page,
