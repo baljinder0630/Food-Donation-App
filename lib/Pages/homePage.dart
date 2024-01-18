@@ -35,12 +35,16 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         CircleAvatar(
-                            radius: 45,
-                            backgroundColor: purple1,
-                            child: Image.asset(
-                              "lib/assets/icons/user.png",
-                              height: 60,
-                            )),
+                          radius: 43,
+                          backgroundColor: purple4,
+                          child: CircleAvatar(
+                              radius: 40,
+                              backgroundColor: purple1,
+                              child: Image.asset(
+                                "lib/assets/icons/user.png",
+                                height: 60,
+                              )),
+                        ),
                         // Profile Picture of user is shown over here, default is user.png, which acts as icon.
 
                         const SizedBox(width: 20),
