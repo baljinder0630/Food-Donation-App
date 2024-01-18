@@ -14,11 +14,19 @@ import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i3;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i4;
 import 'package:food_donation_app/Pages/homePage.dart' as _i1;
 
+import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart' as _i6;
+
 abstract class $AppRouter extends _i5.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i5.PageFactory> pagesMap = {
+    DashBoardRoute.name: (routeData) {
+      return _i5.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i6.DashBoardPage(),
+      );
+    },
     HomePageRoute.name: (routeData) {
       return _i5.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -56,6 +64,20 @@ class HomePageRoute extends _i5.PageRouteInfo<void> {
         );
 
   static const String name = 'HomePageRoute';
+
+  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i1.HomePage]
+class DashBoardRoute extends _i5.PageRouteInfo<void> {
+  const DashBoardRoute({List<_i5.PageRouteInfo>? children})
+      : super(
+          DashBoardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DashBoardRoute';
 
   static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
 }
