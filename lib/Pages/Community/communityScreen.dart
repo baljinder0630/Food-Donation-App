@@ -467,6 +467,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
           ],
         ),
         child: FloatingActionButton(
+          heroTag: "fab1",
           backgroundColor: Color(0xffFEFEFE),
           shape: OvalBorder(),
           onPressed: () {

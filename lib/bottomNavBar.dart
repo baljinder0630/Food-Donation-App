@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
 import 'package:food_donation_app/Pages/Donate/donateform.dart';
 import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart';
@@ -20,6 +21,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     DonationRequest(),
     DonateForm(),
     DashBoardPage(),
+    CommunityHomePage()
   ];
 
   @override
@@ -55,12 +57,12 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
-          // PersistentBottomNavBarItem(
-          //   icon: Icon(Icons.group),
-          //   title: 'Community',
-          //   activeColorPrimary: Colors.blue,
-          //   inactiveColorPrimary: Colors.grey,
-          // ),
+          PersistentBottomNavBarItem(
+            icon: Icon(Icons.group),
+            title: 'Community',
+            activeColorPrimary: Colors.blue,
+            inactiveColorPrimary: Colors.grey,
+          ),
         ],
         // ... rest of the configuration remains the same
       ),
