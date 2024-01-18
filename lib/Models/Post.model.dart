@@ -5,7 +5,7 @@ class PostModel {
   final imgUrl;
   final userId;
   final username;
-  final createdTime;
+  final DateTime createdTime;
   final createdByAvatar;
   PostModel({
     required this.id,

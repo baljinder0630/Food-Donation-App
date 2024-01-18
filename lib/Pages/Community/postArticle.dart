@@ -28,11 +28,9 @@ class _PostArticleState extends State<PostArticle> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
+          leadingWidth: 100.w,
           centerTitle: true,
-          leading: Padding(
-            padding: EdgeInsets.only(left: 28.w),
-            child: Center(child: MyBackButton()),
-          ),
+          leading: Center(child: MyBackButton()),
           title: Text(
             'Post Article',
             style: TextStyle(
@@ -69,15 +67,19 @@ class _PostArticleState extends State<PostArticle> {
                     boxShadow: const [
                       BoxShadow(
                         color: Color(0x3F000000),
-                        blurRadius: 8,
+                        blurRadius: 5,
                         offset: Offset(0, 0),
                         spreadRadius: 0,
                       )
                     ],
                   ),
                   child: TextFormField(
+                    controller: _subjectController,
                     maxLength: 200,
                     autofocus: true,
+                    onEditingComplete: () {
+                      FocusScope.of(context).nextFocus();
+                    },
                     validator: (value) {
                       if (value == "" || value == null) {
                         return 'Please enter some text';
@@ -121,7 +123,7 @@ class _PostArticleState extends State<PostArticle> {
                 Container(
                   // Description text field
                   width: 337.w,
-                  height: 583.h,
+                  height: 573.h,
                   decoration: ShapeDecoration(
                     color: Color(0xFFFEFEFE),
                     shape: RoundedRectangleBorder(
@@ -130,7 +132,7 @@ class _PostArticleState extends State<PostArticle> {
                     shadows: const [
                       BoxShadow(
                         color: Color(0x3F000000),
-                        blurRadius: 8,
+                        blurRadius: 5,
                         offset: Offset(0, 0),
                         spreadRadius: 0,
                       )
@@ -141,6 +143,7 @@ class _PostArticleState extends State<PostArticle> {
                       Container(
                         height: 399.h,
                         child: TextFormField(
+                          controller: _descriptionController,
                           maxLength: 5000,
                           autofocus: true,
                           validator: (value) {
@@ -208,7 +211,7 @@ class _PostArticleState extends State<PostArticle> {
                               shadows: const [
                                 BoxShadow(
                                   color: Color(0x3F000000),
-                                  blurRadius: 8,
+                                  blurRadius: 5,
                                   offset: Offset(0, 0),
                                   spreadRadius: 0,
                                 )

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Components/Widgets/Spacer.dart';
 import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Pages/Community/posts.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
@@ -29,6 +30,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -81,6 +83,374 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
     );
   }
 
+  Widget FeaturedArticles() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      height: 306.h,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: posts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(right: 20.w),
+                width: 275.w,
+                height: 306.h,
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  image: DecorationImage(
+                    image: NetworkImage(posts[index].imgUrl),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(right: 20.w),
+                width: 275.w,
+                height: 306.h,
+                decoration: ShapeDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment(-0.00, -1.00),
+                    end: Alignment(0, 1),
+                    colors: [
+                      Colors.white.withOpacity(0),
+                      Colors.black.withOpacity(0),
+                      Colors.black
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(right: 20.w),
+                  width: 275.w,
+                  height: 306.h,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: EdgeInsets.only(bottom: 13.h),
+                    width: 241.w,
+                    height: 105.h,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                posts[index].subject.length > 30
+                                    ? posts[index].subject.substring(0, 30) +
+                                        "..."
+                                    : posts[index].subject,
+                                style: TextStyle(
+                                  color: Color(0xFFB3B3B8),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0,
+                                  letterSpacing: 0.56.sp,
+                                ),
+                              ),
+                              MySpacer(height: 5.h),
+                              SizedBox(
+                                width: 241.w,
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    posts[index].description.length > 70
+                                        ? posts[index]
+                                                .description
+                                                .substring(0, 70) +
+                                            "..."
+                                        : posts[index].description,
+                                    style: TextStyle(
+                                      color: Color(0xFFF9F8FD),
+                                      fontSize: 14.sp,
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.w500,
+                                      height: 0,
+                                      letterSpacing: 0.56.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        MySpacer(height: 16.h),
+                        Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 30.w,
+                                      height: 30.h,
+                                      decoration: ShapeDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              posts[index].createdByAvatar),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        shape: OvalBorder(
+                                          side: BorderSide(
+                                              width: 2.w,
+                                              color: Color(0xFFDAACAC)),
+                                        ),
+                                        shadows: const [
+                                          BoxShadow(
+                                            color: Color(0x3F000000),
+                                            blurRadius: 8,
+                                            offset: Offset(0, 0),
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      posts[index].username,
+                                      style: TextStyle(
+                                        color: Color(0xFFF9F8FD),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Outfit',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                        letterSpacing: 0.56.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 6.w),
+                              Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 4.w,
+                                      height: 4.h,
+                                      decoration: ShapeDecoration(
+                                        color: Color(0xFFD9D9D9),
+                                        shape: OvalBorder(),
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      timeAgo(posts[index].createdTime),
+                                      style: TextStyle(
+                                        color: Color(0xFF8E7474),
+                                        fontSize: 12.sp,
+                                        fontFamily: 'Outfit',
+                                        fontWeight: FontWeight.w300,
+                                        height: 0,
+                                        letterSpacing: 0.48.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget Recommendations() {
+    return Container(
+      width: 377.w,
+      height: 319.h,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Recommendations',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20.sp,
+              fontFamily: 'Outfit',
+              fontWeight: FontWeight.w500,
+              height: 0,
+              letterSpacing: 0.80.sp,
+            ),
+          ),
+          MySpacer(height: 20.h),
+          Expanded(
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  // color: Colors.brown,
+                  width: 387.w,
+                  height: 130.h,
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 10.h),
+                        width: 377.w,
+                        height: 110.h,
+                        decoration: ShapeDecoration(
+                          color: Color(0xFFFEFEFE),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 5,
+                              offset: Offset(0, 0),
+                              spreadRadius: 0,
+                            )
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        left: 10.w,
+                        top: 20.h,
+                        child: Container(
+                          width: 90.w,
+                          height: 89.h,
+                          decoration: ShapeDecoration(
+                            color: Colors.green,
+                            image: DecorationImage(
+                              image: NetworkImage(posts[index].imgUrl),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 114.w,
+                        top: 21.h,
+                        child: Container(
+                          width: 243.w,
+                          height: 89.h,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    posts[index].subject.length > 20
+                                        ? posts[index]
+                                                .subject
+                                                .substring(0, 20) +
+                                            "..."
+                                        : posts[index].subject,
+                                    style: TextStyle(
+                                      color: Color(0xFFBFAAAA),
+                                      fontSize: 14.sp,
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.w500,
+                                      height: 0,
+                                      letterSpacing: 0.56.sp,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 4.w,
+                                        height: 4.h,
+                                        decoration: ShapeDecoration(
+                                          color: Color(0xFFD9D9D9),
+                                          shape: OvalBorder(),
+                                        ),
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        timeAgo(posts[index].createdTime),
+                                        style: TextStyle(
+                                          color: Color(0xFF8E7474),
+                                          fontSize: 12.sp,
+                                          fontFamily: 'Outfit',
+                                          fontWeight: FontWeight.w300,
+                                          height: 0,
+                                          letterSpacing: 0.48.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15.h),
+                              SizedBox(
+                                width: 241.w,
+                                child: Text(
+                                  posts[index].description.length > 100
+                                      ? posts[index]
+                                              .description
+                                              .substring(0, 100) +
+                                          "..."
+                                      : posts[index].description,
+                                  style: TextStyle(
+                                    color: Color(0xFF201F24),
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0,
+                                    letterSpacing: 0.56.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,6 +487,11 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
               MySpacer(),
               categoryWidget(),
               MySpacer(),
+              Expanded(child: FeaturedArticles()),
+              MySpacer(
+                height: 28.h,
+              ),
+              Expanded(child: Recommendations())
             ],
           ),
         ),
@@ -294,4 +669,21 @@ Widget customAppBarBg(context, Widget centerWidget, Widget rightWidget) {
           ],
         )),
   );
+}
+
+String timeAgo(DateTime date) {
+  Duration diff = DateTime.now().difference(date);
+  if (diff.inSeconds < 60) {
+    return '${diff.inSeconds} seconds ago';
+  } else if (diff.inMinutes < 60) {
+    return '${diff.inMinutes} minutes ago';
+  } else if (diff.inHours < 24) {
+    return '${diff.inHours} hours ago';
+  } else if (diff.inDays < 30) {
+    return '${diff.inDays} days ago';
+  } else if (diff.inDays < 365) {
+    return '${(diff.inDays / 30).round()} months ago';
+  } else {
+    return '${(diff.inDays / 365).round()} years ago';
+  }
 }
