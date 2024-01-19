@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
 
 import '../Community/Components/Widgets/Spacer.dart';
 import '../Community/communityScreen.dart';
@@ -20,6 +21,30 @@ class _DonationRequestState extends State<DonationRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 8,
+                offset: Offset(0, 0),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: FloatingActionButton(
+            heroTag: "fab1",
+            backgroundColor: Color(0xffFEFEFE),
+            shape: OvalBorder(),
+            onPressed: () {
+              context.pushRoute(const RaiseRequestPageRoute());
+            },
+            elevation: 0.0,
+            child: Icon(Icons.add_circle_rounded,
+                size: 36.r, color: Color(0xFF5272FC)),
+          ),
+        ),
         body: SafeArea(
       child: Column(
         children: [

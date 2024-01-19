@@ -41,5 +41,9 @@ class AppRouter extends $AppRouter {
           page: DonationRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
+        CustomRoute(
+          page: RaiseRequestPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
       ];
 }

@@ -12,6 +12,7 @@ import 'package:auto_route/auto_route.dart' as _i14;
 import 'package:flutter/material.dart' as _i15;
 import 'package:food_donation_app/Pages/Community/communityScreen.dart' as _i2;
 import 'package:food_donation_app/Pages/Community/postArticle.dart' as _i11;
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart' as _i16;
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart' as _i3;
 import 'package:food_donation_app/Pages/Donate/donateform.dart' as _i4;
 import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart'
@@ -41,6 +42,12 @@ abstract class $AppRouter extends _i14.RootStackRouter {
       return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i2.CommunityHomePage(),
+      );
+    },
+    RaiseRequestPageRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i16.RaiseRequest(),
       );
     },
     DashBoardPageRoute.name: (routeData) {
@@ -323,6 +330,20 @@ class SplashScreenRoute extends _i14.PageRouteInfo<void> {
         );
 
   static const String name = 'SplashScreenRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i16.RaiseRequest]
+class RaiseRequestPageRoute extends _i14.PageRouteInfo<void> {
+  const RaiseRequestPageRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          RaiseRequestPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RaiseRequestPageRoute';
 
   static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
