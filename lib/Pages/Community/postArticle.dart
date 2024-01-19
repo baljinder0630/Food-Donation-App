@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
 class PostArticle extends StatefulWidget {
@@ -197,55 +198,60 @@ class _PostArticleState extends State<PostArticle> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: EdgeInsets.only(left: 29.w),
-                          child: Container(
-                            width: 103.35.w,
-                            height: 127.40.h,
-                            decoration: ShapeDecoration(
-                              color: Color(0xFFFFFBFB),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              shadows: const [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 5,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 45.50,
-                                  height: 45.50,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: Icon(Icons.add_circle_rounded,
-                                      size: 45.5.r, color: Color(0xFF76A095)),
+                          child: GestureDetector(
+                            onTap: () async {
+                              context.navigateTo(CameraScreenRoute());
+                            },
+                            child: Container(
+                              width: 103.35.w,
+                              height: 127.40.h,
+                              decoration: ShapeDecoration(
+                                color: Color(0xFFFFFBFB),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
-                                SizedBox(height: 13.h),
-                                Container(
-                                  width: 88.40.w,
-                                  child: Text(
-                                    'Upload Images',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Color(0xFF76A095),
-                                      fontSize: 9.10.sp,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                      height: 0,
-                                      letterSpacing: 0.18.sp,
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x3F000000),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 0,
+                                  )
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 45.50,
+                                    height: 45.50,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
                                     ),
+                                    child: Icon(Icons.add_circle_rounded,
+                                        size: 45.5.r, color: Color(0xFF76A095)),
                                   ),
-                                )
-                              ],
+                                  SizedBox(height: 13.h),
+                                  Container(
+                                    width: 88.40.w,
+                                    child: Text(
+                                      'Upload Images',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color(0xFF76A095),
+                                        fontSize: 9.10.sp,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w600,
+                                        height: 0,
+                                        letterSpacing: 0.18.sp,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

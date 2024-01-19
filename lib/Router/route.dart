@@ -49,5 +49,9 @@ class AppRouter extends $AppRouter {
           page: RaiseRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
+        CustomRoute(
+          page: CameraScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
       ];
 }
