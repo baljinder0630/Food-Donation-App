@@ -1,20 +1,50 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
+
+import '../Community/Components/Widgets/Spacer.dart';
+import '../Community/communityScreen.dart';
 
 @RoutePage()
 class DonationRequest extends StatefulWidget {
-  const DonationRequest({Key? key}) : super(key: key);
+  const DonationRequest({super.key});
 
   @override
   State<DonationRequest> createState() => _DonationRequestState();
 }
 
 class _DonationRequestState extends State<DonationRequest> {
-  final List<String> filters = ["All", "Food Request", "Fund Request"];
+  var selectedCategory = 0;
+  List<String> categories = ["All", "Food Request", "Fund Request"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 8,
+                offset: Offset(0, 0),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: FloatingActionButton(
+            heroTag: "fab1",
+            backgroundColor: Color(0xffFEFEFE),
+            shape: OvalBorder(),
+            onPressed: () {
+              context.pushRoute(const RaiseRequestPageRoute());
+            },
+            elevation: 0.0,
+            child: Icon(Icons.add_circle_rounded,
+                size: 36.r, color: Color(0xFF5272FC)),
+          ),
+        ),
         body: SafeArea(
       child: Column(
         children: [
@@ -29,28 +59,15 @@ class _DonationRequestState extends State<DonationRequest> {
                   overflow: TextOverflow.ellipsis),
             ),
           ),
-          Container(
-              child: Row(
-            children: [
-              Container(padding: EdgeInsets.all(10), child: Icon(Icons.search)),
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none, hintText: "Search Requests"),
-                ),
-              )
-            ],
-          )),
-          Container(
-            height: 60,
-            child: filterCard(context),
-          ),
+          customAppBarBg(context, Searchbar(context), SearchHistory(context)),
+          MySpacer(),
+          categoryWidget(),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               height: 500,
               child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: 5,
                   itemBuilder: (context, index) {
                     return DonationCard();
                   }),
@@ -59,6 +76,64 @@ class _DonationRequestState extends State<DonationRequest> {
         ],
       ),
     ));
+  }
+
+  Widget categoryWidget() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      height: 43.h,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedCategory = index;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10.r),
+                  decoration: ShapeDecoration(
+                    color: index == selectedCategory
+                        ? Color(0xFF5272FC)
+                        : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Text(
+                    categories[index],
+                    style: TextStyle(
+                      color: index == selectedCategory
+                          ? const Color(0xFFF9F8FD)
+                          : const Color(0xFF201F24),
+                      fontSize: 18.sp,
+                      fontFamily: 'Outfit',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.72.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.sp),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 

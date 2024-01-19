@@ -8,8 +8,28 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+<<<<<<< HEAD
 import 'package:auto_route/auto_route.dart' as _i15;
 import 'package:flutter/material.dart' as _i16;
+=======
+import 'package:auto_route/auto_route.dart' as _i14;
+import 'package:flutter/material.dart' as _i15;
+import 'package:food_donation_app/Pages/Community/communityScreen.dart' as _i2;
+import 'package:food_donation_app/Pages/Community/postArticle.dart' as _i11;
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart' as _i16;
+import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart' as _i3;
+import 'package:food_donation_app/Pages/Donate/donateform.dart' as _i4;
+import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart'
+    as _i5;
+import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
+    as _i6;
+import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i8;
+import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i10;
+import 'package:food_donation_app/Pages/Login/login.dart' as _i9;
+import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i12;
+import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i13;
+import 'package:food_donation_app/Pages/homePage.dart' as _i7;
+>>>>>>> master
 import 'package:food_donation_app/bottomNavBar.dart' as _i1;
 import 'package:food_donation_app/Pages/Community/articleDetail.dart' as _i2;
 import 'package:food_donation_app/Pages/Community/communityScreen.dart' as _i3;
@@ -52,6 +72,12 @@ abstract class $AppRouter extends _i15.RootStackRouter {
       return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i3.CommunityHomePage(),
+      );
+    },
+    RaiseRequestPageRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i16.RaiseRequest(),
       );
     },
     DashBoardPageRoute.name: (routeData) {
@@ -386,4 +412,18 @@ class SplashScreenRoute extends _i15.PageRouteInfo<void> {
   static const String name = 'SplashScreenRoute';
 
   static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i16.RaiseRequest]
+class RaiseRequestPageRoute extends _i14.PageRouteInfo<void> {
+  const RaiseRequestPageRoute({List<_i14.PageRouteInfo>? children})
+      : super(
+          RaiseRequestPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RaiseRequestPageRoute';
+
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
