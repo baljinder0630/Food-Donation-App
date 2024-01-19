@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food_donation_app/Pages/Donate/otp_screen.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:food_donation_app/Pages/Donate/camera_preview.dart';
 
@@ -13,6 +15,7 @@ class DonateForm extends StatefulWidget {
 }
 
 class _DonateFormState extends State<DonateForm> {
+  static String verificationIdentity = "";
   bool value = false;
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
@@ -50,6 +53,7 @@ class _DonateFormState extends State<DonateForm> {
   ];
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -415,7 +419,7 @@ class _DonateFormState extends State<DonateForm> {
                             onChanged: (text) => {
                               setState(() {
                                 phoneTextEditingController.text =
-                                    text.toString();
+                                    text.completeNumber;
                               })
                             },
                           ),
@@ -424,6 +428,32 @@ class _DonateFormState extends State<DonateForm> {
                           "An OTP will be sent to this phone number",
                           style: TextStyle(fontSize: 10.0),
                         ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              print(phoneTextEditingController.text);
+                              await FirebaseAuth.instance.verifyPhoneNumber(
+                                phoneNumber: phoneTextEditingController.text,
+                                verificationCompleted:
+                                    (PhoneAuthCredential credential) {},
+                                verificationFailed:
+                                    (FirebaseAuthException e) {},
+                                codeSent:
+                                    (String verificationId, int? resendToken) {
+                                  verificationIdentity = verificationId;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return OtpScreen(id: verificationId);
+                                      },
+                                    ),
+                                  );
+                                },
+                                codeAutoRetrievalTimeout:
+                                    (String verificationId) {},
+                              );
+                            },
+                            child: const Text("Send OTP")),
                         const SizedBox(height: 30.0),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),

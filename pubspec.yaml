@@ -43,8 +43,9 @@ dependencies:
   percent_indicator: ^4.0.1
   intl_phone_field: ^3.1.0
   persistent_bottom_nav_bar: ^5.0.2
-  camera: ^0.10.5+9
+  camera: any
   image_picker: any
+  pinput: any
 
 
 dev_dependencies:
