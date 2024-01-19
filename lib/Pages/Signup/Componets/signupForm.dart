@@ -24,8 +24,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     signup(email, password, name) async {
       if (await ref
           .read(authStateProvider.notifier)
-          .signUp(email, password, name)) {
-        context.router.replace(const HomePageRoute());
+          .signUp(email, password, name, context)) {
+        context.router.replace(AppBottomNavigationBarRoute());
       }
     }
 
@@ -156,7 +156,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                       fontWeight: FontWeight.bold,
                       color: Colors.grey)),
               TextButton(
-                onPressed: () => context.pushRoute(LoginPageRoute()),
+                onPressed: () => context.replaceRoute(LoginPageRoute()),
                 child: const Text("Sign In",
                     style: TextStyle(
                         fontSize: 16,

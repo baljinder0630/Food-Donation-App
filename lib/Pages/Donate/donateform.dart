@@ -1,7 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:food_donation_app/Pages/Donate/camera_preview.dart';
 
+@RoutePage()
 class DonateForm extends StatefulWidget {
   const DonateForm({super.key});
 
@@ -208,7 +211,12 @@ class _DonateFormState extends State<DonateForm> {
                           width: 5.0,
                         ),
                         FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CameraScreen()));
+                          },
                           backgroundColor: Colors.white,
                           shape: const CircleBorder(),
                           mini: true,
