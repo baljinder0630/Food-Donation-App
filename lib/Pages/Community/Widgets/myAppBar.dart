@@ -18,6 +18,7 @@ class MyAppBar extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Container(
+                  padding: EdgeInsets.only(left: 1),
                   width: double.infinity,
                   child: Stack(
                     children: [

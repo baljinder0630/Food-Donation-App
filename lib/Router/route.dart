@@ -46,7 +46,7 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
-          page: RaiseRequestPageRoute.page,
+          page: RaiseRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
       ];

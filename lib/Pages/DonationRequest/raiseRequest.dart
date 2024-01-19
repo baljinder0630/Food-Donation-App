@@ -1,6 +1,6 @@
-import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 
 @RoutePage()
 class RaiseRequest extends StatefulWidget {
@@ -45,20 +45,20 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                 ),
                 SizedBox(height: 16),
                 _buildTextFormField(
-                  label: '+91 Mobile Number',
-                  controller: _mobileNumberController,
-                  suffixWidget: Padding(padding: EdgeInsets.only(right: 16),child:ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Send OTP'),
-                  ),
-                  ) 
-                ),
+                    label: '+91 Mobile Number',
+                    controller: _mobileNumberController,
+                    suffixWidget: Padding(
+                      padding: EdgeInsets.only(right: 16),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text('Send OTP'),
+                      ),
+                    )),
                 SizedBox(height: 16),
                 Text(
                   'An OTP Will Be Send to this mobile number',
                   style: TextStyle(color: Colors.grey),
                 ),
-                
                 SizedBox(height: 16),
                 _buildTextFormField(
                   label: 'Plot No.',
@@ -113,7 +113,7 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                     ),
                   ),
                 )
-    ],
+              ],
             ),
           ),
         ),

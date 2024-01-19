@@ -429,81 +429,96 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x3F000000),
-              blurRadius: 8,
-              offset: Offset(0, 0),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: FloatingActionButton(
-          heroTag: "fab1",
-          backgroundColor: Color(0xffFEFEFE),
-          shape: OvalBorder(),
-          onPressed: () async {
-            context.navigateTo(const PostArticleRoute());
-          },
-          elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
-        ),
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(top: 48.h),
-          child: Column(
-            children: [
-              MyAppBar(
-                  centerWidget: Searchbar(context),
-                  rightWidget: SearchHistory(context)),
-              SizedBox(
-                height: 10.h,
-              ),
-              Expanded(
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    categoryWidget(),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    FeaturedArticles(),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 24.w),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          'Recommendations',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                            letterSpacing: 0.80.sp,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Container(
+              margin: EdgeInsets.only(top: 48.h),
+              child: Column(
+                children: [
+                  MyAppBar(
+                      centerWidget: Searchbar(context),
+                      rightWidget: SearchHistory(context)),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Expanded(
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        categoryWidget(),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        FeaturedArticles(),
+                        SizedBox(
+                          height: 28.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 24.w),
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Text(
+                              'Recommendations',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.sp,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                                letterSpacing: 0.80.sp,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        SizedBox(height: 20.h),
+                        Recommendations()
+                      ],
                     ),
-                    SizedBox(height: 20.h),
-                    Recommendations()
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () async {
+                context.pushRoute(const PostArticleRoute());
+              },
+              child: Container(
+                  margin: EdgeInsets.only(bottom: 30.h, right: 30.w),
+                  width: 60.r,
+                  height: 60.r,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFEFEFE),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Icon(Icons.add_circle_rounded,
+                      size: 36.r, color: Color(0xFF5272FC))),
+            ),
+          ),
+          Positioned(
+            top: 107.h,
+            right: -32,
+            child: Container(
+                height: 82,
+                width: 71,
+                child: Image.asset("lib/assets/Community/books and cup.png",
+                    fit: BoxFit.contain)),
+          )
+        ],
       ),
     );
   }
