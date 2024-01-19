@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Pages/Community/Components/Widgets/Spacer.dart';
-import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Pages/Community/postArticle.dart';
 import 'package:food_donation_app/Pages/Community/posts.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
@@ -166,7 +168,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                   letterSpacing: 0.56.sp,
                                 ),
                               ),
-                              MySpacer(height: 5.h),
+                              SizedBox(height: 5.h),
                               SizedBox(
                                 width: 241.w,
                                 child: SingleChildScrollView(
@@ -191,7 +193,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                             ],
                           ),
                         ),
-                        MySpacer(height: 16.h),
+                        SizedBox(height: 16.h),
                         Container(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -294,67 +296,115 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.h),
-                  height: 110.h,
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFFEFEFE),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 5,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                ),
-                Positioned(
-                  left: 10.w,
-                  top: 20.h,
-                  child: Container(
-                    width: 90.w,
-                    height: 89.h,
+          return GestureDetector(
+            onTap: () {
+              context.navigateTo(ArticleDetailRoute(article: posts[index]));
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                    height: 110.h,
                     decoration: ShapeDecoration(
-                      color: Colors.green,
-                      image: DecorationImage(
-                        image: NetworkImage(posts[index].imgUrl),
-                        fit: BoxFit.cover,
-                      ),
+                      color: Color(0xFFFEFEFE),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.r),
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      shadows: const [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 5,
+                          offset: Offset(0, 0),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    left: 10.w,
+                    top: 20.h,
+                    child: Container(
+                      width: 90.w,
+                      height: 89.h,
+                      decoration: ShapeDecoration(
+                        color: Colors.green,
+                        image: DecorationImage(
+                          image: NetworkImage(posts[index].imgUrl),
+                          fit: BoxFit.cover,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 114.w,
-                  top: 21.h,
-                  child: Container(
-                    width: 243.w,
-                    height: 89.h,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              posts[index].subject.length > 20
-                                  ? posts[index].subject.substring(0, 20) +
+                  Positioned(
+                    left: 114.w,
+                    top: 21.h,
+                    child: Container(
+                      width: 243.w,
+                      height: 89.h,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                posts[index].subject.length > 20
+                                    ? posts[index].subject.substring(0, 20) +
+                                        "..."
+                                    : posts[index].subject,
+                                style: TextStyle(
+                                  color: Color(0xFFBFAAAA),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0,
+                                  letterSpacing: 0.56.sp,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 4.w,
+                                    height: 4.h,
+                                    decoration: ShapeDecoration(
+                                      color: Color(0xFFD9D9D9),
+                                      shape: OvalBorder(),
+                                    ),
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    timeAgo(posts[index].createdTime),
+                                    style: TextStyle(
+                                      color: Color(0xFF8E7474),
+                                      fontSize: 12.sp,
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.w300,
+                                      height: 0,
+                                      letterSpacing: 0.48.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 15.h),
+                          SizedBox(
+                            width: 241.w,
+                            child: Text(
+                              posts[index].description.length > 100
+                                  ? posts[index].description.substring(0, 96) +
                                       "..."
-                                  : posts[index].subject,
+                                  : posts[index].description,
                               style: TextStyle(
-                                color: Color(0xFFBFAAAA),
+                                color: Color(0xFF201F24),
                                 fontSize: 14.sp,
                                 fontFamily: 'Outfit',
                                 fontWeight: FontWeight.w500,
@@ -362,55 +412,13 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                 letterSpacing: 0.56.sp,
                               ),
                             ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 4.w,
-                                  height: 4.h,
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFFD9D9D9),
-                                    shape: OvalBorder(),
-                                  ),
-                                ),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  timeAgo(posts[index].createdTime),
-                                  style: TextStyle(
-                                    color: Color(0xFF8E7474),
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w300,
-                                    height: 0,
-                                    letterSpacing: 0.48.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.h),
-                        SizedBox(
-                          width: 241.w,
-                          child: Text(
-                            posts[index].description.length > 100
-                                ? posts[index].description.substring(0, 96) +
-                                    "..."
-                                : posts[index].description,
-                            style: TextStyle(
-                              color: Color(0xFF201F24),
-                              fontSize: 14.sp,
-                              fontFamily: 'Outfit',
-                              fontWeight: FontWeight.w500,
-                              height: 0,
-                              letterSpacing: 0.56.sp,
-                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -420,80 +428,97 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).padding.top);
     return Scaffold(
-      floatingActionButton: Container(
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x3F000000),
-              blurRadius: 8,
-              offset: Offset(0, 0),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: FloatingActionButton(
-          heroTag: "fab1",
-          backgroundColor: Color(0xffFEFEFE),
-          shape: OvalBorder(),
-          onPressed: () {
-            context.pushRoute(const PostArticleRoute());
-          },
-          elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
-        ),
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(top: 48.h),
-          child: Column(
-            children: [
-              customAppBarBg(
-                  context, Searchbar(context), SearchHistory(context)),
-              MySpacer(
-                height: 10.h,
-              ),
-              Expanded(
-                child: ListView(
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    MySpacer(
-                      height: 10.h,
-                    ),
-                    categoryWidget(),
-                    MySpacer(),
-                    FeaturedArticles(),
-                    MySpacer(
-                      height: 28.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 24.w),
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          'Recommendations',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                            letterSpacing: 0.80.sp,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Container(
+              margin: EdgeInsets.only(top: 48.h),
+              child: Column(
+                children: [
+                  MyAppBar(
+                      centerWidget: Searchbar(context),
+                      rightWidget: SearchHistory(context)),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Expanded(
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        categoryWidget(),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        FeaturedArticles(),
+                        SizedBox(
+                          height: 28.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 24.w),
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Text(
+                              'Recommendations',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.sp,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w500,
+                                height: 0,
+                                letterSpacing: 0.80.sp,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        SizedBox(height: 20.h),
+                        Recommendations()
+                      ],
                     ),
-                    MySpacer(height: 20.h),
-                    Recommendations()
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () async {
+                context.pushRoute(const PostArticleRoute());
+              },
+              child: Container(
+                  margin: EdgeInsets.only(bottom: 30.h, right: 30.w),
+                  width: 60.r,
+                  height: 60.r,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFEFEFE),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Icon(Icons.add_circle_rounded,
+                      size: 36.r, color: Color(0xFF5272FC))),
+            ),
+          ),
+          Positioned(
+            top: 107.h,
+            right: -32,
+            child: Container(
+                height: 82,
+                width: 71,
+                child: Image.asset("lib/assets/Community/books and cup.png",
+                    fit: BoxFit.contain)),
+          )
+        ],
       ),
     );
   }
@@ -589,97 +614,4 @@ Widget Searchbar(context) {
       ),
     ),
   );
-}
-
-Widget customAppBarBg(context, Widget centerWidget, Widget rightWidget) {
-  return Padding(
-    padding: EdgeInsets.only(top: 0.h, left: 24.w),
-    child: Container(
-        width: double.infinity,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-                width: double.infinity,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        width: double.infinity,
-                        height: 92.h,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF5272FC),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25.r),
-                            bottomLeft: Radius.circular(25.r),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        // width: double.infinity,
-                        height: 92.h,
-                        child: Image.asset("lib/assets/Community/Appbar1.png"),
-                      ),
-                    ),
-                  ],
-                )),
-            Container(
-              height: 92.h,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  width: 42.r,
-                  height: 42.r,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(25.r),
-                      bottomRight: Radius.circular(25.r),
-                    ),
-                  ),
-                  child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 2.w, right: 3, top: 2.h, bottom: 2.h),
-                        child: MyBackButton()),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: 92.h,
-              child:
-                  Align(alignment: Alignment.centerLeft, child: centerWidget),
-            ),
-            Container(
-              height: 92.h,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: rightWidget,
-              ),
-            )
-          ],
-        )),
-  );
-}
-
-String timeAgo(DateTime date) {
-  Duration diff = DateTime.now().difference(date);
-  if (diff.inSeconds < 60) {
-    return '${diff.inSeconds} seconds ago';
-  } else if (diff.inMinutes < 60) {
-    return '${diff.inMinutes} minutes ago';
-  } else if (diff.inHours < 24) {
-    return '${diff.inHours} hours ago';
-  } else if (diff.inDays < 30) {
-    return '${diff.inDays} days ago';
-  } else if (diff.inDays < 365) {
-    return '${(diff.inDays / 30).round()} months ago';
-  } else {
-    return '${(diff.inDays / 365).round()} years ago';
-  }
 }

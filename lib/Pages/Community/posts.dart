@@ -11,10 +11,10 @@ Use up your perishables first: Fruits, vegetables, and dairy products are the mo
 final List<PostModel> posts = [
   PostModel(
       id: 1,
-      subject: "Waste Reduction",
+      subject: "Waste Reduction for our Environment, Health and Economy",
       description: desc1,
       imgUrl:
-          "https://th.bing.com/th/id/OIP.EIqCHlPiaz25sjy1E_Y4zgHaE8?rs=1&pid=ImgDetMain",
+          "https://th.bing.com/th?id=OIP.EXTe3QUpYrIFEXXLphywyQHaE8&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
       createdTime: DateTime.parse("2023-09-01 20:18:04"),
       createdByAvatar:
           "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
