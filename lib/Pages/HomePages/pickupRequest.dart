@@ -71,7 +71,7 @@ class PickUpRequest extends StatelessWidget {
                             radius: 60,
                             backgroundColor: purple1,
                             child: Image.asset(
-                              "lib/assets//icons/food.png",
+                              "lib/assets/icons/food.png",
                               height: 60,
                             )),
                       ),

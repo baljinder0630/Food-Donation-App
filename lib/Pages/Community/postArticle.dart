@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Pages/Community/Components/Widgets/Spacer.dart';
-import 'package:food_donation_app/Pages/Community/Components/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 
 @RoutePage()
 class PostArticle extends StatefulWidget {
@@ -22,9 +21,7 @@ class _PostArticleState extends State<PostArticle> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -43,13 +40,15 @@ class _PostArticleState extends State<PostArticle> {
             ),
           ),
         ),
-        body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Form(
+            key: _formKey,
             child: Column(
               children: [
-                MySpacer(),
+                SizedBox(
+                  height: 15.h,
+                ),
                 Center(
                   child: Container(
                     width: 302.w,
@@ -57,7 +56,7 @@ class _PostArticleState extends State<PostArticle> {
                     height: 1.h,
                   ),
                 ),
-                MySpacer(height: 32.h),
+                SizedBox(height: 32.h),
                 Container(
                   // Subject text field
                   width: 337.w,
@@ -76,7 +75,6 @@ class _PostArticleState extends State<PostArticle> {
                   child: TextFormField(
                     controller: _subjectController,
                     maxLength: 200,
-                    autofocus: true,
                     onEditingComplete: () {
                       FocusScope.of(context).nextFocus();
                     },
@@ -119,7 +117,7 @@ class _PostArticleState extends State<PostArticle> {
                     ),
                   ),
                 ),
-                MySpacer(height: 21.h),
+                SizedBox(height: 21.h),
                 Container(
                   // Description text field
                   width: 337.w,
@@ -145,7 +143,6 @@ class _PostArticleState extends State<PostArticle> {
                         child: TextFormField(
                           controller: _descriptionController,
                           maxLength: 5000,
-                          autofocus: true,
                           validator: (value) {
                             if (value == "" || value == null) {
                               return 'Please enter some text';
@@ -193,7 +190,7 @@ class _PostArticleState extends State<PostArticle> {
                           height: 1.h,
                         ),
                       ),
-                      MySpacer(
+                      SizedBox(
                         height: 25.h,
                       ),
                       Align(
@@ -232,7 +229,7 @@ class _PostArticleState extends State<PostArticle> {
                                   child: Icon(Icons.add_circle_rounded,
                                       size: 45.5.r, color: Color(0xFF76A095)),
                                 ),
-                                MySpacer(height: 13.h),
+                                SizedBox(height: 13.h),
                                 Container(
                                   width: 88.40.w,
                                   child: Text(
@@ -256,7 +253,7 @@ class _PostArticleState extends State<PostArticle> {
                     ],
                   ),
                 ),
-                MySpacer(
+                SizedBox(
                   height: 25.h,
                 ),
                 GestureDetector(
