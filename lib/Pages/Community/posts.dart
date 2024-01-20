@@ -18,7 +18,8 @@ final List<PostModel> posts = [
       createdByAvatar:
           "https://th.bing.com/th/id/OIP.leRaZskYpTKA55a0St0tZgHaJa?rs=1&pid=ImgDetMain",
       userId: "102392034923534",
-      username: "Mory Jone"),
+      username: "Mory Jone",
+      edited: false),
   PostModel(
       id: 2,
       subject: "Waste Reduction",
@@ -29,7 +30,8 @@ final List<PostModel> posts = [
       createdByAvatar:
           "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
       userId: "1234567890",
-      username: "John Doe"),
+      username: "John Doe",
+      edited: false),
   PostModel(
       id: 3,
       subject: "Tehnology",
@@ -39,7 +41,8 @@ final List<PostModel> posts = [
       createdByAvatar:
           "https://th.bing.com/th/id/OIP.leRaZskYpTKA55a0St0tZgHaJa?rs=1&pid=ImgDetMain",
       userId: "102392034923534",
-      username: "Mory Jone"),
+      username: "Mory Jone",
+      edited: false),
   PostModel(
       id: 4,
       subject: "Waste Reduction",
@@ -50,5 +53,6 @@ final List<PostModel> posts = [
       createdByAvatar:
           "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
       userId: "1234567890",
-      username: "John Doe"),
+      username: "John Doe",
+      edited: false),
 ];

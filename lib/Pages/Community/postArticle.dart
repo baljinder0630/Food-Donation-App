@@ -1,5 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
-
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +21,52 @@ class _PostArticleState extends State<PostArticle> {
   final _formKey = GlobalKey<FormState>();
   final _subjectController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _picker = ImagePicker();
+  bool _saveButtonClicked = false;
+  File? _imageFile;
 
-  uploadPost() async {
+  uploadPost() async {}
+
+  Future<void> _getImage(ImageSource imageSource) async {
+    final pickedFile =
+        await _picker.pickImage(source: imageSource, imageQuality: 50);
+    if (pickedFile != null) {
+      imagecrop(pickedFile);
+    }
+  }
+
+  void imagecrop(XFile BeforeCrop) async {
+    if (BeforeCrop != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: BeforeCrop.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Edit Image',
+            toolbarColor: Colors.teal,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+          ),
+          IOSUiSettings(
+            title: 'Edit Image',
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        setState(() {
+          _imageFile = File(croppedFile.path);
+          _saveButtonClicked = false;
+        });
+      }
+    }
+
+    log("Cropped Image Path: ${BeforeCrop.path}");
+  }
+
+  showSuccessDialog() {
     showGeneralDialog(
         context: context,
         transitionDuration: Duration(milliseconds: 300),
@@ -136,6 +183,55 @@ class _PostArticleState extends State<PostArticle> {
                 ],
               ),
             ));
+  }
+
+  showCameraOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.r),
+                child: const Text(
+                  'Choose an option',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.camera_alt, color: Colors.blue),
+                title: Text("Camera", style: TextStyle(color: Colors.blue)),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.photo, color: Colors.blue),
+                title: Text("Gallery", style: TextStyle(color: Colors.blue)),
+              ),
+              SizedBox(height: 20.h)
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -313,77 +409,162 @@ class _PostArticleState extends State<PostArticle> {
                       SizedBox(
                         height: 25.h,
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 29.w),
-                          child: GestureDetector(
-                            onTap: () async {
-                              context.navigateTo(CameraScreenRoute());
-                            },
-                            child: Container(
-                              width: 103.35.w,
-                              height: 127.40.h,
-                              decoration: ShapeDecoration(
-                                color: Color(0xFFFFFBFB),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                shadows: const [
-                                  BoxShadow(
-                                    color: Color(0x3F000000),
-                                    blurRadius: 5,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 45.50,
-                                    height: 45.50,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: ShapeDecoration(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                    ),
-                                    child: Icon(Icons.add_circle_rounded,
-                                        size: 45.5.r, color: Color(0xFF76A095)),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 29.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                showCameraOptions();
+                              },
+                              child: Container(
+                                width: 103.35.w,
+                                height: 127.40.h,
+                                decoration: ShapeDecoration(
+                                  color: Color(0xFFFFFBFB),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  SizedBox(height: 13.h),
-                                  Container(
-                                    width: 88.40.w,
-                                    child: Text(
-                                      'Upload Images',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFF76A095),
-                                        fontSize: 9.10.sp,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600,
-                                        height: 0,
-                                        letterSpacing: 0.18.sp,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: _saveButtonClicked &&
+                                              _imageFile == null
+                                          ? Colors.red
+                                          : Color(0x3F000000),
+                                      blurRadius: 5,
+                                      offset: Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 45.50,
+                                      height: 45.50,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: ShapeDecoration(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
                                       ),
+                                      child: Icon(Icons.add_circle_rounded,
+                                          size: 45.5.r,
+                                          color: Color(0xFF76A095)),
                                     ),
-                                  )
-                                ],
+                                    SizedBox(height: 13.h),
+                                    Container(
+                                      width: 88.40.w,
+                                      child: Text(
+                                        'Upload Images',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: _saveButtonClicked &&
+                                                  _imageFile == null
+                                              ? Colors.red
+                                              : Color(0xFF76A095),
+                                          fontSize: 9.10.sp,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          height: 0,
+                                          letterSpacing: 0.18.sp,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          _imageFile == null
+                              ? SizedBox()
+                              : Hero(
+                                  tag: 'PostImage',
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showGeneralDialog(
+                                        barrierDismissible: true,
+                                        barrierLabel: '',
+                                        context: context,
+                                        pageBuilder: (context, anim1, anim2) =>
+                                            BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                              sigmaX: 5.0, sigmaY: 5.0),
+                                          child: SimpleDialog(
+                                            title: Text(
+                                              'Preview',
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                            ),
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(16.0.r),
+                                                child: Hero(
+                                                  tag: 'PostImage',
+                                                  child:
+                                                      Image.file(_imageFile!),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 125.r,
+                                      height: 125.r,
+                                      margin: EdgeInsets.only(left: 29.w),
+                                      decoration: ShapeDecoration(
+                                        image: DecorationImage(
+                                          image: FileImage(_imageFile!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.r),
+                                        ),
+                                        shadows: const [
+                                          BoxShadow(
+                                            color: Color(0x3F000000),
+                                            blurRadius: 5,
+                                            offset: Offset(0, 0),
+                                            spreadRadius: 0,
+                                          )
+                                        ],
+                                      ),
+                                      // child: Container(
+                                      //   height:
+                                      //   child: Image.file(
+                                      //     _imageFile!,
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      // ),
+                                    ),
+                                  ),
+                                )
+                        ],
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 25.h,
-                ),
+                SizedBox(height: 25.h),
                 GestureDetector(
                   onTap: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (_imageFile == null) {
+                      setState(() {
+                        _saveButtonClicked = true;
+                      });
+                    }
+                    if (_formKey.currentState!.validate() &&
+                        _imageFile != null) {
                       // Process data.
                       await uploadPost();
                     }
