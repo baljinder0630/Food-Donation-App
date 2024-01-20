@@ -12,7 +12,20 @@
           "package_name": "com.example.food_donation_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "846637718415-aoq1877egte5mqs8jeqib2d7vtk2mu6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.food_donation_app",
+            "certificate_hash": "2d2533545ef6065db75e965428d892065d0bcc64"
+          }
+        },
+        {
+          "client_id": "846637718415-g8r3vi9i9u27imnpkp7hr00o8dt2c77k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDiRSHKJPn0xDl2ZMgIEfwVkiolzrAM9WI"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846637718415-g8r3vi9i9u27imnpkp7hr00o8dt2c77k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "846637718415-95le75f33as9untngnfvp3cfrdmvbfd5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foodDonationApp.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }
