@@ -46,6 +46,7 @@ dependencies:
   camera: any
   image_picker: any
   pinput: any
+  carousel_slider: ^4.2.1
 
 
 dev_dependencies:

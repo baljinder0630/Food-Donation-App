@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +19,124 @@ class _PostArticleState extends State<PostArticle> {
   final _subjectController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  uploadPost() async {}
+  uploadPost() async {
+    showGeneralDialog(
+        context: context,
+        transitionDuration: Duration(milliseconds: 300),
+        barrierDismissible: true,
+        barrierLabel: '',
+        transitionBuilder: (context, anim1, anim2, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(anim1),
+            child: child,
+          );
+        },
+        pageBuilder: (context, ani1, ani2) => BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: SimpleDialog(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                children: [
+                  Container(
+                    width: 378.w,
+                    padding: EdgeInsets.all(19.20.r),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFFEFEFE),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28.80.r),
+                      ),
+                      shadows: const [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 12,
+                          offset: Offset(1.20, 1.20),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Posted Successfully',
+                          style: TextStyle(
+                            color: Color(0xFF201F24),
+                            fontSize: 19.20.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w600,
+                            height: 0,
+                            letterSpacing: 0.38.sp,
+                          ),
+                        ),
+                        SizedBox(height: 19.20.h),
+                        Image.asset(
+                          "lib/assets/Community/PostSuccessfully.png",
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(height: 19.20.h),
+                        Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'THANKYOU',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color(0xFF5272FC),
+                                  fontSize: 19.20.sp,
+                                  fontStyle: FontStyle.italic,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w800,
+                                  height: 0,
+                                  letterSpacing: 4.03.sp,
+                                ),
+                              ),
+                              SizedBox(height: 9.60.h),
+                              SizedBox(
+                                width: 323.52.w,
+                                child: Text(
+                                  '"HOPE IS LIKE A FLAME; IT CAN NEVER BE EXTINGUISHED, EVEN IN THE DARKEST OF TIMES." WE HOPE YOU GET A BETTER SUPPORT',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Color(0xFF201F24),
+                                    fontSize: 13.44.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
+                                    letterSpacing: 0.54.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 19.20.h),
+                        Text(
+                          'further Notifications Will be Updated ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF201F24),
+                            fontSize: 13.44.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                            letterSpacing: 0.54.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {

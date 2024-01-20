@@ -11,17 +11,6 @@ Use up your perishables first: Fruits, vegetables, and dairy products are the mo
 final List<PostModel> posts = [
   PostModel(
       id: 1,
-      subject: "Waste Reduction for our Environment, Health and Economy",
-      description: desc1,
-      imgUrl:
-          "https://th.bing.com/th?id=OIP.EXTe3QUpYrIFEXXLphywyQHaE8&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
-      createdTime: DateTime.parse("2023-09-01 20:18:04"),
-      createdByAvatar:
-          "https://th.bing.com/th/id/OIP.j8yd8dJ5215WbgQ0NsLzuAHaNK?w=2592&h=4608&rs=1&pid=ImgDetMain",
-      userId: "1234567890",
-      username: "John Doe"),
-  PostModel(
-      id: 2,
       subject: "Tehnology",
       description: "How Technology is Helping to Reduce Food Waste",
       imgUrl: "https://wallpaperaccess.com/full/266471.jpg",
@@ -31,7 +20,7 @@ final List<PostModel> posts = [
       userId: "102392034923534",
       username: "Mory Jone"),
   PostModel(
-      id: 1,
+      id: 2,
       subject: "Waste Reduction",
       description: desc1,
       imgUrl:
@@ -42,7 +31,7 @@ final List<PostModel> posts = [
       userId: "1234567890",
       username: "John Doe"),
   PostModel(
-      id: 2,
+      id: 3,
       subject: "Tehnology",
       description: "How Technology is Helping to Reduce Food Waste",
       imgUrl: "https://wallpaperaccess.com/full/266471.jpg",
@@ -52,7 +41,7 @@ final List<PostModel> posts = [
       userId: "102392034923534",
       username: "Mory Jone"),
   PostModel(
-      id: 1,
+      id: 4,
       subject: "Waste Reduction",
       description: desc1,
       imgUrl:
