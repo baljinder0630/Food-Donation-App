@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../constants/constants.dart';
+import 'donationDescription.dart';
 
 class DonationCard extends StatelessWidget {
   const DonationCard({super.key});
@@ -204,10 +205,16 @@ class DonationCard extends StatelessWidget {
                     elevation: 4.0,
                     color: blue1, // Set the elevation as desired
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DonationDescription()),
+                        );
+                      },
                       child: Center(
                         child: Text(
-                          "Donate Now",
+                          "Know More",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,

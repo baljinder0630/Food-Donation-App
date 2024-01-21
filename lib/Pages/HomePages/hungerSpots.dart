@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/constants.dart';
 
@@ -17,8 +18,8 @@ class HungerSpot extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: purple3, borderRadius: BorderRadius.circular(12)),
-      height: 320,
-      width: 300,
+      height: 350.h,
+      width: 300.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +59,7 @@ class HungerSpot extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
@@ -67,14 +68,14 @@ class HungerSpot extends StatelessWidget {
                     child: Align(
                       widthFactor: 0.7,
                       child: CircleAvatar(
-                        radius: 65,
+                        radius: 65.r,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
-                            radius: 60,
+                            radius: 60.r,
                             backgroundColor: purple1,
                             child: Image.asset(
                               "lib/assets/icons/ngo.png",
-                              height: 60,
+                              height: 60.h,
                             )),
                       ),
                     ),
@@ -84,9 +85,9 @@ class HungerSpot extends StatelessWidget {
           OutlinedButton(
             onPressed: () {},
             style: OutlinedButton.styleFrom(backgroundColor: null),
-            child: const SizedBox(
-              width: 230,
-              child: Center(
+            child: SizedBox(
+              width: 230.w,
+              child: const Center(
                 child: Text(
                   "View More",
                   style: TextStyle(
