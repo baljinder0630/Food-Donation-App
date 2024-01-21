@@ -26,6 +26,8 @@ import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
     as _i14;
 import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
     as _i20; 
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+    as _i21;     
 import 'package:food_donation_app/Pages/homePage.dart' as _i9;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i10;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i12;
@@ -136,6 +138,12 @@ abstract class $AppRouter extends _i17.RootStackRouter {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i20.RaiseRequest2(),
+      );
+    },
+    SuccessRequestRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i21.SuccessPage(),
       );
     },
     SignUpPageRoute.name: (routeData) {
@@ -422,6 +430,20 @@ class RaiseRequestRoute2 extends _i17.PageRouteInfo<void> {
         );
 
   static const String name = 'RaiseRequestRoute2';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i21.SuccessRequestRoute]
+class SuccessRequestRoute extends _i17.PageRouteInfo<void> {
+  const SuccessRequestRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          SuccessRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SuccessRequestRoute';
 
   static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }
