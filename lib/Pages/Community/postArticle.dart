@@ -1,6 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:auto_route/auto_route.dart';
@@ -8,16 +14,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:uuid/uuid.dart';
 
 @RoutePage()
-class PostArticle extends StatefulWidget {
+class PostArticle extends ConsumerStatefulWidget {
   const PostArticle({super.key});
 
   @override
-  State<PostArticle> createState() => _PostArticleState();
+  ConsumerState<PostArticle> createState() => _PostArticleState();
 }
 
-class _PostArticleState extends State<PostArticle> {
+class _PostArticleState extends ConsumerState<PostArticle> {
   final _formKey = GlobalKey<FormState>();
   final _subjectController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -25,7 +32,28 @@ class _PostArticleState extends State<PostArticle> {
   bool _saveButtonClicked = false;
   File? _imageFile;
 
-  uploadPost() async {}
+  uploadPost() async {
+    PostModel post = PostModel(
+      id: Uuid().v4(),
+      subject: _subjectController.text,
+      description: _descriptionController.text,
+      imgUrl: "",
+      userId: ref.read(authStateProvider).user!.uid,
+      username: ref.read(authStateProvider).user!.displayName,
+      createdTime: Timestamp.fromDate(DateTime.now()),
+      createdByAvatar: ref.read(authStateProvider).user!.photoURL,
+    );
+    if (await ref
+        .watch(communityProvider.notifier)
+        .uploadPost(post, _imageFile)) {
+      showSuccessDialog();
+      setState(() {
+        _subjectController.text = "";
+        _descriptionController.text = "";
+        _imageFile = null;
+      });
+    }
+  }
 
   Future<void> _getImage(ImageSource imageSource) async {
     final pickedFile =
@@ -39,6 +67,7 @@ class _PostArticleState extends State<PostArticle> {
     if (BeforeCrop != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: BeforeCrop.path,
+        compressQuality: 50,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
         ],
@@ -81,108 +110,119 @@ class _PostArticleState extends State<PostArticle> {
             child: child,
           );
         },
-        pageBuilder: (context, ani1, ani2) => BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: SimpleDialog(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                children: [
-                  Container(
-                    width: 378.w,
-                    padding: EdgeInsets.all(19.20.r),
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFFEFEFE),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28.80.r),
-                      ),
-                      shadows: const [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 12,
-                          offset: Offset(1.20, 1.20),
-                          spreadRadius: 0,
-                        )
-                      ],
+        pageBuilder: (context, ani1, ani2) {
+          int counter = 3;
+          Timer.periodic(Duration(seconds: 1), (Timer t) {
+            if (counter < 1) {
+              Navigator.of(context).pop();
+              t.cancel();
+            } else {
+              counter--;
+            }
+          });
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+            child: SimpleDialog(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              children: [
+                Container(
+                  width: 378.w,
+                  padding: EdgeInsets.all(19.20.r),
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFFEFEFE),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28.80.r),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Posted Successfully',
-                          style: TextStyle(
-                            color: Color(0xFF201F24),
-                            fontSize: 19.20.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                            letterSpacing: 0.38.sp,
-                          ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 12,
+                        offset: Offset(1.20, 1.20),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Posted Successfully',
+                        style: TextStyle(
+                          color: Color(0xFF201F24),
+                          fontSize: 19.20.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                          letterSpacing: 0.38.sp,
                         ),
-                        SizedBox(height: 19.20.h),
-                        Image.asset(
-                          "lib/assets/Community/PostSuccessfully.png",
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(height: 19.20.h),
-                        Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'THANKYOU',
+                      ),
+                      SizedBox(height: 19.20.h),
+                      Image.asset(
+                        "lib/assets/Community/PostSuccessfully.png",
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: 19.20.h),
+                      Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'THANKYOU',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF5272FC),
+                                fontSize: 19.20.sp,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w800,
+                                height: 0,
+                                letterSpacing: 4.03.sp,
+                              ),
+                            ),
+                            SizedBox(height: 9.60.h),
+                            SizedBox(
+                              width: 323.52.w,
+                              child: Text(
+                                '"HOPE IS LIKE A FLAME; IT CAN NEVER BE EXTINGUISHED, EVEN IN THE DARKEST OF TIMES." WE HOPE YOU GET A BETTER SUPPORT',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color(0xFF5272FC),
-                                  fontSize: 19.20.sp,
-                                  fontStyle: FontStyle.italic,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF201F24),
+                                  fontSize: 13.44.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w400,
                                   height: 0,
-                                  letterSpacing: 4.03.sp,
+                                  letterSpacing: 0.54.sp,
                                 ),
                               ),
-                              SizedBox(height: 9.60.h),
-                              SizedBox(
-                                width: 323.52.w,
-                                child: Text(
-                                  '"HOPE IS LIKE A FLAME; IT CAN NEVER BE EXTINGUISHED, EVEN IN THE DARKEST OF TIMES." WE HOPE YOU GET A BETTER SUPPORT',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Color(0xFF201F24),
-                                    fontSize: 13.44.sp,
-                                    fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
-                                    letterSpacing: 0.54.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 19.20.h),
-                        Text(
-                          'further Notifications Will be Updated ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF201F24),
-                            fontSize: 13.44.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w400,
-                            height: 0,
-                            letterSpacing: 0.54.sp,
-                          ),
+                      ),
+                      SizedBox(height: 19.20.h),
+                      Text(
+                        'further Notifications Will be Updated ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF201F24),
+                          fontSize: 13.44.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                          letterSpacing: 0.54.sp,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ));
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   showCameraOptions() {
@@ -234,8 +274,50 @@ class _PostArticleState extends State<PostArticle> {
     );
   }
 
+  imagePreview() {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      pageBuilder: (context, anim1, anim2) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        child: SimpleDialog(
+          title: Text(
+            'Preview',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.0.r),
+              child: Hero(
+                tag: 'PostImage',
+                child: Image.file(_imageFile!),
+              ),
+            ),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    _imageFile = null;
+                  });
+                  context.popRoute();
+                },
+                child: Text("Remove"))
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final uploadArticleStatus =
+        ref.watch(communityProvider).uploadArticleStatus;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -294,12 +376,13 @@ class _PostArticleState extends State<PostArticle> {
                     onEditingComplete: () {
                       FocusScope.of(context).nextFocus();
                     },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == "" || value == null) {
                         return 'Please enter some text';
-                      } else if (value.length < 10) {
+                      } else if (value.trim().length < 10) {
                         return 'Please enter atleast 10 characters';
-                      } else if (value.length == 200) {
+                      } else if (value.trim().length == 200) {
                         return 'Maximum limit reached';
                       }
                       return null;
@@ -359,17 +442,18 @@ class _PostArticleState extends State<PostArticle> {
                         child: TextFormField(
                           controller: _descriptionController,
                           maxLength: 5000,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == "" || value == null) {
                               return 'Please enter some text';
-                            } else if (value.length < 200) {
+                            } else if (value.trim().length < 200) {
                               return 'Please enter atleast 200 characters';
-                            } else if (value.length == 5000) {
+                            } else if (value.trim().length == 5000) {
                               return 'Maximum limit reached';
                             }
                             return null;
                           },
-                          maxLines: 15.h.toInt(),
+                          maxLines: 16.h.toInt(),
                           decoration: InputDecoration(
                             counter: SizedBox.shrink(),
                             contentPadding: EdgeInsets.all(10.r),
@@ -484,39 +568,7 @@ class _PostArticleState extends State<PostArticle> {
                                   tag: 'PostImage',
                                   child: GestureDetector(
                                     onTap: () {
-                                      showGeneralDialog(
-                                        barrierDismissible: true,
-                                        barrierLabel: '',
-                                        context: context,
-                                        pageBuilder: (context, anim1, anim2) =>
-                                            BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 5.0, sigmaY: 5.0),
-                                          child: SimpleDialog(
-                                            title: Text(
-                                              'Preview',
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                            ),
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.all(16.0.r),
-                                                child: Hero(
-                                                  tag: 'PostImage',
-                                                  child:
-                                                      Image.file(_imageFile!),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
+                                      imagePreview();
                                     },
                                     child: Container(
                                       width: 125.r,
@@ -564,7 +616,8 @@ class _PostArticleState extends State<PostArticle> {
                       });
                     }
                     if (_formKey.currentState!.validate() &&
-                        _imageFile != null) {
+                        _imageFile != null &&
+                        uploadArticleStatus != UploadArticleStatus.processing) {
                       // Process data.
                       await uploadPost();
                     }
@@ -575,30 +628,37 @@ class _PostArticleState extends State<PostArticle> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 27.w, vertical: 6.h),
                     decoration: ShapeDecoration(
-                      color: Color(0xFF5272FC),
+                      color:
+                          uploadArticleStatus == UploadArticleStatus.processing
+                              ? Color.fromARGB(255, 106, 133, 252)
+                              : Color(0xFF5272FC),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),
                       ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Save',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFFF9F8FD),
-                            fontSize: 28.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                            letterSpacing: 1.12.sp,
+                    child: uploadArticleStatus == UploadArticleStatus.processing
+                        ? Center(
+                            child: SizedBox(
+                              width: 20.r,
+                              height: 20.r,
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            'Save',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFFF9F8FD),
+                              fontSize: 28.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w600,
+                              height: 0,
+                              letterSpacing: 1.12.sp,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
                   ),
                 )
               ],

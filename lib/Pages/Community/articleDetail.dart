@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +19,17 @@ class ArticleDetail extends StatefulWidget {
 class _ArticleDetailState extends State<ArticleDetail> {
   @override
   Widget build(BuildContext context) {
+    var nameParts = widget.article.username.split(" ");
+    var initials = "";
+
+    if (nameParts.length > 0 && nameParts[0].isNotEmpty) {
+      initials += nameParts[0].substring(0, 1).toUpperCase();
+    }
+
+    if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
+      initials += nameParts[1].substring(0, 1).toUpperCase();
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -90,12 +103,30 @@ class _ArticleDetailState extends State<ArticleDetail> {
                               Container(
                                 width: 30.w,
                                 height: 30.h,
+                                child: widget.article.createdByAvatar == null
+                                    ? Center(
+                                        child: Text(
+                                          initials,
+                                          style: TextStyle(
+                                            color: Color(0xFFF9F8FD),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Outfit',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                            letterSpacing: 0.56.sp,
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: ClipOval(
+                                          child: Image.network(
+                                            widget.article.createdByAvatar
+                                                .toString(),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
                                 decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        widget.article.createdByAvatar),
-                                    fit: BoxFit.cover,
-                                  ),
                                   shape: OvalBorder(
                                     side: BorderSide(
                                         width: 2.w, color: Color(0xFFDAACAC)),
@@ -142,7 +173,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                timeAgo(widget.article.createdTime),
+                                timeAgo(widget.article.createdTime.toDate()),
                                 style: TextStyle(
                                   color: Color(0xFF8E7474),
                                   fontSize: 14.sp,
