@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
 class RaiseRequest extends StatefulWidget {
@@ -13,6 +15,7 @@ class RaiseRequest extends StatefulWidget {
 class _RaiseDonationReq extends State<RaiseRequest> {
   final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
+  final _ngoController = TextEditingController();
 
   @override
   void dispose() {
@@ -35,8 +38,12 @@ class _RaiseDonationReq extends State<RaiseRequest> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTextFormField(
-                  label: "Name of Trust or NGO's",
+                Center(
+                  child: CustomTextField(
+                    label: "Name of Trust or NGO's",
+                    controller: _ngoController,
+                    maxLength: 200,
+                  ),
                 ),
                 SizedBox(height: 16),
                 _buildDropdownFormField(
@@ -91,9 +98,8 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Processing Data')),
-                      );
+                      
+                      context.pushRoute(const RaiseRequestRoute2());
                     }
                   },
                   child: Text(
@@ -191,6 +197,93 @@ class _RaiseDonationReq extends State<RaiseRequest> {
           );
         }).toList(),
         onChanged: (value) {},
+      ),
+    );
+  }
+}
+
+
+class CustomTextField extends StatelessWidget {
+  final String label;
+  final TextEditingController controller;
+  final int maxLength;
+  final ValueChanged<String>? onEditingComplete;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final int maxLines;
+  final VoidCallback? onTap;
+
+  const CustomTextField({
+    Key? key,
+    required this.label,
+    required this.controller,
+    this.maxLength = 200,
+    this.onEditingComplete,
+    this.validator,
+    this.keyboardType,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.maxLines = 1,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 337.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30.r),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x3F000000),
+            blurRadius: 5,
+            offset: Offset(0, 0),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: TextFormField(
+        controller: controller,
+        maxLength: maxLength,
+        onEditingComplete: () {
+          onEditingComplete?.call(controller.text);
+          FocusScope.of(context).nextFocus();
+        },
+        validator: validator,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        maxLines: maxLines,
+        onTap: onTap,
+        decoration: InputDecoration(
+          counter: SizedBox.shrink(),
+          contentPadding: EdgeInsets.all(10.r),
+          filled: true,
+          fillColor: Color(0xFFFEFEFE),
+          hintText: label,
+          hintStyle: TextStyle(
+            color: Color(0xFF201F24),
+            fontSize: 14.sp,
+            fontFamily: 'Outfit',
+            fontWeight: FontWeight.w400,
+            height: 0,
+            letterSpacing: 1.40.sp,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+          suffixIcon: suffixIcon,
+        ),
       ),
     );
   }
