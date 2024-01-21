@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart';
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -15,9 +16,7 @@ class HomePage extends StatelessWidget {
     '14',
   ];
 
-  int _currentPage = 0;
-
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +34,14 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: 43,
+                          radius: 43.r,
                           backgroundColor: purple4,
                           child: CircleAvatar(
-                              radius: 40,
+                              radius: 40.r,
                               backgroundColor: purple1,
                               child: Image.asset(
                                 "lib/assets/icons/user.png",
-                                height: 60,
+                                height: 60.h,
                               )),
                         ),
                         // Profile Picture of user is shown over here, default is user.png, which acts as icon.
@@ -98,7 +97,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: double.infinity,
-                    height: 200,
+                    height: 200.h,
                     decoration: BoxDecoration(
                         color: purple1,
                         borderRadius: BorderRadius.circular(15)),
@@ -111,10 +110,10 @@ class HomePage extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
                     padding: const EdgeInsets.all(15),
                     width: double.infinity,
-                    height: 60,
+                    height: 70.h,
                     decoration: BoxDecoration(
                         // color: purple1,
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(15.r)),
                     child: const Text(
                       "Explore",
                       style:
@@ -133,10 +132,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.all(10),
-                    height: 90,
-                    // decoration: BoxDecoration(
-                    //     color: purple2,
-                    //     borderRadius: BorderRadius.circular(15)),
+                    height: 90.h,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,9 +147,9 @@ class HomePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SizedBox(
-                              width: 20,
-                              child: Icon(Icons.place),
+                            SizedBox(
+                              width: 20.w,
+                              child: const Icon(Icons.place),
                             ),
                             Expanded(
                               child: Container(
@@ -176,8 +172,8 @@ class HomePage extends StatelessWidget {
                             //  Location is displayed, from here you can change the location. and get recommendation accordingly.
 
                             SizedBox(
-                              width: 120,
-                              height: 30,
+                              width: 120.w,
+                              height: 30.h,
                               child: OutlinedButton(
                                 onPressed: () {
                                   context
@@ -207,7 +203,7 @@ class HomePage extends StatelessWidget {
                   // Here hungerSpot text with view All button ends..
 
                   SizedBox(
-                    height: 320,
+                    height: 380.h,
                     child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         itemCount: postId.length,
@@ -222,7 +218,7 @@ class HomePage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     padding: const EdgeInsets.all(10),
-                    height: 90,
+                    height: 90.h,
                     // decoration: BoxDecoration(
                     //     color: purple2,
                     //     borderRadius: BorderRadius.circular(15)),
@@ -240,9 +236,9 @@ class HomePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SizedBox(
-                              width: 20,
-                              child: Icon(Icons.place),
+                            SizedBox(
+                              width: 20.w,
+                              child: const Icon(Icons.place),
                             ),
                             Expanded(
                               child: Container(
@@ -265,8 +261,8 @@ class HomePage extends StatelessWidget {
                             //  Location is displayed, from here you can change the location. and get recommendation accordingly.
 
                             SizedBox(
-                              width: 120,
-                              height: 30,
+                              width: 120.w,
+                              height: 30.h,
                               child: OutlinedButton(
                                 onPressed: () {},
                                 style: OutlinedButton.styleFrom(
@@ -293,7 +289,7 @@ class HomePage extends StatelessWidget {
                   // Here FoodPickup request text and viewAll button ends.
 
                   SizedBox(
-                    height: 380,
+                    height: 450.h,
                     child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         itemCount: postId.length,
@@ -347,7 +343,7 @@ Widget mainOptions(BuildContext context) {
         return Container(
           decoration: BoxDecoration(
               color: purple1, borderRadius: BorderRadius.circular(12.0)),
-          height: 200,
+          height: 200.h,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +381,9 @@ Widget mainOptions(BuildContext context) {
                       bottomRight: Radius.circular(12),
                     ),
                     child: Image.asset("${gridMap.elementAt(index)['image']}",
-                        height: 70, width: double.infinity, fit: BoxFit.cover),
+                        height: 70.h,
+                        width: double.infinity,
+                        fit: BoxFit.cover),
                   ),
                 ],
               ),
