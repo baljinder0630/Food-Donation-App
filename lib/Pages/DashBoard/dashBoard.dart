@@ -36,6 +36,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
             ElevatedButton(
               onPressed: () {
                 // Handle photo upload and edit
+                context.navigateTo(CameraScreenRoute());
               },
               child: Text('Upload / Edit Photo'),
             ),
@@ -67,7 +68,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 DashboardButton(
                   text: 'Logout',
                   onPressed: () {
-                    // Handle Logout button press
+                    context.pushRoute(const SignUpPageRoute());
                   },
                 ),
                 SizedBox(height: 10.0),
