@@ -26,12 +26,15 @@ import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
     as _i14;
 import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
     as _i20; 
+    
 import 'package:food_donation_app/Pages/homePage.dart' as _i9;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i10;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i12;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i11;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i15;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i16;
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+    as _i21; 
 
 abstract class $AppRouter extends _i17.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -138,6 +141,7 @@ abstract class $AppRouter extends _i17.RootStackRouter {
         child: const _i20.RaiseRequest2(),
       );
     },
+    
     SignUpPageRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -148,6 +152,13 @@ abstract class $AppRouter extends _i17.RootStackRouter {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i16.SplashScreen(),
+      );
+    },
+
+    SuccessRequestRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i21.SuccessPage(),
       );
     },
   };
@@ -426,6 +437,8 @@ class RaiseRequestRoute2 extends _i17.PageRouteInfo<void> {
   static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }
 
+
+
 /// generated route for
 /// [_i15.SignUpPage]
 class SignUpPageRoute extends _i17.PageRouteInfo<void> {
@@ -450,6 +463,20 @@ class SplashScreenRoute extends _i17.PageRouteInfo<void> {
         );
 
   static const String name = 'SplashScreenRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i21.SuccessRequestRoute]
+class SuccessRequestRoute extends _i17.PageRouteInfo<void> {
+  const SuccessRequestRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          SuccessRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SuccessRequestRoute';
 
   static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }

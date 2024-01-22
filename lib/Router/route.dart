@@ -57,5 +57,10 @@ class AppRouter extends $AppRouter {
           page: CameraScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
+        CustomRoute(
+          page: SuccessRequestRoute.page,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+        ),
+        
       ];
 }
