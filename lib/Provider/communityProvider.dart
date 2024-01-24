@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:uuid/uuid.dart';
 
 final communityProvider = StateNotifierProvider<Community, CommunityState>(
@@ -19,6 +21,8 @@ class Community extends StateNotifier<CommunityState> {
         super(CommunityState(
           posts: [],
           total: 0,
+          myPosts: [],
+          bookMarkedPosts: [],
           scrollStatus: ScrollStatus.initial,
           postStatus: RecommendedPostStatus.initial,
           featuredPostStatus: FeaturedPostStatus.initial,
@@ -100,6 +104,91 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
+  Future<void> getMyPosts() async {
+    try {
+      final snapshot = await firestore
+          .collection("articles")
+          .where("userId", isEqualTo: ref.watch(authStateProvider).user!.uid)
+          .get();
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+      state = state.copyWith(myPosts: posts);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  getBookmarkedPosts(context) async {
+    try {
+      log(ref.watch(authStateProvider).user!.uid);
+
+      final bookmarks = await firestore
+          .collection('users')
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .get()
+          .then((value) {
+        return value.data()!['bookmarked'];
+      });
+      log(bookmarks.toString());
+      final snapshot = await firestore
+          .collection("articles")
+          .where("id", whereIn: bookmarks)
+          .get();
+
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+      // log(posts.toString());
+      state = state.copyWith(bookMarkedPosts: posts);
+      log(state.bookMarkedPosts.toString());
+    } catch (e) {
+      showSnackBar("Failed to add in Bookmark", context, Colors.red);
+      log(e.toString());
+    }
+  }
+
+  updatePost(PostModel post, context) {
+    try {
+      firestore
+          .collection("articles")
+          .where("id", isEqualTo: post.id)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          doc.reference.update(post.toMap());
+        });
+        showSnackBar("Updated Successfully", context, Colors.green);
+      });
+
+      log("Article updated");
+    } catch (e) {
+      showSnackBar("Failed to update", context, Colors.red);
+
+      log(e.toString());
+    }
+  }
+
+  addToBookMark(uid, id, context) async {
+    try {
+      await firestore.collection('users').doc(uid).update({
+        'bookmarked': FieldValue.arrayUnion([id])
+      }).whenComplete(
+          () => showSnackBar("Added to Bookmark", context, Colors.green));
+    } catch (e) {
+      showSnackBar("Failed to add in Bookmark", context, Colors.red);
+      log(e.toString());
+    }
+  }
+
   articleSearchSuggestion(String val) async {
     log("Fetching suggestion for $val");
     if (val.length > 1)
@@ -121,10 +210,21 @@ class Community extends StateNotifier<CommunityState> {
         print(e);
       }
   }
+
+  showSnackBar(message, context, color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+      ),
+    );
+  }
 }
 
 class CommunityState {
   List<PostModel>? posts;
+  List<PostModel>? myPosts;
+  List<PostModel>? bookMarkedPosts;
   List<String>? articleSearchSuggestions;
   int total;
   ScrollStatus? scrollStatus;
@@ -135,6 +235,8 @@ class CommunityState {
   CommunityState({
     this.posts,
     this.total = 0,
+    this.myPosts,
+    this.bookMarkedPosts,
     this.articleSearchSuggestions,
     this.scrollStatus,
     this.postStatus,
@@ -144,6 +246,8 @@ class CommunityState {
 
   CommunityState copyWith({
     List<PostModel>? posts,
+    List<PostModel>? myPosts,
+    List<PostModel>? bookMarkedPosts,
     List<String>? articleSearchSuggestions,
     int? total,
     ScrollStatus? scrollStatus,
@@ -153,6 +257,8 @@ class CommunityState {
   }) {
     return CommunityState(
       posts: posts ?? this.posts,
+      myPosts: myPosts ?? this.myPosts,
+      bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
       total: total ?? this.total,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,

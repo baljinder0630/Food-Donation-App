@@ -1,19 +1,196 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:vibration/vibration.dart';
 
 @RoutePage()
-class ArticleHistory extends StatefulWidget {
+class ArticleHistory extends ConsumerStatefulWidget {
   const ArticleHistory({super.key});
 
   @override
-  State<ArticleHistory> createState() => _ArticleHistoryState();
+  ConsumerState<ArticleHistory> createState() => _ArticleHistoryState();
 }
 
-class _ArticleHistoryState extends State<ArticleHistory> {
+class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
   @override
+  int selected = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(communityProvider.notifier).getMyPosts();
+      ref.read(communityProvider.notifier).getBookmarkedPosts(context);
+    });
+  }
+
   Widget build(BuildContext context) {
+    final myPosts = ref.watch(communityProvider).myPosts;
+    final myBookmarkedPosts = ref.watch(communityProvider).bookMarkedPosts;
+
+    Widget HistoryTile(BuildContext context, PostModel post) {
+      return GestureDetector(
+        onLongPressStart: (details) async {
+          Vibration.vibrate(duration: 10);
+          showMenu(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+              color: Colors.white,
+              context: context,
+              position: RelativeRect.fromLTRB(
+                details.globalPosition.dx,
+                details.globalPosition.dy,
+                details.globalPosition.dx, // Right
+                details.globalPosition.dy, // Bottom
+              ),
+              items: [
+                PopupMenuItem(
+                  padding: EdgeInsets.zero,
+                  child: Center(
+                    child: Text(
+                      'Edit',
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  padding: EdgeInsets.zero,
+                  child: Center(
+                      child: Text(
+                    'Delete',
+                  )),
+                ),
+              ]);
+        },
+        child: Container(
+          width: 367.w,
+          height: 338.h,
+          decoration: ShapeDecoration(
+            // color: Colors.redAccent,
+            color: Color(0xFFFEFEFE),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            shadows: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 9.60,
+                offset: Offset(0, 0),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 320.w,
+                height: 180.h,
+                decoration: ShapeDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(post.imgUrl),
+                    fit: BoxFit.cover,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                ),
+              ),
+              SizedBox(height: 14.h),
+              Container(
+                height: 101.h,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 22.h,
+                          width: 289.20.w,
+                          child: Text(
+                            toCamelCase(post.subject),
+                            style: TextStyle(
+                              color: Color(0xFFBFAAAA),
+                              fontSize: 16.80.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.67.sp,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        SizedBox(
+                          width: 289.20.w,
+                          height: 40.h,
+                          child: Text(
+                            post.description,
+                            style: TextStyle(
+                              color: Color(0xFF201F24),
+                              fontSize: 16.80.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.67.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 4.80.w,
+                          height: 4.80.h,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFFD9D9D9),
+                            shape: OvalBorder(),
+                          ),
+                        ),
+                        SizedBox(width: 4.80.w),
+                        Text(
+                          timeAgo(post.createdTime.toDate()),
+                          style: TextStyle(
+                            color: Color(0xFF8E7474),
+                            fontSize: 14.40.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w300,
+                            height: 0,
+                            letterSpacing: 0.58.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -61,34 +238,39 @@ class _ArticleHistoryState extends State<ArticleHistory> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 149.w,
-                        height: 43.h,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 10.h),
-                        decoration: ShapeDecoration(
-                          color: Color(0xFF77C19D),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.r),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selected = 0;
+                          });
+                        },
+                        child: Container(
+                          width: 149.w,
+                          height: 43.h,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          decoration: ShapeDecoration(
+                            color: selected == 0
+                                ? Color(0xFF77C19D)
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 8,
+                                offset: Offset(0, 0),
+                                spreadRadius: 0,
+                              )
+                            ],
                           ),
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 8,
-                              offset: Offset(0, 0),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
+                          child: Center(
+                            child: Text(
                               'History',
                               style: TextStyle(
-                                color: Color(0xFFFEFEFE),
+                                color:
+                                    selected == 0 ? Colors.white : Colors.black,
                                 fontSize: 18.sp,
                                 fontFamily: 'Outfit',
                                 fontWeight: FontWeight.w400,
@@ -96,37 +278,42 @@ class _ArticleHistoryState extends State<ArticleHistory> {
                                 letterSpacing: 0.72.sp,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                      Container(
-                        width: 149.w,
-                        height: 43.h,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 10.h),
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selected = 1;
+                          });
+                        },
+                        child: Container(
+                          width: 149.w,
+                          height: 43.h,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          decoration: ShapeDecoration(
+                            color: selected == 1
+                                ? Color(0xFF77C19D)
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 8,
+                                offset: Offset(0, 0),
+                                spreadRadius: 0,
+                              )
+                            ],
                           ),
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 8,
-                              offset: Offset(0, 0),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
+                          child: Center(
+                            child: Text(
                               'Bookmarked',
                               style: TextStyle(
-                                color: Color(0xFF201F24),
+                                color:
+                                    selected == 1 ? Colors.white : Colors.black,
                                 fontSize: 18.sp,
                                 fontFamily: 'Outfit',
                                 fontWeight: FontWeight.w400,
@@ -134,7 +321,7 @@ class _ArticleHistoryState extends State<ArticleHistory> {
                                 letterSpacing: 0.72.sp,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       )
                     ],
@@ -143,152 +330,61 @@ class _ArticleHistoryState extends State<ArticleHistory> {
                 SizedBox(
                   height: 20.h,
                 ),
+                if (myPosts!.length <= 0 && selected == 0)
+                  Center(
+                    child: Text(
+                      'No Post Found',
+                      style: TextStyle(
+                        color: Color(0xFF201F24),
+                        fontSize: 16.sp,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                        letterSpacing: 0.64.sp,
+                      ),
+                    ),
+                  ),
+                if (myBookmarkedPosts!.length <= 0 && selected == 1)
+                  Center(
+                    child: Text(
+                      'No Post Bookmarked',
+                      style: TextStyle(
+                        color: Color(0xFF201F24),
+                        fontSize: 16.sp,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                        letterSpacing: 0.64.sp,
+                      ),
+                    ),
+                  ),
                 ListView.builder(
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 4,
+                    itemCount: selected == 0
+                        ? myPosts!.length
+                        : myBookmarkedPosts!.length,
                     itemBuilder: (context, index) {
-                      return HistoryTile();
+                      return Container(
+                          margin: EdgeInsets.only(
+                              left: 29.w, right: 33.w, bottom: 24.h),
+                          child: GestureDetector(
+                              onTap: () {
+                                context.pushRoute(ArticleDetailRoute(
+                                    article: selected == 0
+                                        ? myPosts[index]
+                                        : myBookmarkedPosts[index]));
+                              },
+                              child: HistoryTile(
+                                  context,
+                                  selected == 0
+                                      ? myPosts[index]
+                                      : myBookmarkedPosts[index])));
                     })
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-}
-
-class HistoryTile extends StatelessWidget {
-  const HistoryTile({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 367.w,
-      height: 338.h,
-      margin: EdgeInsets.only(left: 29.w, right: 33.w, bottom: 24.h),
-      decoration: ShapeDecoration(
-        // color: Colors.redAccent,
-        color: Color(0xFFFEFEFE),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        shadows: [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 9.60,
-            offset: Offset(0, 0),
-            spreadRadius: 0,
-          )
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 320.w,
-            height: 180.h,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage("https://via.placeholder.com/330x189"),
-                fit: BoxFit.fill,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.r),
-              ),
-            ),
-          ),
-          SizedBox(height: 14.h),
-          Container(
-            height: 101.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'WASTE REDUCTION',
-                        style: TextStyle(
-                          color: Color(0xFFBFAAAA),
-                          fontSize: 16.80.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                          letterSpacing: 0.67.sp,
-                        ),
-                      ),
-                      SizedBox(height: 6.h),
-                      SizedBox(
-                        width: 289.20.w,
-                        child: Text(
-                          '10 Easy Ways to Reduce Food Waste in Your Home',
-                          style: TextStyle(
-                            color: Color(0xFF201F24),
-                            fontSize: 16.80.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                            letterSpacing: 0.67.sp,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                Container(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 4.80.w,
-                              height: 4.80.h,
-                              decoration: ShapeDecoration(
-                                color: Color(0xFFD9D9D9),
-                                shape: OvalBorder(),
-                              ),
-                            ),
-                            SizedBox(width: 4.80.w),
-                            Text(
-                              'Posted on 15/04/2023',
-                              style: TextStyle(
-                                color: Color(0xFF8E7474),
-                                fontSize: 14.40.sp,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w300,
-                                height: 0,
-                                letterSpacing: 0.58.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

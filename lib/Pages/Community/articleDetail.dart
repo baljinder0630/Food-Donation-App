@@ -2,23 +2,33 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 
 @RoutePage()
-class ArticleDetail extends StatefulWidget {
+class ArticleDetail extends ConsumerStatefulWidget {
   final PostModel article;
   const ArticleDetail({required this.article, super.key});
 
   @override
-  State<ArticleDetail> createState() => _ArticleDetailState();
+  ConsumerState<ArticleDetail> createState() => _ArticleDetailState();
 }
 
-class _ArticleDetailState extends State<ArticleDetail> {
+class _ArticleDetailState extends ConsumerState<ArticleDetail> {
   @override
   Widget build(BuildContext context) {
+    void share() {}
+
+    void toogleBookMark() {
+      ref.watch(communityProvider.notifier).addToBookMark(
+          ref.watch(authStateProvider).user!.uid, widget.article.id, context);
+    }
+
     var nameParts = widget.article.username.split(" ");
     var initials = "";
 
@@ -131,6 +141,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                                     side: BorderSide(
                                         width: 2.w, color: Color(0xFFDAACAC)),
                                   ),
+                                  color: Colors.black,
                                   shadows: const [
                                     BoxShadow(
                                       color: Color(0x3F000000),
@@ -236,7 +247,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                                     width: 36.w,
                                     height: 36.h,
                                     decoration: const ShapeDecoration(
-                                      color: Color(0xFFFEFEFE),
+                                      color: Colors.black,
                                       shape: OvalBorder(),
                                       shadows: [
                                         BoxShadow(
@@ -250,10 +261,12 @@ class _ArticleDetailState extends State<ArticleDetail> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                         onTap: () {
-                                          addToBookMark();
+                                          toogleBookMark();
                                         },
-                                        child:
-                                            Icon(Icons.bookmark_add_outlined))),
+                                        child: Icon(
+                                          Icons.bookmark_add_outlined,
+                                          color: Colors.white,
+                                        ))),
                                 // SizedBox(height: 12.h),
                                 // Container(
                                 //     width: 36.w,
@@ -308,7 +321,3 @@ class _ArticleDetailState extends State<ArticleDetail> {
     );
   }
 }
-
-void share() {}
-
-void addToBookMark() {}

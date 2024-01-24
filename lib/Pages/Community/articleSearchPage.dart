@@ -15,6 +15,16 @@ class ArticleSearchPage extends ConsumerStatefulWidget {
 
 class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Your code here
+      ref.read(communityProvider.notifier).getMyPosts();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final suggestions = ref.watch(communityProvider).articleSearchSuggestions;
     return Scaffold(

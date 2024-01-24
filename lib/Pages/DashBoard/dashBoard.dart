@@ -1,16 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
-class DashBoardPage extends StatefulWidget {
+class DashBoardPage extends ConsumerStatefulWidget {
   const DashBoardPage({super.key});
 
   @override
-  State<DashBoardPage> createState() => _DashBoardPageState();
+  ConsumerState<DashBoardPage> createState() => _DashBoardPageState();
 }
 
-class _DashBoardPageState extends State<DashBoardPage> {
+class _DashBoardPageState extends ConsumerState<DashBoardPage> {
   int _currentPage = 1;
   String? vThumbImage;
   @override
@@ -67,7 +69,36 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 DashboardButton(
                   text: 'Logout',
                   onPressed: () {
-                    // Handle Logout button press
+                    showGeneralDialog(
+                        context: context,
+                        pageBuilder: (BuildContext context,
+                            Animation<double> animation,
+                            Animation<double> secondaryAnimation) {
+                          return AlertDialog(
+                            title: Text('Logout'),
+                            content: Text('Are you sure you want to logout?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {},
+                                child: Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Handle Logout button press
+                                  ref
+                                      .watch(authStateProvider.notifier)
+                                      .logout();
+                                  Navigator.of(context).pop();
+                                  context.router.pushAndPopUntil(
+                                    const LoginPageRoute(),
+                                    predicate: (route) => false,
+                                  );
+                                },
+                                child: Text('Yes'),
+                              ),
+                            ],
+                          );
+                        });
                   },
                 ),
                 SizedBox(height: 10.0),
