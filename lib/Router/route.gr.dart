@@ -29,12 +29,17 @@ import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
     as _i16;
 import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
     as _i17;
+
 import 'package:food_donation_app/Pages/homePage.dart' as _i11;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i12;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i14;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i13;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i18;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i19;
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+    as _i21;
+import 'package:food_donation_app/Pages/DonationRequest/YourDonationRequest.dart'
+    as _i22;
 
 abstract class $AppRouter extends _i20.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -163,6 +168,18 @@ abstract class $AppRouter extends _i20.RootStackRouter {
       return _i20.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i19.SplashScreen(),
+      );
+    },
+    SuccessRequestRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i21.SuccessPage(),
+      );
+    },
+    DonationTrackRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i22.DonationTrackingPage(),
       );
     },
   };
@@ -495,4 +512,33 @@ class SplashScreenRoute extends _i20.PageRouteInfo<void> {
   static const String name = 'SplashScreenRoute';
 
   static const _i20.PageInfo<void> page = _i20.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i21.SuccessRequestRoute]
+class SuccessRequestRoute extends _i17.PageRouteInfo<void> {
+  const SuccessRequestRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          SuccessRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SuccessRequestRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i22.DonationTrackRoute]
+
+class DonationTrackRoute extends _i17.PageRouteInfo<void> {
+  const DonationTrackRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          DonationTrackRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DonationTrackRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }

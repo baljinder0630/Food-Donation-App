@@ -16,6 +16,11 @@ class _RaiseDonationReq extends State<RaiseRequest> {
   final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
   final _ngoController = TextEditingController();
+  final _PlotnoController = TextEditingController();
+  final _StreetnoController = TextEditingController();
+  final _LandmarkController = TextEditingController();
+  final _DistrictController = TextEditingController();
+  final _PincodeController = TextEditingController();
 
   @override
   void dispose() {
@@ -46,119 +51,112 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                   ),
                 ),
                 SizedBox(height: 16),
-                _buildDropdownFormField(
-                  label: 'Type of Request',
-                  items: ['Request 1', 'Request 2', 'Request 3', 'Request 4'],
-                ),
-                SizedBox(height: 16),
-                _buildTextFormField(
-                    label: '+91 Mobile Number',
-                    controller: _mobileNumberController,
-                    suffixWidget: Padding(
-                      padding: EdgeInsets.only(right: 16),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text('Send OTP'),
+                Center(
+                  child: Column(
+                    children: [
+                      CustomDropdown(
+                        label: 'Type of Request',
+                        items: ['Option 1', 'Option 2', 'Option 3'],
+                        value: null,
+                        onChanged: (value) {
+                          // Handle dropdown value change
+                        },
                       ),
-                    )),
-                SizedBox(height: 16),
-                Text(
-                  'An OTP Will Be Send to this mobile number',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                SizedBox(height: 16),
-                _buildTextFormField(
-                  label: 'Plot No.',
-                ),
-                SizedBox(height: 16),
-                _buildTextFormField(
-                  label: 'Street Name',
-                ),
-                SizedBox(height: 16),
-                _buildTextFormField(
-                  label: 'Landmark',
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTextFormField(
-                        label: 'District',
+                      SizedBox(height: 16),
+                      Container(
+                        width: 337.w,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                label: "Mobile Number",
+                                controller: _mobileNumberController,
+                                maxLength: 10,
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text('Send OTP'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: _buildTextFormField(
-                        label: 'PinCode',
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: "Plot No.",
+                        controller: _PlotnoController,
+                        maxLength: 20,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.pushRoute(const RaiseRequest2Route());
-                    }
-                  },
-                  child: Text(
-                    'Next',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: "Street Number",
+                        controller: _StreetnoController,
+                        maxLength: 20,
+                      ),
+                      SizedBox(height: 16),
+                      CustomTextField(
+                        label: "Landmark",
+                        controller: _LandmarkController,
+                        maxLength: 20,
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                        width: 337.w,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                label: "District",
+                                controller: _DistrictController,
+                                maxLength: 20,
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: CustomTextField(
+                                label: "Pincode",
+                                controller: _PincodeController,
+                                maxLength: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                        width: 337.w,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context.pushRoute(const RaiseRequestRoute2());
+                            }
+                          },
+                          child: Text(
+                            'Next',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            // width: 337.w,
+                            primary: Colors.blue,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 32.0.w,
+                              vertical: 16.0.w,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 32.0,
-                      vertical: 16.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                )
+                ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextFormField({
-    required String label,
-    TextEditingController? controller,
-    Widget? suffixWidget,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-          suffixIcon: suffixWidget,
-        ),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
-        style: TextStyle(
-          fontSize: 16.0, // Adjust the multiplier as needed
         ),
       ),
     );
@@ -169,6 +167,7 @@ class _RaiseDonationReq extends State<RaiseRequest> {
     required List<String> items,
   }) {
     return Container(
+      width: 337.w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20.0),
@@ -286,3 +285,80 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
+class CustomDropdown extends StatelessWidget {
+  final String label;
+  final List<String> items;
+  final String? value;
+  final ValueChanged<String?>? onChanged;
+  final String? Function(String?)? validator;
+  final VoidCallback? onTap;
+
+  const CustomDropdown({
+    Key? key,
+    required this.label,
+    required this.items,
+    this.value,
+    this.onChanged,
+    this.validator,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 337.w, // You may need to replace this with your desired width
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30.r),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x3F000000),
+            blurRadius: 5,
+            offset: Offset(0, 0),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        items: items
+            .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                ))
+            .toList(),
+        onChanged: onChanged,
+        validator: validator,
+        onTap: onTap,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Color(0xFFFEFEFE),
+          hintText: label,
+          hintStyle: TextStyle(
+            color: Color(0xFF201F24),
+            fontSize: 14.sp,
+            fontFamily: 'Outfit',
+            fontWeight: FontWeight.w400,
+            height: 0,
+            letterSpacing: 1.40.sp,
+          ),
+          contentPadding: EdgeInsets.all(10.r),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.r),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// You might need to adjust the width and other styling based on your design requirements.

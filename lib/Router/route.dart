@@ -58,6 +58,15 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: SuccessRequestRoute.page,
+          transitionsBuilder: TransitionsBuilders.fadeIn,
+        ),
+        CustomRoute(
+          page: DonationTrackRoute.page,
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        )
+        
+        CustomRoute(
           page: ArticleSearchPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
