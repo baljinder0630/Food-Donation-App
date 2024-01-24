@@ -24,12 +24,19 @@ import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
     as _i8;
 import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
     as _i14;
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
+    as _i20; 
+    
 import 'package:food_donation_app/Pages/homePage.dart' as _i9;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i10;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i12;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i11;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i15;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i16;
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+    as _i21; 
+import 'package:food_donation_app/Pages/DonationRequest/YourDonationRequest.dart'
+    as _i22;     
 
 abstract class $AppRouter extends _i17.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -130,6 +137,13 @@ abstract class $AppRouter extends _i17.RootStackRouter {
         child: const _i14.RaiseRequest(),
       );
     },
+    RaiseRequestRoute2.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i20.RaiseRequest2(),
+      );
+    },
+    
     SignUpPageRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -140,6 +154,19 @@ abstract class $AppRouter extends _i17.RootStackRouter {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i16.SplashScreen(),
+      );
+    },
+
+    SuccessRequestRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i21.SuccessPage(),
+      );
+    },
+    DonationTrackRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child:  _i22.DonationTrackingPage(),
       );
     },
   };
@@ -405,6 +432,22 @@ class RaiseRequestRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [_i20.RaiseRequest]
+class RaiseRequestRoute2 extends _i17.PageRouteInfo<void> {
+  const RaiseRequestRoute2({List<_i17.PageRouteInfo>? children})
+      : super(
+          RaiseRequestRoute2.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RaiseRequestRoute2';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+
+
+/// generated route for
 /// [_i15.SignUpPage]
 class SignUpPageRoute extends _i17.PageRouteInfo<void> {
   const SignUpPageRoute({List<_i17.PageRouteInfo>? children})
@@ -428,6 +471,35 @@ class SplashScreenRoute extends _i17.PageRouteInfo<void> {
         );
 
   static const String name = 'SplashScreenRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i21.SuccessRequestRoute]
+class SuccessRequestRoute extends _i17.PageRouteInfo<void> {
+  const SuccessRequestRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          SuccessRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SuccessRequestRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i22.DonationTrackRoute]
+
+class DonationTrackRoute extends _i17.PageRouteInfo<void>{
+  const DonationTrackRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          DonationTrackRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DonationTrackRoute';
 
   static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }
