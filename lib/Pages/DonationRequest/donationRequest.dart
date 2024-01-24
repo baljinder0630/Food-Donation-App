@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -58,10 +59,11 @@ class _DonationRequestState extends State<DonationRequest> {
                 ),
               ),
               MyAppBar(
-                  centerWidget: Searchbar(context),
+                  centerWidget: MySearchBar(),
                   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
                   rightWidget: Padding(
-                    padding: EdgeInsets.only(right: 16.0), // Adjust the left padding as needed
+                    padding: EdgeInsets.only(
+                        right: 16.0), // Adjust the left padding as needed
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -70,12 +72,11 @@ class _DonationRequestState extends State<DonationRequest> {
                       child: IconButton(
                         icon: Icon(Icons.local_shipping),
                         onPressed: () {
-                          context.pushRoute(const DonationTrackRoute());
+                          context.pushRoute(const DonationTrackingPageRoute());
                         },
                       ),
                     ),
-                  )
-                  ),
+                  )),
               SizedBox(
                 height: 20.h,
               ),

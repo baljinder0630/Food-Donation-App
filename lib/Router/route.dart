@@ -50,7 +50,7 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
-          page: RaiseRequestRoute2.page,
+          page: RaiseRequest2Route.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
@@ -58,13 +58,20 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
-          page: SuccessRequestRoute.page,
+          page: SuccessPageRoute.page,
           transitionsBuilder: TransitionsBuilders.fadeIn,
         ),
         CustomRoute(
-          page: DonationTrackRoute.page,
-        transitionsBuilder: TransitionsBuilders.slideTop,
-        )
-        
+          page: DonationTrackingPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: ArticleSearchPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+          page: ArticleHistoryRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
       ];
 }
