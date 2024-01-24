@@ -45,8 +45,10 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   camera: any
   image_picker: any
-  upi_india: any
   pinput: any
+  flutter_stripe: any
+  razorpay_flutter: any
+  http: any
 
 
 dev_dependencies:

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_donation_app/Pages/Donate/otp_screen.dart';
-import 'package:food_donation_app/Pages/Donate/payment_gateway.dart';
+import 'package:food_donation_app/Pages/Donate/razorpay_payment_gateway.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -245,7 +245,7 @@ class _DonateFormState extends State<DonateForm> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PaymentScreen()));
+                                              RazorpayPaymentGateway()));
                                 }
                               });
                             },
