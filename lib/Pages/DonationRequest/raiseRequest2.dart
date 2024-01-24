@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
+@RoutePage()
 class RaiseRequest2 extends StatefulWidget {
   const RaiseRequest2({Key? key}) : super(key: key);
 
@@ -14,7 +15,7 @@ class RaiseRequest2 extends StatefulWidget {
 
 class _RaiseDonationReq extends State<RaiseRequest2> {
   final _formKey = GlobalKey<FormState>();
-  final _volunteerController=TextEditingController();
+  final _volunteerController = TextEditingController();
 
   final _descriptionController = TextEditingController();
   String? Recovery;
@@ -402,7 +403,6 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                           SizedBox(
                             height: 25.h,
                           ),
-
                           CustomTextField(
                             label: 'Number of Volunteers Required',
                             controller: _volunteerController,

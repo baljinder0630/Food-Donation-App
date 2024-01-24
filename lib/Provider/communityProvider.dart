@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
@@ -14,13 +12,17 @@ final communityProvider = StateNotifierProvider<Community, CommunityState>(
 
 class Community extends StateNotifier<CommunityState> {
   final StateNotifierProviderRef ref;
+  final FirebaseFirestore firestore;
+
   Community({required this.ref})
-      : super(CommunityState(
+      : firestore = FirebaseFirestore.instance,
+        super(CommunityState(
           posts: [],
           total: 0,
           scrollStatus: ScrollStatus.initial,
           postStatus: RecommendedPostStatus.initial,
           featuredPostStatus: FeaturedPostStatus.initial,
+          articleSearchSuggestions: [],
           uploadArticleStatus: UploadArticleStatus.initial,
         ));
 
@@ -43,7 +45,7 @@ class Community extends StateNotifier<CommunityState> {
       }
 
       final id = Uuid().v4();
-      final doc = FirebaseFirestore.instance.collection("articles").doc(id);
+      final doc = firestore.collection("articles").doc(id);
       await doc.set(post.toMap());
       final posts = [...state.posts!, post];
       state = state.copyWith(posts: posts);
@@ -73,9 +75,10 @@ class Community extends StateNotifier<CommunityState> {
 
   Future<void> getPosts() async {
     try {
+      log("Getting articles");
       state = state.copyWith(scrollStatus: ScrollStatus.processing);
       state = state.copyWith(postStatus: RecommendedPostStatus.processing);
-      final snapshot = await FirebaseFirestore.instance
+      final snapshot = await firestore
           .collection("articles")
           .orderBy("createdTime", descending: true)
           .limit(10)
@@ -84,7 +87,7 @@ class Community extends StateNotifier<CommunityState> {
         // convert timestamp to DateTime
         e.data()["createdTime"] =
             (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
-        log(e.data().toString());
+        // log(e.data().toString());
         return PostModel.fromMap(e.data());
       }).toList();
       state = state.copyWith(posts: posts);
@@ -96,10 +99,33 @@ class Community extends StateNotifier<CommunityState> {
       log(e.toString());
     }
   }
+
+  articleSearchSuggestion(String val) async {
+    log("Fetching suggestion for $val");
+    if (val.length > 1)
+      try {
+        firestore
+            .collection('articles')
+            .where('subject', isGreaterThanOrEqualTo: val)
+            .where('subject', isLessThan: val + 'z')
+            .limit(5)
+            .get()
+            .then((snapshot) {
+          log("Suggestion picked");
+          state = state.copyWith(
+              articleSearchSuggestions: snapshot.docs
+                  .map((doc) => doc['subject'] as String)
+                  .toList());
+        });
+      } catch (e) {
+        print(e);
+      }
+  }
 }
 
 class CommunityState {
   List<PostModel>? posts;
+  List<String>? articleSearchSuggestions;
   int total;
   ScrollStatus? scrollStatus;
   RecommendedPostStatus? postStatus;
@@ -109,6 +135,7 @@ class CommunityState {
   CommunityState({
     this.posts,
     this.total = 0,
+    this.articleSearchSuggestions,
     this.scrollStatus,
     this.postStatus,
     this.featuredPostStatus,
@@ -117,6 +144,7 @@ class CommunityState {
 
   CommunityState copyWith({
     List<PostModel>? posts,
+    List<String>? articleSearchSuggestions,
     int? total,
     ScrollStatus? scrollStatus,
     RecommendedPostStatus? postStatus,
@@ -126,6 +154,7 @@ class CommunityState {
     return CommunityState(
       posts: posts ?? this.posts,
       total: total ?? this.total,
+      articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,
       postStatus: postStatus ?? this.postStatus,
       featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,

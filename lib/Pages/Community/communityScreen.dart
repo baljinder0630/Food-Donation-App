@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 // import 'package:food_donation_app/Pages/Community/posts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -153,11 +156,14 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                               height: 306.h,
                               decoration: ShapeDecoration(
                                 gradient: LinearGradient(
-                                  begin: Alignment(-0.00, -1.00),
+                                  begin: Alignment(0, 0),
                                   end: Alignment(0, 1),
                                   colors: [
-                                    Colors.white.withOpacity(0),
-                                    Colors.black.withOpacity(0),
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.6),
+                                    Colors.black.withOpacity(0.7),
+                                    Colors.black.withOpacity(0.8),
                                     Colors.black
                                   ],
                                 ),
@@ -211,8 +217,10 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                               ),
                                             ),
                                             SizedBox(height: 5.h),
-                                            SizedBox(
+                                            Container(
                                               width: 241.w,
+                                              height: 50.h,
+                                              // color: Colors.red,
                                               child: SingleChildScrollView(
                                                 child: Text(
                                                   posts[index]
@@ -240,7 +248,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(height: 16.h),
+                                      SizedBox(height: 5.h),
                                       Container(
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -388,204 +396,225 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
     Widget Recommendations() {
       return Container(
         height: posts!.length * 130.h,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: posts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: () {
-                context.navigateTo(ArticleDetailRoute(article: posts[index]));
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.h),
-                      height: 110.h,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFFEFEFE),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        shadows: const [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 5,
-                            offset: Offset(0, 0),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 10.w,
-                      top: 20.h,
-                      child: Container(
-                        width: 90.w,
-                        height: 89.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.green,
-                          image: DecorationImage(
-                            image: NetworkImage(posts[index].imgUrl),
-                            fit: BoxFit.cover,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 114.w,
-                      top: 21.h,
-                      child: Container(
-                        width: 243.w,
-                        height: 89.h,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: 150.w,
-                                  height: 16.sp,
-                                  child: Text(
-                                    posts[index].subject.length > 20
-                                        ? posts[index]
-                                                .subject
-                                                .substring(0, 20) +
-                                            "..."
-                                        : posts[index].subject,
-                                    style: TextStyle(
-                                      color: Color(0xFFBFAAAA),
-                                      fontSize: 14.sp,
-                                      fontFamily: 'Outfit',
-                                      fontWeight: FontWeight.w500,
-                                      height: 0,
-                                      letterSpacing: 0.56.sp,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 4.w,
-                                      height: 4.h,
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFFD9D9D9),
-                                        shape: OvalBorder(),
-                                      ),
-                                    ),
-                                    SizedBox(width: 4.w),
-                                    Text(
-                                      timeAgo(
-                                          posts[index].createdTime.toDate()),
-                                      style: TextStyle(
-                                        color: Color(0xFF8E7474),
-                                        fontSize: 12.sp,
-                                        fontFamily: 'Outfit',
-                                        fontWeight: FontWeight.w300,
-                                        height: 0,
-                                        letterSpacing: 0.48.sp,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+        child: posts.length == 0
+            ? SizedBox()
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: posts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      context.navigateTo(
+                          ArticleDetailRoute(article: posts[index]));
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 24.w),
+                      child: Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.h),
+                            height: 110.h,
+                            decoration: ShapeDecoration(
+                              color: Color(0xFFFEFEFE),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.r),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 5,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
                               ],
                             ),
-                            SizedBox(height: 15.h),
-                            Container(
-                              // color: Colors.red,
-                              width: 241.w,
-                              height: 50.h,
-                              child: Text(
-                                posts[index].description.length > 100
-                                    ? posts[index]
-                                            .description
-                                            .substring(0, 96) +
-                                        "..."
-                                    : posts[index].description,
-                                style: TextStyle(
-                                  color: Color(0xFF201F24),
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Outfit',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0,
-                                  letterSpacing: 0.56.sp,
+                          ),
+                          Positioned(
+                            left: 10.w,
+                            top: 20.h,
+                            child: Container(
+                              width: 90.w,
+                              height: 89.h,
+                              decoration: ShapeDecoration(
+                                color: Colors.green,
+                                image: DecorationImage(
+                                  image: NetworkImage(posts[index].imgUrl),
+                                  fit: BoxFit.cover,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.r),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Positioned(
+                            left: 114.w,
+                            top: 21.h,
+                            child: Container(
+                              width: 243.w,
+                              height: 89.h,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: 150.w,
+                                        height: 16.sp,
+                                        child: Text(
+                                          posts[index].subject.length > 20
+                                              ? posts[index]
+                                                      .subject
+                                                      .substring(0, 20) +
+                                                  "..."
+                                              : posts[index].subject,
+                                          style: TextStyle(
+                                            color: Color(0xFFBFAAAA),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Outfit',
+                                            fontWeight: FontWeight.w500,
+                                            height: 0,
+                                            letterSpacing: 0.56.sp,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 4.w,
+                                            height: 4.h,
+                                            decoration: ShapeDecoration(
+                                              color: Color(0xFFD9D9D9),
+                                              shape: OvalBorder(),
+                                            ),
+                                          ),
+                                          SizedBox(width: 4.w),
+                                          Text(
+                                            timeAgo(posts[index]
+                                                .createdTime
+                                                .toDate()),
+                                            style: TextStyle(
+                                              color: Color(0xFF8E7474),
+                                              fontSize: 12.sp,
+                                              fontFamily: 'Outfit',
+                                              fontWeight: FontWeight.w300,
+                                              height: 0,
+                                              letterSpacing: 0.48.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 15.h),
+                                  Container(
+                                    // color: Colors.red,
+                                    width: 241.w,
+                                    height: 50.h,
+                                    child: Text(
+                                      posts[index].description.length > 100
+                                          ? posts[index]
+                                                  .description
+                                                  .substring(0, 96) +
+                                              "..."
+                                          : posts[index].description,
+                                      style: TextStyle(
+                                        color: Color(0xFF201F24),
+                                        fontSize: 14.sp,
+                                        fontFamily: 'Outfit',
+                                        fontWeight: FontWeight.w500,
+                                        height: 0,
+                                        letterSpacing: 0.56.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       );
     }
 
     return Scaffold(
       body: Stack(
         children: [
-          SafeArea(
-            child: Container(
-              margin: EdgeInsets.only(top: 48.h),
-              child: Column(
-                children: [
-                  MyAppBar(
-                      centerWidget: Searchbar(context),
-                      rightWidget: SearchHistory(context)),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Expanded(
-                    child: ListView(
-                      physics: BouncingScrollPhysics(),
-                      children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        categoryWidget(),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        FeaturedArticles(),
-                        SizedBox(
-                          height: 28.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 24.w),
-                          child: Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              'Recommendations',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w500,
-                                height: 0,
-                                letterSpacing: 0.80.sp,
-                              ),
+          Container(
+            margin: EdgeInsets.only(top: 50.h),
+            child: Column(
+              children: [
+                MyAppBar(
+                    centerWidget: Padding(
+                      padding: EdgeInsets.only(left: 57.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          log("Tap on article search bar");
+                          context.pushRoute(ArticleSearchPageRoute());
+                        },
+                        child: MySearchBar(),
+                      ),
+                    ),
+                    rightWidget: Padding(
+                      padding: EdgeInsets.only(right: 34.18.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            context.pushRoute(ArticleHistoryRoute());
+                          },
+                          child: SearchHistory(context)),
+                    )),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Expanded(
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      categoryWidget(),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      FeaturedArticles(),
+                      SizedBox(
+                        height: 28.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 24.w),
+                        child: Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            'Recommendations',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.80.sp,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20.h),
-                        Recommendations()
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Recommendations()
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Align(
@@ -630,93 +659,19 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
 }
 
 Widget SearchHistory(context) {
-  return Padding(
-    padding: EdgeInsets.only(right: 34.18.w),
-    child: Container(
-        width: 28.80,
-        height: 28.80,
-        clipBehavior: Clip.antiAlias,
-        decoration: ShapeDecoration(
-          color: Color(0xFFFEFEFE),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        child: Icon(
-          Icons.history_rounded,
-          size: 28.8.r,
-          color: Colors.black,
-        )),
-  );
-}
-
-Widget Searchbar(context) {
-  return Padding(
-    padding: EdgeInsets.only(left: 57.02.h),
-    child: Container(
-      width: 260.w,
-      height: 45.83.h,
+  return Container(
+      width: 28.80,
+      height: 28.80,
+      clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
         color: Color(0xFFFEFEFE),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.r),
+          borderRadius: BorderRadius.circular(15),
         ),
-        shadows: const [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 8,
-            offset: Offset(0, 0),
-            spreadRadius: 0,
-          )
-        ],
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 24.r,
-            height: 24.r,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(),
-            child: Icon(Icons.search_rounded, size: 24.r, color: Colors.black),
-          ),
-          SizedBox(width: 8.w),
-          Text(
-            'Search For ',
-            style: TextStyle(
-              color: Color(0xFF201F24),
-              fontSize: 18.sp,
-              fontFamily: 'Outfit',
-              fontWeight: FontWeight.w400,
-              height: 0,
-              letterSpacing: 0.36.sp,
-            ),
-          ),
-          Container(
-            height: 23.h,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Articles',
-                  style: TextStyle(
-                    color: Color(0xFF5272FC),
-                    fontSize: 18.sp,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                    letterSpacing: 0.36.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+      child: Icon(
+        Icons.history_rounded,
+        size: 28.8.r,
+        color: Colors.black,
+      ));
 }

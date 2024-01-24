@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -58,7 +59,10 @@ class _DonationRequestState extends State<DonationRequest> {
                 ),
               ),
               MyAppBar(
-                  centerWidget: Searchbar(context),
+                  centerWidget: Padding(
+                    padding: EdgeInsets.only(left: 57.w),
+                    child: GestureDetector(onTap: () {}, child: MySearchBar()),
+                  ),
                   rightWidget: SearchHistory(context)),
               SizedBox(
                 height: 20.h,

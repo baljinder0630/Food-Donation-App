@@ -50,12 +50,20 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
-          page: RaiseRequestRoute2.page,
+          page: RaiseRequest2Route.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
           page: CameraScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: ArticleSearchPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+          page: ArticleHistoryRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
       ];
 }
