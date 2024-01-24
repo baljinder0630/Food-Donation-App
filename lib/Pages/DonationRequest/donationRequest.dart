@@ -59,7 +59,23 @@ class _DonationRequestState extends State<DonationRequest> {
               ),
               MyAppBar(
                   centerWidget: Searchbar(context),
-                  rightWidget: SearchHistory(context)),
+                  // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+                  rightWidget: Padding(
+                    padding: EdgeInsets.only(right: 16.0), // Adjust the left padding as needed
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.local_shipping),
+                        onPressed: () {
+                          context.pushRoute(const DonationTrackRoute());
+                        },
+                      ),
+                    ),
+                  )
+                  ),
               SizedBox(
                 height: 20.h,
               ),
