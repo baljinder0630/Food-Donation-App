@@ -426,7 +426,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                               if (_formKey.currentState!.validate()) {
                                 // Process data.
                                 await uploadPost();
-                                context.pushRoute(const SuccessRequestRoute());
+                                context.pushRoute(const SuccessPageRoute());
                               }
                             },
                             child: Container(

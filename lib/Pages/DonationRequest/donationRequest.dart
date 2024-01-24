@@ -59,7 +59,7 @@ class _DonationRequestState extends State<DonationRequest> {
                 ),
               ),
               MyAppBar(
-                  centerWidget: Searchbar(context),
+                  centerWidget: MySearchBar(),
                   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
                   rightWidget: Padding(
                     padding: EdgeInsets.only(
@@ -72,7 +72,7 @@ class _DonationRequestState extends State<DonationRequest> {
                       child: IconButton(
                         icon: Icon(Icons.local_shipping),
                         onPressed: () {
-                          context.pushRoute(const DonationTrackRoute());
+                          context.pushRoute(const DonationTrackingPageRoute());
                         },
                       ),
                     ),
