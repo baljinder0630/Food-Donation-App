@@ -114,73 +114,46 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
 
     Widget FeaturedArticles() {
       return featuredPostLoading != PostStatus.processed
-          ? Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 20.w),
-                      width: 30.w,
-                      height: 200.h,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
+          ? CarouselSlider(
+              items: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 30.sp,
+                    height: 200.sp,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                     ),
                   ),
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 20.w),
-                      width: 275.w,
-                      height: 306.h,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.r),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 20.w),
-                      width: 30.w,
-                      height: 200.h,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : Container(
-              // color: Colors.red,
-              margin: EdgeInsets.only(left: 24.w),
-              alignment: Alignment.centerLeft,
-              height: 275.h,
-              child: CarouselSlider.builder(
-                options: CarouselOptions(
-                  height: 306.h,
+                ),
+              ],
+              options: CarouselOptions(
+                  height: 300.sp,
                   disableCenter: true,
-                  autoPlay: true,
                   enlargeCenterPage: true,
                   viewportFraction: 0.7,
                   initialPage: 2,
-                ),
+                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  enlargeFactor: 0.4),
+            )
+          : Container(
+              // color: Colors.red,
+              // margin: EdgeInsets.only(left: 24.w),
+              alignment: Alignment.centerLeft,
+              // height: 275.h,
+              child: CarouselSlider.builder(
+                options: CarouselOptions(
+                    height: 300.sp,
+                    disableCenter: true,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.7,
+                    initialPage: 2,
+                    enlargeFactor: 0.4),
                 itemCount: posts!.length,
                 itemBuilder:
                     (BuildContext context, int index, int pageViewIndex) {
@@ -194,256 +167,248 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
                     initials += nameParts[1].substring(0, 1).toUpperCase();
                   }
-                  return Hero(
-                    tag: posts[index].id,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (featuredPostLoading != PostStatus.processed)
-                          context.navigateTo(
-                              ArticleDetailRoute(article: posts[index]));
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 20.w),
-                            width: 275.w,
-                            height: 306.h,
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.r),
+                  return InkWell(
+                    onTap: () {
+                      log("Tapped");
+                      context
+                          .pushRoute(ArticleDetailRoute(article: posts[index]));
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          // margin: EdgeInsets.only(right: 20.w),
+                          width: 300.sp,
+                          height: 300.sp,
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                posts[index].imgUrl,
                               ),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  posts[index].imgUrl,
-                                ),
-                                fit: BoxFit.cover,
-                              ),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(right: 20.w),
-                            width: 275.w,
-                            height: 306.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(0, 0),
-                                end: Alignment(0, 1),
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.5),
-                                  Colors.black.withOpacity(0.6),
-                                  Colors.black.withOpacity(0.7),
-                                  Colors.black.withOpacity(0.8),
-                                  Colors.black
-                                ],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.r),
-                              ),
+                        ),
+                        Container(
+                          // margin: EdgeInsets.only(right: 20.w),
+                          width: 300.sp,
+                          height: 300.sp,
+                          decoration: ShapeDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0, 0),
+                              end: Alignment(0, 1),
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.6),
+                                Colors.black.withOpacity(0.7),
+                                Colors.black.withOpacity(0.8),
+                                Colors.black
+                              ],
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.r),
                             ),
                           ),
-                          Container(
-                              margin: EdgeInsets.only(right: 20.w),
-                              width: 275.w,
-                              height: 306.h,
-                              child: Container(
-                                alignment: Alignment.bottomCenter,
-                                padding: EdgeInsets.only(bottom: 13.h),
-                                width: 241.w,
-                                height: 105.h,
-                                decoration: ShapeDecoration(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
+                        ),
+                        Container(
+                            // margin: EdgeInsets.only(right: 20.w),
+                            width: 300.sp,
+                            height: 300.sp,
+                            child: Container(
+                              alignment: Alignment.bottomCenter,
+                              padding: EdgeInsets.only(bottom: 13.h),
+                              width: 241.w,
+                              height: 105.h,
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.r),
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            posts[index].subject.length > 30
-                                                ? posts[index]
-                                                        .subject
-                                                        .substring(0, 30) +
-                                                    "..."
-                                                : posts[index].subject,
-                                            style: TextStyle(
-                                              color: Color(0xFFB3B3B8),
-                                              fontSize: 14.sp,
-                                              fontFamily: 'Outfit',
-                                              fontWeight: FontWeight.w500,
-                                              height: 0,
-                                              letterSpacing: 0.56.sp,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          posts[index].subject.length > 30
+                                              ? posts[index]
+                                                      .subject
+                                                      .substring(0, 30) +
+                                                  "..."
+                                              : posts[index].subject,
+                                          style: TextStyle(
+                                            color: Color(0xFFB3B3B8),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Outfit',
+                                            fontWeight: FontWeight.w500,
+                                            height: 0,
+                                            letterSpacing: 0.56.sp,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5.h),
+                                        Container(
+                                          width: 241.w,
+                                          height: 50.h,
+                                          // color: Colors.red,
+                                          child: SingleChildScrollView(
+                                            child: Text(
+                                              posts[index].description.length >
+                                                      70
+                                                  ? posts[index]
+                                                          .description
+                                                          .substring(0, 70) +
+                                                      "..."
+                                                  : posts[index].description,
+                                              style: TextStyle(
+                                                color: Color(0xFFF9F8FD),
+                                                fontSize: 14.sp,
+                                                fontFamily: 'Outfit',
+                                                fontWeight: FontWeight.w500,
+                                                height: 0,
+                                                letterSpacing: 0.56.sp,
+                                              ),
                                             ),
                                           ),
-                                          SizedBox(height: 5.h),
-                                          Container(
-                                            width: 241.w,
-                                            height: 50.h,
-                                            // color: Colors.red,
-                                            child: SingleChildScrollView(
-                                              child: Text(
-                                                posts[index]
-                                                            .description
-                                                            .length >
-                                                        70
-                                                    ? posts[index]
-                                                            .description
-                                                            .substring(0, 70) +
-                                                        "..."
-                                                    : posts[index].description,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 5.h),
+                                  Container(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 30.w,
+                                                height: 30.h,
+                                                child: posts[index]
+                                                            .createdByAvatar ==
+                                                        null
+                                                    ? Center(
+                                                        child: Text(
+                                                          initials,
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFFF9F8FD),
+                                                            fontSize: 14.sp,
+                                                            fontFamily:
+                                                                'Outfit',
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            height: 0,
+                                                            letterSpacing:
+                                                                0.56.sp,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Center(
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            posts[index]
+                                                                .createdByAvatar
+                                                                .toString(),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                decoration: ShapeDecoration(
+                                                  shape: OvalBorder(
+                                                    side: BorderSide(
+                                                        width: 2.w,
+                                                        color:
+                                                            Color(0xFFDAACAC)),
+                                                  ),
+                                                  shadows: const [
+                                                    BoxShadow(
+                                                      color: Color(0x3F000000),
+                                                      blurRadius: 8,
+                                                      offset: Offset(0, 0),
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                posts[index].username,
                                                 style: TextStyle(
                                                   color: Color(0xFFF9F8FD),
                                                   fontSize: 14.sp,
                                                   fontFamily: 'Outfit',
-                                                  fontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.w400,
                                                   height: 0,
                                                   letterSpacing: 0.56.sp,
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(width: 6.w),
+                                        Container(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 4.w,
+                                                height: 4.h,
+                                                decoration: ShapeDecoration(
+                                                  color: Color(0xFFD9D9D9),
+                                                  shape: OvalBorder(),
+                                                ),
+                                              ),
+                                              SizedBox(width: 4.w),
+                                              Text(
+                                                timeAgo(posts[index]
+                                                    .createdTime
+                                                    .toDate()),
+                                                style: TextStyle(
+                                                  color: Color(0xFF8E7474),
+                                                  fontSize: 12.sp,
+                                                  fontFamily: 'Outfit',
+                                                  fontWeight: FontWeight.w300,
+                                                  height: 0,
+                                                  letterSpacing: 0.48.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(height: 5.h),
-                                    Container(
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 30.w,
-                                                  height: 30.h,
-                                                  child: posts[index]
-                                                              .createdByAvatar ==
-                                                          null
-                                                      ? Center(
-                                                          child: Text(
-                                                            initials,
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFFF9F8FD),
-                                                              fontSize: 14.sp,
-                                                              fontFamily:
-                                                                  'Outfit',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              height: 0,
-                                                              letterSpacing:
-                                                                  0.56.sp,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : Center(
-                                                          child: ClipOval(
-                                                            child:
-                                                                Image.network(
-                                                              posts[index]
-                                                                  .createdByAvatar
-                                                                  .toString(),
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  decoration: ShapeDecoration(
-                                                    shape: OvalBorder(
-                                                      side: BorderSide(
-                                                          width: 2.w,
-                                                          color: Color(
-                                                              0xFFDAACAC)),
-                                                    ),
-                                                    shadows: const [
-                                                      BoxShadow(
-                                                        color:
-                                                            Color(0x3F000000),
-                                                        blurRadius: 8,
-                                                        offset: Offset(0, 0),
-                                                        spreadRadius: 0,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  posts[index].username,
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF9F8FD),
-                                                    fontSize: 14.sp,
-                                                    fontFamily: 'Outfit',
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 0,
-                                                    letterSpacing: 0.56.sp,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(width: 6.w),
-                                          Container(
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 4.w,
-                                                  height: 4.h,
-                                                  decoration: ShapeDecoration(
-                                                    color: Color(0xFFD9D9D9),
-                                                    shape: OvalBorder(),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 4.w),
-                                                Text(
-                                                  timeAgo(posts[index]
-                                                      .createdTime
-                                                      .toDate()),
-                                                  style: TextStyle(
-                                                    color: Color(0xFF8E7474),
-                                                    fontSize: 12.sp,
-                                                    fontFamily: 'Outfit',
-                                                    fontWeight: FontWeight.w300,
-                                                    height: 0,
-                                                    letterSpacing: 0.48.sp,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
                     ),
                   );
                 },
@@ -515,7 +480,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                     baseColor: Colors.grey[300]!,
                                     highlightColor: Colors.grey[100]!,
                                     child: Container(
-                                        margin: EdgeInsets.only(right: 20.w),
+                                        // margin: EdgeInsets.only(right: 20.w),
                                         width: 200.w,
                                         height: 16.sp,
                                         color: Colors.white),
@@ -525,7 +490,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                     baseColor: Colors.grey[300]!,
                                     highlightColor: Colors.grey[100]!,
                                     child: Container(
-                                        margin: EdgeInsets.only(right: 20.w),
+                                        // margin: EdgeInsets.only(right: 20.w),
                                         width: 220.w,
                                         height: 50.h,
                                         color: Colors.white),
@@ -547,7 +512,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: posts!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
                       context.navigateTo(
                           ArticleDetailRoute(article: posts[index]));
@@ -789,7 +754,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: GestureDetector(
+            child: InkWell(
               onTap: () async {
                 context.pushRoute(const PostArticleRoute());
               },
