@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -210,8 +211,10 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                         height: 285.h,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30.r),
-                          child: Image.network(
-                            widget.article.imgUrl,
+                          child: Image(
+                            image: CachedNetworkImageProvider(
+                              widget.article.imgUrl,
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),

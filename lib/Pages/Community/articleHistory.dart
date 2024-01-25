@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,7 +101,9 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 height: 180.h,
                 decoration: ShapeDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(post.imgUrl),
+                    image: CachedNetworkImageProvider(
+                      post.imgUrl,
+                    ),
                     fit: BoxFit.cover,
                   ),
                   shape: RoundedRectangleBorder(

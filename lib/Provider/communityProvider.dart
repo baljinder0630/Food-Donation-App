@@ -24,8 +24,8 @@ class Community extends StateNotifier<CommunityState> {
           myPosts: [],
           bookMarkedPosts: [],
           scrollStatus: ScrollStatus.initial,
-          postStatus: RecommendedPostStatus.initial,
-          featuredPostStatus: FeaturedPostStatus.initial,
+          rcmdPostStatus: PostStatus.initial,
+          featuredPostStatus: PostStatus.initial,
           articleSearchSuggestions: [],
           uploadArticleStatus: UploadArticleStatus.initial,
         ));
@@ -81,7 +81,9 @@ class Community extends StateNotifier<CommunityState> {
     try {
       log("Getting articles");
       state = state.copyWith(scrollStatus: ScrollStatus.processing);
-      state = state.copyWith(postStatus: RecommendedPostStatus.processing);
+      state = state.copyWith(rcmdPostStatus: PostStatus.processing);
+      state = state.copyWith(featuredPostStatus: PostStatus.processing);
+
       final snapshot = await firestore
           .collection("articles")
           .orderBy("createdTime", descending: true)
@@ -96,10 +98,12 @@ class Community extends StateNotifier<CommunityState> {
       }).toList();
       state = state.copyWith(posts: posts);
       state = state.copyWith(scrollStatus: ScrollStatus.processed);
-      state = state.copyWith(postStatus: RecommendedPostStatus.processed);
+      state = state.copyWith(rcmdPostStatus: PostStatus.processed);
+      state = state.copyWith(featuredPostStatus: PostStatus.processed);
     } catch (e) {
       state = state.copyWith(scrollStatus: ScrollStatus.error);
-      state = state.copyWith(postStatus: RecommendedPostStatus.error);
+      state = state.copyWith(featuredPostStatus: PostStatus.error);
+      state = state.copyWith(rcmdPostStatus: PostStatus.error);
       log(e.toString());
     }
   }
@@ -228,8 +232,8 @@ class CommunityState {
   List<String>? articleSearchSuggestions;
   int total;
   ScrollStatus? scrollStatus;
-  RecommendedPostStatus? postStatus;
-  FeaturedPostStatus? featuredPostStatus;
+  PostStatus? rcmdPostStatus;
+  PostStatus? featuredPostStatus;
   UploadArticleStatus? uploadArticleStatus;
 
   CommunityState({
@@ -239,7 +243,7 @@ class CommunityState {
     this.bookMarkedPosts,
     this.articleSearchSuggestions,
     this.scrollStatus,
-    this.postStatus,
+    this.rcmdPostStatus,
     this.featuredPostStatus,
     this.uploadArticleStatus,
   });
@@ -251,8 +255,8 @@ class CommunityState {
     List<String>? articleSearchSuggestions,
     int? total,
     ScrollStatus? scrollStatus,
-    RecommendedPostStatus? postStatus,
-    FeaturedPostStatus? featuredPostStatus,
+    PostStatus? featuredPostStatus,
+    PostStatus? rcmdPostStatus,
     UploadArticleStatus? uploadArticleStatus,
   }) {
     return CommunityState(
@@ -262,7 +266,7 @@ class CommunityState {
       total: total ?? this.total,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,
-      postStatus: postStatus ?? this.postStatus,
+      rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
       featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
       uploadArticleStatus: uploadArticleStatus ?? this.uploadArticleStatus,
     );
@@ -271,8 +275,6 @@ class CommunityState {
 
 enum ScrollStatus { initial, exhausted, processing, processed, error }
 
-enum FeaturedPostStatus { initial, processing, processed, error }
-
-enum RecommendedPostStatus { initial, processing, processed, error }
+enum PostStatus { initial, processing, processed, error }
 
 enum UploadArticleStatus { initial, processing, processed, error }
