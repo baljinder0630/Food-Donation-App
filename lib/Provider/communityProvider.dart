@@ -21,12 +21,13 @@ class Community extends StateNotifier<CommunityState> {
       : firestore = FirebaseFirestore.instance,
         super(CommunityState(
           posts: [],
-          total: 0,
+          recentPosts: [],
           myPosts: [],
           bookMarkedPosts: [],
           scrollStatus: ScrollStatus.initial,
           rcmdPostStatus: PostStatus.initial,
           featuredPostStatus: PostStatus.initial,
+          recentPostStatus: PostStatus.initial,
           articleSearchSuggestions: [],
           uploadArticleStatus: UploadArticleStatus.initial,
         ));
@@ -78,18 +79,14 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
-  Future<void> getPosts() async {
+  Future<void> getPosts(from) async {
     try {
       log("Getting articles");
       state = state.copyWith(scrollStatus: ScrollStatus.processing);
       state = state.copyWith(rcmdPostStatus: PostStatus.processing);
       state = state.copyWith(featuredPostStatus: PostStatus.processing);
 
-      final snapshot = await firestore
-          .collection("articles")
-          // .orderBy("createdTime", descending: true)
-          .limit(10)
-          .get();
+      final snapshot = await firestore.collection("articles").limit(10).get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
 
@@ -107,6 +104,36 @@ class Community extends StateNotifier<CommunityState> {
       state = state.copyWith(scrollStatus: ScrollStatus.error);
       state = state.copyWith(featuredPostStatus: PostStatus.error);
       state = state.copyWith(rcmdPostStatus: PostStatus.error);
+      log(e.toString());
+    }
+  }
+
+  Future<void> getRecentPosts(from) async {
+    try {
+      log("Getting articles");
+      state = state.copyWith(scrollStatus: ScrollStatus.processing);
+      state = state.copyWith(recentPostStatus: PostStatus.processing);
+
+      final snapshot = await firestore
+          .collection("articles")
+          .orderBy("createdTime", descending: true)
+          .limit(10)
+          .get();
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+
+      state = state.copyWith(recentPosts: posts);
+      state = state.copyWith(scrollStatus: ScrollStatus.processed);
+      state = state.copyWith(recentPostStatus: PostStatus.processed);
+    } catch (e) {
+      state = state.copyWith(scrollStatus: ScrollStatus.error);
+      state = state.copyWith(recentPostStatus: PostStatus.error);
       log(e.toString());
     }
   }
@@ -238,23 +265,25 @@ class Community extends StateNotifier<CommunityState> {
 
 class CommunityState {
   List<PostModel>? posts;
+  List<PostModel>? recentPosts;
   List<PostModel>? myPosts;
   List<PostModel>? bookMarkedPosts;
   List<String>? articleSearchSuggestions;
-  int total;
   ScrollStatus? scrollStatus;
   PostStatus? rcmdPostStatus;
+  PostStatus? recentPostStatus;
   PostStatus? featuredPostStatus;
   UploadArticleStatus? uploadArticleStatus;
 
   CommunityState({
     this.posts,
-    this.total = 0,
+    this.recentPosts,
     this.myPosts,
     this.bookMarkedPosts,
     this.articleSearchSuggestions,
     this.scrollStatus,
     this.rcmdPostStatus,
+    this.recentPostStatus,
     this.featuredPostStatus,
     this.uploadArticleStatus,
   });
@@ -262,11 +291,12 @@ class CommunityState {
   CommunityState copyWith({
     List<PostModel>? posts,
     List<PostModel>? myPosts,
+    List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
     List<String>? articleSearchSuggestions,
-    int? total,
     ScrollStatus? scrollStatus,
     PostStatus? featuredPostStatus,
+    PostStatus? recentPostStatus,
     PostStatus? rcmdPostStatus,
     UploadArticleStatus? uploadArticleStatus,
   }) {
@@ -274,11 +304,12 @@ class CommunityState {
       posts: posts ?? this.posts,
       myPosts: myPosts ?? this.myPosts,
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
-      total: total ?? this.total,
+      recentPosts: recentPosts ?? this.recentPosts,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,
       rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
       featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
+      recentPostStatus: recentPostStatus ?? this.recentPostStatus,
       uploadArticleStatus: uploadArticleStatus ?? this.uploadArticleStatus,
     );
   }
