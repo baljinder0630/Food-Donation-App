@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
@@ -13,12 +14,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
-import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:uuid/uuid.dart';
 
 @RoutePage()
 class PostArticle extends ConsumerStatefulWidget {
-  const PostArticle({super.key});
+  bool isEdit = false;
+  PostModel? post;
+  PostArticle({this.isEdit = false, this.post, super.key});
 
   @override
   ConsumerState<PostArticle> createState() => _PostArticleState();
@@ -31,6 +33,23 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   final _picker = ImagePicker();
   bool _saveButtonClicked = false;
   File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEdit) {
+      _subjectController.text = widget.post!.subject;
+      _descriptionController.text = widget.post!.description;
+      _imageFile = File(widget.post!.imgUrl);
+    }
+  }
+
+  @override
+  void dispose() {
+    _subjectController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   uploadPost() async {
     PostModel post = PostModel(
@@ -52,6 +71,37 @@ class _PostArticleState extends ConsumerState<PostArticle> {
         _descriptionController.text = "";
         _imageFile = null;
       });
+    }
+  }
+
+  updatePost() async {
+    PostModel post = PostModel(
+      id: widget.post!.id,
+      subject: _subjectController.text,
+      description: _descriptionController.text,
+      imgUrl: widget.post!.imgUrl,
+      userId: widget.post!.userId,
+      username: widget.post!.username,
+      createdTime: widget.post!.createdTime,
+      createdByAvatar: widget.post!.createdByAvatar,
+    );
+
+    if (await ref.watch(communityProvider.notifier).updatePost(post, context)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Post Updated Successfully"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      context.popRoute();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to update post"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      context.popRoute();
     }
   }
 
@@ -420,6 +470,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                 Container(
                   // Description text field
                   width: 337.w,
+                  // height: 543.h,
                   height: 573.h,
                   decoration: ShapeDecoration(
                     color: Color(0xFFFEFEFE),
@@ -438,7 +489,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   child: Column(
                     children: [
                       Container(
-                        height: 399.h,
+                        height: widget.isEdit ? 565.h : 399.h,
                         child: TextFormField(
                           controller: _descriptionController,
                           maxLength: 5000,
@@ -453,7 +504,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                             }
                             return null;
                           },
-                          maxLines: 16.h.toInt(),
+                          maxLines: widget.isEdit ? 25.h.toInt() : 16.h.toInt(),
                           decoration: InputDecoration(
                             counter: SizedBox.shrink(),
                             contentPadding: EdgeInsets.all(10.r),
@@ -483,127 +534,136 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                           ),
                         ),
                       ),
-                      Center(
-                        child: Container(
-                          width: 284.w,
-                          color: Color(0xff000000),
-                          height: 1.h,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25.h,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 29.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                showCameraOptions();
-                              },
+                      widget.isEdit
+                          ? SizedBox()
+                          : Center(
                               child: Container(
-                                width: 103.35.w,
-                                height: 127.40.h,
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFFFFBFB),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: _saveButtonClicked &&
-                                              _imageFile == null
-                                          ? Colors.red
-                                          : Color(0x3F000000),
-                                      blurRadius: 5,
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 45.50,
-                                      height: 45.50,
-                                      clipBehavior: Clip.antiAlias,
+                                width: 284.w,
+                                color: Color(0xff000000),
+                                height: 1.h,
+                              ),
+                            ),
+                      widget.isEdit
+                          ? SizedBox()
+                          : SizedBox(
+                              height: 25.h,
+                            ),
+                      widget.isEdit
+                          ? SizedBox()
+                          : Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 29.w),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showCameraOptions();
+                                    },
+                                    child: Container(
+                                      width: 103.35.w,
+                                      height: 127.40.h,
                                       decoration: ShapeDecoration(
+                                        color: Color(0xFFFFFBFB),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15),
                                         ),
-                                      ),
-                                      child: Icon(Icons.add_circle_rounded,
-                                          size: 45.5.r,
-                                          color: Color(0xFF76A095)),
-                                    ),
-                                    SizedBox(height: 13.h),
-                                    Container(
-                                      width: 88.40.w,
-                                      child: Text(
-                                        'Upload Images',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: _saveButtonClicked &&
-                                                  _imageFile == null
-                                              ? Colors.red
-                                              : Color(0xFF76A095),
-                                          fontSize: 9.10.sp,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w600,
-                                          height: 0,
-                                          letterSpacing: 0.18.sp,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          _imageFile == null
-                              ? SizedBox()
-                              : Hero(
-                                  tag: 'PostImage',
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      imagePreview();
-                                    },
-                                    child: Container(
-                                      width: 125.r,
-                                      height: 125.r,
-                                      margin: EdgeInsets.only(left: 29.w),
-                                      decoration: ShapeDecoration(
-                                        image: DecorationImage(
-                                          image: FileImage(_imageFile!),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                        ),
-                                        shadows: const [
+                                        shadows: [
                                           BoxShadow(
-                                            color: Color(0x3F000000),
+                                            color: _saveButtonClicked &&
+                                                    _imageFile == null
+                                                ? Colors.red
+                                                : Color(0x3F000000),
                                             blurRadius: 5,
                                             offset: Offset(0, 0),
                                             spreadRadius: 0,
                                           )
                                         ],
                                       ),
-                                      // child: Container(
-                                      //   height:
-                                      //   child: Image.file(
-                                      //     _imageFile!,
-                                      //     fit: BoxFit.cover,
-                                      //   ),
-                                      // ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 45.50,
+                                            height: 45.50,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: ShapeDecoration(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                            ),
+                                            child: Icon(
+                                                Icons.add_circle_rounded,
+                                                size: 45.5.r,
+                                                color: Color(0xFF76A095)),
+                                          ),
+                                          SizedBox(height: 13.h),
+                                          Container(
+                                            width: 88.40.w,
+                                            child: Text(
+                                              'Upload Images',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: _saveButtonClicked &&
+                                                        _imageFile == null
+                                                    ? Colors.red
+                                                    : Color(0xFF76A095),
+                                                fontSize: 9.10.sp,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w600,
+                                                height: 0,
+                                                letterSpacing: 0.18.sp,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                )
-                        ],
-                      )
+                                ),
+                                _imageFile == null
+                                    ? SizedBox()
+                                    : Hero(
+                                        tag: 'PostImage',
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            imagePreview();
+                                          },
+                                          child: Container(
+                                            width: 125.r,
+                                            height: 125.r,
+                                            margin: EdgeInsets.only(left: 29.w),
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: FileImage(_imageFile!),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.r),
+                                              ),
+                                              shadows: const [
+                                                BoxShadow(
+                                                  color: Color(0x3F000000),
+                                                  blurRadius: 5,
+                                                  offset: Offset(0, 0),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
+                                            ),
+                                            // child: Container(
+                                            //   height:
+                                            //   child: Image.file(
+                                            //     _imageFile!,
+                                            //     fit: BoxFit.cover,
+                                            //   ),
+                                            // ),
+                                          ),
+                                        ),
+                                      )
+                              ],
+                            )
                     ],
                   ),
                 ),
@@ -619,7 +679,10 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                         _imageFile != null &&
                         uploadArticleStatus != UploadArticleStatus.processing) {
                       // Process data.
-                      await uploadPost();
+                      if (widget.isEdit)
+                        await updatePost();
+                      else
+                        await uploadPost();
                     }
                   },
                   child: Container(

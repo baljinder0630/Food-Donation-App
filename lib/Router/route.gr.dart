@@ -146,9 +146,15 @@ abstract class $AppRouter extends _i22.RootStackRouter {
       );
     },
     PostArticleRoute.name: (routeData) {
+      final args = routeData.argsAs<PostArticleRouteArgs>(
+          orElse: () => const PostArticleRouteArgs());
       return _i22.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i16.PostArticle(),
+        child: _i16.PostArticle(
+          isEdit: args.isEdit,
+          post: args.post,
+          key: args.key,
+        ),
       );
     },
     RaiseRequestRoute.name: (routeData) {
@@ -459,16 +465,45 @@ class PickUpRequestRoute extends _i22.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i16.PostArticle]
-class PostArticleRoute extends _i22.PageRouteInfo<void> {
-  const PostArticleRoute({List<_i22.PageRouteInfo>? children})
-      : super(
+class PostArticleRoute extends _i22.PageRouteInfo<PostArticleRouteArgs> {
+  PostArticleRoute({
+    bool isEdit = false,
+    _i23.PostModel? post,
+    _i24.Key? key,
+    List<_i22.PageRouteInfo>? children,
+  }) : super(
           PostArticleRoute.name,
+          args: PostArticleRouteArgs(
+            isEdit: isEdit,
+            post: post,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'PostArticleRoute';
 
-  static const _i22.PageInfo<void> page = _i22.PageInfo<void>(name);
+  static const _i22.PageInfo<PostArticleRouteArgs> page =
+      _i22.PageInfo<PostArticleRouteArgs>(name);
+}
+
+class PostArticleRouteArgs {
+  const PostArticleRouteArgs({
+    this.isEdit = false,
+    this.post,
+    this.key,
+  });
+
+  final bool isEdit;
+
+  final _i23.PostModel? post;
+
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'PostArticleRouteArgs{isEdit: $isEdit, post: $post, key: $key}';
+  }
 }
 
 /// generated route for
