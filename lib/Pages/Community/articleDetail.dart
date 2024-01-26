@@ -1,22 +1,47 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 
 @RoutePage()
-class ArticleDetail extends StatefulWidget {
+class ArticleDetail extends ConsumerStatefulWidget {
   final PostModel article;
   const ArticleDetail({required this.article, super.key});
 
   @override
-  State<ArticleDetail> createState() => _ArticleDetailState();
+  ConsumerState<ArticleDetail> createState() => _ArticleDetailState();
 }
 
-class _ArticleDetailState extends State<ArticleDetail> {
+class _ArticleDetailState extends ConsumerState<ArticleDetail> {
   @override
   Widget build(BuildContext context) {
+    void share() {}
+
+    void toogleBookMark() {
+      ref.watch(communityProvider.notifier).addToBookMark(
+          ref.watch(authStateProvider).user!.uid, widget.article.id, context);
+    }
+
+    var nameParts = widget.article.username.split(" ");
+    var initials = "";
+
+    if (nameParts.length > 0 && nameParts[0].isNotEmpty) {
+      initials += nameParts[0].substring(0, 1).toUpperCase();
+    }
+
+    if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
+      initials += nameParts[1].substring(0, 1).toUpperCase();
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -59,7 +84,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: SelectableText(
-                      widget.article.subject,
+                      toCamelCase(widget.article.subject),
                       style: TextStyle(
                         color: Color(0xFF201F24),
                         fontSize: 20.sp,
@@ -90,16 +115,35 @@ class _ArticleDetailState extends State<ArticleDetail> {
                               Container(
                                 width: 30.w,
                                 height: 30.h,
+                                child: widget.article.createdByAvatar == null
+                                    ? Center(
+                                        child: Text(
+                                          initials,
+                                          style: TextStyle(
+                                            color: Color(0xFFF9F8FD),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'Outfit',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                            letterSpacing: 0.56.sp,
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: ClipOval(
+                                          child: Image.network(
+                                            widget.article.createdByAvatar
+                                                .toString(),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
                                 decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        widget.article.createdByAvatar),
-                                    fit: BoxFit.cover,
-                                  ),
                                   shape: OvalBorder(
                                     side: BorderSide(
                                         width: 2.w, color: Color(0xFFDAACAC)),
                                   ),
+                                  color: Colors.black,
                                   shadows: const [
                                     BoxShadow(
                                       color: Color(0x3F000000),
@@ -142,7 +186,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                timeAgo(widget.article.createdTime),
+                                timeAgo(widget.article.createdTime.toDate()),
                                 style: TextStyle(
                                   color: Color(0xFF8E7474),
                                   fontSize: 14.sp,
@@ -168,8 +212,10 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         height: 285.h,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30.r),
-                          child: Image.network(
-                            widget.article.imgUrl,
+                          child: Image(
+                            image: CachedNetworkImageProvider(
+                              widget.article.imgUrl,
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -205,7 +251,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                                     width: 36.w,
                                     height: 36.h,
                                     decoration: const ShapeDecoration(
-                                      color: Color(0xFFFEFEFE),
+                                      color: Colors.black,
                                       shape: OvalBorder(),
                                       shadows: [
                                         BoxShadow(
@@ -219,10 +265,12 @@ class _ArticleDetailState extends State<ArticleDetail> {
                                     alignment: Alignment.center,
                                     child: GestureDetector(
                                         onTap: () {
-                                          addToBookMark();
+                                          toogleBookMark();
                                         },
-                                        child:
-                                            Icon(Icons.bookmark_add_outlined))),
+                                        child: Icon(
+                                          Icons.bookmark_add_outlined,
+                                          color: Colors.white,
+                                        ))),
                                 // SizedBox(height: 12.h),
                                 // Container(
                                 //     width: 36.w,
@@ -277,7 +325,3 @@ class _ArticleDetailState extends State<ArticleDetail> {
     );
   }
 }
-
-void share() {}
-
-void addToBookMark() {}

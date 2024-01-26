@@ -135,6 +135,16 @@ class UserAuth extends StateNotifier<AuthState> {
     }
   }
 
+  logout() async {
+    await FirebaseAuth.instance.signOut();
+    state.user = null;
+    state = state.copyWith(
+      user: null,
+      authStatus: AuthStatus.processed,
+      appStatus: AppStatus.unAuthenticated,
+    );
+  }
+
   showSnackBar(message, context, color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
