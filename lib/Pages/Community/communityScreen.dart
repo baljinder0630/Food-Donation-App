@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_interpolation_to_compose_strings
 
 import 'dart:developer';
 
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 // import 'package:food_donation_app/Pages/Community/posts.dart';
@@ -218,9 +219,8 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                             width: 300.sp,
                             height: 300.sp,
                             child: Container(
-                              alignment: Alignment.bottomCenter,
                               padding: EdgeInsets.only(bottom: 13.h),
-                              width: 241.w,
+                              alignment: Alignment.bottomCenter,
                               height: 105.h,
                               decoration: ShapeDecoration(
                                 shape: RoundedRectangleBorder(
@@ -233,6 +233,8 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
+                                    // color: Colors.redAccent,
+                                    width: 270.sp,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
@@ -241,12 +243,13 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          posts[index].subject.length > 30
-                                              ? posts[index]
+                                          posts[index].subject.length > 35
+                                              ? toCamelCase(posts[index]
                                                       .subject
-                                                      .substring(0, 30) +
+                                                      .substring(0, 35)) +
                                                   "..."
-                                              : posts[index].subject,
+                                              : toCamelCase(
+                                                  posts[index].subject),
                                           style: TextStyle(
                                             color: Color(0xFFB3B3B8),
                                             fontSize: 14.sp,
@@ -258,16 +261,16 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                         ),
                                         SizedBox(height: 5.h),
                                         Container(
-                                          width: 241.w,
+                                          width: 270.w,
                                           height: 50.h,
                                           // color: Colors.red,
                                           child: SingleChildScrollView(
                                             child: Text(
                                               posts[index].description.length >
-                                                      70
+                                                      100
                                                   ? posts[index]
                                                           .description
-                                                          .substring(0, 70) +
+                                                          .substring(0, 100) +
                                                       "..."
                                                   : posts[index].description,
                                               style: TextStyle(
@@ -591,12 +594,13 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                                               width: 150.w,
                                               height: 16.sp,
                                               child: Text(
-                                                posts[index].subject.length > 20
-                                                    ? posts[index]
+                                                posts[index].subject.length > 15
+                                                    ? toCamelCase(posts[index]
                                                             .subject
-                                                            .substring(0, 20) +
+                                                            .substring(0, 15)) +
                                                         "..."
-                                                    : posts[index].subject,
+                                                    : toCamelCase(
+                                                        posts[index].subject),
                                                 style: TextStyle(
                                                   color: Color(0xFFBFAAAA),
                                                   fontSize: 14.sp,
@@ -756,7 +760,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
             alignment: Alignment.bottomRight,
             child: InkWell(
               onTap: () async {
-                context.pushRoute(const PostArticleRoute());
+                context.pushRoute(PostArticleRoute());
               },
               child: Container(
                   margin: EdgeInsets.only(bottom: 30.h, right: 30.w),

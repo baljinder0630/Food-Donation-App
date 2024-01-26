@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -86,16 +87,18 @@ class Community extends StateNotifier<CommunityState> {
 
       final snapshot = await firestore
           .collection("articles")
-          .orderBy("createdTime", descending: true)
+          // .orderBy("createdTime", descending: true)
           .limit(10)
           .get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
+
         e.data()["createdTime"] =
             (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
         // log(e.data().toString());
         return PostModel.fromMap(e.data());
       }).toList();
+
       state = state.copyWith(posts: posts);
       state = state.copyWith(scrollStatus: ScrollStatus.processed);
       state = state.copyWith(rcmdPostStatus: PostStatus.processed);
@@ -160,9 +163,17 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
-  updatePost(PostModel post, context) {
+  updatePost(PostModel post, context) async {
     try {
-      firestore
+      state = state.copyWith(
+        uploadArticleStatus: UploadArticleStatus.processing,
+        posts: state.posts!.map((e) => e.id == post.id ? post : e).toList(),
+        bookMarkedPosts: state.bookMarkedPosts!
+            .map((e) => e.id == post.id ? post : e)
+            .toList(),
+        myPosts: state.myPosts!.map((e) => e.id == post.id ? post : e).toList(),
+      );
+      await firestore
           .collection("articles")
           .where("id", isEqualTo: post.id)
           .get()
@@ -170,14 +181,14 @@ class Community extends StateNotifier<CommunityState> {
         querySnapshot.docs.forEach((doc) {
           doc.reference.update(post.toMap());
         });
-        showSnackBar("Updated Successfully", context, Colors.green);
       });
-
-      log("Article updated");
+      state =
+          state.copyWith(uploadArticleStatus: UploadArticleStatus.processed);
+      return true;
     } catch (e) {
-      showSnackBar("Failed to update", context, Colors.red);
-
+      state = state.copyWith(uploadArticleStatus: UploadArticleStatus.error);
       log(e.toString());
+      return false;
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
@@ -83,7 +84,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: SelectableText(
-                      widget.article.subject,
+                      toCamelCase(widget.article.subject),
                       style: TextStyle(
                         color: Color(0xFF201F24),
                         fontSize: 20.sp,

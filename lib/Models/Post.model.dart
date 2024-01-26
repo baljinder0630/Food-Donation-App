@@ -24,7 +24,7 @@ class PostModel {
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
       id: map['id'],
-      subject: map['subject'],
+      subject: map['subject'].toString().toLowerCase(),
       description: map['description'],
       imgUrl: map['imgUrl'],
       userId: map['userId'],
@@ -37,7 +37,7 @@ class PostModel {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "subject": subject,
+      "subject": subject.toString().toLowerCase(),
       "description": description,
       "imgUrl": imgUrl,
       "userId": userId,

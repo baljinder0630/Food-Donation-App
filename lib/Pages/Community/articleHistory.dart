@@ -59,12 +59,27 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 PopupMenuItem(
                   padding: EdgeInsets.zero,
                   child: Center(
-                    child: Text(
-                      'Edit',
+                    child: TextButton(
+                      onPressed: () {
+                        context.popRoute();
+                        context.pushRoute(
+                            PostArticleRoute(post: post, isEdit: true));
+                      },
+                      child: Text(
+                        'Edit',
+                        style: TextStyle(
+                          color: Color(0xFF201F24),
+                          fontSize: 16.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                          letterSpacing: 0.64.sp,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                PopupMenuItem(
+                const PopupMenuItem(
                   padding: EdgeInsets.zero,
                   child: Center(
                       child: Text(
@@ -82,7 +97,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
             ),
-            shadows: [
+            shadows: const [
               BoxShadow(
                 color: Color(0x3F000000),
                 blurRadius: 9.60,
@@ -126,7 +141,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                       children: [
                         Container(
                           height: 22.h,
-                          width: 289.20.w,
+                          width: 310.w,
                           child: Text(
                             toCamelCase(post.subject),
                             style: TextStyle(
