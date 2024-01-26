@@ -1,9 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:enableOnBackInvokedCallback="true"
-        android:label="food_donation_app"
+        android:label="Aahar"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:resource="@style/Theme.AppCompat"
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"
