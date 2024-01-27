@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_interpolation_to_compose_strings
 
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/Community/allPosts.dart';
+import 'package:food_donation_app/Pages/Community/peoplePage.dart';
 import 'package:food_donation_app/Pages/Community/recentPosts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -24,7 +27,6 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   List<String> categories = [
     "All",
     "Recents",
-    "Tips",
     "People",
   ];
 
@@ -120,7 +122,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 ),
                 SizedBox(height: 10.h),
                 MyAppBar(
-                    centerWidget: selectedCategory == 3
+                    centerWidget: selectedCategory == 2
                         ? Padding(
                             padding: EdgeInsets.only(left: 57.w),
                             child: GestureDetector(
@@ -137,7 +139,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                               child: MySearchBar(title: "Articles"),
                             ),
                           ),
-                    rightWidget: selectedCategory == 3
+                    rightWidget: selectedCategory == 2
                         ? SizedBox()
                         : Padding(
                             padding: EdgeInsets.only(right: 34.18.w),
@@ -162,7 +164,28 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                       SizedBox(
                         height: 20.h,
                       ),
-                      getSelectedCategoryWidget(selectedCategory)
+                      GestureDetector(
+                          onHorizontalDragEnd: (details) {
+                            log(details.primaryVelocity.toString() +
+                                "  " +
+                                selectedCategory.toString());
+                            if (details.primaryVelocity! > 0) {
+                              setState(() {
+                                selectedCategory--;
+                                if (selectedCategory < 0) {
+                                  selectedCategory = 0;
+                                }
+                              });
+                            } else {
+                              setState(() {
+                                selectedCategory++;
+                                if (selectedCategory > 2) {
+                                  selectedCategory = 2;
+                                }
+                              });
+                            }
+                          },
+                          child: getSelectedCategoryWidget(selectedCategory))
                     ],
                   ),
                 ),
@@ -197,7 +220,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   ),
                 )
               : SizedBox(),
-          selectedCategory != 3
+          selectedCategory != 2
               ? Positioned(
                   top: 147.h,
                   right: -32.w,
@@ -228,17 +251,7 @@ Widget getSelectedCategoryWidget(int selectedCategory) {
     case 1:
       return RecentPosts();
     case 2:
-      return Container(
-        child: Center(
-          child: Text("Tips"),
-        ),
-      );
-    case 3:
-      return Container(
-        child: Center(
-          child: Text("People"),
-        ),
-      );
+      return Container(child: PeoplePage());
     default:
       return Container(
         child: Center(

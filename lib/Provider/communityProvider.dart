@@ -142,7 +142,8 @@ class Community extends StateNotifier<CommunityState> {
     try {
       final snapshot = await firestore
           .collection("articles")
-          .where("userId", isEqualTo: ref.watch(authStateProvider).user!.uid)
+          .where("userId",
+              isEqualTo: ref.watch(authStateProvider).user!.firebaseUser!.uid)
           .get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
@@ -159,11 +160,11 @@ class Community extends StateNotifier<CommunityState> {
 
   getBookmarkedPosts(context) async {
     try {
-      log(ref.watch(authStateProvider).user!.uid);
+      log(ref.watch(authStateProvider).user!.firebaseUser!.uid);
 
       final bookmarks = await firestore
           .collection('users')
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(ref.watch(authStateProvider).user!.firebaseUser!.uid)
           .get()
           .then((value) {
         return value.data()!['bookmarked'];

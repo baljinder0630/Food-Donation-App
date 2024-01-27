@@ -58,10 +58,10 @@ class _PostArticleState extends ConsumerState<PostArticle> {
       subject: _subjectController.text,
       description: _descriptionController.text,
       imgUrl: "",
-      userId: ref.read(authStateProvider).user!.uid,
-      username: ref.read(authStateProvider).user!.displayName,
+      userId: ref.read(authStateProvider).user!.firebaseUser!.uid,
+      username: ref.read(authStateProvider).user!.firebaseUser!.displayName,
       createdTime: Timestamp.fromDate(DateTime.now()),
-      createdByAvatar: ref.read(authStateProvider).user!.photoURL,
+      createdByAvatar: ref.read(authStateProvider).user!.firebaseUser!.photoURL,
     );
     if (await ref
         .watch(communityProvider.notifier)
