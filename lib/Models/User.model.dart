@@ -1,27 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class UserModel {
-  final User? firebaseUser;
-  final List<String> bookmarks;
-  final List<String> connectionRequests;
-  final List<String> connections;
+  final String uid;
+  final String email;
+  final String displayName;
+  final String photoURL;
+  final totalConnects;
 
   UserModel({
-    this.firebaseUser,
-    required this.bookmarks,
-    required this.connectionRequests,
-    required this.connections,
+    required this.uid,
+    required this.email,
+    required this.displayName,
+    required this.photoURL,
+    this.totalConnects,
   });
+
+  factory UserModel.fromMap(Map<String, dynamic> data) {
+    return UserModel(
+      uid: data['uid'] ?? "",
+      email: data['email'] ?? "",
+      displayName: data['displayName'] ?? "",
+      photoURL: data['photoURL'] ?? "",
+      totalConnects: data['totalConnects'] ?? 0,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      'uid': firebaseUser?.uid,
-      'email': firebaseUser?.email,
-      'displayName': firebaseUser?.displayName,
-      'photoURL': firebaseUser?.photoURL,
-      'bookmarks': bookmarks,
-      'connectionRequests': connectionRequests,
-      'connections': connections,
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'photoURL': photoURL,
+      'totalConnects': totalConnects,
     };
   }
 }

@@ -15,10 +15,11 @@ class UserAuth extends StateNotifier<AuthState> {
       : super(
           AuthState(
             user: UserModel(
-                firebaseUser: FirebaseAuth.instance.currentUser,
-                bookmarks: [],
-                connectionRequests: [],
-                connections: []),
+                uid: "",
+                email: "",
+                displayName: "",
+                photoURL: "",
+                totalConnects: 0),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
           ),
@@ -50,11 +51,11 @@ class UserAuth extends StateNotifier<AuthState> {
           }
           state = state.copyWith(
             user: UserModel(
-                firebaseUser: user,
-                bookmarks: List<String>.from(value.docs[0]["bookmarks"]),
-                connectionRequests:
-                    List<String>.from(value.docs[0]["connectionRequests"]),
-                connections: List<String>.from(value.docs[0]["connections"])),
+                uid: value.docs[0].data()['uid'].toString(),
+                email: value.docs[0].data()['email'].toString(),
+                displayName: value.docs[0].data()['displayName'].toString(),
+                photoURL: value.docs[0].data()['photoURL'].toString(),
+                totalConnects: value.docs[0].data()['totalConnects'] ?? 0),
             authStatus: AuthStatus.processed,
             appStatus: AppStatus.authenticated,
           );
@@ -83,11 +84,17 @@ class UserAuth extends StateNotifier<AuthState> {
         await FirebaseAuth.instance.currentUser!.reload();
         User? user = FirebaseAuth.instance.currentUser;
 
+        if (user == null) {
+          return false;
+        }
+
         final newUser = UserModel(
-            firebaseUser: user,
-            bookmarks: [],
-            connectionRequests: [],
-            connections: []);
+          uid: user.uid.toString(),
+          email: user.email.toString(),
+          displayName: user.displayName.toString(),
+          photoURL: user.photoURL.toString(),
+          totalConnects: 0,
+        );
 
         return await FirebaseFirestore.instance
             .collection('users')

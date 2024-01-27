@@ -11,7 +11,7 @@
 import 'package:auto_route/auto_route.dart' as _i22;
 import 'package:flutter/material.dart' as _i24;
 import 'package:food_donation_app/bottomNavBar.dart' as _i1;
-import 'package:food_donation_app/Models/Post.model.dart' as _i23;
+import 'package:food_donation_app/Models/Community/Post.model.dart' as _i23;
 import 'package:food_donation_app/Pages/Community/articleDetail.dart' as _i2;
 import 'package:food_donation_app/Pages/Community/articleHistory.dart' as _i3;
 import 'package:food_donation_app/Pages/Community/articleSearchPage.dart'

@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
@@ -58,10 +58,10 @@ class _PostArticleState extends ConsumerState<PostArticle> {
       subject: _subjectController.text,
       description: _descriptionController.text,
       imgUrl: "",
-      userId: ref.read(authStateProvider).user!.firebaseUser!.uid,
-      username: ref.read(authStateProvider).user!.firebaseUser!.displayName,
+      userId: ref.read(authStateProvider).user!.uid,
+      username: ref.read(authStateProvider).user!.displayName,
       createdTime: Timestamp.fromDate(DateTime.now()),
-      createdByAvatar: ref.read(authStateProvider).user!.firebaseUser!.photoURL,
+      createdByAvatar: ref.read(authStateProvider).user!.photoURL,
     );
     if (await ref
         .watch(communityProvider.notifier)
