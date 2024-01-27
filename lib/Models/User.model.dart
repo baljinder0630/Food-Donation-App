@@ -1,41 +1,35 @@
 class UserModel {
   final String uid;
   final String email;
-  final String username;
-  final String profile;
-  final String phone;
-  final List<String> bookmarks;
+  final String displayName;
+  final String photoURL;
+  final totalConnects;
 
   UserModel({
     required this.uid,
     required this.email,
-    required this.username,
-    required this.profile,
-    required this.phone,
-    required this.bookmarks,
+    required this.displayName,
+    required this.photoURL,
+    this.totalConnects,
   });
 
-  // Convert a UserModel into a JSON object
+  factory UserModel.fromMap(Map<String, dynamic> data) {
+    return UserModel(
+      uid: data['uid'] ?? "",
+      email: data['email'] ?? "",
+      displayName: data['displayName'] ?? "",
+      photoURL: data['photoURL'] ?? "",
+      totalConnects: data['totalConnects'] ?? 0,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,
-      'username': username,
-      'profile': profile,
-      'phone': phone,
-      'bookmarks': bookmarks,
+      'displayName': displayName,
+      'photoURL': photoURL,
+      'totalConnects': totalConnects,
     };
-  }
-
-  // Create a UserModel from a JSON object
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      uid: map['uid'],
-      email: map['email'],
-      username: map['username'],
-      profile: map['profile'],
-      phone: map['phone'],
-      bookmarks: List<String>.from(map['bookmarks']),
-    );
   }
 }

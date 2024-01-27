@@ -5,11 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:vibration/vibration.dart';
 
@@ -56,30 +57,31 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 details.globalPosition.dy, // Bottom
               ),
               items: [
-                PopupMenuItem(
-                  padding: EdgeInsets.zero,
-                  child: Center(
-                    child: TextButton(
-                      onPressed: () {
-                        context.popRoute();
-                        context.pushRoute(
-                            PostArticleRoute(post: post, isEdit: true));
-                      },
-                      child: Text(
-                        'Edit',
-                        style: TextStyle(
-                          color: Color(0xFF201F24),
-                          fontSize: 16.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                          letterSpacing: 0.64.sp,
+                if (post.userId == ref.watch(authStateProvider).user!.uid)
+                  PopupMenuItem(
+                    padding: EdgeInsets.zero,
+                    child: Center(
+                      child: TextButton(
+                        onPressed: () {
+                          context.popRoute();
+                          context.pushRoute(
+                              PostArticleRoute(post: post, isEdit: true));
+                        },
+                        child: Text(
+                          'Edit',
+                          style: TextStyle(
+                            color: Color(0xFF201F24),
+                            fontSize: 16.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                            letterSpacing: 0.64.sp,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   padding: EdgeInsets.zero,
                   child: Center(
                       child: Text(

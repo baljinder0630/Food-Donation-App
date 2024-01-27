@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
@@ -135,17 +135,26 @@ class Community extends StateNotifier<CommunityState> {
       log(ref.watch(authStateProvider).user!.uid);
 
       final bookmarks = await firestore
-          .collection('users')
+          .collection('bookmarks')
           .doc(ref.watch(authStateProvider).user!.uid)
           .get()
           .then((value) {
+        if (value.data() == null) return [];
         return value.data()!['bookmarked'];
       });
+
+      if (bookmarks == null || bookmarks.isEmpty) {
+        return [];
+      }
       log(bookmarks.toString());
       final snapshot = await firestore
           .collection("articles")
           .where("id", whereIn: bookmarks)
           .get();
+
+      if (snapshot.docs.isEmpty) {
+        return [];
+      }
 
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
@@ -194,10 +203,11 @@ class Community extends StateNotifier<CommunityState> {
 
   addToBookMark(uid, id, context) async {
     try {
-      await firestore.collection('users').doc(uid).update({
+      await firestore.collection('bookmarks').doc(uid).set({
+        'uid': uid,
         'bookmarked': FieldValue.arrayUnion([id])
-      }).whenComplete(
-          () => showSnackBar("Added to Bookmark", context, Colors.green));
+      }, SetOptions(merge: true)).then(
+          (value) => showSnackBar("Added to Bookmark", context, Colors.green));
     } catch (e) {
       showSnackBar("Failed to add in Bookmark", context, Colors.red);
       log(e.toString());
