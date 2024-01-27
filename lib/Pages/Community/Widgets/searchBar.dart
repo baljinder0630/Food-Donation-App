@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MySearchBar extends StatefulWidget {
-  final title;
-  const MySearchBar({required this.title, super.key});
+  const MySearchBar({super.key});
 
   @override
   State<MySearchBar> createState() => _MySearchBarState();
@@ -61,7 +60,7 @@ class _MySearchBarState extends State<MySearchBar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.title,
+                  'Articles',
                   style: TextStyle(
                     color: Color(0xFF5272FC),
                     fontSize: 18.sp,
