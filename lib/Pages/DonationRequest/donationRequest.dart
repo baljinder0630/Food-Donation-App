@@ -59,10 +59,7 @@ class _DonationRequestState extends State<DonationRequest> {
                 ),
               ),
               MyAppBar(
-                  centerWidget: Padding(
-                    padding: EdgeInsets.only(left: 57.w),
-                    child: MySearchBar(title: "Donation Request"),
-                  ),
+                  centerWidget: MySearchBar(),
                   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
                   rightWidget: Padding(
                     padding: EdgeInsets.only(

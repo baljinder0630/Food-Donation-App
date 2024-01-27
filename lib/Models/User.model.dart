@@ -1,27 +1,41 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class UserModel {
-  final User? firebaseUser;
+  final String uid;
+  final String email;
+  final String username;
+  final String profile;
+  final String phone;
   final List<String> bookmarks;
-  final List<String> connectionRequests;
-  final List<String> connections;
 
   UserModel({
-    this.firebaseUser,
+    required this.uid,
+    required this.email,
+    required this.username,
+    required this.profile,
+    required this.phone,
     required this.bookmarks,
-    required this.connectionRequests,
-    required this.connections,
   });
 
+  // Convert a UserModel into a JSON object
   Map<String, dynamic> toMap() {
     return {
-      'uid': firebaseUser?.uid,
-      'email': firebaseUser?.email,
-      'displayName': firebaseUser?.displayName,
-      'photoURL': firebaseUser?.photoURL,
+      'uid': uid,
+      'email': email,
+      'username': username,
+      'profile': profile,
+      'phone': phone,
       'bookmarks': bookmarks,
-      'connectionRequests': connectionRequests,
-      'connections': connections,
     };
+  }
+
+  // Create a UserModel from a JSON object
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'],
+      email: map['email'],
+      username: map['username'],
+      profile: map['profile'],
+      phone: map['phone'],
+      bookmarks: List<String>.from(map['bookmarks']),
+    );
   }
 }
