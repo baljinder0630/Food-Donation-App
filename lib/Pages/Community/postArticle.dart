@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Post.model.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -38,7 +39,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   void initState() {
     super.initState();
     if (widget.isEdit) {
-      _subjectController.text = widget.post!.subject;
+      _subjectController.text = toCamelCase(widget.post!.subject);
       _descriptionController.text = widget.post!.description;
       _imageFile = File(widget.post!.imgUrl);
     }
@@ -57,10 +58,10 @@ class _PostArticleState extends ConsumerState<PostArticle> {
       subject: _subjectController.text,
       description: _descriptionController.text,
       imgUrl: "",
-      userId: ref.read(authStateProvider).user!.uid,
-      username: ref.read(authStateProvider).user!.displayName,
+      userId: ref.read(authStateProvider).user!.firebaseUser!.uid,
+      username: ref.read(authStateProvider).user!.firebaseUser!.displayName,
       createdTime: Timestamp.fromDate(DateTime.now()),
-      createdByAvatar: ref.read(authStateProvider).user!.photoURL,
+      createdByAvatar: ref.read(authStateProvider).user!.firebaseUser!.photoURL,
     );
     if (await ref
         .watch(communityProvider.notifier)
@@ -377,7 +378,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
           centerTitle: true,
           leading: Center(child: MyBackButton()),
           title: Text(
-            'Post Article',
+            widget.isEdit ? 'Edit Article' : 'Post Article',
             style: TextStyle(
               color: Color(0xFF201F24),
               fontSize: 20.sp,

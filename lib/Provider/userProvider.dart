@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Models/User.model.dart';
 
 final authStateProvider = StateNotifierProvider<UserAuth, AuthState>((ref) {
   return UserAuth();
@@ -13,7 +14,11 @@ class UserAuth extends StateNotifier<AuthState> {
   UserAuth()
       : super(
           AuthState(
-            user: FirebaseAuth.instance.currentUser,
+            user: UserModel(
+                firebaseUser: FirebaseAuth.instance.currentUser,
+                bookmarks: [],
+                connectionRequests: [],
+                connections: []),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
           ),
@@ -22,7 +27,7 @@ class UserAuth extends StateNotifier<AuthState> {
   }
 
   checkAuthentication() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         state = state.copyWith(
           authStatus: AuthStatus.processed,
@@ -30,12 +35,31 @@ class UserAuth extends StateNotifier<AuthState> {
         );
         log("User is currently signed out!");
       } else {
-        state = state.copyWith(
-          user: user,
-          authStatus: AuthStatus.processed,
-          appStatus: AppStatus.authenticated,
-        );
-        log("User is signed in!");
+        await FirebaseFirestore.instance
+            .collection("users")
+            .where("uid", isEqualTo: user.uid)
+            .get()
+            .then((value) {
+          if (value.docs.length == 0) {
+            // log("No user found");
+            // state = state.copyWith(
+            //   authStatus: AuthStatus.processed,
+            //   appStatus: AppStatus.unAuthenticated,
+            // );
+            return;
+          }
+          state = state.copyWith(
+            user: UserModel(
+                firebaseUser: user,
+                bookmarks: List<String>.from(value.docs[0]["bookmarks"]),
+                connectionRequests:
+                    List<String>.from(value.docs[0]["connectionRequests"]),
+                connections: List<String>.from(value.docs[0]["connections"])),
+            authStatus: AuthStatus.processed,
+            appStatus: AppStatus.authenticated,
+          );
+          log("User is signed in!");
+        });
       }
     });
   }
@@ -51,21 +75,29 @@ class UserAuth extends StateNotifier<AuthState> {
         password: password,
       )
           .then((credential) async {
+        if (credential.user == null) return false;
+
         log("User Created Successfully");
-        state = state.copyWith(user: credential.user);
+
+        await credential.user!.updateDisplayName(name);
+        await FirebaseAuth.instance.currentUser!.reload();
+        User? user = FirebaseAuth.instance.currentUser;
+
+        final newUser = UserModel(
+            firebaseUser: user,
+            bookmarks: [],
+            connectionRequests: [],
+            connections: []);
 
         return await FirebaseFirestore.instance
             .collection('users')
             .doc(credential.user!.uid)
-            .set({
-          'name': name,
-          'email': email,
-          'uid': credential.user!.uid,
-        }).then((value) {
-          state.user!.updateDisplayName(name);
+            .set(newUser.toMap())
+            .then((value) {
           state.copyWith(
             authStatus: AuthStatus.processed,
             appStatus: AppStatus.authenticated,
+            user: newUser,
           );
           showSnackBar("SignUp Successful", context, Colors.green);
 
@@ -103,9 +135,9 @@ class UserAuth extends StateNotifier<AuthState> {
         email: email,
         password: password,
       )
-          .then((value) {
+          .then((value) async {
         log("User Logged In Successfully");
-        state = state.copyWith(user: value.user);
+        await checkAuthentication();
         state.copyWith(
           authStatus: AuthStatus.processed,
           appStatus: AppStatus.authenticated,
@@ -156,7 +188,7 @@ class UserAuth extends StateNotifier<AuthState> {
 }
 
 class AuthState {
-  User? user;
+  UserModel? user;
   AuthStatus? authStatus;
   AppStatus? appStatus;
 
@@ -167,7 +199,7 @@ class AuthState {
   });
 
   AuthState copyWith({
-    User? user,
+    UserModel? user,
     AuthStatus? authStatus,
     AppStatus? appStatus,
   }) {
@@ -177,10 +209,6 @@ class AuthState {
       appStatus: appStatus ?? this.appStatus,
     );
   }
-
-  // User toMap() {
-  //   return user;
-  // }
 }
 
 enum AuthStatus { initial, processing, processed, error }

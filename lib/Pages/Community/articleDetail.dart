@@ -28,7 +28,9 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
 
     void toogleBookMark() {
       ref.watch(communityProvider.notifier).addToBookMark(
-          ref.watch(authStateProvider).user!.uid, widget.article.id, context);
+          ref.watch(authStateProvider).user!.firebaseUser!.uid,
+          widget.article.id,
+          context);
     }
 
     var nameParts = widget.article.username.split(" ");
