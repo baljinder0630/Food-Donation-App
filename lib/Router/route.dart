@@ -73,5 +73,9 @@ class AppRouter extends $AppRouter {
           page: ArticleHistoryRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+          page: ChatScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
       ];
 }

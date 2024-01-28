@@ -37,6 +37,8 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
       // Your code here
       ref.read(communityProvider.notifier).getPosts(0);
       ref.read(communityProvider.notifier).getRecentPosts(0);
+      ref.read(communityProvider.notifier).getPeoples(0);
+      ref.read(communityProvider.notifier).loadChatRooms();
     });
     super.initState();
   }

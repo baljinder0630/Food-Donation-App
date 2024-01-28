@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Models/Community/ChatRoom.model.dart';
+import 'package:food_donation_app/Models/Community/Chatting.model.dart';
 import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
+import 'package:food_donation_app/Models/User.model.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -24,6 +26,8 @@ class Community extends StateNotifier<CommunityState> {
           recentPosts: [],
           myPosts: [],
           bookMarkedPosts: [],
+          users: [],
+          chatrooms: [],
           scrollStatus: ScrollStatus.initial,
           rcmdPostStatus: PostStatus.initial,
           featuredPostStatus: PostStatus.initial,
@@ -199,6 +203,96 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
+  getPeoples(int from) async {
+    try {
+      final snapshot = await firestore
+          .collection("users")
+          .where("uid", isNotEqualTo: ref.watch(authStateProvider).user!.uid)
+          .get();
+      final people = snapshot.docs.map((value) {
+        return UserModel.fromMap(value.data());
+      }).toList();
+      state = state.copyWith(users: people);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  loadChatRooms() async {
+    try {
+      log("Loading chatrooms");
+      final snapshot = await firestore
+          .collection("chatRoomModel")
+          .where("participants.${ref.watch(authStateProvider).user!.uid}",
+              isEqualTo: true)
+          .get();
+      final chatrooms = snapshot.docs.map((value) {
+        return Chatroommodel.fromMap(value.data());
+      }).toList();
+
+      state = state.copyWith(chatrooms: chatrooms);
+      return chatrooms;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<Chatroommodel> createChatRoom(targetUid) async {
+    try {
+      bool chatAlreadyExist = state.chatrooms!
+          .any((element) => element.participants!.containsKey(targetUid));
+      if (chatAlreadyExist) {
+        log("chatroom already exist");
+        return state.chatrooms!.firstWhere(
+            (element) => element.participants!.containsKey(targetUid));
+      }
+      Chatroommodel chatRoomModel = Chatroommodel(participants: {
+        ref.watch(authStateProvider).user!.uid: true,
+        targetUid: true
+      }, chatroomuid: Uuid().v4(), lastmessage: "");
+      await firestore
+          .collection("chatRoomModel")
+          .doc()
+          .set(chatRoomModel.toMap());
+
+      state = state.copyWith(chatrooms: [...state.chatrooms!, chatRoomModel]);
+
+      log("chatroom created");
+      return chatRoomModel;
+    } catch (e) {
+      print(e);
+      return Chatroommodel(participants: {}, chatroomuid: "", lastmessage: "");
+    }
+  }
+
+  SendMessage(String msg, String chatRoomUid) async {
+    log("Sending msg");
+
+    try {
+      if (msg != null) {
+        Chattingmodel chattingModel = await Chattingmodel(
+            seen: false,
+            sendOn: DateTime.now().toLocal().microsecondsSinceEpoch.toString(),
+            sendtime: DateTime.now().toLocal().toString(),
+            messageId:
+                DateTime.now().toLocal().microsecondsSinceEpoch.toString(),
+            lastmessage: msg,
+            sender: ref.watch(authStateProvider).user!.uid.toString());
+
+        await firestore
+            .collection("ChatRoom")
+            .doc(chatRoomUid)
+            .collection("Messages")
+            .doc(chattingModel.messageId)
+            .set(chattingModel.toMap())
+            .then((value) => log("message sent"))
+            .onError((error, stackTrace) => log(error.toString()));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   updatePost(PostModel post, context) async {
     try {
       state = state.copyWith(
@@ -243,9 +337,9 @@ class Community extends StateNotifier<CommunityState> {
 
   articleSearchSuggestion(String val) async {
     log("Fetching suggestion for $val");
-    if (val.length > 1)
+    if (val.length > 1) {
       try {
-        firestore
+        await firestore
             .collection('articles')
             .where('subject', isGreaterThanOrEqualTo: val)
             .where('subject', isLessThan: val + 'z')
@@ -261,6 +355,7 @@ class Community extends StateNotifier<CommunityState> {
       } catch (e) {
         print(e);
       }
+    }
   }
 
   showSnackBar(message, context, color) {
@@ -278,6 +373,8 @@ class CommunityState {
   List<PostModel>? recentPosts;
   List<PostModel>? myPosts;
   List<PostModel>? bookMarkedPosts;
+  List<UserModel>? users;
+  List<Chatroommodel>? chatrooms;
   List<String>? articleSearchSuggestions;
   ScrollStatus? scrollStatus;
   PostStatus? rcmdPostStatus;
@@ -290,6 +387,8 @@ class CommunityState {
     this.recentPosts,
     this.myPosts,
     this.bookMarkedPosts,
+    this.chatrooms,
+    this.users,
     this.articleSearchSuggestions,
     this.scrollStatus,
     this.rcmdPostStatus,
@@ -303,6 +402,8 @@ class CommunityState {
     List<PostModel>? myPosts,
     List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
+    List<UserModel>? users,
+    List<Chatroommodel>? chatrooms,
     List<String>? articleSearchSuggestions,
     ScrollStatus? scrollStatus,
     PostStatus? featuredPostStatus,
@@ -314,7 +415,9 @@ class CommunityState {
       posts: posts ?? this.posts,
       myPosts: myPosts ?? this.myPosts,
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
+      users: users ?? this.users,
       recentPosts: recentPosts ?? this.recentPosts,
+      chatrooms: chatrooms ?? this.chatrooms,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,
       rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
