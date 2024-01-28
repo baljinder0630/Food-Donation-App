@@ -1,59 +1,35 @@
-// class User {
-//   String name;
-//   String email;
-//   // String password;
-//   // String phone;
-//   // String address;
-//   // String city;
-//   // String state;
-//   // String country;
-//   // String zip;
-//   // String image;
-//   // String token;
+class UserModel {
+  final String uid;
+  final String email;
+  final String displayName;
+  final String photoURL;
+  final totalConnects;
 
-//   User({
-//     required this.name,
-//     required this.email,
-//     // required this.password,
-//     // required this.phone,
-//     // required this.address,
-//     // required this.city,
-//     // required this.state,
-//     // required this.country,
-//     // required this.zip,
-//     // required this.image,
-//     // required this.token
-//   });
+  UserModel({
+    required this.uid,
+    required this.email,
+    required this.displayName,
+    required this.photoURL,
+    this.totalConnects,
+  });
 
-//   factory User.fromJson(Map<String, dynamic> json) {
-//     return User(
-//       name: json['name'],
-//       email: json['email'],
-//       // password: json['password'],
-//       // phone: json['phone'],
-//       // address: json['address'],
-//       // city: json['city'],
-//       // state: json['state'],
-//       // country: json['country'],
-//       // zip: json['zip'],
-//       // image: json['image'],
-//       // token: json['token']
-//     );
-//   }
+  factory UserModel.fromMap(Map<String, dynamic> data) {
+    return UserModel(
+      uid: data['uid'] ?? "",
+      email: data['email'] ?? "",
+      displayName: data['displayName'] ?? "",
+      photoURL: data['photoURL'] ?? "",
+      totalConnects: data['totalConnects'] ?? 0,
+    );
+  }
 
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'name': name,
-//       'email': email,
-//       // 'password': password,
-//       // 'phone': phone,
-//       // 'address': address,
-//       // 'city': city,
-//       // 'state': state,
-//       // 'country': country,
-//       // 'zip': zip,
-//       // 'image': image,
-//       // 'token': token
-//     };
-//   }
-// }
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'photoURL': photoURL,
+      'totalConnects': totalConnects,
+    };
+  }
+}

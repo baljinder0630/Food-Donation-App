@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_donation_app/Pages/Donate/otp_screen.dart';
+import 'package:food_donation_app/Pages/Donate/razorpay_payment_gateway.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:food_donation_app/Pages/Donate/camera_preview.dart';
 
 @RoutePage()
 class DonateForm extends StatefulWidget {
@@ -80,7 +80,6 @@ class FeatureCard extends StatelessWidget {
 }
 
 class _DonateFormState extends State<DonateForm> {
-  static String verificationIdentity = "";
   bool value = false;
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
@@ -305,6 +304,13 @@ class _DonateFormState extends State<DonateForm> {
                             onTap: () {
                               setState(() {
                                 value = !value;
+                                if (value) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RazorpayPaymentGateway()));
+                                }
                               });
                             },
                             child: Container(
@@ -501,7 +507,6 @@ class _DonateFormState extends State<DonateForm> {
                                     (FirebaseAuthException e) {},
                                 codeSent:
                                     (String verificationId, int? resendToken) {
-                                  verificationIdentity = verificationId;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

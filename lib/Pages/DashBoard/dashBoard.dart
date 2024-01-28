@@ -1,15 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
-class DashBoardPage extends StatefulWidget {
+class DashBoardPage extends ConsumerStatefulWidget {
   const DashBoardPage({super.key});
 
   @override
-  State<DashBoardPage> createState() => _DashBoardPageState();
+  ConsumerState<DashBoardPage> createState() => _DashBoardPageState();
+
 }
+
+
 
 // class _DashBoardPageState extends State<DashBoardPage> {
 //   int _currentPage = 1;
@@ -88,34 +93,34 @@ class DashBoardPage extends StatefulWidget {
 //   }
 // }
 
-class DashboardButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
+// class DashboardButton extends StatelessWidget {
+//   final String text;
+//   final VoidCallback onPressed;
 
-  const DashboardButton({
-    required this.text,
-    required this.onPressed,
+//   const DashboardButton({
+//     required this.text,
+//     required this.onPressed,
     
-  });
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(text),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       child: ElevatedButton(
+//         onPressed: onPressed,
+//         child: Text(text),
+//       ),
+//     );
+//   }
+// }
 
 // class InstagramProfile extends StatefulWidget {
 //   @override
 //   _InstagramProfileState createState() => _InstagramProfileState();
 // }
 
-class _DashBoardPageState extends State<DashBoardPage> {
+class _DashBoardPageState extends ConsumerState<DashBoardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
