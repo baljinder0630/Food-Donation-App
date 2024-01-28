@@ -12,7 +12,71 @@ class DonateForm extends StatefulWidget {
   const DonateForm({super.key});
 
   @override
-  State<DonateForm> createState() => _DonateFormState();
+  State<DonateForm> createState() => _MyApp();
+}
+
+
+class _MyApp extends State<DonateForm> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Donation App')),
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: Colors.pink[100],
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.favorite, size: 100, color: Colors.red),
+                      Text('Donate with Love', style: TextStyle(fontSize: 24)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            GridView.count(shrinkWrap: true, crossAxisCount: 2, children: [
+              FeatureCard(
+                  iconData: Icons.monetization_on_outlined,
+                  label: 'Donate Money'),
+              FeatureCard(
+                  iconData: Icons.fastfood_outlined, label: 'Donate Food'),
+              FeatureCard(
+                  iconData: Icons.people_outline_outlined, label: 'Community'),
+              FeatureCard(
+                  iconData: Icons.volunteer_activism_outlined,
+                  label: 'Volunteer')
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeatureCard extends StatelessWidget {
+  final IconData iconData;
+  final String label;
+
+  const FeatureCard({required this.iconData, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 5,
+        margin: EdgeInsets.all(8),
+        child: InkWell(
+            onTap: () {},
+            splashColor: Colors.pink.withAlpha(30),
+            child: Center(
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Icon(this.iconData, size: 50),
+              Text(this.label)
+            ]))));
+  }
 }
 
 class _DonateFormState extends State<DonateForm> {
