@@ -6,7 +6,7 @@ import '../constants/constants.dart';
 
 @RoutePage()
 class DonationDescription extends StatefulWidget {
-  const DonationDescription({Key? key}) : super(key: key);
+  const DonationDescription({super.key});
 
   @override
   State<DonationDescription> createState() => _State();
@@ -55,7 +55,7 @@ class _State extends State<DonationDescription> {
                       SizedBox(
                         height: 30.h,
                       ),
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
@@ -105,7 +105,7 @@ class _State extends State<DonationDescription> {
                 height: 550.h,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Color(0xFF5272FC),
+                  color: const Color(0xFF5272FC),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40.r),
                     topRight: Radius.circular(40.r),
@@ -122,8 +122,8 @@ class _State extends State<DonationDescription> {
                               child: Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(8),
-                                child: Text(
+                                padding: const EdgeInsets.all(8),
+                                child: const Text(
                                   "Description,",
                                   style: TextStyle(
                                     fontSize: 20,
@@ -132,9 +132,9 @@ class _State extends State<DonationDescription> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     bottom: 65, left: 15, right: 15),
-                                child: Text(
+                                child: const Text(
                                   "If you still face overflow issues, you might need to review the surrounding widget tree to ensure that the ListView.builder is placed withil face overflow issues, you might need to review the surrounding widget tree to ensure that the ListView.builder is placed within a container or a widget that col face overflow issues, you might need to review the surrounding widget trmight need to review the surrounding widget tree to ensure that the ListView.builder is placed withil face overflow issues, you might need to review the surrounding widget tree to ensure that the ListView.builder is placed within a container or a widget that col face overflow issues, yoee to ensure that the ListView.builder is placed within a container or a widget that con a container or a widget that constrains its height. Additionally, you might want to check if the ListView.builder is intended to have more than one item (itemCount: 1). If you plan to have multiple items, set itemCount to the actual number of items in your list.",
                                   style: TextStyle(fontSize: 16),
                                 ),
@@ -158,7 +158,7 @@ class _State extends State<DonationDescription> {
                     onPressed: () {},
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    child: Text(
+                    child: const Text(
                       "Donate Now",
                       style: TextStyle(
                         color: Colors.black,
@@ -178,13 +178,13 @@ class _State extends State<DonationDescription> {
                     borderRadius: BorderRadius.circular(20.r),
                     color: Colors.white.withOpacity(0.6)),
                 child: Container(
-                  padding:
-                      EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                  padding: const EdgeInsets.only(
+                      top: 10, left: 20, right: 20, bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
+                      const Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -211,8 +211,8 @@ class _State extends State<DonationDescription> {
                         height: 100.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18.r),
-                            color: Color(0xFF5272FC)),
-                        child: Column(
+                            color: const Color(0xFF5272FC)),
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(

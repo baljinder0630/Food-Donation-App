@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../constants/constants.dart';
-import 'donationDescription.dart';
+import 'donation_description.dart';
 
 class DonationCard extends StatelessWidget {
   const DonationCard({super.key});
@@ -20,7 +20,7 @@ class DonationCard extends StatelessWidget {
           color: blue1.withOpacity(0.2),
           spreadRadius: 5,
           blurRadius: 7,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ], borderRadius: BorderRadius.circular(18)),
       child: Column(
@@ -75,8 +75,8 @@ class DonationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
+                      padding: const EdgeInsets.all(10),
+                      child: const Column(
                         children: [
                           Row(
                             children: [
@@ -179,7 +179,7 @@ class DonationCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         children: [
                           getPercent(),
@@ -198,7 +198,7 @@ class DonationCard extends StatelessWidget {
                 width: screenWidth / 2 - 11,
                 height: 60,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(18),
                   ),
                   child: Material(
@@ -209,10 +209,11 @@ class DonationCard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DonationDescription()),
+                              builder: (context) =>
+                                  const DonationDescription()),
                         );
                       },
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Know More",
                           style: TextStyle(
@@ -230,7 +231,7 @@ class DonationCard extends StatelessWidget {
                 width: screenWidth / 2 - 11,
                 height: 60,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(18),
                   ),
                   child: Material(
@@ -238,7 +239,7 @@ class DonationCard extends StatelessWidget {
                     color: Colors.lightGreen, // Set the elevation as desired
                     child: InkWell(
                       onTap: () {},
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Donate Now",
                           style: TextStyle(

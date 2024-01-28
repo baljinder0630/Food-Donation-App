@@ -1,7 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+@RoutePage()
 class RazorpayPaymentGateway extends StatefulWidget {
   const RazorpayPaymentGateway({super.key});
 
@@ -23,12 +26,16 @@ class _RazorpayPaymentGatewayState extends State<RazorpayPaymentGateway> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    print("Payment Done");
+    if (kDebugMode) {
+      print("Payment Done");
+    }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // Do something when payment fails
-    print("Payment Fail");
+    if (kDebugMode) {
+      print("Payment Fail");
+    }
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {

@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
 class RaiseRequest extends StatefulWidget {
-  const RaiseRequest({Key? key}) : super(key: key);
+  const RaiseRequest({super.key});
 
   @override
   State<RaiseRequest> createState() => _RaiseDonationReq();
@@ -16,11 +16,11 @@ class _RaiseDonationReq extends State<RaiseRequest> {
   final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
   final _ngoController = TextEditingController();
-  final _PlotnoController = TextEditingController();
-  final _StreetnoController = TextEditingController();
-  final _LandmarkController = TextEditingController();
-  final _DistrictController = TextEditingController();
-  final _PincodeController = TextEditingController();
+  final _plotnocontroller = TextEditingController();
+  final _streetnocontroller = TextEditingController();
+  final _landmarkcontroller = TextEditingController();
+  final _districtcontroller = TextEditingController();
+  final _pincodecontroller = TextEditingController();
 
   @override
   void dispose() {
@@ -32,8 +32,8 @@ class _RaiseDonationReq extends State<RaiseRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Raise Donation Request"),
-        leading: MyBackButton(),
+        title: const Text("Raise Donation Request"),
+        leading: const MyBackButton(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -50,19 +50,19 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                     maxLength: 200,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Center(
                   child: Column(
                     children: [
                       CustomDropdown(
                         label: 'Type of Request',
-                        items: ['Option 1', 'Option 2', 'Option 3'],
+                        items: const ['Option 1', 'Option 2', 'Option 3'],
                         value: null,
                         onChanged: (value) {
                           // Handle dropdown value change
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Container(
                         width: 337.w,
                         child: Row(
@@ -74,33 +74,33 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                                 maxLength: 10,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             ElevatedButton(
                               onPressed: () {},
-                              child: Text('Send OTP'),
+                              child: const Text('Send OTP'),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CustomTextField(
                         label: "Plot No.",
-                        controller: _PlotnoController,
+                        controller: _plotnocontroller,
                         maxLength: 20,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CustomTextField(
                         label: "Street Number",
-                        controller: _StreetnoController,
+                        controller: _streetnocontroller,
                         maxLength: 20,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CustomTextField(
                         label: "Landmark",
-                        controller: _LandmarkController,
+                        controller: _landmarkcontroller,
                         maxLength: 20,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Container(
                         width: 337.w,
                         child: Row(
@@ -108,45 +108,45 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                             Expanded(
                               child: CustomTextField(
                                 label: "District",
-                                controller: _DistrictController,
+                                controller: _districtcontroller,
                                 maxLength: 20,
                               ),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: CustomTextField(
                                 label: "Pincode",
-                                controller: _PincodeController,
+                                controller: _pincodecontroller,
                                 maxLength: 20,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Container(
                         width: 337.w,
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              context.pushRoute(const RaiseRequestRoute2());
+                              context.pushRoute(const RaiseRequest2Route());
                             }
                           },
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
                           style: ElevatedButton.styleFrom(
                             // width: 337.w,
-                            primary: Colors.blue,
+                            backgroundColor: Colors.blue,
                             padding: EdgeInsets.symmetric(
                               horizontal: 32.0.w,
                               vertical: 16.0.w,
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: const Text(
+                            'Next',
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -176,14 +176,14 @@ class _RaiseDonationReq extends State<RaiseRequest> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: label,
-          contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          contentPadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -254,13 +254,13 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         onTap: onTap,
         decoration: InputDecoration(
-          counter: SizedBox.shrink(),
+          counter: const SizedBox.shrink(),
           contentPadding: EdgeInsets.all(10.r),
           filled: true,
-          fillColor: Color(0xFFFEFEFE),
+          fillColor: const Color(0xFFFEFEFE),
           hintText: label,
           hintStyle: TextStyle(
-            color: Color(0xFF201F24),
+            color: const Color(0xFF201F24),
             fontSize: 14.sp,
             fontFamily: 'Outfit',
             fontWeight: FontWeight.w400,
@@ -332,10 +332,10 @@ class CustomDropdown extends StatelessWidget {
         onTap: onTap,
         decoration: InputDecoration(
           filled: true,
-          fillColor: Color(0xFFFEFEFE),
+          fillColor: const Color(0xFFFEFEFE),
           hintText: label,
           hintStyle: TextStyle(
-            color: Color(0xFF201F24),
+            color: const Color(0xFF201F24),
             fontSize: 14.sp,
             fontFamily: 'Outfit',
             fontWeight: FontWeight.w400,

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,10 +46,13 @@ class _CameraScreenState extends State<CameraScreen> {
   _takePicture() async {
     try {
       final XFile picture = await _controller.takePicture();
-
-      print('Picture taken at ${picture.path}');
+      if (kDebugMode) {
+        print('Picture taken at ${picture.path}');
+      }
     } catch (e) {
-      print('Error taking picture: $e');
+      if (kDebugMode) {
+        print('Error taking picture: $e');
+      }
     }
   }
 
@@ -58,10 +62,14 @@ class _CameraScreenState extends State<CameraScreen> {
           await _imagePicker.pickImage(source: ImageSource.gallery);
 
       if (pickedImage != null) {
-        print('Picked image from gallery: ${pickedImage.path}');
+        if (kDebugMode) {
+          print('Picked image from gallery: ${pickedImage.path}');
+        }
       }
     } catch (e) {
-      print('Error picking image: $e');
+      if (kDebugMode) {
+        print('Error picking image: $e');
+      }
     }
   }
 
@@ -100,10 +108,10 @@ class _CameraScreenState extends State<CameraScreen> {
               );
             } else {
               // _controller is not initialized yet
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

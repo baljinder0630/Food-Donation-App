@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:auto_route/auto_route.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
-import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // void main() => runApp(MyApp());
 
@@ -19,6 +17,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 @RoutePage()
 class DonationTrackingPage extends StatefulWidget {
+  const DonationTrackingPage({super.key});
+
   @override
   _DonationTrackingPageState createState() => _DonationTrackingPageState();
 }
@@ -50,11 +50,11 @@ class _DonationTrackingPageState extends State<DonationTrackingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tracking Donation'),
-        leading: MyBackButton(),
+        title: const Text('Tracking Donation'),
+        leading: const MyBackButton(),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,10 +70,10 @@ class _DonationTrackingPageState extends State<DonationTrackingPage> {
                   recipientName: 'John Doe',
                   recipientContact: '123-456-7890',
                   deliveryTime: 'Today at 2:00 PM',
-                  donatedItems: ['Item 1', 'Item 2', 'Item 3'],
+                  donatedItems: const ['Item 1', 'Item 2', 'Item 3'],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: DonationCard(
@@ -85,10 +85,10 @@ class _DonationTrackingPageState extends State<DonationTrackingPage> {
                   recipientName: 'Jane Smith',
                   recipientContact: '987-654-3210',
                   deliveryTime: 'Tomorrow at 10:00 AM',
-                  donatedItems: ['Item A', 'Item B', 'Item C'],
+                  donatedItems: const ['Item A', 'Item B', 'Item C'],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: DonationCard(
@@ -100,7 +100,7 @@ class _DonationTrackingPageState extends State<DonationTrackingPage> {
                   recipientName: 'Bob Johnson',
                   recipientContact: '555-123-4567',
                   deliveryTime: 'Next week at 3:00 PM',
-                  donatedItems: ['Item X', 'Item Y', 'Item Z'],
+                  donatedItems: const ['Item X', 'Item Y', 'Item Z'],
                 ),
               ),
             ],
@@ -145,7 +145,7 @@ class DonationCard extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -167,13 +167,13 @@ class DonationCard extends StatelessWidget {
                   ),
                   child: Text(
                     'Donation ID - #$donationId',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.green,
@@ -185,7 +185,7 @@ class DonationCard extends StatelessWidget {
                   ),
                   child: Text(
                     status,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -193,7 +193,7 @@ class DonationCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -218,39 +218,39 @@ class DonationCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         recipientName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(recipientContact),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(deliveryTime),
-                      SizedBox(height: 16),
-                      Text(
+                      const SizedBox(height: 16),
+                      const Text(
                         'Donated Items',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: donatedItems
                             .map((item) => Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.check_circle,
                                       color: Colors.green,
                                     ),
-                                    SizedBox(width: 8),
+                                    const SizedBox(width: 8),
                                     Text(item),
                                   ],
                                 ))
@@ -283,16 +283,16 @@ class DonationCard extends StatelessWidget {
             color: isFirst ? Colors.green : Colors.grey,
           ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(address),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }

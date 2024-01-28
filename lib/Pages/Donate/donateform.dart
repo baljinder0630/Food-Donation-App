@@ -1,13 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_donation_app/Pages/Donate/otp_screen.dart';
 import 'package:food_donation_app/Pages/Donate/razorpay_payment_gateway.dart';
-import 'package:food_donation_app/Router/route.gr.dart';
+// import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-@RoutePage()
 class DonateForm extends StatefulWidget {
   const DonateForm({super.key});
 
@@ -53,7 +51,7 @@ class _DonateFormState extends State<DonateForm> {
   ];
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    // final FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -216,7 +214,7 @@ class _DonateFormState extends State<DonateForm> {
                         ),
                         FloatingActionButton(
                           onPressed: () {
-                            context.navigateTo(CameraScreenRoute());
+                            // context.navigateTo(CameraScreenRoute());
                           },
                           backgroundColor: Colors.white,
                           shape: const CircleBorder(),

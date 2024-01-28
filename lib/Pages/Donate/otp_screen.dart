@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Donate/donateform.dart';
 
+@RoutePage()
 class OtpScreen extends StatefulWidget {
   final String id;
 
@@ -40,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
+        color: const Color.fromRGBO(234, 239, 243, 1),
       ),
     );
     return Scaffold(
@@ -74,8 +77,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     // Form is valid, proceed with verification
-                    print(widget.id);
-                    print(_codeController.text);
+                    if (kDebugMode) {
+                      print(widget.id);
+                      print(_codeController.text);
+                    }
                     try {
                       PhoneAuthCredential credential =
                           PhoneAuthProvider.credential(
@@ -85,13 +90,17 @@ class _OtpScreenState extends State<OtpScreen> {
 
                       UserCredential user =
                           await auth.signInWithCredential(credential);
-                      print(user);
+                      if (kDebugMode) {
+                        print(user);
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => DonateForm()),
                       );
                     } catch (e) {
-                      print("Error: $e");
+                      if (kDebugMode) {
+                        print("Error: $e");
+                      }
                     }
                   }
                 },

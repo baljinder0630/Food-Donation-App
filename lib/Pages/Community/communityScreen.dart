@@ -31,7 +31,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -47,7 +47,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                   padding: EdgeInsets.all(10.r),
                   decoration: ShapeDecoration(
                     color: index == selectedCategory
-                        ? Color(0xFF5272FC)
+                        ? const Color(0xFF5272FC)
                         : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
@@ -90,7 +90,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
       alignment: Alignment.centerLeft,
       height: 306.h,
       child: ListView.builder(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
@@ -116,8 +116,8 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                 height: 306.h,
                 decoration: ShapeDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment(-0.00, -1.00),
-                    end: Alignment(0, 1),
+                    begin: const Alignment(-0.00, -1.00),
+                    end: const Alignment(0, 1),
                     colors: [
                       Colors.white.withOpacity(0),
                       Colors.black.withOpacity(0),
@@ -160,7 +160,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                         "..."
                                     : posts[index].subject,
                                 style: TextStyle(
-                                  color: Color(0xFFB3B3B8),
+                                  color: const Color(0xFFB3B3B8),
                                   fontSize: 14.sp,
                                   fontFamily: 'Outfit',
                                   fontWeight: FontWeight.w500,
@@ -180,7 +180,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                             "..."
                                         : posts[index].description,
                                     style: TextStyle(
-                                      color: Color(0xFFF9F8FD),
+                                      color: const Color(0xFFF9F8FD),
                                       fontSize: 14.sp,
                                       fontFamily: 'Outfit',
                                       fontWeight: FontWeight.w500,
@@ -219,7 +219,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                         shape: OvalBorder(
                                           side: BorderSide(
                                               width: 2.w,
-                                              color: Color(0xFFDAACAC)),
+                                              color: const Color(0xFFDAACAC)),
                                         ),
                                         shadows: const [
                                           BoxShadow(
@@ -235,7 +235,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                     Text(
                                       posts[index].username,
                                       style: TextStyle(
-                                        color: Color(0xFFF9F8FD),
+                                        color: const Color(0xFFF9F8FD),
                                         fontSize: 14.sp,
                                         fontFamily: 'Outfit',
                                         fontWeight: FontWeight.w400,
@@ -256,7 +256,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                     Container(
                                       width: 4.w,
                                       height: 4.h,
-                                      decoration: ShapeDecoration(
+                                      decoration: const ShapeDecoration(
                                         color: Color(0xFFD9D9D9),
                                         shape: OvalBorder(),
                                       ),
@@ -265,7 +265,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                     Text(
                                       timeAgo(posts[index].createdTime),
                                       style: TextStyle(
-                                        color: Color(0xFF8E7474),
+                                        color: const Color(0xFF8E7474),
                                         fontSize: 12.sp,
                                         fontFamily: 'Outfit',
                                         fontWeight: FontWeight.w300,
@@ -293,7 +293,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
     return Container(
       height: posts.length * 130.h,
       child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -308,7 +308,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                     margin: EdgeInsets.symmetric(vertical: 10.h),
                     height: 110.h,
                     decoration: ShapeDecoration(
-                      color: Color(0xFFFEFEFE),
+                      color: const Color(0xFFFEFEFE),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.r),
                       ),
@@ -361,7 +361,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                         "..."
                                     : posts[index].subject,
                                 style: TextStyle(
-                                  color: Color(0xFFBFAAAA),
+                                  color: const Color(0xFFBFAAAA),
                                   fontSize: 14.sp,
                                   fontFamily: 'Outfit',
                                   fontWeight: FontWeight.w500,
@@ -374,7 +374,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                   Container(
                                     width: 4.w,
                                     height: 4.h,
-                                    decoration: ShapeDecoration(
+                                    decoration: const ShapeDecoration(
                                       color: Color(0xFFD9D9D9),
                                       shape: OvalBorder(),
                                     ),
@@ -383,7 +383,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                   Text(
                                     timeAgo(posts[index].createdTime),
                                     style: TextStyle(
-                                      color: Color(0xFF8E7474),
+                                      color: const Color(0xFF8E7474),
                                       fontSize: 12.sp,
                                       fontFamily: 'Outfit',
                                       fontWeight: FontWeight.w300,
@@ -404,7 +404,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                                       "..."
                                   : posts[index].description,
                               style: TextStyle(
-                                color: Color(0xFF201F24),
+                                color: const Color(0xFF201F24),
                                 fontSize: 14.sp,
                                 fontFamily: 'Outfit',
                                 fontWeight: FontWeight.w500,
@@ -444,7 +444,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                   ),
                   Expanded(
                     child: ListView(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       children: [
                         SizedBox(
                           height: 10.h,
@@ -506,7 +506,7 @@ class _CommunityHomePageState extends State<CommunityHomePage> {
                     ],
                   ),
                   child: Icon(Icons.add_circle_rounded,
-                      size: 36.r, color: Color(0xFF5272FC))),
+                      size: 36.r, color: const Color(0xFF5272FC))),
             ),
           ),
           Positioned(
@@ -532,7 +532,7 @@ Widget SearchHistory(context) {
         height: 28.80,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFEFEFE),
+          color: const Color(0xFFFEFEFE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
@@ -552,7 +552,7 @@ Widget Searchbar(context) {
       width: 260.w,
       height: 45.83.h,
       decoration: ShapeDecoration(
-        color: Color(0xFFFEFEFE),
+        color: const Color(0xFFFEFEFE),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.r),
         ),
@@ -574,14 +574,14 @@ Widget Searchbar(context) {
             width: 24.r,
             height: 24.r,
             clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Icon(Icons.search_rounded, size: 24.r, color: Colors.black),
           ),
           SizedBox(width: 8.w),
           Text(
             'Search For ',
             style: TextStyle(
-              color: Color(0xFF201F24),
+              color: const Color(0xFF201F24),
               fontSize: 18.sp,
               fontFamily: 'Outfit',
               fontWeight: FontWeight.w400,
@@ -599,7 +599,7 @@ Widget Searchbar(context) {
                 Text(
                   'Articles',
                   style: TextStyle(
-                    color: Color(0xFF5272FC),
+                    color: const Color(0xFF5272FC),
                     fontSize: 18.sp,
                     fontFamily: 'Outfit',
                     fontWeight: FontWeight.w400,

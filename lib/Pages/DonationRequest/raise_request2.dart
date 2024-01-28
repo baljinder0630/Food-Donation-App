@@ -5,8 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
+@RoutePage()
 class RaiseRequest2 extends StatefulWidget {
-  const RaiseRequest2({Key? key}) : super(key: key);
+  const RaiseRequest2({super.key});
 
   @override
   State<RaiseRequest2> createState() => _RaiseDonationReq();
@@ -14,10 +15,10 @@ class RaiseRequest2 extends StatefulWidget {
 
 class _RaiseDonationReq extends State<RaiseRequest2> {
   final _formKey = GlobalKey<FormState>();
-  final _volunteerController=TextEditingController();
+  final _volunteerController = TextEditingController();
 
   final _descriptionController = TextEditingController();
-  String? Recovery;
+  String? recovery;
 
   List<Map<dynamic, dynamic>> data = [
     {
@@ -48,17 +49,18 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
 
   uploadPost() async {}
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: MyBackButton(),
+        leading: const MyBackButton(),
         elevation: 0,
         leadingWidth: 100.w,
         centerTitle: true,
-        title: Text("Raise Donation Request"),
+        title: const Text("Raise Donation Request"),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -68,12 +70,12 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
               children: [
                 Center(
                   child: CustomDropdownWidget(
-                    label: "Asisit Recovery",
-                    items: ["Yes,Urgently", "If Possible", " NO"],
-                    value: Recovery,
+                    label: "Asisit recovery",
+                    items: const ["Yes,Urgently", "If Possible", " NO"],
+                    value: recovery,
                     onChanged: (value) {
                       // Handle dropdown value change
-                      Recovery = value;
+                      recovery = value;
                     },
                     validator: (value) {
                       // Add validation logic here
@@ -87,7 +89,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 32.0),
                   child: Text(
                     "Accepted Food Items:",
@@ -102,7 +104,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0),
                   child: Container(
                     height: 200.0,
                     child: ListView.builder(
@@ -176,7 +178,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                             width: 337.w,
                             height: 573.h,
                             decoration: ShapeDecoration(
-                              color: Color(0xFFFEFEFE),
+                              color: const Color(0xFFFEFEFE),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
@@ -208,14 +210,14 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                     },
                                     maxLines: 15.h.toInt(),
                                     decoration: InputDecoration(
-                                      counter: SizedBox.shrink(),
+                                      counter: const SizedBox.shrink(),
                                       contentPadding: EdgeInsets.all(10.r),
                                       filled: true,
-                                      fillColor: Color(0xFFFEFEFE),
+                                      fillColor: const Color(0xFFFEFEFE),
                                       hintText:
                                           "Description minimum of 200 Words",
                                       hintStyle: TextStyle(
-                                        color: Color(0xFF201F24),
+                                        color: const Color(0xFF201F24),
                                         fontSize: 14.sp,
                                         fontFamily: 'Outfit',
                                         fontWeight: FontWeight.w400,
@@ -243,7 +245,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                 Center(
                                   child: Container(
                                     width: 284.w,
-                                    color: Color(0xff000000),
+                                    color: const Color(0xff000000),
                                     height: 1.h,
                                   ),
                                 ),
@@ -259,13 +261,13 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                         child: GestureDetector(
                                           onTap: () async {
                                             context.navigateTo(
-                                                CameraScreenRoute());
+                                                const CameraScreenRoute());
                                           },
                                           child: Container(
                                             width: 103.35.w,
                                             height: 127.40.h,
                                             decoration: ShapeDecoration(
-                                              color: Color(0xFFFFFBFB),
+                                              color: const Color(0xFFFFFBFB),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(15),
@@ -298,7 +300,8 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                                   child: Icon(
                                                       Icons.add_circle_rounded,
                                                       size: 45.5.r,
-                                                      color: Color(0xFF76A095)),
+                                                      color: const Color(
+                                                          0xFF76A095)),
                                                 ),
                                                 SizedBox(height: 13.h),
                                                 Container(
@@ -307,7 +310,8 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                                     'Upload FCRA certificate',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      color: Color(0xFF76A095),
+                                                      color: const Color(
+                                                          0xFF76A095),
                                                       fontSize: 9.10.sp,
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
@@ -330,13 +334,13 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                         child: GestureDetector(
                                           onTap: () async {
                                             context.navigateTo(
-                                                CameraScreenRoute());
+                                                const CameraScreenRoute());
                                           },
                                           child: Container(
                                             width: 103.35.w,
                                             height: 127.40.h,
                                             decoration: ShapeDecoration(
-                                              color: Color(0xFFFFFBFB),
+                                              color: const Color(0xFFFFFBFB),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(15),
@@ -369,7 +373,8 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                                   child: Icon(
                                                       Icons.add_circle_rounded,
                                                       size: 45.5.r,
-                                                      color: Color(0xFF76A095)),
+                                                      color: const Color(
+                                                          0xFF76A095)),
                                                 ),
                                                 SizedBox(height: 13.h),
                                                 Container(
@@ -378,7 +383,8 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                                     'Upload Images of Trust',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      color: Color(0xFF76A095),
+                                                      color: const Color(
+                                                          0xFF76A095),
                                                       fontSize: 9.10.sp,
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
@@ -402,7 +408,6 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                           SizedBox(
                             height: 25.h,
                           ),
-
                           CustomTextField(
                             label: 'Number of Volunteers Required',
                             controller: _volunteerController,
@@ -426,7 +431,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                               if (_formKey.currentState!.validate()) {
                                 // Process data.
                                 await uploadPost();
-                                context.pushRoute(const SuccessRequestRoute());
+                                context.pushRoute(const SuccessPageRoute());
                               }
                             },
                             child: Container(
@@ -435,7 +440,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 27.w, vertical: 6.h),
                               decoration: ShapeDecoration(
-                                color: Color(0xFF5272FC),
+                                color: const Color(0xFF5272FC),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
@@ -449,7 +454,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                                     'Save',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Color(0xFFF9F8FD),
+                                      color: const Color(0xFFF9F8FD),
                                       fontSize: 28.sp,
                                       fontFamily: 'Outfit',
                                       fontWeight: FontWeight.w600,
@@ -496,7 +501,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          contentPadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           suffixIcon: suffixWidget,
         ),
         validator: (value) {
@@ -505,7 +510,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
           }
           return null;
         },
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16.0, // Adjust the multiplier as needed
         ),
       ),
@@ -567,13 +572,13 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         onTap: onTap,
         decoration: InputDecoration(
-          counter: SizedBox.shrink(),
+          counter: const SizedBox.shrink(),
           contentPadding: EdgeInsets.all(10.r),
           filled: true,
-          fillColor: Color(0xFFFEFEFE),
+          fillColor: const Color(0xFFFEFEFE),
           hintText: label,
           hintStyle: TextStyle(
-            color: Color(0xFF201F24),
+            color: const Color(0xFF201F24),
             fontSize: 14.sp,
             fontFamily: 'Outfit',
             fontWeight: FontWeight.w400,
@@ -643,10 +648,10 @@ class CustomDropdownWidget extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(10.r),
           filled: true,
-          fillColor: Color(0xFFFEFEFE),
+          fillColor: const Color(0xFFFEFEFE),
           hintText: label,
           hintStyle: TextStyle(
-            color: Color(0xFF201F24),
+            color: const Color(0xFF201F24),
             fontSize: 14.sp,
             fontFamily: 'Outfit',
             fontWeight: FontWeight.w400,
@@ -689,8 +694,9 @@ class CustomMultiSelectChipDisplay<T> extends StatelessWidget {
         onTap(value);
       },
       chipColor: Colors.blue, // customize the chip color
-      textStyle: TextStyle(color: Colors.white), // customize the text style
-      icon: Icon(Icons.cancel), // customize the delete icon
+      textStyle:
+          const TextStyle(color: Colors.white), // customize the text style
+      icon: const Icon(Icons.cancel), // customize the delete icon
     );
   }
 }
