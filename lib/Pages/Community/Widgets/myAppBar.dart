@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 
+import '../../constants/constants.dart';
+
 class MyAppBar extends StatelessWidget {
   final Widget centerWidget;
   final Widget rightWidget;
@@ -28,13 +30,13 @@ class MyAppBar extends StatelessWidget {
                           width: double.infinity,
                           height: 92.h,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                Color(0xFF5272FC),
-                                Color.fromARGB(200, 82, 113, 252),
-                                Color(0xFF5272FC)
+                                green3,
+                                green2,
+                                green1
                               ], // Replace with your desired colors
                             ),
                             borderRadius: BorderRadius.only(

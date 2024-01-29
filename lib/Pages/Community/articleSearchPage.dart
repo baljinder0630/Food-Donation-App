@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
-import 'package:easy_debounce/easy_debounce.dart';
+
+import '../constants/constants.dart';
 
 @RoutePage()
 class ArticleSearchPage extends ConsumerStatefulWidget {
@@ -44,7 +46,7 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(13.r)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(13.r),
-                  borderSide: BorderSide(color: Colors.teal, width: 2)),
+                  borderSide: BorderSide(color: green1, width: 2)),
             ),
             onChanged: (value) {
               EasyDebounce.debounce(
