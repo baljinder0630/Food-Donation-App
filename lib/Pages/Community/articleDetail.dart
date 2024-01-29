@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/Community/Post.model.dart';
+import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
@@ -29,17 +30,6 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
     void toogleBookMark() {
       ref.watch(communityProvider.notifier).addToBookMark(
           ref.watch(authStateProvider).user!.uid, widget.article.id, context);
-    }
-
-    var nameParts = widget.article.username.split(" ");
-    var initials = "";
-
-    if (nameParts.length > 0 && nameParts[0].isNotEmpty) {
-      initials += nameParts[0].substring(0, 1).toUpperCase();
-    }
-
-    if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
-      initials += nameParts[1].substring(0, 1).toUpperCase();
     }
 
     return Scaffold(
@@ -115,29 +105,32 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                               Container(
                                 width: 30.w,
                                 height: 30.h,
-                                child: widget.article.createdByAvatar == null
-                                    ? Center(
-                                        child: Text(
-                                          initials,
-                                          style: TextStyle(
-                                            color: Color(0xFFF9F8FD),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'Outfit',
-                                            fontWeight: FontWeight.w400,
-                                            height: 0,
-                                            letterSpacing: 0.56.sp,
+                                child: Center(
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      widget.article.createdByAvatar.toString(),
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Center(
+                                          child: Text(
+                                            nameProfile(
+                                                widget.article.username),
+                                            style: TextStyle(
+                                              color: Color(0xFFF9F8FD),
+                                              fontSize: 14.sp,
+                                              fontFamily: 'Outfit',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                              letterSpacing: 0.56.sp,
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    : Center(
-                                        child: ClipOval(
-                                          child: Image.network(
-                                            widget.article.createdByAvatar
-                                                .toString(),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 decoration: ShapeDecoration(
                                   shape: OvalBorder(
                                     side: BorderSide(

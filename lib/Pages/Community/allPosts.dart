@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
@@ -77,16 +78,6 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                 itemCount: posts!.length,
                 itemBuilder:
                     (BuildContext context, int index, int pageViewIndex) {
-                  var nameParts = posts[index].username.split(" ");
-                  var initials = "";
-
-                  if (nameParts.length > 0 && nameParts[0].isNotEmpty) {
-                    initials += nameParts[0].substring(0, 1).toUpperCase();
-                  }
-
-                  if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
-                    initials += nameParts[1].substring(0, 1).toUpperCase();
-                  }
                   return InkWell(
                     onTap: () {
                       log("Tapped");
@@ -228,36 +219,6 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                               Container(
                                                 width: 30.w,
                                                 height: 30.h,
-                                                child: posts[index]
-                                                            .createdByAvatar ==
-                                                        null
-                                                    ? Center(
-                                                        child: Text(
-                                                          initials,
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFFF9F8FD),
-                                                            fontSize: 14.sp,
-                                                            fontFamily:
-                                                                'Outfit',
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            height: 0,
-                                                            letterSpacing:
-                                                                0.56.sp,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Center(
-                                                        child: ClipOval(
-                                                          child: Image.network(
-                                                            posts[index]
-                                                                .createdByAvatar
-                                                                .toString(),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
                                                 decoration: ShapeDecoration(
                                                   shape: OvalBorder(
                                                     side: BorderSide(
@@ -274,6 +235,38 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                                     )
                                                   ],
                                                 ),
+                                                child: Center(
+                                                    child: ClipOval(
+                                                        child: Image.network(
+                                                            posts[index]
+                                                                .createdByAvatar
+                                                                .toString(),
+                                                            fit: BoxFit.cover,
+                                                            errorBuilder: (context,
+                                                                    error,
+                                                                    stackTrace) =>
+                                                                Center(
+                                                                  child: Text(
+                                                                    nameProfile(
+                                                                        posts[index]
+                                                                            .username),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Color(
+                                                                          0xFFF9F8FD),
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      height: 0,
+                                                                      letterSpacing:
+                                                                          0.56.sp,
+                                                                    ),
+                                                                  ),
+                                                                )))),
                                               ),
                                               const SizedBox(width: 8),
                                               Text(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Models/User.model.dart';
+import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
@@ -23,17 +24,6 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
     connect() {}
 
     Widget PeopleCard(UserModel user) {
-      var nameParts = user.displayName.split(" ");
-      var initials = "";
-
-      if (nameParts.length > 0 && nameParts[0].isNotEmpty) {
-        initials += nameParts[0].substring(0, 1).toUpperCase();
-      }
-
-      if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
-        initials += nameParts[1].substring(0, 1).toUpperCase();
-      }
-
       return Container(
         margin:
             EdgeInsets.only(left: 24.w, right: 24.w, bottom: 10.h, top: 10.h),
@@ -69,7 +59,10 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                       ),
                     ),
                     child: Center(
-                      child: Text(initials.isNotEmpty ? initials : "NA",
+                      child: Text(
+                          nameProfile(user.displayName).isNotEmpty
+                              ? nameProfile(user.displayName)
+                              : "NA",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16.sp,
