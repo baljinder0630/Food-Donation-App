@@ -16,8 +16,8 @@ class HungerSpot extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(10),
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-          color: purple3, borderRadius: BorderRadius.circular(12)),
+      decoration:
+          BoxDecoration(color: red1, borderRadius: BorderRadius.circular(12)),
       height: 350.h,
       width: 300.w,
       child: Column(
@@ -72,7 +72,7 @@ class HungerSpot extends StatelessWidget {
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
                             radius: 60.r,
-                            backgroundColor: purple1,
+                            backgroundColor: red1,
                             child: Image.asset(
                               "lib/assets/icons/ngo.png",
                               height: 60.h,

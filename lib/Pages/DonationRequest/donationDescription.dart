@@ -239,7 +239,7 @@ class _State extends State<DonationDescription> {
                 radius: 20.r,
                 child: Icon(
                   Icons.arrow_forward_ios,
-                  color: purple4,
+                  color: red1,
                 ),
               ),
             ),
@@ -251,7 +251,7 @@ class _State extends State<DonationDescription> {
                 radius: 20.r,
                 child: Icon(
                   Icons.textsms_outlined,
-                  color: purple4,
+                  color: red1,
                 ),
               ),
             ),
@@ -263,7 +263,7 @@ class _State extends State<DonationDescription> {
                 radius: 20.r,
                 child: Icon(
                   Icons.phone,
-                  color: purple4,
+                  color: red1,
                 ),
               ),
             ),

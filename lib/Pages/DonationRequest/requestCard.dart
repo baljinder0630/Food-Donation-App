@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../constants/constants.dart';
 import 'donationDescription.dart';
 
-class DonationCard extends StatelessWidget {
-  const DonationCard({super.key});
+class DonationRequestCard extends StatelessWidget {
+  const DonationRequestCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r, bottom: 10.r),
       width: double.infinity,
-      height: 220,
+      height: 220.h,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-          color: blue1.withOpacity(0.2),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 3),
+          color: white,
         ),
-      ], borderRadius: BorderRadius.circular(18)),
+      ], borderRadius: BorderRadius.circular(18.r)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -35,65 +33,66 @@ class DonationCard extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.r),
                       child: CircleAvatar(
-                        radius: 28,
-                        backgroundColor: blue1,
+                        radius: 28.r,
+                        backgroundColor: green,
                         child: CircleAvatar(
-                          radius: 25,
+                          radius: 25.r,
+                          backgroundColor: bgColor,
                           child: Image.asset(
                             "lib/assets/icons/ngo.png",
-                            width: 35,
+                            width: 35.w,
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      child: const Expanded(
+                      child: Expanded(
                         child: Text(
                           "Feeding India ",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                            color: black,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 80,
+                    SizedBox(
+                      width: 80.w,
                     )
                   ],
                 ),
               ),
               Container(
                 width: double.infinity,
-                height: 82,
+                height: 82.h,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.r),
                       child: Column(
                         children: [
                           Row(
                             children: [
                               SizedBox(
-                                width: 120,
+                                width: 120.w,
                                 child: Row(
                                   children: [
-                                    Icon(Icons.volunteer_activism, size: 20),
+                                    Icon(Icons.volunteer_activism, size: 20.r),
                                     SizedBox(
-                                      width: 2,
+                                      width: 2.w,
                                     ),
                                     Expanded(
                                         child: Text(
                                       "Food Donation",
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
+                                        color: black,
+                                        fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )),
@@ -101,22 +100,22 @@ class DonationCard extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: 5,
+                                width: 5.w,
                               ),
                               SizedBox(
-                                width: 120,
+                                width: 120.w,
                                 child: Row(
                                   children: [
-                                    Icon(Icons.groups, size: 20),
+                                    Icon(Icons.groups, size: 20.r),
                                     SizedBox(
-                                      width: 2,
+                                      width: 2.w,
                                     ),
                                     Expanded(
                                         child: Text(
                                       "600 People",
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
+                                        color: black,
+                                        fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )),
@@ -126,24 +125,24 @@ class DonationCard extends StatelessWidget {
                             ],
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 10.h,
                           ),
                           Row(
                             children: [
                               SizedBox(
-                                width: 120,
+                                width: 120.w,
                                 child: Row(
                                   children: [
                                     Icon(Icons.verified, size: 20),
                                     SizedBox(
-                                      width: 2,
+                                      width: 2.w,
                                     ),
                                     Expanded(
                                         child: Text(
                                       "Karam Foundation",
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
+                                        color: black,
+                                        fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )),
@@ -151,22 +150,22 @@ class DonationCard extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: 5,
+                                width: 5.w,
                               ),
                               SizedBox(
-                                width: 120,
+                                width: 120.w,
                                 child: Row(
                                   children: [
-                                    Icon(Icons.calendar_today, size: 20),
+                                    Icon(Icons.calendar_today, size: 20.r),
                                     SizedBox(
-                                      width: 2,
+                                      width: 2.w,
                                     ),
                                     Expanded(
                                         child: Text(
                                       "30/01/2023",
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 15,
+                                        fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )),
@@ -179,7 +178,7 @@ class DonationCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10.r),
                       child: Column(
                         children: [
                           getPercent(),
@@ -195,15 +194,15 @@ class DonationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: screenWidth / 2 - 11,
-                height: 60,
+                width: 180.w,
+                height: 60.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18),
+                    bottomLeft: Radius.circular(18.r),
                   ),
                   child: Material(
                     elevation: 4.0,
-                    color: blue1, // Set the elevation as desired
+                    color: bgColor, // Set the elevation as desired
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -216,8 +215,8 @@ class DonationCard extends StatelessWidget {
                         child: Text(
                           "Know More",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
+                            color: green,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -227,23 +226,23 @@ class DonationCard extends StatelessWidget {
                 ),
               ),
               Container(
-                width: screenWidth / 2 - 11,
-                height: 60,
+                width: 180.w,
+                height: 60.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18),
+                    bottomRight: Radius.circular(18.r),
                   ),
                   child: Material(
                     elevation: 4.0,
-                    color: Colors.lightGreen, // Set the elevation as desired
+                    color: green, // Set the elevation as desired
                     child: InkWell(
                       onTap: () {},
                       child: Center(
                         child: Text(
                           "Donate Now",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
+                            color: white,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -263,15 +262,15 @@ class DonationCard extends StatelessWidget {
 Widget getPercent() {
   return Center(
     child: CircularPercentIndicator(
-      radius: 35,
+      radius: 35.r,
       percent: 0.4,
-      progressColor: blue1,
+      progressColor: green,
       lineWidth: 8,
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: bgColor,
       circularStrokeCap: CircularStrokeCap.round,
-      center: const Text(
+      center: Text(
         "40%",
-        style: TextStyle(fontSize: 18),
+        style: TextStyle(fontSize: 18.sp),
       ),
     ),
   );
