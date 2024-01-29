@@ -337,7 +337,7 @@ class Community extends StateNotifier<CommunityState> {
 
   articleSearchSuggestion(String val) async {
     log("Fetching suggestion for $val");
-    if (val.length > 1) {
+    if (val.length >= 1) {
       try {
         await firestore
             .collection('articles')

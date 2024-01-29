@@ -253,14 +253,16 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
     }
 
     return Container(
-      height: double.maxFinite,
-      child: Container(
-        height: 103.h * users!.length,
-        child: ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              return PeopleCard(users[index]);
-            }),
+      // height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
+        child: Container(
+          height: 103.h * users!.length,
+          child: ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return PeopleCard(users[index]);
+              }),
+        ),
       ),
     );
   }
