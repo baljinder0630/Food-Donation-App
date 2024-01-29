@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,8 +15,9 @@ import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 // import 'package:food_donation_app/Pages/Community/posts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../constants/constants.dart';
 
 @RoutePage()
 class CommunityHomePage extends ConsumerStatefulWidget {
@@ -75,9 +77,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   child: Container(
                     padding: EdgeInsets.all(10.r),
                     decoration: ShapeDecoration(
-                      color: index == selectedCategory
-                          ? Color(0xFF5272FC)
-                          : Colors.white,
+                      color: index == selectedCategory ? green3 : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.r),
                       ),
