@@ -11,15 +11,18 @@ class DonationRequest {
   String? districtController;
   String? pincodeController;
   List<FoodCategory>? foodCategory;
+  FoodCategoryStatus? foodCategoryStatus;
 
-  DonationRequest(
-      {this.name,
-      this.phoneNumber,
-      this.plotNo,
-      this.streetController,
-      this.districtController,
-      this.pincodeController,
-      this.foodCategory});
+  DonationRequest({
+    this.name,
+    this.phoneNumber,
+    this.plotNo,
+    this.streetController,
+    this.districtController,
+    this.pincodeController,
+    this.foodCategory,
+    this.foodCategoryStatus,
+  });
 
   DonationRequest.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -58,16 +61,17 @@ class DonationRequest {
     String? districtController,
     String? pincodeController,
     List<FoodCategory>? foodCategory,
+    FoodCategoryStatus? foodCategoryStatus,
   }) {
     return DonationRequest(
-      name: name ?? this.name,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      plotNo: plotNo ?? this.plotNo,
-      streetController: streetController ?? this.streetController,
-      districtController: districtController ?? this.districtController,
-      pincodeController: pincodeController ?? this.pincodeController,
-      foodCategory: foodCategory ?? [],
-    );
+        name: name ?? this.name,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        plotNo: plotNo ?? this.plotNo,
+        streetController: streetController ?? this.streetController,
+        districtController: districtController ?? this.districtController,
+        pincodeController: pincodeController ?? this.pincodeController,
+        foodCategory: foodCategory ?? [],
+        foodCategoryStatus: foodCategoryStatus ?? this.foodCategoryStatus);
   }
 }
 
@@ -81,5 +85,22 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
             streetController: '',
             districtController: '',
             pincodeController: '',
-            foodCategory: []));
+            foodCategory: [],
+            foodCategoryStatus: FoodCategoryStatus.initial));
+
+  void updateFoodCategory(FoodCategory newFoodCategory) {
+    final currentState =
+        state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
+    state = currentState;
+
+    final updatedFoodCategoryList = [...state.foodCategory!, newFoodCategory];
+    final newState = currentState.copyWith(
+        foodCategory: updatedFoodCategoryList,
+        foodCategoryStatus: FoodCategoryStatus.processed);
+
+    state = newState;
+    state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+  }
 }
+
+enum FoodCategoryStatus { initial, processing, processed }

@@ -2,11 +2,19 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final foodCategoryProvider =
+    StateNotifierProvider<FoodCategoryNotifier, FoodCategory>(
+  (ref) => FoodCategoryNotifier(ref: ref),
+);
+
 class FoodCategory {
   String? name;
   String? quantity;
 
-  FoodCategory({this.name, this.quantity});
+  FoodCategory({
+    this.name,
+    this.quantity,
+  });
 
   FoodCategory.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -20,7 +28,10 @@ class FoodCategory {
     return data;
   }
 
-  FoodCategory copyWith({String? name, String? quantity}) {
+  FoodCategory copyWith(
+      {String? name,
+      String? quantity,
+      FoodCategoryStatus? foodCategoryStatus}) {
     return FoodCategory(
       name: name ?? this.name,
       quantity: quantity ?? this.quantity,
@@ -31,5 +42,10 @@ class FoodCategory {
 class FoodCategoryNotifier extends StateNotifier<FoodCategory> {
   final StateNotifierProviderRef ref;
   FoodCategoryNotifier({required this.ref})
-      : super(FoodCategory(name: '', quantity: ''));
+      : super(FoodCategory(
+          name: '',
+          quantity: '',
+        ));
 }
+
+enum FoodCategoryStatus { initial, processing, completed }
