@@ -1,3 +1,6 @@
+// ignore_for_file: file_names
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
 
 class DonationRequest {
@@ -46,4 +49,37 @@ class DonationRequest {
     }
     return data;
   }
+
+  DonationRequest copyWith({
+    String? name,
+    String? phoneNumber,
+    String? plotNo,
+    String? streetController,
+    String? districtController,
+    String? pincodeController,
+    List<FoodCategory>? foodCategory,
+  }) {
+    return DonationRequest(
+      name: name ?? this.name,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      plotNo: plotNo ?? this.plotNo,
+      streetController: streetController ?? this.streetController,
+      districtController: districtController ?? this.districtController,
+      pincodeController: pincodeController ?? this.pincodeController,
+      foodCategory: foodCategory ?? [],
+    );
+  }
+}
+
+class DonationRequestNotifier extends StateNotifier<DonationRequest> {
+  final StateNotifierProviderRef ref;
+  DonationRequestNotifier({required this.ref})
+      : super(DonationRequest(
+            name: '',
+            phoneNumber: '',
+            plotNo: '',
+            streetController: '',
+            districtController: '',
+            pincodeController: '',
+            foodCategory: []));
 }
