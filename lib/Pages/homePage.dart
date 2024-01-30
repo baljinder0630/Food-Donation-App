@@ -36,62 +36,95 @@ class HomePage extends StatelessWidget {
           ],
         ),
         child: FloatingActionButton(
-          backgroundColor: Color(0xffFEFEFE),
-          shape: OvalBorder(),
+          backgroundColor: const Color(0xffFEFEFE),
+          shape: const OvalBorder(),
           onPressed: () {
             context.pushRoute(const RaiseRequestRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
+          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
       // appBar: AppBar(title: Text('Dashboard')),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            floating: true,
-            expandedHeight: 250,
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
             flexibleSpace: FlexibleSpaceBar(
+              background: Image.network(
+                'https://example.com/your_image.jpg', // Add your image URL here
+                fit: BoxFit.cover,
+              ),
+              collapseMode: CollapseMode.pin,
+              stretchModes: [StretchMode.fadeTitle],
+              centerTitle: true,
+              titlePadding: EdgeInsets.only(bottom: 16.0),
               title: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // MyAppBar(
-                  //   centerWidget: MySearchBar(),
-                  //   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
-                  //   rightWidget: Padding(
-                  //     padding: EdgeInsets.only(
-                  //         right: 16.0), // Adjust the left padding as needed
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(10.r),
-                  //       decoration: BoxDecoration(
-                  //         shape: BoxShape.circle,
-                  //         color: Colors.white,
-                  //       ),
-                  //       child: IconButton(
-                  //         icon: Icon(Icons.local_shipping),
-                  //         onPressed: () {
-                  //           context
-                  //               .pushRoute(const DonationTrackingPageRoute());
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 20.h,
-                  // ),
-                  // Container(
-                  //   padding: EdgeInsets.all(10.r),
-                  //   child: categoryWidget(),
-                  // ),
-                  // SizedBox(
-                  //   height: 20.h,
-                  // ),
-                  Text("heyy"),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    color: Colors.blue,
+                    child: Text(
+                      'This is a scrolling column',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
+
+          // SliverAppBar(
+          //   floating: true,
+          //   expandedHeight: 250,
+          //   flexibleSpace: FlexibleSpaceBar(
+          //     title: Column(
+          //       children: [
+
+          // MyAppBar(
+          //   centerWidget: MySearchBar(),
+          //   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+          //   rightWidget: Padding(
+          //     padding: EdgeInsets.only(
+          //         right: 16.0), // Adjust the left padding as needed
+          //     child: Container(
+          //       padding: EdgeInsets.all(10.r),
+          //       decoration: BoxDecoration(
+          //         shape: BoxShape.circle,
+          //         color: Colors.white,
+          //       ),
+          //       child: IconButton(
+          //         icon: Icon(Icons.local_shipping),
+          //         onPressed: () {
+          //           context
+          //               .pushRoute(const DonationTrackingPageRoute());
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 20.h,
+          // ),
+          // Container(
+          //   padding: EdgeInsets.all(10.r),
+          //   child: categoryWidget(),
+          // ),
+          // SizedBox(
+          //   height: 20.h,
+          // ),
+          // Here..
+          //         Text("heyy"),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: Column(
               children: [

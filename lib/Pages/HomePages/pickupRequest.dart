@@ -138,6 +138,7 @@ class PickUpRequest extends StatelessWidget {
                       child: Text(
                         "Accept",
                         style: TextStyle(
+                          fontFamily: textFont,
                           fontStyle: FontStyle.italic,
                           decorationColor: green,
                           decorationThickness: 2,

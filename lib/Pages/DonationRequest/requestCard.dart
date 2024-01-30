@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../constants/constants.dart';
-import 'donationDescription.dart';
 
 class DonationRequestCard extends StatelessWidget {
   const DonationRequestCard({super.key});
@@ -20,7 +19,7 @@ class DonationRequestCard extends StatelessWidget {
         BoxShadow(
           color: white,
         ),
-      ], borderRadius: BorderRadius.circular(18.r)),
+      ], borderRadius: BorderRadius.circular(20.r)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -42,7 +41,7 @@ class DonationRequestCard extends StatelessWidget {
                           backgroundColor: bgColor,
                           child: Image.asset(
                             "lib/assets/icons/ngo.png",
-                            width: 35.w,
+                            width: 35.r,
                           ),
                         ),
                       ),
@@ -50,7 +49,7 @@ class DonationRequestCard extends StatelessWidget {
                     Container(
                       child: Expanded(
                         child: Text(
-                          "Feeding India ",
+                          "Feeding India  Feeding India Feeding India",
                           style: TextStyle(
                             color: black,
                             fontSize: 20.sp,
@@ -190,33 +189,27 @@ class DonationRequestCard extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 180.w,
-                height: 60.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(18.r),
-                  ),
-                  child: Material(
-                    elevation: 4.0,
-                    color: bgColor, // Set the elevation as desired
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DonationDescription()),
-                        );
-                      },
+          Container(
+            padding: EdgeInsets.only(bottom: 10.r),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 180.w,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(backgroundColor: bgColor),
+                    child: SizedBox(
+                      width: 230.w,
                       child: Center(
                         child: Text(
                           "Know More",
                           style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            decorationColor: green,
+                            decorationThickness: 2,
                             color: green,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -224,25 +217,22 @@ class DonationRequestCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Container(
-                width: 180.w,
-                height: 60.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(18.r),
-                  ),
-                  child: Material(
-                    elevation: 4.0,
-                    color: green, // Set the elevation as desired
-                    child: InkWell(
-                      onTap: () {},
+                SizedBox(
+                  width: 180.w,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(backgroundColor: green),
+                    child: SizedBox(
+                      width: 230.w,
                       child: Center(
                         child: Text(
                           "Donate Now",
                           style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            decorationColor: white,
+                            decorationThickness: 2,
                             color: white,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -250,8 +240,8 @@ class DonationRequestCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
