@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
@@ -47,84 +48,83 @@ class HomePage extends StatelessWidget {
       ),
       // appBar: AppBar(title: Text('Dashboard')),
       body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                'https://example.com/your_image.jpg', // Add your image URL here
-                fit: BoxFit.cover,
-              ),
-              collapseMode: CollapseMode.pin,
-              stretchModes: [StretchMode.fadeTitle],
-              centerTitle: true,
-              titlePadding: EdgeInsets.only(bottom: 16.0),
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    color: Colors.blue,
-                    child: Text(
-                      'This is a scrolling column',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
           // SliverAppBar(
-          //   floating: true,
-          //   expandedHeight: 250,
+          //   expandedHeight: 200.0,
+          //   floating: false,
+          //   pinned: true,
           //   flexibleSpace: FlexibleSpaceBar(
-          //     title: Column(
-          //       children: [
-
-          // MyAppBar(
-          //   centerWidget: MySearchBar(),
-          //   // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
-          //   rightWidget: Padding(
-          //     padding: EdgeInsets.only(
-          //         right: 16.0), // Adjust the left padding as needed
-          //     child: Container(
-          //       padding: EdgeInsets.all(10.r),
-          //       decoration: BoxDecoration(
-          //         shape: BoxShape.circle,
-          //         color: Colors.white,
-          //       ),
-          //       child: IconButton(
-          //         icon: Icon(Icons.local_shipping),
-          //         onPressed: () {
-          //           context
-          //               .pushRoute(const DonationTrackingPageRoute());
-          //         },
-          //       ),
+          //     background: Image.network(
+          //       'https://example.com/your_image.jpg', // Add your image URL here
+          //       fit: BoxFit.cover,
           //     ),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 20.h,
-          // ),
-          // Container(
-          //   padding: EdgeInsets.all(10.r),
-          //   child: categoryWidget(),
-          // ),
-          // SizedBox(
-          //   height: 20.h,
-          // ),
-          // Here..
-          //         Text("heyy"),
+          //     collapseMode: CollapseMode.pin,
+          //     stretchModes: [StretchMode.fadeTitle],
+          //     centerTitle: true,
+          //     titlePadding: EdgeInsets.only(bottom: 16.0),
+          //     title: Column(
+          //       mainAxisAlignment: MainAxisAlignment.end,
+          //       children: [
+          //         Container(
+          //           padding: EdgeInsets.symmetric(horizontal: 16.0),
+          //           color: Colors.blue,
+          //           child: Text(
+          //             'This is a scrolling column',
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 18.0,
+          //             ),
+          //           ),
+          //         ),
           //       ],
           //     ),
           //   ),
           // ),
+
+          SliverAppBar(
+              floating: true,
+              expandedHeight: 100.h,
+              title: Center(child: Text("H O M E P A G E"))
+              // flexibleSpace: SliverToBoxAdapter(
+              //   child: Column(
+              //     children: [
+              //       MyAppBar(
+              //         centerWidget: MySearchBar(),
+              //         // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+              //         rightWidget: Padding(
+              //           padding: EdgeInsets.only(
+              //               right: 16.0), // Adjust the left padding as needed
+              //           child: Container(
+              //             padding: EdgeInsets.all(10.r),
+              //             decoration: BoxDecoration(
+              //               shape: BoxShape.circle,
+              //               color: Colors.white,
+              //             ),
+              //             child: IconButton(
+              //               icon: Icon(Icons.local_shipping),
+              //               onPressed: () {
+              //                 context
+              //                     .pushRoute(const DonationTrackingPageRoute());
+              //               },
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         height: 20.h,
+              //       ),
+              //       Container(
+              //         padding: EdgeInsets.all(10.r),
+              //         child: categoryWidget(),
+              //       ),
+              //       SizedBox(
+              //         height: 20.h,
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              ),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -381,17 +381,41 @@ class HomePage extends StatelessWidget {
                 ),
                 // Here FoodPickup request text and viewAll button ends.
 
-                Container(
-                  color: bgColor,
-                  height: 450.h,
-                  child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: postId.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return const PickUpRequest();
-                      }),
+                CarouselSlider.builder(
+                  itemCount: 15,
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
+                      Container(
+                    child: PickUpRequest(),
+                  ),
+                  options: CarouselOptions(
+                    height: 400.h,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 0.8,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    reverse: false,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    enlargeFactor: 0.3,
+                    scrollDirection: Axis.horizontal,
+                  ),
                 ),
+
+                // Container(
+                //   color: bgColor,
+                //   height: 450.h,
+                //   child: ListView.builder(
+                //       physics: const BouncingScrollPhysics(),
+                //       itemCount: postId.length,
+                //       scrollDirection: Axis.horizontal,
+                //       itemBuilder: (context, index) {
+                //         return const PickUpRequest();
+                //       }),
+                // ),
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
@@ -465,7 +489,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          //  Yaha
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {

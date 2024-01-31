@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../Router/route.gr.dart';
 import '../constants/constants.dart';
 
 class DonationRequestCard extends StatelessWidget {
@@ -14,7 +16,7 @@ class DonationRequestCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r, bottom: 10.r),
       width: double.infinity,
-      height: 220.h,
+      height: 250.h,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: white,
@@ -197,7 +199,9 @@ class DonationRequestCard extends StatelessWidget {
                 SizedBox(
                   width: 180.w,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushRoute(const DonationDescriptionRoute());
+                    },
                     style: OutlinedButton.styleFrom(backgroundColor: bgColor),
                     child: SizedBox(
                       width: 230.w,
@@ -255,7 +259,7 @@ Widget getPercent() {
       radius: 35.r,
       percent: 0.4,
       progressColor: green,
-      lineWidth: 8,
+      lineWidth: 5.r,
       backgroundColor: bgColor,
       circularStrokeCap: CircularStrokeCap.round,
       center: Text(
