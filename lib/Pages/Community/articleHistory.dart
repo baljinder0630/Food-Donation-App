@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,7 @@ import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:vibration/vibration.dart';
+// import 'package:vibration/vibration.dart';
 
 @RoutePage()
 class ArticleHistory extends ConsumerStatefulWidget {
@@ -43,7 +41,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
     Widget HistoryTile(BuildContext context, PostModel post) {
       return GestureDetector(
         onLongPressStart: (details) async {
-          Vibration.vibrate(duration: 10);
+          // Vibration.vibrate(duration: 10);
           showMenu(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.r),

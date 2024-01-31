@@ -3,6 +3,8 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,8 @@ import 'package:food_donation_app/Pages/Community/peoplePage.dart';
 import 'package:food_donation_app/Pages/Community/recentPosts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:shimmer/shimmer.dart';
+import '../constants/constants.dart';
 
 @RoutePage()
 class CommunityHomePage extends ConsumerStatefulWidget {
@@ -69,6 +73,62 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                         : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
+  @override
+  Widget build(BuildContext context) {
+    final posts = ref.watch(
+      communityProvider.select((_) => _.posts),
+    );
+
+    final featuredPostLoading = ref.watch(
+      communityProvider.select((_) => _.featuredPostStatus),
+    );
+
+    Widget categoryWidget() {
+      return Container(
+        margin: EdgeInsets.only(left: 24.w),
+        alignment: Alignment.centerLeft,
+        height: 43.h,
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedCategory = index;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10.r),
+                    decoration: ShapeDecoration(
+                      color: index == selectedCategory ? green3 : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                      shadows: const [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 8,
+                          offset: Offset(0, 0),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Text(
+                      categories[index],
+                      style: TextStyle(
+                        color: index == selectedCategory
+                            ? const Color(0xFFF9F8FD)
+                            : const Color(0xFF201F24),
+                        fontSize: 18.sp,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                        letterSpacing: 0.72.sp,
+                      ),
                     ),
                     shadows: const [
                       BoxShadow(

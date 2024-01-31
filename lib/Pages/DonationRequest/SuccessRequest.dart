@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,12 +13,12 @@ class SuccessPage extends StatefulWidget {
 }
 
 class _SuccessPage extends State<SuccessPage> {
-  late AudioPlayer _audioPlayer;
+  // late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
+    // _audioPlayer = AudioPlayer();
   }
 
   @override
@@ -28,10 +28,10 @@ class _SuccessPage extends State<SuccessPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Image.asset(
-                    "lib/assets/images/success.jpg",
-                    height: 300,
-                  ),
+            Image.asset(
+              "lib/assets/images/success.jpg",
+              height: 300,
+            ),
             SizedBox(height: 20),
             Text(
               'Posted Successfully',
@@ -73,11 +73,9 @@ class _SuccessPage extends State<SuccessPage> {
                 fontSize: 12,
               ),
             ),
-          SizedBox(height: 16),
-
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                
                 context.pushRoute(const DonationRequestRoute());
               },
               child: Text('Back to Home'),
@@ -98,7 +96,7 @@ class _SuccessPage extends State<SuccessPage> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     super.dispose();
   }
 }

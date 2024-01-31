@@ -74,8 +74,12 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
-          page: ChatScreenRoute.page,
+           page: FoodCategoryFormRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+          page: ChatScreenRoute.page,
+           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
       ];
 }

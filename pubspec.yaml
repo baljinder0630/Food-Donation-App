@@ -47,16 +47,16 @@ dependencies:
   camera: any
   image_picker: any
   pinput: any
-  flutter_stripe: any
+#  flutter_stripe: any
   razorpay_flutter: any
   http: any
-  audioplayers: ^5.2.1
+  # audioplayers: ^5.2.1
   carousel_slider: ^4.2.1
   uuid: ^4.3.3
   image_cropper: ^5.0.1
   firebase_storage: ^11.6.0
   easy_debounce: ^2.0.3
-  vibration: ^1.8.4
+#  vibration: ^1.8.4
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
@@ -68,8 +68,8 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.1.4
   auto_route_generator: ^7.3.2
-  just_audio: ^0.9.36
-  just_audio_cache: ^0.1.2
+  # just_audio: ^0.9.36
+  # just_audio_cache: ^0.1.2
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
