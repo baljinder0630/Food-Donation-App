@@ -39,7 +39,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   void initState() {
     super.initState();
     if (widget.isEdit) {
-      _subjectController.text = widget.post!.subject;
+      _subjectController.text = toCamelCase(widget.post!.subject);
       _descriptionController.text = widget.post!.description;
       _imageFile = File(widget.post!.imgUrl);
     }
@@ -378,7 +378,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
           centerTitle: true,
           leading: Center(child: MyBackButton()),
           title: Text(
-            'Post Article',
+            widget.isEdit ? 'Edit Article' : 'Post Article',
             style: TextStyle(
               color: Color(0xFF201F24),
               fontSize: 20.sp,
