@@ -27,6 +27,7 @@ class Community extends StateNotifier<CommunityState> {
           myPosts: [],
           bookMarkedPosts: [],
           users: [],
+          chattingUsers: [],
           chatrooms: [],
           scrollStatus: ScrollStatus.initial,
           rcmdPostStatus: PostStatus.initial,
@@ -212,6 +213,7 @@ class Community extends StateNotifier<CommunityState> {
       final people = snapshot.docs.map((value) {
         return UserModel.fromMap(value.data());
       }).toList();
+      log("Peoples loaded" + people.length.toString());
       state = state.copyWith(users: people);
     } catch (e) {
       print(e);
@@ -225,10 +227,16 @@ class Community extends StateNotifier<CommunityState> {
           .collection("chatRoomModel")
           .where("participants.${ref.watch(authStateProvider).user!.uid}",
               isEqualTo: true)
+          .where("lastmessage", isNotEqualTo: "")
           .get();
       final chatrooms = snapshot.docs.map((value) {
         return Chatroommodel.fromMap(value.data());
+        // return Chatroommodel(
+        //     participants: {}, chatroomuid: "", lastmessage: "");
       }).toList();
+      // remove null values
+      // chatrooms.removeWhere((element) => element.chatroomuid == "");
+      log("Chatrooms loaded" + chatrooms.length.toString());
 
       state = state.copyWith(chatrooms: chatrooms);
       return chatrooms;
@@ -374,6 +382,7 @@ class CommunityState {
   List<PostModel>? myPosts;
   List<PostModel>? bookMarkedPosts;
   List<UserModel>? users;
+  List<UserModel>? chattingUsers;
   List<Chatroommodel>? chatrooms;
   List<String>? articleSearchSuggestions;
   ScrollStatus? scrollStatus;
@@ -389,6 +398,7 @@ class CommunityState {
     this.bookMarkedPosts,
     this.chatrooms,
     this.users,
+    this.chattingUsers,
     this.articleSearchSuggestions,
     this.scrollStatus,
     this.rcmdPostStatus,
@@ -403,6 +413,7 @@ class CommunityState {
     List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
     List<UserModel>? users,
+    List<UserModel>? chattingUsers,
     List<Chatroommodel>? chatrooms,
     List<String>? articleSearchSuggestions,
     ScrollStatus? scrollStatus,
@@ -416,6 +427,7 @@ class CommunityState {
       myPosts: myPosts ?? this.myPosts,
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
       users: users ?? this.users,
+      chattingUsers: chattingUsers ?? this.chattingUsers,
       recentPosts: recentPosts ?? this.recentPosts,
       chatrooms: chatrooms ?? this.chatrooms,
       articleSearchSuggestions: articleSearchSuggestions ?? [],

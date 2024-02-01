@@ -108,7 +108,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   //   log("Loading Data");
                   //   return Text("data loading");
                   // }
-                  if (snapshot.hasData) {
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text("Say Hi to " + TargetUserName + "!",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 181, 189, 194),
+                            fontSize: 20.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                            letterSpacing: 0.96.sp,
+                          )),
+                    );
+                  } else if (snapshot.hasData) {
                     log(snapshot.data!.docs.length.toString());
                     //
                     //
