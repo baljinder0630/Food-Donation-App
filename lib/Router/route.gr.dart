@@ -11,7 +11,6 @@
 import 'package:auto_route/auto_route.dart' as _i26;
 import 'package:flutter/material.dart' as _i28;
 import 'package:food_donation_app/bottomNavBar.dart' as _i1;
-import 'package:food_donation_app/Models/Community/ChatRoom.model.dart' as _i30;
 import 'package:food_donation_app/Models/Community/Post.model.dart' as _i27;
 import 'package:food_donation_app/Models/User.model.dart' as _i29;
 import 'package:food_donation_app/Pages/Community/articleDetail.dart' as _i2;
@@ -92,7 +91,6 @@ abstract class $AppRouter extends _i26.RootStackRouter {
         routeData: routeData,
         child: _i6.ChatScreen(
           TargetUser: args.TargetUser,
-          ChatRoom: args.ChatRoom,
           key: args.key,
         ),
       );
@@ -325,14 +323,12 @@ class CameraScreenRoute extends _i26.PageRouteInfo<void> {
 class ChatScreenRoute extends _i26.PageRouteInfo<ChatScreenRouteArgs> {
   ChatScreenRoute({
     required _i29.UserModel TargetUser,
-    required _i30.Chatroommodel ChatRoom,
     _i28.Key? key,
     List<_i26.PageRouteInfo>? children,
   }) : super(
           ChatScreenRoute.name,
           args: ChatScreenRouteArgs(
             TargetUser: TargetUser,
-            ChatRoom: ChatRoom,
             key: key,
           ),
           initialChildren: children,
@@ -347,19 +343,16 @@ class ChatScreenRoute extends _i26.PageRouteInfo<ChatScreenRouteArgs> {
 class ChatScreenRouteArgs {
   const ChatScreenRouteArgs({
     required this.TargetUser,
-    required this.ChatRoom,
     this.key,
   });
 
   final _i29.UserModel TargetUser;
 
-  final _i30.Chatroommodel ChatRoom;
-
   final _i28.Key? key;
 
   @override
   String toString() {
-    return 'ChatScreenRouteArgs{TargetUser: $TargetUser, ChatRoom: $ChatRoom, key: $key}';
+    return 'ChatScreenRouteArgs{TargetUser: $TargetUser, key: $key}';
   }
 }
 

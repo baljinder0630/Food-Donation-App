@@ -9,17 +9,17 @@ import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
-class PeoplePage extends ConsumerStatefulWidget {
-  const PeoplePage({super.key});
+class AllChatsPage extends ConsumerStatefulWidget {
+  const AllChatsPage({super.key});
 
   @override
-  ConsumerState<PeoplePage> createState() => _PeoplePageState();
+  ConsumerState<AllChatsPage> createState() => _AllChatsPageState();
 }
 
-class _PeoplePageState extends ConsumerState<PeoplePage> {
+class _AllChatsPageState extends ConsumerState<AllChatsPage> {
   @override
   Widget build(BuildContext context) {
-    final users = ref.watch(communityProvider).users;
+    final users = ref.watch(communityProvider).chattingUsers;
 
     connect() {}
 
@@ -199,12 +199,10 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                 InkWell(
                   onTap: () async {
                     log("Click on message");
-                    ref.read(communityProvider.notifier).getChatRoom(user.uid);
-                    // log(user.uid);
-                    // if (chatroom.participants!.length == 2) {
+                    final chatroom = await ref
+                        .read(communityProvider.notifier)
+                        .getChatRoom(user.uid);
                     context.pushRoute(ChatScreenRoute(TargetUser: user));
-                    // } else
-                    //   log("Error occured");
                   },
                   child: Container(
                     width: 94.w,
@@ -251,17 +249,29 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
     }
 
     return Container(
-      // height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
-        child: Container(
-          height: 103.h * users!.length,
-          child: ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return PeopleCard(users[index]);
-              }),
-        ),
-      ),
+      child: users!.length == 0
+          ? Text(
+              "No users found",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF201F24),
+                fontSize: 17.10.sp,
+                fontFamily: 'Outfit',
+                fontWeight: FontWeight.w400,
+                height: 0,
+                letterSpacing: 0.34.sp,
+              ),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                height: 103.h * users!.length,
+                child: ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return PeopleCard(users[index]);
+                    }),
+              ),
+            ),
     );
   }
 }

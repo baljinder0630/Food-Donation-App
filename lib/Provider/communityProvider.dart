@@ -27,14 +27,36 @@ class Community extends StateNotifier<CommunityState> {
           myPosts: [],
           bookMarkedPosts: [],
           users: [],
-          chatrooms: [],
+          chattingUsers: [],
+          userChatRoom: [],
+          currentChatRoomUid: "",
           scrollStatus: ScrollStatus.initial,
           rcmdPostStatus: PostStatus.initial,
           featuredPostStatus: PostStatus.initial,
           recentPostStatus: PostStatus.initial,
           articleSearchSuggestions: [],
           uploadArticleStatus: UploadArticleStatus.initial,
-        ));
+        )) {
+    loadUserChatRoom();
+  }
+
+  loadUserChatRoom() async {
+    try {
+      final querySnapshot = await firestore
+          .collection("chatRoomModel")
+          .where("participants.${ref.watch(authStateProvider).user!.uid}",
+              isEqualTo: true)
+          .get();
+
+      final chatRoomModel = querySnapshot.docs.map((doc) {
+        return Chatroommodel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      state = state.copyWith(userChatRoom: chatRoomModel);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<bool> uploadPost(PostModel post, File? file) async {
     try {
@@ -212,64 +234,96 @@ class Community extends StateNotifier<CommunityState> {
       final people = snapshot.docs.map((value) {
         return UserModel.fromMap(value.data());
       }).toList();
+      log("Peoples loaded" + people.length.toString());
       state = state.copyWith(users: people);
     } catch (e) {
       print(e);
     }
   }
 
+  getChatRoom(targetUid) {
+    try {
+      // check if chatroom already exist in userChatRoom list
+      var chatRoomUid = state.userChatRoom!
+          .firstWhere((element) => element.participants!.containsKey(targetUid))
+          .chatroomuid;
+      log("Chatroom found " + chatRoomUid.toString());
+      state = state.copyWith(
+          currentChatRoomUid: state.userChatRoom!
+              .firstWhere(
+                  (element) => element.participants!.containsKey(targetUid))
+              .chatroomuid!);
+    } catch (e) {
+      state = state.copyWith(currentChatRoomUid: "");
+      print(e);
+      return null;
+    }
+  }
+
   loadChatRooms() async {
     try {
-      log("Loading chatrooms");
-      final snapshot = await firestore
+      final querySnapshot = await firestore
           .collection("chatRoomModel")
           .where("participants.${ref.watch(authStateProvider).user!.uid}",
               isEqualTo: true)
           .get();
-      final chatrooms = snapshot.docs.map((value) {
-        return Chatroommodel.fromMap(value.data());
+
+      final chatingUsersUid = querySnapshot.docs.map((doc) {
+        Chatroommodel chatroommodel =
+            Chatroommodel.fromMap(doc.data() as Map<String, dynamic>);
+        Map<String, dynamic>? participants = chatroommodel.participants;
+        List<String> participantsKey = participants!.keys.toList();
+        participantsKey.remove(ref.watch(authStateProvider).user!.uid);
+
+        return participantsKey.first;
+      });
+
+      final chatingUsers = await firestore
+          .collection("users")
+          .where("uid", whereIn: chatingUsersUid)
+          .get();
+
+      final users = chatingUsers.docs.map((doc) {
+        return UserModel.fromMap(doc.data());
       }).toList();
 
-      state = state.copyWith(chatrooms: chatrooms);
-      return chatrooms;
+      state = state.copyWith(chattingUsers: users);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<Chatroommodel> createChatRoom(targetUid) async {
-    try {
-      bool chatAlreadyExist = state.chatrooms!
-          .any((element) => element.participants!.containsKey(targetUid));
-      if (chatAlreadyExist) {
-        log("chatroom already exist");
-        return state.chatrooms!.firstWhere(
-            (element) => element.participants!.containsKey(targetUid));
-      }
-      Chatroommodel chatRoomModel = Chatroommodel(participants: {
-        ref.watch(authStateProvider).user!.uid: true,
-        targetUid: true
-      }, chatroomuid: Uuid().v4(), lastmessage: "");
-      await firestore
-          .collection("chatRoomModel")
-          .doc()
-          .set(chatRoomModel.toMap());
-
-      state = state.copyWith(chatrooms: [...state.chatrooms!, chatRoomModel]);
-
-      log("chatroom created");
-      return chatRoomModel;
-    } catch (e) {
-      print(e);
-      return Chatroommodel(participants: {}, chatroomuid: "", lastmessage: "");
-    }
-  }
-
-  SendMessage(String msg, String chatRoomUid) async {
-    log("Sending msg");
+  SendMessage(String msg, to, from) async {
+    log("Sending msg " + msg + " to " + to + " from " + from);
 
     try {
       if (msg != null) {
+        String chatRoomUid = state.currentChatRoomUid;
+        if (chatRoomUid == null || chatRoomUid.isEmpty) {
+          // creating new chatroom
+          chatRoomUid = Uuid().v4();
+          state = state.copyWith(currentChatRoomUid: chatRoomUid);
+
+          Chatroommodel chatRoomModel = Chatroommodel(participants: {
+            ref.watch(authStateProvider).user!.uid: true,
+            to: true
+          }, chatroomuid: chatRoomUid, lastmessage: msg);
+          await firestore
+              .collection("chatRoomModel")
+              .doc(chatRoomUid)
+              .set(chatRoomModel.toMap());
+          log("chatroom created");
+          state = state.copyWith(
+            userChatRoom: [
+              ...state.userChatRoom!,
+              chatRoomModel
+            ], // adding chatroom to userChatRoom list if not exist
+            chattingUsers: [
+              ...state.chattingUsers!,
+              state.users!.firstWhere((element) => element.uid == to)
+            ],
+          ); // adding user to chattingUsers list if not exist
+        }
         Chattingmodel chattingModel = await Chattingmodel(
             seen: false,
             sendOn: DateTime.now().toLocal().microsecondsSinceEpoch.toString(),
@@ -285,8 +339,24 @@ class Community extends StateNotifier<CommunityState> {
             .collection("Messages")
             .doc(chattingModel.messageId)
             .set(chattingModel.toMap())
-            .then((value) => log("message sent"))
-            .onError((error, stackTrace) => log(error.toString()));
+            .then((value) =>
+                firestore.collection("chatRoomModel").doc(chatRoomUid).set({
+                  "lastmessage": msg,
+                  "participants": {"$from": true, "$to": true}
+                }, SetOptions(merge: true)))
+            .whenComplete(() {
+          if (state.userChatRoom!
+              .any((element) => element.chatroomuid == chatRoomUid)) {
+            state.userChatRoom!
+                .firstWhere((element) => element.chatroomuid == chatRoomUid)
+                .lastmessage = msg;
+          } else {
+            state.userChatRoom!.add(Chatroommodel(
+                participants: {"$from": true, "$to": true},
+                chatroomuid: chatRoomUid,
+                lastmessage: msg));
+          }
+        }).onError((error, stackTrace) => log(error.toString()));
       }
     } catch (e) {
       print(e);
@@ -374,7 +444,10 @@ class CommunityState {
   List<PostModel>? myPosts;
   List<PostModel>? bookMarkedPosts;
   List<UserModel>? users;
-  List<Chatroommodel>? chatrooms;
+  List<UserModel>? chattingUsers;
+  List<Chatroommodel>? allUsersChatRoom;
+  List<Chatroommodel>? userChatRoom;
+  String currentChatRoomUid;
   List<String>? articleSearchSuggestions;
   ScrollStatus? scrollStatus;
   PostStatus? rcmdPostStatus;
@@ -387,8 +460,11 @@ class CommunityState {
     this.recentPosts,
     this.myPosts,
     this.bookMarkedPosts,
-    this.chatrooms,
+    this.userChatRoom,
     this.users,
+    this.chattingUsers,
+    this.allUsersChatRoom,
+    this.currentChatRoomUid = "",
     this.articleSearchSuggestions,
     this.scrollStatus,
     this.rcmdPostStatus,
@@ -403,7 +479,9 @@ class CommunityState {
     List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
     List<UserModel>? users,
-    List<Chatroommodel>? chatrooms,
+    List<UserModel>? chattingUsers,
+    List<Chatroommodel>? userChatRoom,
+    String? currentChatRoomUid,
     List<String>? articleSearchSuggestions,
     ScrollStatus? scrollStatus,
     PostStatus? featuredPostStatus,
@@ -416,8 +494,10 @@ class CommunityState {
       myPosts: myPosts ?? this.myPosts,
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
       users: users ?? this.users,
+      chattingUsers: chattingUsers ?? this.chattingUsers,
       recentPosts: recentPosts ?? this.recentPosts,
-      chatrooms: chatrooms ?? this.chatrooms,
+      userChatRoom: userChatRoom ?? this.userChatRoom,
+      currentChatRoomUid: currentChatRoomUid ?? this.currentChatRoomUid,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
       scrollStatus: scrollStatus ?? this.scrollStatus,
       rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,

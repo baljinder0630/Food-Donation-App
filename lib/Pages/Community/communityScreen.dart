@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
+import 'package:food_donation_app/Pages/Community/allChats.dart';
 import 'package:food_donation_app/Pages/Community/allPosts.dart';
 import 'package:food_donation_app/Pages/Community/peoplePage.dart';
 import 'package:food_donation_app/Pages/Community/recentPosts.dart';
@@ -31,6 +32,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   List<String> categories = [
     "All",
     "Recents",
+    "Chat",
     "People",
   ];
 
@@ -128,7 +130,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 ),
                 SizedBox(height: 10.h),
                 MyAppBar(
-                    centerWidget: selectedCategory == 2
+                    centerWidget: selectedCategory == 3 || selectedCategory == 2
                         ? Padding(
                             padding: EdgeInsets.only(left: 57.w),
                             child: GestureDetector(
@@ -145,13 +147,13 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                               child: MySearchBar(title: "Articles"),
                             ),
                           ),
-                    rightWidget: selectedCategory == 2
+                    rightWidget: selectedCategory == 3 || selectedCategory == 2
                         ? SizedBox()
                         : Padding(
                             padding: EdgeInsets.only(right: 34.18.w),
                             child: GestureDetector(
                                 onTap: () {
-                                  context.pushRoute(ArticleHistoryRoute());
+                                  context.navigateTo(ArticleHistoryRoute());
                                 },
                                 child: SearchHistory(context)),
                           )),
@@ -185,8 +187,8 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                             } else {
                               setState(() {
                                 selectedCategory++;
-                                if (selectedCategory > 2) {
-                                  selectedCategory = 2;
+                                if (selectedCategory > 3) {
+                                  selectedCategory = 3;
                                 }
                               });
                             }
@@ -226,7 +228,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   ),
                 )
               : SizedBox(),
-          selectedCategory != 2
+          selectedCategory != 3 && selectedCategory != 2
               ? Positioned(
                   top: 147.h,
                   right: -32.w,
@@ -257,6 +259,8 @@ Widget getSelectedCategoryWidget(int selectedCategory) {
     case 1:
       return RecentPosts();
     case 2:
+      return Container(child: AllChatsPage());
+    case 3:
       return Container(child: PeoplePage());
     default:
       return Container(
