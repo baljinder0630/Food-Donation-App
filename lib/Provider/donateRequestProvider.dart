@@ -3,6 +3,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
 
+final donationRequestProvider =
+    StateNotifierProvider<DonationRequestNotifier, DonationRequest>(
+  (ref) => DonationRequestNotifier(ref: ref),
+);
+
 class DonationRequest {
   String? name;
   String? phoneNumber;
@@ -70,7 +75,7 @@ class DonationRequest {
         streetController: streetController ?? this.streetController,
         districtController: districtController ?? this.districtController,
         pincodeController: pincodeController ?? this.pincodeController,
-        foodCategory: foodCategory ?? [],
+        foodCategory: foodCategory ?? this.foodCategory,
         foodCategoryStatus: foodCategoryStatus ?? this.foodCategoryStatus);
   }
 }
@@ -88,18 +93,22 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
             foodCategory: [],
             foodCategoryStatus: FoodCategoryStatus.initial));
 
-  void updateFoodCategory(FoodCategory newFoodCategory) {
-    final currentState =
-        state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
-    state = currentState;
+  DonationRequest updateFoodCategory(String foodName, String quantity) {
+    FoodCategory newFoodCategory =
+        FoodCategory(name: foodName, quantity: quantity);
+    state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
 
-    final updatedFoodCategoryList = [...state.foodCategory!, newFoodCategory];
-    final newState = currentState.copyWith(
-        foodCategory: updatedFoodCategoryList,
-        foodCategoryStatus: FoodCategoryStatus.processed);
+    final foodCategory = [...state.foodCategory!, newFoodCategory];
 
-    state = newState;
+    state = state.copyWith(foodCategory: foodCategory);
     state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+    print("State changed");
+    print(state.foodCategory?.length);
+    return state;
+  }
+
+  List<FoodCategory> getFoodCategories() {
+    return state.foodCategory ?? [];
   }
 }
 
