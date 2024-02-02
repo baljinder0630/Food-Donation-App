@@ -199,14 +199,12 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                 InkWell(
                   onTap: () async {
                     log("Click on message");
-                    final chatroom = await ref
-                        .read(communityProvider.notifier)
-                        .createChatRoom(user.uid);
-                    if (chatroom.participants!.length == 2) {
-                      context.pushRoute(ChatScreenRoute(
-                          TargetUser: user, ChatRoom: chatroom));
-                    } else
-                      log("Error occured");
+                    ref.read(communityProvider.notifier).getChatRoom(user.uid);
+                    // log(user.uid);
+                    // if (chatroom.participants!.length == 2) {
+                    context.pushRoute(ChatScreenRoute(TargetUser: user));
+                    // } else
+                    //   log("Error occured");
                   },
                   child: Container(
                     width: 94.w,

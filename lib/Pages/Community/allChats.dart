@@ -19,7 +19,7 @@ class AllChatsPage extends ConsumerStatefulWidget {
 class _AllChatsPageState extends ConsumerState<AllChatsPage> {
   @override
   Widget build(BuildContext context) {
-    final users = ref.watch(communityProvider).users;
+    final users = ref.watch(communityProvider).chattingUsers;
 
     connect() {}
 
@@ -201,12 +201,8 @@ class _AllChatsPageState extends ConsumerState<AllChatsPage> {
                     log("Click on message");
                     final chatroom = await ref
                         .read(communityProvider.notifier)
-                        .createChatRoom(user.uid);
-                    if (chatroom.participants!.length == 2) {
-                      context.pushRoute(ChatScreenRoute(
-                          TargetUser: user, ChatRoom: chatroom));
-                    } else
-                      log("Error occured");
+                        .getChatRoom(user.uid);
+                    context.pushRoute(ChatScreenRoute(TargetUser: user));
                   },
                   child: Container(
                     width: 94.w,
@@ -253,17 +249,29 @@ class _AllChatsPageState extends ConsumerState<AllChatsPage> {
     }
 
     return Container(
-      // height: MediaQuery.of(context).size.height,
-      child: SingleChildScrollView(
-        child: Container(
-          height: 103.h * users!.length,
-          child: ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return PeopleCard(users[index]);
-              }),
-        ),
-      ),
+      child: users!.length == 0
+          ? Text(
+              "No users found",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF201F24),
+                fontSize: 17.10.sp,
+                fontFamily: 'Outfit',
+                fontWeight: FontWeight.w400,
+                height: 0,
+                letterSpacing: 0.34.sp,
+              ),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                height: 103.h * users!.length,
+                child: ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (context, index) {
+                      return PeopleCard(users[index]);
+                    }),
+              ),
+            ),
     );
   }
 }

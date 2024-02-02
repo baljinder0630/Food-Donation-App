@@ -130,7 +130,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 ),
                 SizedBox(height: 10.h),
                 MyAppBar(
-                    centerWidget: selectedCategory == 3
+                    centerWidget: selectedCategory == 3 || selectedCategory == 2
                         ? Padding(
                             padding: EdgeInsets.only(left: 57.w),
                             child: GestureDetector(
@@ -147,7 +147,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                               child: MySearchBar(title: "Articles"),
                             ),
                           ),
-                    rightWidget: selectedCategory == 3
+                    rightWidget: selectedCategory == 3 || selectedCategory == 2
                         ? SizedBox()
                         : Padding(
                             padding: EdgeInsets.only(right: 34.18.w),
@@ -187,8 +187,8 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                             } else {
                               setState(() {
                                 selectedCategory++;
-                                if (selectedCategory > 2) {
-                                  selectedCategory = 2;
+                                if (selectedCategory > 3) {
+                                  selectedCategory = 3;
                                 }
                               });
                             }
@@ -228,7 +228,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   ),
                 )
               : SizedBox(),
-          selectedCategory != 3
+          selectedCategory != 3 && selectedCategory != 2
               ? Positioned(
                   top: 147.h,
                   right: -32.w,

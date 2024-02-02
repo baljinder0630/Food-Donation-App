@@ -17,9 +17,7 @@ import 'package:pinput/pinput.dart';
 @RoutePage()
 class ChatScreen extends ConsumerStatefulWidget {
   final UserModel TargetUser;
-  final Chatroommodel ChatRoom;
-  const ChatScreen(
-      {required this.TargetUser, required this.ChatRoom, super.key});
+  const ChatScreen({required this.TargetUser, super.key});
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -31,7 +29,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     String TargetUserImage = widget.TargetUser.photoURL.toString();
     String TargetUserName = widget.TargetUser.displayName.toString();
     TextEditingController msgcontroller = TextEditingController();
-    String currentUser = ref.watch(authStateProvider).user!.uid;
+    var currentChatRoomUid = ref.watch(communityProvider).currentChatRoomUid;
+    log("Current Chat Room Uid: " + currentChatRoomUid.toString());
+    String currentUserUid = ref.watch(authStateProvider).user!.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -92,135 +92,141 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("ChatRoom")
-                  .doc(widget.ChatRoom.chatroomuid)
-                  .collection("Messages")
-                  .orderBy("sendOn", descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                //
-                //
-                if (snapshot.connectionState == ConnectionState.active) {
-                  QuerySnapshot querySnapshot = snapshot.data as QuerySnapshot;
-                  // if (!snapshot.hasData) {
-                  //   log("Loading Data");
-                  //   return Text("data loading");
-                  // }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text("Say Hi to " + TargetUserName + "!",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 181, 189, 194),
-                            fontSize: 20.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w400,
-                            height: 0,
-                            letterSpacing: 0.96.sp,
-                          )),
-                    );
-                  } else if (snapshot.hasData) {
-                    log(snapshot.data!.docs.length.toString());
-                    //
-                    //
-                    return ListView.builder(
-                      reverse: true,
-                      itemCount: querySnapshot.docs.length,
-                      itemBuilder: (context, index) {
-                        log("message1");
-                        Chattingmodel chattingModel = Chattingmodel.fromMap(
-                            querySnapshot.docs[index].data()
-                                as Map<String, dynamic>);
-                        log(chattingModel.toString());
-                        return Padding(
-                          padding: EdgeInsets.all(8.0.sp),
-                          child: Row(
-                            mainAxisAlignment:
-                                (chattingModel.sender == currentUser)
-                                    ? MainAxisAlignment.end
-                                    : MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: (chattingModel.sender == currentUser)
-                                          ? Color(0xFF6A4DFF)
-                                          : Color(0xFFF2F3F4),
-                                      borderRadius: (chattingModel.sender == currentUser)
-                                          ? BorderRadius.only(
-                                              topLeft: BorderRadius.circular(20.r)
-                                                  .topLeft,
-                                              bottomLeft: BorderRadius.circular(20.r)
-                                                  .bottomLeft,
-                                              bottomRight:
-                                                  BorderRadius.circular(20.r)
-                                                      .bottomRight)
-                                          : BorderRadius.only(
-                                              topRight: BorderRadius.circular(20.r)
-                                                  .topRight,
-                                              bottomLeft: BorderRadius.circular(20.r)
-                                                  .bottomLeft,
-                                              bottomRight:
-                                                  BorderRadius.circular(20.r)
-                                                      .bottomRight)),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                            chattingModel.lastmessage
-                                                .toString(),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 6.w),
-                                        child: Text(
-                                          DateTime.parse(chattingModel.sendtime
-                                                  .toString())
-                                              .toLocal()
-                                              .toString()
-                                              .substring(11, 16),
-                                          style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 181, 189, 194)),
-                                        ),
-                                      ),
-                                      // Padding(
-                                      //   padding: EdgeInsets.only(right: 6.w),
-                                      //   child: Text(
-                                      //     DateTime.parse(chattingModel.sendtime
-                                      //             .toString())
-                                      //         .toLocal()
-                                      //         .toString()
-                                      //         .substring(0, 10),
-                                      //     style: TextStyle(
-                                      //         color: Color.fromARGB(
-                                      //             255, 181, 189, 194)),
-                                      // ),
-                                      // ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                          "An error occured! Please check your internet connection."),
-                    );
-                  } else {
-                    return Container();
-                  }
-                } else {
-                  return Container();
-                }
-              },
-            ),
+            child: (ref.watch(communityProvider).currentChatRoomUid == "")
+                ? Center(
+                    child: Text("Say Hi to " + TargetUserName + "!",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 181, 189, 194),
+                          fontSize: 20.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                          letterSpacing: 0.96.sp,
+                        )),
+                  )
+                : StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("ChatRoom")
+                        .doc(currentChatRoomUid)
+                        .collection("Messages")
+                        .orderBy("sendOn", descending: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      //
+                      //
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        QuerySnapshot querySnapshot =
+                            snapshot.data as QuerySnapshot;
+                        // if (!snapshot.hasData) {
+                        //   log("Loading Data");
+                        //   return Text("data loading");
+                        // }
+                        if (snapshot.hasData) {
+                          // log(snapshot.data!.docs.length.toString());
+                          //
+                          //
+                          return ListView.builder(
+                            reverse: true,
+                            itemCount: querySnapshot.docs.length,
+                            itemBuilder: (context, index) {
+                              // log("message1");
+                              Chattingmodel chattingModel =
+                                  Chattingmodel.fromMap(
+                                      querySnapshot.docs[index].data()
+                                          as Map<String, dynamic>);
+                              // log(chattingModel.toString());
+                              return Padding(
+                                padding: EdgeInsets.all(8.0.sp),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      (chattingModel.sender == currentUserUid)
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: (chattingModel.sender ==
+                                                    currentUserUid)
+                                                ? Color(0xFF6A4DFF)
+                                                : Color(0xFFF2F3F4),
+                                            borderRadius: (chattingModel.sender ==
+                                                    currentUserUid)
+                                                ? BorderRadius.only(
+                                                    topLeft:
+                                                        BorderRadius.circular(20.r)
+                                                            .topLeft,
+                                                    bottomLeft:
+                                                        BorderRadius.circular(20.r)
+                                                            .bottomLeft,
+                                                    bottomRight:
+                                                        BorderRadius.circular(20.r)
+                                                            .bottomRight)
+                                                : BorderRadius.only(
+                                                    topRight:
+                                                        BorderRadius.circular(20.r).topRight,
+                                                    bottomLeft: BorderRadius.circular(20.r).bottomLeft,
+                                                    bottomRight: BorderRadius.circular(20.r).bottomRight)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                  chattingModel.lastmessage
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  )),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 6.w),
+                                              child: Text(
+                                                DateTime.parse(chattingModel
+                                                        .sendtime
+                                                        .toString())
+                                                    .toLocal()
+                                                    .toString()
+                                                    .substring(11, 16),
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 181, 189, 194)),
+                                              ),
+                                            ),
+                                            // Padding(
+                                            //   padding: EdgeInsets.only(right: 6.w),
+                                            //   child: Text(
+                                            //     DateTime.parse(chattingModel.sendtime
+                                            //             .toString())
+                                            //         .toLocal()
+                                            //         .toString()
+                                            //         .substring(0, 10),
+                                            //     style: TextStyle(
+                                            //         color: Color.fromARGB(
+                                            //             255, 181, 189, 194)),
+                                            // ),
+                                            // ),
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text(
+                                "An error occured! Please check your internet connection."),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -255,7 +261,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           if (msgcontroller.text.trim().isNotEmpty) {
                             ref.watch(communityProvider.notifier).SendMessage(
                                   msgcontroller.text.trim(),
-                                  widget.ChatRoom.chatroomuid,
+                                  widget.TargetUser.uid,
+                                  currentUserUid,
                                 );
                             msgcontroller.clear();
                           }
