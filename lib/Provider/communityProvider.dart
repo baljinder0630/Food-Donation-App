@@ -22,21 +22,25 @@ class Community extends StateNotifier<CommunityState> {
   Community({required this.ref})
       : firestore = FirebaseFirestore.instance,
         super(CommunityState(
-          posts: [],
-          recentPosts: [],
-          myPosts: [],
-          bookMarkedPosts: [],
-          users: [],
-          chattingUsers: [],
-          userChatRoom: [],
-          currentChatRoomUid: "",
-          scrollStatus: ScrollStatus.initial,
-          rcmdPostStatus: PostStatus.initial,
-          featuredPostStatus: PostStatus.initial,
-          recentPostStatus: PostStatus.initial,
-          articleSearchSuggestions: [],
-          uploadArticleStatus: UploadArticleStatus.initial,
-        )) {
+            posts: [],
+            recentPosts: [],
+            myPosts: [],
+            bookMarkedPosts: [],
+            featuredPosts: [],
+            users: [],
+            chattingUsers: [],
+            userChatRoom: [],
+            currentChatRoomUid: "",
+            // scrollStatus: ScrollStatus.initial,
+            rcmdPostStatus: PostStatus.initial,
+            featuredPostStatus: PostStatus.initial,
+            recentPostStatus: PostStatus.initial,
+            articleSearchSuggestions: [],
+            uploadArticleStatus: UploadArticleStatus.initial,
+            nextRcmdPostLoading: PostStatus.initial,
+            nextRecentPostLoading: PostStatus.initial,
+            lastRcmdDocument: null,
+            lastRecentDocument: null)) {
     loadUserChatRoom();
   }
 
@@ -79,10 +83,11 @@ class Community extends StateNotifier<CommunityState> {
       final id = Uuid().v4();
       final doc = firestore.collection("articles").doc(id);
       await doc.set(post.toMap());
-      final posts = [...state.posts!, post];
-      state = state.copyWith(posts: posts);
-      state =
-          state.copyWith(uploadArticleStatus: UploadArticleStatus.processed);
+      state = state.copyWith(
+        uploadArticleStatus: UploadArticleStatus.processed,
+        recentPosts: [post, ...state.recentPosts!],
+        myPosts: [post, ...state.myPosts!],
+      );
       return true;
     } catch (e) {
       state = state.copyWith(uploadArticleStatus: UploadArticleStatus.error);
@@ -105,14 +110,17 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
-  Future<void> getPosts(from) async {
+  Future<void> getRcmdPosts() async {
     try {
-      log("Getting articles");
-      state = state.copyWith(scrollStatus: ScrollStatus.processing);
-      state = state.copyWith(rcmdPostStatus: PostStatus.processing);
-      state = state.copyWith(featuredPostStatus: PostStatus.processing);
+      log("Getting Recommended articles");
+      state = state.copyWith(
+          rcmdPostStatus: PostStatus.processing,
+          lastRcmdDocument: null,
+          nextRcmdPostLoading: PostStatus.initial,
+          posts: []);
 
-      final snapshot = await firestore.collection("articles").limit(10).get();
+      // TODO: add logic to get recommended posts
+      final snapshot = await firestore.collection("articles").limit(5).get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
 
@@ -122,28 +130,106 @@ class Community extends StateNotifier<CommunityState> {
         return PostModel.fromMap(e.data());
       }).toList();
 
-      state = state.copyWith(posts: posts);
-      state = state.copyWith(scrollStatus: ScrollStatus.processed);
-      state = state.copyWith(rcmdPostStatus: PostStatus.processed);
-      state = state.copyWith(featuredPostStatus: PostStatus.processed);
+      if (posts.isEmpty) {
+        state = state.copyWith(
+            rcmdPostStatus: PostStatus.exhausted,
+            nextRcmdPostLoading: PostStatus.exhausted);
+        return;
+      }
+
+      state = state.copyWith(
+        lastRcmdDocument: snapshot.docs.last,
+        posts: posts, // recommended posts
+        rcmdPostStatus: PostStatus.processed,
+      );
     } catch (e) {
-      state = state.copyWith(scrollStatus: ScrollStatus.error);
-      state = state.copyWith(featuredPostStatus: PostStatus.error);
       state = state.copyWith(rcmdPostStatus: PostStatus.error);
       log(e.toString());
     }
   }
 
-  Future<void> getRecentPosts(from) async {
+  Future<void> getFeaturedPosts() async {
     try {
       log("Getting articles");
-      state = state.copyWith(scrollStatus: ScrollStatus.processing);
-      state = state.copyWith(recentPostStatus: PostStatus.processing);
+      state = state.copyWith(
+          featuredPostStatus: PostStatus.processing, featuredPosts: []);
+
+      // TODO: add logic to get featured posts
+      final snapshot = await firestore.collection("articles").limit(5).get();
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+
+      if (posts.isEmpty) {
+        state = state.copyWith(featuredPostStatus: PostStatus.exhausted);
+        return;
+      }
+      state = state.copyWith(
+          featuredPosts: posts, featuredPostStatus: PostStatus.processed);
+    } catch (e) {
+      state = state.copyWith(featuredPostStatus: PostStatus.error);
+      log(e.toString());
+    }
+  }
+
+  Future<void> getNextPosts() async {
+    try {
+      log("Getting next articles");
+      if (state.posts!.isEmpty ||
+          state.lastRcmdDocument == null ||
+          state.nextRcmdPostLoading == PostStatus.exhausted) return;
+
+      log("Getting articles");
+      state = state.copyWith(nextRcmdPostLoading: PostStatus.processing);
+
+      final snapshot = await firestore
+          .collection("articles")
+          .startAfterDocument(state.lastRcmdDocument!)
+          .limit(5)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        state = state.copyWith(nextRcmdPostLoading: PostStatus.exhausted);
+        return;
+      }
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+
+      state = state.copyWith(
+          posts: [...state.posts!, ...posts],
+          nextRcmdPostLoading: PostStatus.processed,
+          lastRcmdDocument: snapshot.docs.last);
+    } catch (e) {
+      state = state.copyWith(nextRcmdPostLoading: PostStatus.error);
+      log(e.toString());
+    }
+  }
+
+  Future<void> getRecentPosts() async {
+    try {
+      log("Getting recent articles");
+      state = state.copyWith(
+        recentPostStatus: PostStatus.processing,
+        lastRecentDocument: null,
+        nextRecentPostLoading: PostStatus.initial,
+        recentPosts: [],
+      );
 
       final snapshot = await firestore
           .collection("articles")
           .orderBy("createdTime", descending: true)
-          .limit(10)
+          .limit(5)
           .get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
@@ -154,12 +240,60 @@ class Community extends StateNotifier<CommunityState> {
         return PostModel.fromMap(e.data());
       }).toList();
 
-      state = state.copyWith(recentPosts: posts);
-      state = state.copyWith(scrollStatus: ScrollStatus.processed);
-      state = state.copyWith(recentPostStatus: PostStatus.processed);
+      if (posts.isEmpty) {
+        state = state.copyWith(recentPostStatus: PostStatus.exhausted);
+        return;
+      }
+
+      state = state.copyWith(
+          recentPosts: posts,
+          recentPostStatus: PostStatus.processed,
+          lastRecentDocument: snapshot.docs.last);
     } catch (e) {
-      state = state.copyWith(scrollStatus: ScrollStatus.error);
       state = state.copyWith(recentPostStatus: PostStatus.error);
+      log(e.toString());
+    }
+  }
+
+  Future<void> getNextRecentPosts() async {
+    try {
+      log("Getting next recent articles");
+      if (state.recentPosts!.isEmpty ||
+          state.lastRecentDocument == null ||
+          state.nextRecentPostLoading == PostStatus.exhausted) return;
+
+      log("Getting articles");
+      // state = state.copyWith(scrollStatus: ScrollStatus.processing);
+      state = state.copyWith(nextRecentPostLoading: PostStatus.processing);
+
+      final snapshot = await firestore
+          .collection("articles")
+          .orderBy("createdTime", descending: true)
+          .startAfterDocument(state.lastRecentDocument!)
+          .limit(5)
+          .get();
+      final posts = snapshot.docs.map((e) {
+        // convert timestamp to DateTime
+
+        e.data()["createdTime"] =
+            (e.data()["createdTime"] as Timestamp).toDate().toIso8601String();
+        // log(e.data().toString());
+        return PostModel.fromMap(e.data());
+      }).toList();
+
+      if (posts.isEmpty) {
+        state = state.copyWith(nextRecentPostLoading: PostStatus.exhausted);
+        return;
+      }
+
+      state = state.copyWith(
+          recentPosts: [...state.recentPosts!, ...posts],
+          nextRecentPostLoading: PostStatus.processed,
+          lastRecentDocument: snapshot.docs.last);
+    } catch (e) {
+      state = state.copyWith(
+          recentPostStatus: PostStatus.error,
+          nextRecentPostLoading: PostStatus.error);
       log(e.toString());
     }
   }
@@ -443,73 +577,93 @@ class CommunityState {
   List<PostModel>? recentPosts;
   List<PostModel>? myPosts;
   List<PostModel>? bookMarkedPosts;
+  List<PostModel>? featuredPosts;
   List<UserModel>? users;
   List<UserModel>? chattingUsers;
   List<Chatroommodel>? allUsersChatRoom;
   List<Chatroommodel>? userChatRoom;
   String currentChatRoomUid;
   List<String>? articleSearchSuggestions;
-  ScrollStatus? scrollStatus;
+  // ScrollStatus? scrollStatus;
   PostStatus? rcmdPostStatus;
   PostStatus? recentPostStatus;
   PostStatus? featuredPostStatus;
+  PostStatus? nextRcmdPostLoading;
+  PostStatus? nextRecentPostLoading;
+  DocumentSnapshot? lastRcmdDocument;
+  DocumentSnapshot? lastRecentDocument;
   UploadArticleStatus? uploadArticleStatus;
 
-  CommunityState({
-    this.posts,
-    this.recentPosts,
-    this.myPosts,
-    this.bookMarkedPosts,
-    this.userChatRoom,
-    this.users,
-    this.chattingUsers,
-    this.allUsersChatRoom,
-    this.currentChatRoomUid = "",
-    this.articleSearchSuggestions,
-    this.scrollStatus,
-    this.rcmdPostStatus,
-    this.recentPostStatus,
-    this.featuredPostStatus,
-    this.uploadArticleStatus,
-  });
+  CommunityState(
+      {this.posts,
+      this.recentPosts,
+      this.myPosts,
+      this.bookMarkedPosts,
+      this.featuredPosts,
+      this.userChatRoom,
+      this.users,
+      this.chattingUsers,
+      this.allUsersChatRoom,
+      this.currentChatRoomUid = "",
+      this.articleSearchSuggestions,
+      // this.scrollStatus,
+      this.rcmdPostStatus,
+      this.recentPostStatus,
+      this.nextRcmdPostLoading,
+      this.nextRecentPostLoading,
+      this.featuredPostStatus,
+      this.uploadArticleStatus,
+      this.lastRecentDocument,
+      this.lastRcmdDocument});
 
   CommunityState copyWith({
     List<PostModel>? posts,
     List<PostModel>? myPosts,
     List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
+    List<PostModel>? featuredPosts,
     List<UserModel>? users,
     List<UserModel>? chattingUsers,
     List<Chatroommodel>? userChatRoom,
     String? currentChatRoomUid,
     List<String>? articleSearchSuggestions,
-    ScrollStatus? scrollStatus,
+    // ScrollStatus? scrollStatus,
     PostStatus? featuredPostStatus,
     PostStatus? recentPostStatus,
     PostStatus? rcmdPostStatus,
+    PostStatus? nextRcmdPostLoading,
+    PostStatus? nextRecentPostLoading,
     UploadArticleStatus? uploadArticleStatus,
+    DocumentSnapshot? lastRcmdDocument,
+    DocumentSnapshot? lastRecentDocument,
   }) {
     return CommunityState(
       posts: posts ?? this.posts,
       myPosts: myPosts ?? this.myPosts,
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
+      featuredPosts: featuredPosts ?? this.featuredPosts,
       users: users ?? this.users,
       chattingUsers: chattingUsers ?? this.chattingUsers,
       recentPosts: recentPosts ?? this.recentPosts,
       userChatRoom: userChatRoom ?? this.userChatRoom,
       currentChatRoomUid: currentChatRoomUid ?? this.currentChatRoomUid,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
-      scrollStatus: scrollStatus ?? this.scrollStatus,
+      // scrollStatus: scrollStatus ?? this.scrollStatus,
       rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
       featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
       recentPostStatus: recentPostStatus ?? this.recentPostStatus,
       uploadArticleStatus: uploadArticleStatus ?? this.uploadArticleStatus,
+      lastRcmdDocument: lastRcmdDocument ?? this.lastRcmdDocument,
+      lastRecentDocument: lastRecentDocument ?? this.lastRecentDocument,
+      nextRcmdPostLoading: nextRcmdPostLoading ?? this.nextRcmdPostLoading,
+      nextRecentPostLoading:
+          nextRecentPostLoading ?? this.nextRecentPostLoading,
     );
   }
 }
 
-enum ScrollStatus { initial, exhausted, processing, processed, error }
+// enum ScrollStatus { initial, exhausted, processing, processed, error }
 
-enum PostStatus { initial, processing, processed, error }
+enum PostStatus { initial, processing, processed, error, exhausted }
 
 enum UploadArticleStatus { initial, processing, processed, error }

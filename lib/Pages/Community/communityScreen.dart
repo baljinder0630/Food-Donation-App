@@ -3,8 +3,6 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,8 +14,6 @@ import 'package:food_donation_app/Pages/Community/peoplePage.dart';
 import 'package:food_donation_app/Pages/Community/recentPosts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:shimmer/shimmer.dart';
-import '../constants/constants.dart';
 
 @RoutePage()
 class CommunityHomePage extends ConsumerStatefulWidget {
@@ -35,16 +31,43 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
     "Chat",
     "People",
   ];
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Your code here
-      ref.read(communityProvider.notifier).getPosts(0);
-      ref.read(communityProvider.notifier).getRecentPosts(0);
+      ref.read(communityProvider.notifier).getRcmdPosts();
+      ref.read(communityProvider.notifier).getFeaturedPosts();
+      ref.read(communityProvider.notifier).getRecentPosts();
       ref.read(communityProvider.notifier).getPeoples(0);
       ref.read(communityProvider.notifier).loadChatRooms();
+    });
+    _scrollController.addListener(() {
+      if (selectedCategory == 0) {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          ref.read(communityProvider.notifier).getNextPosts();
+        }
+      } else if (selectedCategory == 1) {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          ref.read(communityProvider.notifier).getNextRecentPosts();
+        }
+      }
+      // else if(selectedCategory == 3){
+      //   if (_scrollController.position.pixels ==
+      //       _scrollController.position.maxScrollExtent) {
+      //     ref.read(communityProvider.notifier).getNextPeoples();
+      //   }
+      // }
+      // else if(selectedCategory == 2){
+      //   if (_scrollController.position.pixels ==
+      //       _scrollController.position.maxScrollExtent) {
+      //     ref.read(communityProvider.notifier).loadChatRooms();
+      //   }
+      // }
     });
     super.initState();
   }
@@ -117,18 +140,18 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
             margin: EdgeInsets.only(top: 50.h),
             child: Column(
               children: [
-                Text(
-                  'Community',
-                  style: TextStyle(
-                    color: Color(0xFF201F24),
-                    fontSize: 20.sp,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w600,
-                    height: 0,
-                    letterSpacing: 0.40.sp,
-                  ),
-                ),
-                SizedBox(height: 10.h),
+                // Text(
+                //   'Community',
+                //   style: TextStyle(
+                //     color: Color(0xFF201F24),
+                //     fontSize: 20.sp,
+                //     fontFamily: 'Outfit',
+                //     fontWeight: FontWeight.w600,
+                //     height: 0,
+                //     letterSpacing: 0.40.sp,
+                //   ),
+                // ),
+                // SizedBox(height: 10.h),
                 MyAppBar(
                     centerWidget: selectedCategory == 3 || selectedCategory == 2
                         ? Padding(
@@ -161,40 +184,68 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                   height: 10.h,
                 ),
                 Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      categoryWidget(),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      GestureDetector(
-                          onHorizontalDragEnd: (details) {
-                            log(details.primaryVelocity.toString() +
-                                "  " +
-                                selectedCategory.toString());
-                            if (details.primaryVelocity! > 0) {
-                              setState(() {
-                                selectedCategory--;
-                                if (selectedCategory < 0) {
-                                  selectedCategory = 0;
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      if (selectedCategory == 0) {
+                        await ref
+                            .read(communityProvider.notifier)
+                            .getFeaturedPosts();
+                        await ref
+                            .read(communityProvider.notifier)
+                            .getRcmdPosts();
+                      } else if (selectedCategory == 1) {
+                        await ref
+                            .read(communityProvider.notifier)
+                            .getRecentPosts();
+                      }
+                      // else if(selectedCategory == 2)
+                      //   return await ref
+                      //       .read(communityProvider.notifier)
+                      //       .loadChatRooms();
+                      // else if(selectedCategory == 3)
+                      //   return await ref
+                      //       .read(communityProvider.notifier)
+                      //       .getPeoples(0);
+                    },
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.zero,
+                      physics: BouncingScrollPhysics(),
+                      controller: _scrollController,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          categoryWidget(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          GestureDetector(
+                              onHorizontalDragEnd: (details) {
+                                log(details.primaryVelocity.toString() +
+                                    "  " +
+                                    selectedCategory.toString());
+                                if (details.primaryVelocity! > 0) {
+                                  setState(() {
+                                    selectedCategory--;
+                                    if (selectedCategory < 0) {
+                                      selectedCategory = 0;
+                                    }
+                                  });
+                                } else {
+                                  setState(() {
+                                    selectedCategory++;
+                                    if (selectedCategory > 3) {
+                                      selectedCategory = 3;
+                                    }
+                                  });
                                 }
-                              });
-                            } else {
-                              setState(() {
-                                selectedCategory++;
-                                if (selectedCategory > 3) {
-                                  selectedCategory = 3;
-                                }
-                              });
-                            }
-                          },
-                          child: getSelectedCategoryWidget(selectedCategory))
-                    ],
+                              },
+                              child:
+                                  getSelectedCategoryWidget(selectedCategory))
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -230,13 +281,13 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
               : SizedBox(),
           selectedCategory != 3 && selectedCategory != 2
               ? Positioned(
-                  top: 147.h,
+                  top: 127.h,
                   right: -32.w,
                   child: Image.asset("lib/assets/Community/books and cup.png",
                       height: 82.h, width: 71.w, fit: BoxFit.contain),
                 )
               : Positioned(
-                  top: 57.h,
+                  top: 37.h,
                   right: -37.w,
                   child: Image.asset(
                     "lib/assets/Community/peoples.png",
