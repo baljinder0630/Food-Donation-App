@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,12 +20,16 @@ class FoodCategoryForm extends ConsumerStatefulWidget {
 class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
   TextEditingController foodController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
+  TextEditingController imagePathController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     ref.watch(donationRequestProvider);
     final foodCategories =
         ref.watch(donationRequestProvider.notifier).getFoodCategories();
+    for (int i = 0; i < foodCategories.length; i++) {
+      print(foodCategories[i].imageFile?.path);
+    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -38,7 +44,7 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: const Center(child: Text("Space for some image")),
                 ),
-                const Subheading(text: 'Select Food Category'),
+                Subheading(text: 'Select Food Category'),
                 Container(
                   margin: const EdgeInsets.symmetric(
                       horizontal: 7.0, vertical: 30.0),
@@ -86,11 +92,15 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                                   category: data[index]['category'],
                                   foodController: foodController,
                                   quantityController: quantityController,
+                                  imageController: imagePathController,
                                   updateFoodCategory: (String foodName,
-                                      String quantity, WidgetRef ref) {
+                                      String quantity,
+                                      File img,
+                                      WidgetRef ref) {
                                     ref
                                         .read(donationRequestProvider.notifier)
-                                        .updateFoodCategory(foodName, quantity);
+                                        .updateFoodCategory(
+                                            foodName, quantity, img);
                                   },
                                   ref: ref,
                                 );
