@@ -11,6 +11,7 @@ import 'package:food_donation_app/constants.dart';
 import 'firebase_options.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   // Stripe.publishableKey =
   //     "pk_test_51ORuApSJmtO3RawjC53EVLBpPpuIUb0tuwdTFGfBZNssqHsSnrZeQ3YmxS439VNmGsspLBWB3BjyJZe8sws7df1L00SjSckuJM";
@@ -23,6 +24,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   MyApp({super.key});
 
   final _appRouter = AppRouter();

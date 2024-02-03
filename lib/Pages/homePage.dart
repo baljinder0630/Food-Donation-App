@@ -1,15 +1,31 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../Router/route.gr.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
 
+
+
 @RoutePage()
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+  @override
+  State<HomePage> createState()=>_HomePageState();
+}
+
+
+class _HomePageState extends State<HomePage> {
+
+
   var selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
   final List postId = [
@@ -19,7 +35,117 @@ class HomePage extends StatelessWidget {
     '14',
   ];
 
-  HomePage({super.key});
+  final user = FirebaseAuth.instance.currentUser!;
+
+  final Completer<GoogleMapController> _controller = Completer();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+      target: LatLng(33.6844, 73.0479),
+      zoom: 14);
+
+
+  final List<Marker> _markers = <Marker>[
+    Marker(
+        markerId: MarkerId("1"),
+        position: LatLng(33.4322, 73.2232),
+        infoWindow: InfoWindow(
+          title: "Marker Title",
+        )
+    )
+  ];
+
+  getLocation() {
+    getUserCurrentLocation().then((value) async {
+      print("${value.latitude} ${value.longitude}");
+
+      _markers.add(
+          Marker(
+              markerId: MarkerId('1'),
+              position: LatLng(value.latitude, value.longitude),
+              infoWindow: InfoWindow(
+                  title: "My Current Location"
+              )
+          )
+      );
+
+      CameraPosition cameraPosition = CameraPosition(
+        zoom: 14,
+        target: LatLng(value.latitude, value.longitude),
+      );
+
+      final GoogleMapController controller = await _controller.future;
+
+      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+      setState(() {
+
+      });
+    });
+  }
+
+  Future<Position> getUserCurrentLocation() async {
+    try {
+      await Geolocator.requestPermission().then((value) async {
+        // Check if the permission is granted before proceeding
+        if (value != LocationPermission.denied) {
+          return await Geolocator.getCurrentPosition();
+        } else {
+          // Handle the case where permission is not granted
+          print("Location permission not granted");
+          return await Geolocator.getCurrentPosition();
+        }
+      });
+    } catch (error) {
+      print("Error while getting location: $error");
+      return Position(
+        latitude: 0,
+        longitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0.0,
+        altitude: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0, altitudeAccuracy: 0, headingAccuracy: 0,
+      );
+    }
+    return Position(
+      latitude: 0,
+      longitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 0.0,
+      altitude: 0.0,
+      heading: 0.0,
+      speed: 0.0,
+      speedAccuracy: 0.0, altitudeAccuracy: 0, headingAccuracy: 0,
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocation();
+  }
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Container(
+//         color:Colors.redAccent,
+//         width: 400,
+//         height: 500,
+//         child: GoogleMap(
+//           initialCameraPosition: _kGooglePlex,
+//           markers: Set<Marker>.of(_markers),
+//           onMapCreated: (GoogleMapController controller){
+//             _controller.complete(controller);}
+//
+//         ),
+//       ),
+//     );
+//   }
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +165,7 @@ class HomePage extends StatelessWidget {
         child: FloatingActionButton(
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
-          onPressed: () {
+          onPressed: () async{
             context.pushRoute(const RaiseRequestRoute());
           },
           elevation: 0.0,
@@ -50,80 +176,10 @@ class HomePage extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          // SliverAppBar(
-          //   expandedHeight: 200.0,
-          //   floating: false,
-          //   pinned: true,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     background: Image.network(
-          //       'https://example.com/your_image.jpg', // Add your image URL here
-          //       fit: BoxFit.cover,
-          //     ),
-          //     collapseMode: CollapseMode.pin,
-          //     stretchModes: [StretchMode.fadeTitle],
-          //     centerTitle: true,
-          //     titlePadding: EdgeInsets.only(bottom: 16.0),
-          //     title: Column(
-          //       mainAxisAlignment: MainAxisAlignment.end,
-          //       children: [
-          //         Container(
-          //           padding: EdgeInsets.symmetric(horizontal: 16.0),
-          //           color: Colors.blue,
-          //           child: Text(
-          //             'This is a scrolling column',
-          //             style: TextStyle(
-          //               color: Colors.white,
-          //               fontSize: 18.0,
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-
           SliverAppBar(
               floating: true,
               expandedHeight: 100.h,
               title: Center(child: Text("H O M E P A G E"))
-              // flexibleSpace: SliverToBoxAdapter(
-              //   child: Column(
-              //     children: [
-              //       MyAppBar(
-              //         centerWidget: MySearchBar(),
-              //         // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
-              //         rightWidget: Padding(
-              //           padding: EdgeInsets.only(
-              //               right: 16.0), // Adjust the left padding as needed
-              //           child: Container(
-              //             padding: EdgeInsets.all(10.r),
-              //             decoration: BoxDecoration(
-              //               shape: BoxShape.circle,
-              //               color: Colors.white,
-              //             ),
-              //             child: IconButton(
-              //               icon: Icon(Icons.local_shipping),
-              //               onPressed: () {
-              //                 context
-              //                     .pushRoute(const DonationTrackingPageRoute());
-              //               },
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(
-              //         height: 20.h,
-              //       ),
-              //       Container(
-              //         padding: EdgeInsets.all(10.r),
-              //         child: categoryWidget(),
-              //       ),
-              //       SizedBox(
-              //         height: 20.h,
-              //       ),
-              //     ],
-              //   ),
-              // ),
               ),
           SliverToBoxAdapter(
             child: Column(
@@ -155,7 +211,7 @@ class HomePage extends StatelessWidget {
                             child: Row(children: [
                               Expanded(
                                 child: Text(
-                                  "Hello, Anupam Mittal! Anupam Mittal Anupam Mittal...",
+                                  "Hello, "+user.displayName!,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20.sp,
@@ -195,6 +251,21 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 // Here Avatar and Name container ends.
+
+
+                Container(
+                  height : 400.h,
+                  width: 300.w,
+                  color: Colors.amber,
+                  child:
+                  GoogleMap(
+                    initialCameraPosition: _kGooglePlex,
+                    markers: Set<Marker>.of(_markers),
+                    onMapCreated: (GoogleMapController controller){
+                      _controller.complete(controller);
+                    },
+                  ),
+                ),
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
@@ -501,6 +572,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 }
 
 Widget mainOptions(BuildContext context) {
