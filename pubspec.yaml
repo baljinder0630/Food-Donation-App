@@ -47,7 +47,7 @@ dependencies:
   camera: any
   image_picker: any
   pinput: any
-#  flutter_stripe: any
+  #  flutter_stripe: any
   razorpay_flutter: any
   http: any
   # audioplayers: ^5.2.1
@@ -57,13 +57,11 @@ dependencies:
   permission_handler: any
   firebase_storage: ^11.6.0
   easy_debounce: ^2.0.3
-#  vibration: ^1.8.4
+  #  vibration: ^1.8.4
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
   firebase_messaging: ^14.7.10
-  permission_handler: ^11.2.0
-
 
 dev_dependencies:
   flutter_test:
