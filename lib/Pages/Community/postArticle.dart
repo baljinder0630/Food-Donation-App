@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:uuid/uuid.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 @RoutePage()
 class PostArticle extends ConsumerStatefulWidget {
@@ -107,10 +108,41 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   }
 
   Future<void> _getImage(ImageSource imageSource) async {
-    final pickedFile =
-        await _picker.pickImage(source: imageSource, imageQuality: 50);
-    if (pickedFile != null) {
-      imagecrop(pickedFile);
+    if (imageSource == ImageSource.gallery) {
+      final pickedFile =
+          await _picker.pickImage(source: imageSource, imageQuality: 50);
+      if (pickedFile != null) {
+        imagecrop(pickedFile);
+      }
+    } else {
+      Permission permission = Permission.camera;
+
+      if (await permission.isGranted) {
+        final pickedFile =
+            await _picker.pickImage(source: imageSource, imageQuality: 50);
+        if (pickedFile != null) {
+          imagecrop(pickedFile);
+        }
+      } else {
+        log("Permission Not Granted");
+        PermissionStatus permissionStatus = await permission.request();
+        switch (permissionStatus) {
+          case PermissionStatus.granted:
+            _getImage(imageSource);
+            break;
+          case PermissionStatus.denied:
+            log("Permission Denied");
+            break;
+          case PermissionStatus.permanentlyDenied:
+            // The user opted to never again see the permission request dialog for this
+            // app. The only way to change the permission's status now is through a
+            // system setting. Open the app settings screen.
+            openAppSettings();
+            break;
+          default:
+            break;
+        }
+      }
     }
   }
 
