@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/actionbutton.dart';
 
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
+import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/constants.dart';
 
 class FoodCategoryGrid extends StatelessWidget {
@@ -11,43 +15,15 @@ class FoodCategoryGrid extends StatelessWidget {
   TextEditingController quantityController = TextEditingController();
 
   FoodCategoryGrid({Key? key, required this.data}) : super(key: key);
-  void _showFoodInputDialog(BuildContext context, String category) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Donate $category?',
-            style: const TextStyle(fontSize: 20.0),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomTextFormField(
-                  hintText: 'Food Type', controller: foodController),
-              SizedBox(height: 10.0.h),
-              CustomTextFormField(
-                  hintText: 'Quantity',
-                  controller: quantityController,
-                  numericKeyboard: true)
-            ],
-          ),
-          actions: <Widget>[
-            ActionButton(
-                text: 'Cancel',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            ActionButton(
-                text: 'Donate',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-          ],
-        );
-      },
-    );
+
+  void updateFoodCategory(
+      String foodName, String quantity, File imgFile, WidgetRef ref) {
+    ref
+        .watch(donationRequestProvider.notifier)
+        .updateFoodCategory(foodName, quantity, imgFile);
   }
+
+  void _showFoodInputDialog(BuildContext context, String category) {}
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +37,6 @@ class FoodCategoryGrid extends StatelessWidget {
       itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          // elevation: 3.0,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(20.0),
-          // ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
@@ -76,7 +48,6 @@ class FoodCategoryGrid extends StatelessWidget {
               ),
             ],
           ),
-
           child: InkWell(
             onTap: () {
               _showFoodInputDialog(context, data[index]['category']);

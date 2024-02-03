@@ -42,7 +42,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     // child: Image.asset('images/personal_details.png'),
                     child: const Center(child: Text("Space for some image")),
                   ),
-                  const Subheading(text: 'Fill Personal Details'),
+                  Subheading(text: 'Fill Personal Details'),
                   Container(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 7.0, vertical: 30.0),
