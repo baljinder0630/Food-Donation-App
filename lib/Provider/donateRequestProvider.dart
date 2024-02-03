@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
 
@@ -93,9 +95,12 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
             foodCategory: [],
             foodCategoryStatus: FoodCategoryStatus.initial));
 
-  DonationRequest updateFoodCategory(String foodName, String quantity) {
+  DonationRequest updateFoodCategory(
+      String foodName, String quantity, File img) {
+    String path = img.path;
+    print("here: $path");
     FoodCategory newFoodCategory =
-        FoodCategory(name: foodName, quantity: quantity);
+        FoodCategory(name: foodName, quantity: quantity, imageFile: img);
     state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
 
     final foodCategory = [...state.foodCategory!, newFoodCategory];
@@ -104,6 +109,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
     print("State changed");
     print(state.foodCategory?.length);
+
     return state;
   }
 

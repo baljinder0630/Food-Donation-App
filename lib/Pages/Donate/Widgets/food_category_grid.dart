@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,10 +16,11 @@ class FoodCategoryGrid extends StatelessWidget {
 
   FoodCategoryGrid({Key? key, required this.data}) : super(key: key);
 
-  void updateFoodCategory(String foodName, String quantity, WidgetRef ref) {
+  void updateFoodCategory(
+      String foodName, String quantity, File imgFile, WidgetRef ref) {
     ref
         .watch(donationRequestProvider.notifier)
-        .updateFoodCategory(foodName, quantity);
+        .updateFoodCategory(foodName, quantity, imgFile);
   }
 
   void _showFoodInputDialog(BuildContext context, String category) {}
