@@ -32,6 +32,10 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
       communityProvider.select((_) => _.recentPostStatus),
     );
 
+    final nextRecentPostLoading = ref.watch(
+      communityProvider.select((_) => _.nextRecentPostLoading),
+    );
+
     Widget RecentPosts() {
       return recentPostLoading != PostStatus.processed
           ? Container(
@@ -300,6 +304,47 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
             );
     }
 
-    return RecentPosts();
+    return Column(
+      children: [
+        RecentPosts(),
+        nextRecentPostLoading == PostStatus.initial
+            ? Container(
+                height: 50.h,
+              )
+            : nextRecentPostLoading == PostStatus.processing
+                ? SizedBox(
+                    height: 50.h,
+                    child: Center(
+                      child: Container(
+                        height: 20.r,
+                        width: 20.r,
+                        child: const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFFFE4E74)),
+                          strokeWidth: 5.0,
+                        ),
+                      ),
+                    ),
+                  )
+                : nextRecentPostLoading == PostStatus.exhausted
+                    ? Container(
+                        height: 50.h,
+                        child: Center(
+                          child: Text(
+                            "No more Articles",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.56.sp,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container()
+      ],
+    );
   }
 }

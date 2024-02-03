@@ -28,10 +28,20 @@ class _AppPostsState extends ConsumerState<AllPosts> {
     final posts = ref.watch(
       communityProvider.select((_) => _.posts),
     );
+    final featuredPosts = ref.watch(
+      communityProvider.select((_) => _.featuredPosts),
+    );
 
     final featuredPostLoading = ref.watch(
       communityProvider.select((_) => _.featuredPostStatus),
     );
+
+    final rcmdPostLoading = ref.watch(
+      communityProvider.select((_) => _.rcmdPostStatus),
+    );
+
+    final nextRcmdPostLoading =
+        ref.watch(communityProvider).nextRcmdPostLoading;
 
     Widget FeaturedArticles() {
       return featuredPostLoading != PostStatus.processed
@@ -75,14 +85,14 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                     viewportFraction: 0.7,
                     initialPage: 2,
                     enlargeFactor: 0.4),
-                itemCount: posts!.length,
+                itemCount: featuredPosts!.length,
                 itemBuilder:
                     (BuildContext context, int index, int pageViewIndex) {
                   return InkWell(
                     onTap: () {
                       log("Tapped");
-                      context
-                          .pushRoute(ArticleDetailRoute(article: posts[index]));
+                      context.pushRoute(
+                          ArticleDetailRoute(article: featuredPosts[index]));
                     },
                     child: Stack(
                       children: [
@@ -90,13 +100,14 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                           // margin: EdgeInsets.only(right: 20.w),
                           width: 300.sp,
                           height: 300.sp,
+
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.r),
                             ),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                posts[index].imgUrl,
+                                featuredPosts[index].imgUrl,
                               ),
                               fit: BoxFit.cover,
                             ),
@@ -153,13 +164,14 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          posts[index].subject.length > 35
-                                              ? toCamelCase(posts[index]
+                                          featuredPosts[index].subject.length >
+                                                  35
+                                              ? toCamelCase(featuredPosts[index]
                                                       .subject
                                                       .substring(0, 35)) +
                                                   "..."
                                               : toCamelCase(
-                                                  posts[index].subject),
+                                                  featuredPosts[index].subject),
                                           style: TextStyle(
                                             color: Color(0xFFB3B3B8),
                                             fontSize: 14.sp,
@@ -176,13 +188,16 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           // color: Colors.red,
                                           child: SingleChildScrollView(
                                             child: Text(
-                                              posts[index].description.length >
+                                              featuredPosts[index]
+                                                          .description
+                                                          .length >
                                                       100
-                                                  ? posts[index]
+                                                  ? featuredPosts[index]
                                                           .description
                                                           .substring(0, 100) +
                                                       "..."
-                                                  : posts[index].description,
+                                                  : featuredPosts[index]
+                                                      .description,
                                               style: TextStyle(
                                                 color: Color(0xFFF9F8FD),
                                                 fontSize: 14.sp,
@@ -238,7 +253,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                                 child: Center(
                                                     child: ClipOval(
                                                         child: Image.network(
-                                                            posts[index]
+                                                            featuredPosts[index]
                                                                 .createdByAvatar
                                                                 .toString(),
                                                             fit: BoxFit.cover,
@@ -248,7 +263,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                                                 Center(
                                                                   child: Text(
                                                                     nameProfile(
-                                                                        posts[index]
+                                                                        featuredPosts[index]
                                                                             .username),
                                                                     style:
                                                                         TextStyle(
@@ -270,7 +285,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                posts[index].username,
+                                                featuredPosts[index].username,
                                                 style: TextStyle(
                                                   color: Color(0xFFF9F8FD),
                                                   fontSize: 14.sp,
@@ -302,7 +317,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                               ),
                                               SizedBox(width: 4.w),
                                               Text(
-                                                timeAgo(posts[index]
+                                                timeAgo(featuredPosts[index]
                                                     .createdTime
                                                     .toDate()),
                                                 style: TextStyle(
@@ -331,7 +346,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
     }
 
     Widget Recommendations() {
-      return featuredPostLoading != PostStatus.processed
+      return rcmdPostLoading != PostStatus.processed
           ? Container(
               height: 3 * 130.h,
               child: ListView.builder(
@@ -485,7 +500,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  featuredPostLoading != PostStatus.processed
+                                  rcmdPostLoading != PostStatus.processed
                                       ? Shimmer.fromColors(
                                           baseColor: Colors.grey[300]!,
                                           highlightColor: Colors.grey[100]!,
@@ -552,7 +567,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           ],
                                         ),
                                   SizedBox(height: 15.h),
-                                  featuredPostLoading != PostStatus.processed
+                                  rcmdPostLoading != PostStatus.processed
                                       ? Shimmer.fromColors(
                                           baseColor: Colors.grey[300]!,
                                           highlightColor: Colors.grey[100]!,
@@ -622,7 +637,44 @@ class _AppPostsState extends ConsumerState<AllPosts> {
           ),
         ),
         SizedBox(height: 20.h),
-        Recommendations()
+        Recommendations(),
+        nextRcmdPostLoading == PostStatus.initial
+            ? Container(
+                height: 50.h,
+              )
+            : nextRcmdPostLoading == PostStatus.processing
+                ? SizedBox(
+                    height: 50.h,
+                    child: Center(
+                      child: Container(
+                        height: 20.r,
+                        width: 20.r,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFFFE4E74)),
+                          strokeWidth: 5.0,
+                        ),
+                      ),
+                    ),
+                  )
+                : nextRcmdPostLoading == PostStatus.exhausted
+                    ? Container(
+                        height: 50.h,
+                        child: Center(
+                          child: Text(
+                            "No more Articles",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.56.sp,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container()
       ],
     );
   }
