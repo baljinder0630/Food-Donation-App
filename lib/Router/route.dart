@@ -77,5 +77,8 @@ class AppRouter extends $AppRouter {
           page: FoodCategoryFormRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+            page: ConfirmationFormRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideTop)
       ];
 }
