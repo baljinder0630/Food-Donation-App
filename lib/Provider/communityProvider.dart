@@ -31,7 +31,7 @@ class Community extends StateNotifier<CommunityState> {
             chattingUsers: [],
             userChatRoom: [],
             currentChatRoomUid: "",
-            // scrollStatus: ScrollStatus.initial,
+            userSearchSuggestion: [],
             rcmdPostStatus: PostStatus.initial,
             featuredPostStatus: PostStatus.initial,
             recentPostStatus: PostStatus.initial,
@@ -39,6 +39,7 @@ class Community extends StateNotifier<CommunityState> {
             uploadArticleStatus: UploadArticleStatus.initial,
             nextRcmdPostLoading: PostStatus.initial,
             nextRecentPostLoading: PostStatus.initial,
+            suggestionLoading: PostStatus.initial,
             lastRcmdDocument: null,
             lastRecentDocument: null)) {
     loadUserChatRoom();
@@ -110,6 +111,62 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
+  Future<bool> deletePost(postId) async {
+    try {
+      await firestore
+          .collection("articles")
+          .where("id", isEqualTo: postId)
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          element.reference.delete();
+        });
+      });
+      await firestore
+          .collection("bookmarks")
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .get()
+          .then((value) {
+        if (value.data() != null) {
+          value.data()!['bookmarked'].remove(postId);
+          value.reference.update({"bookmarked": value.data()!['bookmarked']});
+        }
+      });
+      state = state.copyWith(
+        posts: state.posts!.where((element) => element.id != postId).toList(),
+        bookMarkedPosts: state.bookMarkedPosts!
+            .where((element) => element.id != postId)
+            .toList(),
+        myPosts:
+            state.myPosts!.where((element) => element.id != postId).toList(),
+      );
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> removeBookMark(postId) async {
+    try {
+      await firestore
+          .collection('bookmarks')
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .update({
+        'bookmarked': FieldValue.arrayRemove([postId])
+      });
+      state = state.copyWith(
+        bookMarkedPosts: state.bookMarkedPosts!
+            .where((element) => element.id != postId)
+            .toList(),
+      );
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
   Future<void> getRcmdPosts() async {
     try {
       log("Getting Recommended articles");
@@ -119,7 +176,6 @@ class Community extends StateNotifier<CommunityState> {
           nextRcmdPostLoading: PostStatus.initial,
           posts: []);
 
-      // TODO: add logic to get recommended posts
       final snapshot = await firestore.collection("articles").limit(5).get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
@@ -154,8 +210,11 @@ class Community extends StateNotifier<CommunityState> {
       state = state.copyWith(
           featuredPostStatus: PostStatus.processing, featuredPosts: []);
 
-      // TODO: add logic to get featured posts
-      final snapshot = await firestore.collection("articles").limit(5).get();
+      final snapshot = await firestore
+          .collection("articles")
+          .orderBy("counter", descending: true)
+          .limit(5)
+          .get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
 
@@ -173,6 +232,23 @@ class Community extends StateNotifier<CommunityState> {
           featuredPosts: posts, featuredPostStatus: PostStatus.processed);
     } catch (e) {
       state = state.copyWith(featuredPostStatus: PostStatus.error);
+      log(e.toString());
+    }
+  }
+
+  increaseCounter(postId) {
+    try {
+      firestore
+          .collection("articles")
+          .where("id", isEqualTo: postId)
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          element.reference.update({"counter": FieldValue.increment(1)});
+          print("Counter incremented");
+        });
+      });
+    } catch (e) {
       log(e.toString());
     }
   }
@@ -543,6 +619,8 @@ class Community extends StateNotifier<CommunityState> {
     log("Fetching suggestion for $val");
     if (val.length >= 1) {
       try {
+        state = state.copyWith(suggestionLoading: PostStatus.processing);
+
         await firestore
             .collection('articles')
             .where('subject', isGreaterThanOrEqualTo: val)
@@ -552,13 +630,37 @@ class Community extends StateNotifier<CommunityState> {
             .then((snapshot) {
           log("Suggestion picked");
           state = state.copyWith(
+              suggestionLoading: PostStatus.processed,
               articleSearchSuggestions: snapshot.docs
-                  .map((doc) => doc['subject'] as String)
+                  .map((e) => PostModel.fromMap(e.data()))
                   .toList());
         });
       } catch (e) {
+        state = state.copyWith(suggestionLoading: PostStatus.error);
+
         print(e);
       }
+    }
+  }
+
+  userSearhSuggestion(email) {
+    try {
+      state = state.copyWith(suggestionLoading: PostStatus.processing);
+      firestore
+          .collection('users')
+          .where('email', isGreaterThanOrEqualTo: email)
+          .where('email', isLessThan: email + 'z')
+          .limit(5)
+          .get()
+          .then((snapshot) {
+        state = state.copyWith(
+            suggestionLoading: PostStatus.processed,
+            userSearchSuggestion:
+                snapshot.docs.map((e) => UserModel.fromMap(e.data())).toList());
+      });
+    } catch (e) {
+      state = state.copyWith(suggestionLoading: PostStatus.error);
+      print(e);
     }
   }
 
@@ -579,17 +681,18 @@ class CommunityState {
   List<PostModel>? bookMarkedPosts;
   List<PostModel>? featuredPosts;
   List<UserModel>? users;
+  List<UserModel>? userSearchSuggestion;
   List<UserModel>? chattingUsers;
+  List<PostModel>? articleSearchSuggestions;
   List<Chatroommodel>? allUsersChatRoom;
   List<Chatroommodel>? userChatRoom;
   String currentChatRoomUid;
-  List<String>? articleSearchSuggestions;
-  // ScrollStatus? scrollStatus;
   PostStatus? rcmdPostStatus;
   PostStatus? recentPostStatus;
   PostStatus? featuredPostStatus;
   PostStatus? nextRcmdPostLoading;
   PostStatus? nextRecentPostLoading;
+  PostStatus? suggestionLoading;
   DocumentSnapshot? lastRcmdDocument;
   DocumentSnapshot? lastRecentDocument;
   UploadArticleStatus? uploadArticleStatus;
@@ -602,11 +705,12 @@ class CommunityState {
       this.featuredPosts,
       this.userChatRoom,
       this.users,
+      this.userSearchSuggestion,
       this.chattingUsers,
       this.allUsersChatRoom,
+      this.suggestionLoading,
       this.currentChatRoomUid = "",
       this.articleSearchSuggestions,
-      // this.scrollStatus,
       this.rcmdPostStatus,
       this.recentPostStatus,
       this.nextRcmdPostLoading,
@@ -622,17 +726,18 @@ class CommunityState {
     List<PostModel>? recentPosts,
     List<PostModel>? bookMarkedPosts,
     List<PostModel>? featuredPosts,
+    List<PostModel>? articleSearchSuggestions,
     List<UserModel>? users,
+    List<UserModel>? userSearchSuggestion,
     List<UserModel>? chattingUsers,
     List<Chatroommodel>? userChatRoom,
     String? currentChatRoomUid,
-    List<String>? articleSearchSuggestions,
-    // ScrollStatus? scrollStatus,
     PostStatus? featuredPostStatus,
     PostStatus? recentPostStatus,
     PostStatus? rcmdPostStatus,
     PostStatus? nextRcmdPostLoading,
     PostStatus? nextRecentPostLoading,
+    PostStatus? suggestionLoading,
     UploadArticleStatus? uploadArticleStatus,
     DocumentSnapshot? lastRcmdDocument,
     DocumentSnapshot? lastRecentDocument,
@@ -643,12 +748,12 @@ class CommunityState {
       bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
       featuredPosts: featuredPosts ?? this.featuredPosts,
       users: users ?? this.users,
+      userSearchSuggestion: userSearchSuggestion ?? this.userSearchSuggestion,
       chattingUsers: chattingUsers ?? this.chattingUsers,
       recentPosts: recentPosts ?? this.recentPosts,
       userChatRoom: userChatRoom ?? this.userChatRoom,
       currentChatRoomUid: currentChatRoomUid ?? this.currentChatRoomUid,
       articleSearchSuggestions: articleSearchSuggestions ?? [],
-      // scrollStatus: scrollStatus ?? this.scrollStatus,
       rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
       featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
       recentPostStatus: recentPostStatus ?? this.recentPostStatus,
@@ -656,13 +761,12 @@ class CommunityState {
       lastRcmdDocument: lastRcmdDocument ?? this.lastRcmdDocument,
       lastRecentDocument: lastRecentDocument ?? this.lastRecentDocument,
       nextRcmdPostLoading: nextRcmdPostLoading ?? this.nextRcmdPostLoading,
+      suggestionLoading: suggestionLoading ?? this.suggestionLoading,
       nextRecentPostLoading:
           nextRecentPostLoading ?? this.nextRecentPostLoading,
     );
   }
 }
-
-// enum ScrollStatus { initial, exhausted, processing, processed, error }
 
 enum PostStatus { initial, processing, processed, error, exhausted }
 

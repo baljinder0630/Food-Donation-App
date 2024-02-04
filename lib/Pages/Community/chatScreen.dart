@@ -40,7 +40,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         centerTitle: true,
         leading: Container(
           // color: Colors.green,
-          child: Center(
+          child: const Center(
             child: MyBackButton(),
           ),
         ),
@@ -77,7 +77,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               Text(
                 TargetUserName,
                 style: TextStyle(
-                  color: Color(0xFF201F24),
+                  color: const Color(0xFF201F24),
                   fontSize: 24.sp,
                   fontFamily: 'Outfit',
                   fontWeight: FontWeight.w400,
@@ -96,7 +96,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ? Center(
                     child: Text("Say Hi to " + TargetUserName + "!",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 181, 189, 194),
+                          color: const Color.fromARGB(255, 181, 189, 194),
                           fontSize: 20.sp,
                           fontFamily: 'Outfit',
                           fontWeight: FontWeight.w400,
@@ -143,79 +143,69 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                           ? MainAxisAlignment.end
                                           : MainAxisAlignment.start,
                                   children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            color: (chattingModel.sender ==
-                                                    currentUserUid)
-                                                ? Color(0xFF6A4DFF)
-                                                : Color(0xFFF2F3F4),
-                                            borderRadius: (chattingModel.sender ==
-                                                    currentUserUid)
-                                                ? BorderRadius.only(
-                                                    topLeft:
-                                                        BorderRadius.circular(20.r)
+                                    Column(
+                                      crossAxisAlignment:
+                                          (chattingModel.sender ==
+                                                  currentUserUid)
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            decoration: BoxDecoration(
+                                                color: (chattingModel.sender ==
+                                                        currentUserUid)
+                                                    ? const Color(0xFF6A4DFF)
+                                                    : const Color(0xFFF2F3F4),
+                                                borderRadius: (chattingModel.sender ==
+                                                        currentUserUid)
+                                                    ? BorderRadius.only(
+                                                        topLeft: BorderRadius.circular(20.r)
                                                             .topLeft,
-                                                    bottomLeft:
-                                                        BorderRadius.circular(20.r)
-                                                            .bottomLeft,
-                                                    bottomRight:
-                                                        BorderRadius.circular(20.r)
-                                                            .bottomRight)
-                                                : BorderRadius.only(
-                                                    topRight:
-                                                        BorderRadius.circular(20.r).topRight,
-                                                    bottomLeft: BorderRadius.circular(20.r).bottomLeft,
-                                                    bottomRight: BorderRadius.circular(20.r).bottomRight)),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            TextButton(
+                                                        bottomLeft:
+                                                            BorderRadius.circular(20.r)
+                                                                .bottomLeft,
+                                                        bottomRight:
+                                                            BorderRadius.circular(20.r)
+                                                                .bottomRight)
+                                                    : BorderRadius.only(
+                                                        topRight:
+                                                            BorderRadius.circular(20.r)
+                                                                .topRight,
+                                                        bottomLeft:
+                                                            BorderRadius.circular(20.r).bottomLeft,
+                                                        bottomRight: BorderRadius.circular(20.r).bottomRight)),
+                                            child: TextButton(
                                               onPressed: () {},
                                               child: Text(
                                                   chattingModel.lastmessage
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.white,
                                                   )),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 6.w),
-                                              child: Text(
-                                                DateTime.parse(chattingModel
-                                                        .sendtime
-                                                        .toString())
-                                                    .toLocal()
-                                                    .toString()
-                                                    .substring(11, 16),
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 181, 189, 194)),
-                                              ),
-                                            ),
-                                            // Padding(
-                                            //   padding: EdgeInsets.only(right: 6.w),
-                                            //   child: Text(
-                                            //     DateTime.parse(chattingModel.sendtime
-                                            //             .toString())
-                                            //         .toLocal()
-                                            //         .toString()
-                                            //         .substring(0, 10),
-                                            //     style: TextStyle(
-                                            //         color: Color.fromARGB(
-                                            //             255, 181, 189, 194)),
-                                            // ),
-                                            // ),
-                                          ],
-                                        )),
+                                            )),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 6.w),
+                                          child: Text(
+                                            DateTime.parse(chattingModel
+                                                    .sendtime
+                                                    .toString())
+                                                .toLocal()
+                                                .toString()
+                                                .substring(11, 16),
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 181, 189, 194)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               );
                             },
                           );
                         } else if (snapshot.hasError) {
-                          return Center(
+                          return const Center(
                             child: Text(
                                 "An error occured! Please check your internet connection."),
                           );
@@ -232,7 +222,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 80.h,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 8.h),
@@ -247,11 +237,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             hintText: "Type a message",
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.r),
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: const BorderSide(color: Colors.blue),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.r),
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: const BorderSide(color: Colors.blue),
                             ),
                           ),
                         ),
@@ -267,7 +257,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             msgcontroller.clear();
                           }
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.send,
                           color: Colors.blue,
                           size: 30,

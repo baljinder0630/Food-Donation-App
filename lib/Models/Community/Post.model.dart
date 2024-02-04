@@ -10,6 +10,7 @@ class PostModel {
   final Timestamp createdTime;
   String? createdByAvatar;
   bool? edited = false;
+  int counter = 0;
   PostModel(
       {required this.id,
       required this.subject,
@@ -19,7 +20,8 @@ class PostModel {
       required this.createdByAvatar,
       required this.userId,
       required this.username,
-      this.edited});
+      this.edited,
+      this.counter = 0});
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
@@ -32,6 +34,7 @@ class PostModel {
       createdTime: map['createdTime'],
       createdByAvatar: map['createdByAvatar'],
       edited: map['edited'] ?? false,
+      counter: map['counter'] ?? 0,
     );
   }
   Map<String, dynamic> toMap() {
@@ -45,6 +48,7 @@ class PostModel {
       "createdTime": createdTime,
       "createdByAvatar": createdByAvatar,
       "edited": edited ?? false,
+      "counter": counter,
     };
   }
 }
