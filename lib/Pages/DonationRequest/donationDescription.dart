@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,46 +17,130 @@ class DonationDescription extends StatefulWidget {
 class _State extends State<DonationDescription> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          expandedHeight: 300.h,
-          backgroundColor: bgColor,
-          elevation: 0.0,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.asset(
-              "lib/assets/images/exploreImages/child.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(0.0),
-            child: Container(
-              height: 32.h,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(32.r),
-                  topLeft: Radius.circular(32.r),
-                ),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300.h,
+            backgroundColor: bgColor,
+            elevation: 0.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Image.asset(
+                "lib/assets/images/exploreImages/child.jpg",
+                fit: BoxFit.cover,
               ),
+              stretchModes: [
+                StretchMode.blurBackground,
+                StretchMode.zoomBackground,
+              ],
+            ),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(0.0),
               child: Container(
-                width: 50.w,
-                height: 5.h,
+                height: 32.h,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(100.0.r),
+                  color: white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(32.r),
+                    topLeft: Radius.circular(32.r),
+                  ),
+                ),
+                child: Container(
+                  width: 50.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(100.0.r),
+                  ),
+                ),
+              ),
+            ),
+            leadingWidth: 80.w,
+            leading: Container(
+              margin: EdgeInsets.only(top: 10.r, left: 22.r),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(56.0.r),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                  child: Container(
+                      height: 56.r,
+                      width: 56.r,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.2),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 5.0.r),
+                        child: Image.asset(
+                          "lib/assets/icons/back.png",
+                          width: 25.r,
+                        ),
+                      )),
                 ),
               ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: Text("heyy"),
-        ),
-      ],
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.0.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Live Update"),
+                      Row(
+                        children: [
+                          const Text("2345 People Contributed"),
+                          SizedBox(
+                            width: 10.r,
+                          ),
+                          Container(
+                            height: 5.0.r,
+                            width: 5.r,
+                            decoration: BoxDecoration(
+                              color: green,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.r,
+                          ),
+                          Text("40% Recieved"),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "Description",
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0.r),
+                  child: Text(
+                    "jhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsf fgjadwh kjafh kjgshdg",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 //   Widget build(BuildContext context) {
