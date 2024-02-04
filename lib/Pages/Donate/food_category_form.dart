@@ -151,7 +151,20 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                   ),
                 ),
                 foodCategories.isNotEmpty
-                    ? YourDonatedItems(foodCategories: foodCategories)
+                    ? YourDonatedItems(
+                        foodCategories: foodCategories,
+                        editFoodCategory: (int index, String foodName,
+                            String quantity, File img, WidgetRef ref) {
+                          ref
+                              .read(donationRequestProvider.notifier)
+                              .editFoodCategory(index, foodName, quantity, img);
+                        },
+                        deleteFoodCategory: (index) {
+                          ref
+                              .read(donationRequestProvider.notifier)
+                              .deleteFoodCategory(index);
+                        },
+                        ref: ref)
                     : Container(),
               ],
             ),

@@ -6,24 +6,24 @@ import 'package:food_donation_app/Pages/Donate/Widgets/actionbutton.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
 import 'package:image_picker/image_picker.dart';
 
-class DonationConfirmationDialog extends StatelessWidget {
-  int? index;
-  final String category;
+class DonationEditDialog extends StatelessWidget {
+  final int index;
   final TextEditingController foodController;
   final TextEditingController quantityController;
   final TextEditingController imageController;
 
   final WidgetRef ref;
-  final void Function(String foodName, String quantity, File img, WidgetRef ref)
-      updateFoodCategory;
+  final void Function(
+          int index, String foodName, String quantity, File img, WidgetRef ref)
+      editFoodCategory;
 
-  DonationConfirmationDialog({
+  DonationEditDialog({
     Key? key,
-    required this.category,
     required this.foodController,
     required this.quantityController,
-    required this.updateFoodCategory,
+    required this.editFoodCategory,
     required this.imageController,
+    required this.index,
     required this.ref,
   }) : super(key: key);
 
@@ -74,9 +74,9 @@ class DonationConfirmationDialog extends StatelessWidget {
     final picker = ImagePicker();
 
     return AlertDialog(
-      title: Text(
-        'Donate $category?',
-        style: const TextStyle(fontSize: 20.0),
+      title: const Text(
+        'Edit Food Details',
+        style: TextStyle(fontSize: 20.0),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -163,8 +163,8 @@ class DonationConfirmationDialog extends StatelessWidget {
           text: 'Donate',
           onPressed: () {
             File img = File(imageController.text);
-            updateFoodCategory(
-                foodController.text, quantityController.text, img, ref);
+            editFoodCategory(
+                index, foodController.text, quantityController.text, img, ref);
             foodController.text = "";
             quantityController.text = "";
             imageController.text = "";

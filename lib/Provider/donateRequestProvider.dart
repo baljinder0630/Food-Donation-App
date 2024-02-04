@@ -113,6 +113,42 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     return state;
   }
 
+  DonationRequest editFoodCategory(
+      int index, String foodName, String quantity, File img) {
+    if (state.foodCategory == null ||
+        index < 0 ||
+        index >= state.foodCategory!.length) {
+      return state;
+    }
+
+    String path = img.path;
+    print("here: $path");
+    FoodCategory updatedFoodCategory =
+        FoodCategory(name: foodName, quantity: quantity, imageFile: img);
+
+    final List<FoodCategory> updatedFoodCategories =
+        List<FoodCategory>.from(state.foodCategory!);
+    updatedFoodCategories[index] = updatedFoodCategory;
+
+    state = state.copyWith(
+        foodCategory: updatedFoodCategories,
+        foodCategoryStatus: FoodCategoryStatus.processed);
+
+    print("State changed");
+    print(state.foodCategory?.length);
+
+    return state;
+  }
+
+  void deleteFoodCategory(int index) {
+    if (state.foodCategory != null && state.foodCategory!.isNotEmpty) {
+      final updatedFoodCategories =
+          List<FoodCategory>.from(state.foodCategory!);
+      updatedFoodCategories.removeAt(index);
+      state = state.copyWith(foodCategory: updatedFoodCategories);
+    }
+  }
+
   List<FoodCategory> getFoodCategories() {
     return state.foodCategory ?? [];
   }
