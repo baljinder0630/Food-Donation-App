@@ -157,7 +157,9 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                         ? Padding(
                             padding: EdgeInsets.only(left: 57.w),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.pushRoute(ProfileSearchPageRoute());
+                              },
                               child: MySearchBar(title: "Profile"),
                             ),
                           )
@@ -281,13 +283,13 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
               : SizedBox(),
           selectedCategory != 3 && selectedCategory != 2
               ? Positioned(
-                  top: 127.h,
+                  top: 117.h,
                   right: -32.w,
                   child: Image.asset("lib/assets/Community/books and cup.png",
                       height: 82.h, width: 71.w, fit: BoxFit.contain),
                 )
               : Positioned(
-                  top: 37.h,
+                  top: 27.h,
                   right: -37.w,
                   child: Image.asset(
                     "lib/assets/Community/peoples.png",

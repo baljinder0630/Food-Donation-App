@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/constants.dart';
 import 'package:food_donation_app/Pages/Donate/data/categories_data.dart';
 
+@RoutePage()
 class FoodCategoryForm extends ConsumerStatefulWidget {
   const FoodCategoryForm({super.key});
 
