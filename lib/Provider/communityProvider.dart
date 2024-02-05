@@ -22,26 +22,27 @@ class Community extends StateNotifier<CommunityState> {
   Community({required this.ref})
       : firestore = FirebaseFirestore.instance,
         super(CommunityState(
-            posts: [],
-            recentPosts: [],
-            myPosts: [],
-            bookMarkedPosts: [],
-            featuredPosts: [],
-            users: [],
-            chattingUsers: [],
-            userChatRoom: [],
-            currentChatRoomUid: "",
-            userSearchSuggestion: [],
-            rcmdPostStatus: PostStatus.initial,
-            featuredPostStatus: PostStatus.initial,
-            recentPostStatus: PostStatus.initial,
-            articleSearchSuggestions: [],
-            uploadArticleStatus: UploadArticleStatus.initial,
-            nextRcmdPostLoading: PostStatus.initial,
-            nextRecentPostLoading: PostStatus.initial,
-            suggestionLoading: PostStatus.initial,
-            lastRcmdDocument: null,
-            lastRecentDocument: null)) {
+          posts: [],
+          recentPosts: [],
+          myPosts: [],
+          bookMarkedPosts: [],
+          featuredPosts: [],
+          users: [],
+          chattingUsers: [],
+          userChatRoom: [],
+          currentChatRoomUid: "",
+          userSearchSuggestion: [],
+          rcmdPostStatus: PostStatus.initial,
+          featuredPostStatus: PostStatus.initial,
+          recentPostStatus: PostStatus.initial,
+          articleSearchSuggestions: [],
+          uploadArticleStatus: UploadArticleStatus.initial,
+          nextRcmdPostLoading: PostStatus.initial,
+          nextRecentPostLoading: PostStatus.initial,
+          suggestionLoading: PostStatus.initial,
+          lastRcmdDocument: null,
+          lastRecentDocument: null,
+        )) {
     loadUserChatRoom();
   }
 
@@ -664,6 +665,20 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
+  sendConnectionReq(targetUserId) async {
+    try {
+      await firestore.collection("connections").doc(targetUserId).set(
+        {
+          "connections":
+              FieldValue.arrayUnion([ref.watch(authStateProvider).user!.uid])
+        },
+        SetOptions(merge: true),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   showSnackBar(message, context, color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -697,28 +712,29 @@ class CommunityState {
   DocumentSnapshot? lastRecentDocument;
   UploadArticleStatus? uploadArticleStatus;
 
-  CommunityState(
-      {this.posts,
-      this.recentPosts,
-      this.myPosts,
-      this.bookMarkedPosts,
-      this.featuredPosts,
-      this.userChatRoom,
-      this.users,
-      this.userSearchSuggestion,
-      this.chattingUsers,
-      this.allUsersChatRoom,
-      this.suggestionLoading,
-      this.currentChatRoomUid = "",
-      this.articleSearchSuggestions,
-      this.rcmdPostStatus,
-      this.recentPostStatus,
-      this.nextRcmdPostLoading,
-      this.nextRecentPostLoading,
-      this.featuredPostStatus,
-      this.uploadArticleStatus,
-      this.lastRecentDocument,
-      this.lastRcmdDocument});
+  CommunityState({
+    this.posts,
+    this.recentPosts,
+    this.myPosts,
+    this.bookMarkedPosts,
+    this.featuredPosts,
+    this.userChatRoom,
+    this.users,
+    this.userSearchSuggestion,
+    this.chattingUsers,
+    this.allUsersChatRoom,
+    this.suggestionLoading,
+    this.currentChatRoomUid = "",
+    this.articleSearchSuggestions,
+    this.rcmdPostStatus,
+    this.recentPostStatus,
+    this.nextRcmdPostLoading,
+    this.nextRecentPostLoading,
+    this.featuredPostStatus,
+    this.uploadArticleStatus,
+    this.lastRecentDocument,
+    this.lastRcmdDocument,
+  });
 
   CommunityState copyWith({
     List<PostModel>? posts,
