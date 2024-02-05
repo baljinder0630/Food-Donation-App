@@ -13,19 +13,15 @@ import '../Router/route.gr.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
 
-
-
 @RoutePage()
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
   @override
-  State<HomePage> createState()=>_HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
-
-
   var selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
   final List postId = [
@@ -39,10 +35,8 @@ class _HomePageState extends State<HomePage> {
 
   final Completer<GoogleMapController> _controller = Completer();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(33.6844, 73.0479),
-      zoom: 14);
-
+  static const CameraPosition _kGooglePlex =
+      CameraPosition(target: LatLng(33.6844, 73.0479), zoom: 14);
 
   final List<Marker> _markers = <Marker>[
     Marker(
@@ -50,23 +44,17 @@ class _HomePageState extends State<HomePage> {
         position: LatLng(33.4322, 73.2232),
         infoWindow: InfoWindow(
           title: "Marker Title",
-        )
-    )
+        ))
   ];
 
   getLocation() {
     getUserCurrentLocation().then((value) async {
       print("${value.latitude} ${value.longitude}");
 
-      _markers.add(
-          Marker(
-              markerId: MarkerId('1'),
-              position: LatLng(value.latitude, value.longitude),
-              infoWindow: InfoWindow(
-                  title: "My Current Location"
-              )
-          )
-      );
+      _markers.add(Marker(
+          markerId: MarkerId('1'),
+          position: LatLng(value.latitude, value.longitude),
+          infoWindow: InfoWindow(title: "My Current Location")));
 
       CameraPosition cameraPosition = CameraPosition(
         zoom: 14,
@@ -77,9 +65,7 @@ class _HomePageState extends State<HomePage> {
 
       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
@@ -105,7 +91,9 @@ class _HomePageState extends State<HomePage> {
         altitude: 0.0,
         heading: 0.0,
         speed: 0.0,
-        speedAccuracy: 0.0, altitudeAccuracy: 0, headingAccuracy: 0,
+        speedAccuracy: 0.0,
+        altitudeAccuracy: 0,
+        headingAccuracy: 0,
       );
     }
     return Position(
@@ -116,7 +104,9 @@ class _HomePageState extends State<HomePage> {
       altitude: 0.0,
       heading: 0.0,
       speed: 0.0,
-      speedAccuracy: 0.0, altitudeAccuracy: 0, headingAccuracy: 0,
+      speedAccuracy: 0.0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0,
     );
   }
 
@@ -126,26 +116,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getLocation();
   }
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         color:Colors.redAccent,
-//         width: 400,
-//         height: 500,
-//         child: GoogleMap(
-//           initialCameraPosition: _kGooglePlex,
-//           markers: Set<Marker>.of(_markers),
-//           onMapCreated: (GoogleMapController controller){
-//             _controller.complete(controller);}
-//
-//         ),
-//       ),
-//     );
-//   }
-// }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +135,7 @@ class _HomePageState extends State<HomePage> {
         child: FloatingActionButton(
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
-          onPressed: () async{
+          onPressed: () async {
             context.pushRoute(const RaiseRequestRoute());
           },
           elevation: 0.0,
@@ -179,8 +149,7 @@ class _HomePageState extends State<HomePage> {
           SliverAppBar(
               floating: true,
               expandedHeight: 100.h,
-              title: Center(child: Text("H O M E P A G E"))
-              ),
+              title: Center(child: Text("H O M E P A G E"))),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -211,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(children: [
                               Expanded(
                                 child: Text(
-                                  "Hello, "+user.displayName!,
+                                  "Hello, " + user.displayName!,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20.sp,
@@ -252,20 +221,19 @@ class _HomePageState extends State<HomePage> {
                 ),
                 // Here Avatar and Name container ends.
 
-
-                Container(
-                  height : 400.h,
-                  width: 300.w,
-                  color: Colors.amber,
-                  child:
-                  GoogleMap(
-                    initialCameraPosition: _kGooglePlex,
-                    markers: Set<Marker>.of(_markers),
-                    onMapCreated: (GoogleMapController controller){
-                      _controller.complete(controller);
-                    },
-                  ),
-                ),
+                // Container(
+                //   height : 400.h,
+                //   width: 300.w,
+                //   color: Colors.amber,
+                //   child:
+                //   GoogleMap(
+                //     initialCameraPosition: _kGooglePlex,
+                //     markers: Set<Marker>.of(_markers),
+                //     onMapCreated: (GoogleMapController controller){
+                //       _controller.complete(controller);
+                //     },
+                //   ),
+                // ),
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
@@ -572,7 +540,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
 
 Widget mainOptions(BuildContext context) {
