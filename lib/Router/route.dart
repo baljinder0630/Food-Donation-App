@@ -42,6 +42,10 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: DonationDescriptionRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
           page: ArticleDetailRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
