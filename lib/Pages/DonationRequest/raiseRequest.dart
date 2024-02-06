@@ -1,8 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:food_donation_app/Models/Raisereq/raise.model.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:developer';
+import 'dart:async';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
 
 @RoutePage()
 class RaiseRequest extends StatefulWidget {
@@ -21,11 +31,41 @@ class _RaiseDonationReq extends State<RaiseRequest> {
   final _LandmarkController = TextEditingController();
   final _DistrictController = TextEditingController();
   final _PincodeController = TextEditingController();
+  String _selectedRequestType = '';
 
   @override
   void dispose() {
     _mobileNumberController.dispose();
     super.dispose();
+  }
+
+  void uploadDonationRequest() async {
+  raisemodel donationRequest = raisemodel(
+    id: Uuid().v4(),
+    ngoName: _ngoController.text,
+    requestType: _selectedRequestType, // Assuming you have a variable to store the selected request type
+    mobileNumber: _mobileNumberController.text,
+    plotNo: _PlotnoController.text,
+    streetNo: _StreetnoController.text,
+    landmark: _LandmarkController.text,
+    district: _DistrictController.text,
+    pincode: _PincodeController.text,
+  );
+  final CollectionReference donationRequests =
+        FirebaseFirestore.instance.collection('donationRequests');
+
+    // Upload data to Firebase
+    await donationRequests.add(donationRequest.toMap());
+
+    // Perform any necessary actions after the data is uploaded
+    // showSuccessDialog();
+    context.pushRoute(const DonationTrackingPageRoute());
+    setState(() {
+      // Clear text controllers or any other necessary state changes
+      _ngoController.text = '';
+      _mobileNumberController.text = '';
+      
+    });
   }
 
   @override
@@ -59,7 +99,10 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                         items: ['Option 1', 'Option 2', 'Option 3'],
                         value: null,
                         onChanged: (value) {
-                          // Handle dropdown value change
+                          setState(() {
+                            _selectedRequestType = value ?? '';
+                            
+                          });
                         },
                       ),
                       SizedBox(height: 16),
@@ -129,7 +172,7 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              context.pushRoute(const RaiseRequest2Route());
+                              uploadDonationRequest();
                             }
                           },
                           child: Text(
