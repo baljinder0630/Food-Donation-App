@@ -22,12 +22,12 @@ class _RazorpayPaymentGatewayState extends State<RazorpayPaymentGateway> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // Do something when payment succeeds
+  
     print("Payment Done");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    // Do something when payment fails
+    
     print("Payment Fail");
   }
 
