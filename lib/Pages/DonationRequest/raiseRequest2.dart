@@ -151,6 +151,7 @@ class _RaiseDonationReq extends State<RaiseRequest2> {
                               ),
                               FloatingActionButton(
                                 onPressed: () {},
+                                heroTag: "btn$index",
                                 backgroundColor: Colors.orange,
                                 shape: const CircleBorder(),
                                 mini: true,

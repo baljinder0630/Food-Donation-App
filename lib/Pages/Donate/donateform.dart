@@ -15,7 +15,6 @@ class DonateForm extends StatefulWidget {
   State<DonateForm> createState() => _MyApp();
 }
 
-
 class _MyApp extends State<DonateForm> {
   @override
   Widget build(BuildContext context) {
@@ -218,6 +217,7 @@ class _DonateFormState extends State<DonateForm> {
                               ),
                               FloatingActionButton(
                                 onPressed: () {},
+                                heroTag: "categoryButton",
                                 backgroundColor: Colors.orange,
                                 shape: const CircleBorder(),
                                 mini: true,
@@ -279,6 +279,7 @@ class _DonateFormState extends State<DonateForm> {
                           width: 5.0,
                         ),
                         FloatingActionButton(
+                          heroTag: "cameraButton2",
                           onPressed: () {
                             context.navigateTo(CameraScreenRoute());
                           },
