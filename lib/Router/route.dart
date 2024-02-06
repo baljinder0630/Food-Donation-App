@@ -82,6 +82,9 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
+            page: ConfirmationFormRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideTop),
+        CustomRoute(
           page: ChatScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
@@ -89,5 +92,5 @@ class AppRouter extends $AppRouter {
           page: ProfileSearchPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-      ];
+       ];
 }

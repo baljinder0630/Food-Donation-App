@@ -1,13 +1,14 @@
-import 'dart:io';
-
+import 'dart:io'; 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/Donate/Widgets/button.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_alert_dialog.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/your_donated_items.dart';
 import 'package:food_donation_app/Provider/donateRequestProvider.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:food_donation_app/constants.dart';
 import 'package:food_donation_app/Pages/Donate/data/categories_data.dart';
 
@@ -29,9 +30,7 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
     ref.watch(donationRequestProvider);
     final foodCategories =
         ref.watch(donationRequestProvider.notifier).getFoodCategories();
-    for (int i = 0; i < foodCategories.length; i++) {
-      print(foodCategories[i].imageFile?.path);
-    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -70,11 +69,10 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                     children: List.generate(
                       data.length,
                       (index) => Container(
-                        width: MediaQuery.of(context).size.width *
-                            0.4, // Adjust width as needed
-                        height: 200.h, // Adjust height as needed
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: 200.h,
                         decoration: BoxDecoration(
-                          color: Colors.white, // Background color
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(20.0),
                           boxShadow: [
                             BoxShadow(
@@ -168,6 +166,11 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                         },
                         ref: ref)
                     : Container(),
+                CustomButton(
+                    text: 'Next',
+                    onPressed: () {
+                      context.pushRoute(const ConfirmationFormRoute());
+                    })
               ],
             ),
           ),
