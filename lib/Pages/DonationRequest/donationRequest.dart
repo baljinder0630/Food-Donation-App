@@ -33,7 +33,7 @@ class _DonationRequestState extends State<DonationRequest> {
             )
           ],
         ),
-        child: FloatingActionButton(
+         child: FloatingActionButton(
           backgroundColor: Color(0xffFEFEFE),
           shape: OvalBorder(),
           onPressed: () {
@@ -56,7 +56,44 @@ class _DonationRequestState extends State<DonationRequest> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     overflow: TextOverflow.ellipsis),
+      
+              MyAppBar(
+                  centerWidget: Padding(
+                    padding: EdgeInsets.only(left: 57.w),
+                    child: MySearchBar(title: "Donation Request"),
+                  ),
+                  // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+                  rightWidget: Padding(
+                    padding: EdgeInsets.only(
+                        right: 16.0), // Adjust the left padding as needed
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.local_shipping),
+                        onPressed: () {
+                          context.pushRoute(const DonationTrackingPageRoute());
+                        },
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                height: 20.h,
               ),
+              categoryWidget(),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  height: 500,
+                  child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return DonationCard();
+                      }),
+                ),
+               ),
             ),
             MyAppBar(
                 centerWidget: MySearchBar(),

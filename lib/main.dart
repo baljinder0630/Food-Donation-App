@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,14 +11,17 @@ import 'package:food_donation_app/constants.dart';
 // import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
 
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
+
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey =
-  //     "pk_test_51ORuApSJmtO3RawjC53EVLBpPpuIUb0tuwdTFGfBZNssqHsSnrZeQ3YmxS439VNmGsspLBWB3BjyJZe8sws7df1L00SjSckuJM";
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(ProviderScope(child: MyApp())));
