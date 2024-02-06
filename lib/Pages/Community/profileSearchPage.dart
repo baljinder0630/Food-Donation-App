@@ -5,22 +5,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/postWidget.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/userCard.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
 
 import '../constants/constants.dart';
 
 @RoutePage()
-class ArticleSearchPage extends ConsumerStatefulWidget {
-  const ArticleSearchPage({super.key});
+class ProfileSearchPage extends ConsumerStatefulWidget {
+  const ProfileSearchPage({super.key});
   @override
-  ConsumerState<ArticleSearchPage> createState() => Article_SearchPageState();
+  ConsumerState<ProfileSearchPage> createState() => Article_SearchPageState();
 }
 
-class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
+class Article_SearchPageState extends ConsumerState<ProfileSearchPage> {
+  @override
+  void initState() {
+    ;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final suggestionLoading = ref.watch(communityProvider).suggestionLoading;
-    final suggestions = ref.watch(communityProvider).articleSearchSuggestions;
+    final suggestions = ref.watch(communityProvider).userSearchSuggestion;
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -30,8 +38,8 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
           title: TextField(
             autofocus: true,
             decoration: InputDecoration(
-              suffixIcon: const Icon(Icons.search),
-              hintText: "Search for article",
+              suffixIcon: Icon(Icons.search),
+              hintText: "Enter email",
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(13.r)),
               enabledBorder:
@@ -48,7 +56,7 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
                   () async {
                 await ref
                     .watch(communityProvider.notifier)
-                    .articleSearchSuggestion(value);
+                    .userSearhSuggestion(value);
               });
             },
           ),
@@ -75,7 +83,10 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
                         shrinkWrap: true,
                         itemCount: suggestions!.length,
                         itemBuilder: (context, index) {
-                          return PostWidget(post: suggestions[index]);
+                          return suggestions[index].uid ==
+                                  ref.watch(authStateProvider).user!.uid
+                              ? SizedBox()
+                              : UserCard(user: suggestions[index]);
                         })
               ],
             ))));

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -38,62 +40,160 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
     final myPosts = ref.watch(communityProvider).myPosts;
     final myBookmarkedPosts = ref.watch(communityProvider).bookMarkedPosts;
 
-    Widget HistoryTile(BuildContext context, PostModel post) {
-      return GestureDetector(
-        onLongPressStart: (details) async {
-          // Vibration.vibrate(duration: 10);
-          showMenu(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.r),
-              ),
-              color: Colors.white,
-              context: context,
-              position: RelativeRect.fromLTRB(
-                details.globalPosition.dx,
-                details.globalPosition.dy,
-                details.globalPosition.dx, // Right
-                details.globalPosition.dy, // Bottom
-              ),
-              items: [
-                if (post.userId == ref.watch(authStateProvider).user!.uid)
-                  PopupMenuItem(
-                    padding: EdgeInsets.zero,
-                    child: Center(
-                      child: TextButton(
-                        onPressed: () {
-                          context.popRoute();
-                          context.pushRoute(
-                              PostArticleRoute(post: post, isEdit: true));
-                        },
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                            color: Color(0xFF201F24),
-                            fontSize: 16.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                            letterSpacing: 0.64.sp,
-                          ),
-                        ),
+    showMenuItems(post, details) {
+      return showMenu(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          color: Colors.white,
+          context: context,
+          position: RelativeRect.fromLTRB(
+            details.globalPosition.dx,
+            details.globalPosition.dy,
+            details.globalPosition.dx, // Right
+            details.globalPosition.dy, // Bottom
+          ),
+          items: [
+            if (post.userId == ref.watch(authStateProvider).user!.uid)
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      context.popRoute();
+                      context.pushRoute(
+                          PostArticleRoute(post: post, isEdit: true));
+                    },
+                    child: Text(
+                      'Edit',
+                      style: TextStyle(
+                        color: const Color(0xFF201F24),
+                        fontSize: 16.sp,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                        letterSpacing: 0.64.sp,
                       ),
                     ),
                   ),
-                PopupMenuItem(
+                ),
+              ),
+            if (selected == 0)
+              PopupMenuItem(
                   padding: EdgeInsets.zero,
                   child: Center(
                       child: Text(
                     'Delete',
+                    style: TextStyle(
+                      color: const Color(0xFF201F24),
+                      fontSize: 16.sp,
+                      fontFamily: 'Outfit',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.64.sp,
+                    ),
                   )),
-                ),
-              ]);
+                  onTap: () async {
+                    showAdaptiveDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              title: Text('Delete Post'),
+                              content: Text(
+                                  'Are you sure you want to delete this post?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    context.popRoute();
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    if (await ref
+                                        .read(communityProvider.notifier)
+                                        .deletePost(post.id)) {
+                                      context.popRoute();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text('Post Deleted',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.green,
+                                      ));
+                                    } else {
+                                      context.popRoute();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text('Failed to delete post',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        backgroundColor: Colors.red,
+                                      ));
+                                    }
+                                  },
+                                  child: Text('Delete'),
+                                ),
+                              ]);
+                        });
+                  })
+            else
+              PopupMenuItem(
+                padding: EdgeInsets.zero,
+                child: Center(
+                    child: Text(
+                  'Remove',
+                  style: TextStyle(
+                    color: const Color(0xFF201F24),
+                    fontSize: 16.sp,
+                    fontFamily: 'Outfit',
+                    fontWeight: FontWeight.w500,
+                    height: 0,
+                    letterSpacing: 0.64.sp,
+                  ),
+                )),
+                onTap: () async {
+                  if (await ref
+                      .read(communityProvider.notifier)
+                      .removeBookMark(post.id)) {
+                    // context.popRoute();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Post Unbookmarked',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  } else {
+                    // context.popRoute();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Failed to unbookmark post',
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+              )
+          ]);
+    }
+
+    Widget HistoryTile(BuildContext context, PostModel post) {
+      return GestureDetector(
+        onLongPressStart: (details) async {
+          showMenuItems(post, details);
         },
         child: Container(
           width: 367.w,
           height: 338.h,
           decoration: ShapeDecoration(
             // color: Colors.redAccent,
-            color: Color(0xFFFEFEFE),
+            color: const Color(0xFFFEFEFE),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
             ),
@@ -145,7 +245,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                           child: Text(
                             toCamelCase(post.subject),
                             style: TextStyle(
-                              color: Color(0xFFBFAAAA),
+                              color: const Color(0xFFBFAAAA),
                               fontSize: 16.80.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w500,
@@ -161,7 +261,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                           child: Text(
                             post.description,
                             style: TextStyle(
-                              color: Color(0xFF201F24),
+                              color: const Color(0xFF201F24),
                               fontSize: 16.80.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w500,
@@ -181,7 +281,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                         Container(
                           width: 4.80.w,
                           height: 4.80.h,
-                          decoration: ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             color: Color(0xFFD9D9D9),
                             shape: OvalBorder(),
                           ),
@@ -190,7 +290,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                         Text(
                           timeAgo(post.createdTime.toDate()),
                           style: TextStyle(
-                            color: Color(0xFF8E7474),
+                            color: const Color(0xFF8E7474),
                             fontSize: 14.40.sp,
                             fontFamily: 'Outfit',
                             fontWeight: FontWeight.w300,
@@ -221,7 +321,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 child: Text(
                   'Article History',
                   style: TextStyle(
-                    color: Color(0xFFFEFEFE),
+                    color: const Color(0xFFFEFEFE),
                     fontSize: 20.sp,
                     fontFamily: 'Outfit',
                     fontWeight: FontWeight.w600,
@@ -248,159 +348,174 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
             height: 10.h,
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 14.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selected = 0;
-                          });
-                        },
-                        child: Container(
-                          width: 149.w,
-                          height: 43.h,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          decoration: ShapeDecoration(
-                            color: selected == 0
-                                ? Color(0xFF77C19D)
-                                : Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.r),
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) async {
+                if (mounted && selected == 0) {
+                  setState(() {
+                    selected = 1;
+                  });
+                } else if (mounted && selected == 1) {
+                  setState(() {
+                    selected = 0;
+                  });
+                }
+              },
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 14.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selected = 0;
+                            });
+                          },
+                          child: Container(
+                            width: 149.w,
+                            height: 43.h,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 10.h),
+                            decoration: ShapeDecoration(
+                              color: selected == 0
+                                  ? const Color(0xFF77C19D)
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
                             ),
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x3F000000),
-                                blurRadius: 8,
-                                offset: Offset(0, 0),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              'History',
-                              style: TextStyle(
-                                color:
-                                    selected == 0 ? Colors.white : Colors.black,
-                                fontSize: 18.sp,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w400,
-                                height: 0,
-                                letterSpacing: 0.72.sp,
+                            child: Center(
+                              child: Text(
+                                'History',
+                                style: TextStyle(
+                                  color: selected == 0
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
+                                  letterSpacing: 0.72.sp,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selected = 1;
-                          });
-                        },
-                        child: Container(
-                          width: 149.w,
-                          height: 43.h,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          decoration: ShapeDecoration(
-                            color: selected == 1
-                                ? Color(0xFF77C19D)
-                                : Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selected = 1;
+                            });
+                          },
+                          child: Container(
+                            width: 149.w,
+                            height: 43.h,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 10.h),
+                            decoration: ShapeDecoration(
+                              color: selected == 1
+                                  ? const Color(0xFF77C19D)
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              shadows: const [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
                             ),
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x3F000000),
-                                blurRadius: 8,
-                                offset: Offset(0, 0),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Bookmarked',
-                              style: TextStyle(
-                                color:
-                                    selected == 1 ? Colors.white : Colors.black,
-                                fontSize: 18.sp,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w400,
-                                height: 0,
-                                letterSpacing: 0.72.sp,
+                            child: Center(
+                              child: Text(
+                                'Bookmarked',
+                                style: TextStyle(
+                                  color: selected == 1
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
+                                  letterSpacing: 0.72.sp,
+                                ),
                               ),
                             ),
                           ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  if (myPosts!.length <= 0 && selected == 0)
+                    Center(
+                      child: Text(
+                        'No Post Found',
+                        style: TextStyle(
+                          color: const Color(0xFF201F24),
+                          fontSize: 16.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                          letterSpacing: 0.64.sp,
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                if (myPosts!.length <= 0 && selected == 0)
-                  Center(
-                    child: Text(
-                      'No Post Found',
-                      style: TextStyle(
-                        color: Color(0xFF201F24),
-                        fontSize: 16.sp,
-                        fontFamily: 'Outfit',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                        letterSpacing: 0.64.sp,
                       ),
                     ),
-                  ),
-                if (myBookmarkedPosts!.length <= 0 && selected == 1)
-                  Center(
-                    child: Text(
-                      'No Post Bookmarked',
-                      style: TextStyle(
-                        color: Color(0xFF201F24),
-                        fontSize: 16.sp,
-                        fontFamily: 'Outfit',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                        letterSpacing: 0.64.sp,
+                  if (myBookmarkedPosts!.length <= 0 && selected == 1)
+                    Center(
+                      child: Text(
+                        'No Post Bookmarked',
+                        style: TextStyle(
+                          color: const Color(0xFF201F24),
+                          fontSize: 16.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                          letterSpacing: 0.64.sp,
+                        ),
                       ),
                     ),
-                  ),
-                ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: selected == 0
-                        ? myPosts!.length
-                        : myBookmarkedPosts!.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                          margin: EdgeInsets.only(
-                              left: 29.w, right: 33.w, bottom: 24.h),
-                          child: GestureDetector(
-                              onTap: () {
-                                context.pushRoute(ArticleDetailRoute(
-                                    article: selected == 0
+                  ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: selected == 0
+                          ? myPosts!.length
+                          : myBookmarkedPosts!.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            margin: EdgeInsets.only(
+                                left: 29.w, right: 33.w, bottom: 24.h),
+                            child: GestureDetector(
+                                onTap: () {
+                                  context.pushRoute(ArticleDetailRoute(
+                                      article: selected == 0
+                                          ? myPosts[index]
+                                          : myBookmarkedPosts[index]));
+                                },
+                                child: HistoryTile(
+                                    context,
+                                    selected == 0
                                         ? myPosts[index]
-                                        : myBookmarkedPosts[index]));
-                              },
-                              child: HistoryTile(
-                                  context,
-                                  selected == 0
-                                      ? myPosts[index]
-                                      : myBookmarkedPosts[index])));
-                    })
-              ],
+                                        : myBookmarkedPosts[index])));
+                      })
+                ],
+              ),
             ),
           )
         ],

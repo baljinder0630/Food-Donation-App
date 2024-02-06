@@ -42,6 +42,10 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: DonationDescriptionRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
           page: ArticleDetailRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
@@ -79,6 +83,14 @@ class AppRouter extends $AppRouter {
         ),
         CustomRoute(
             page: ConfirmationFormRoute.page,
-            transitionsBuilder: TransitionsBuilders.slideTop)
-      ];
+            transitionsBuilder: TransitionsBuilders.slideTop),
+        CustomRoute(
+          page: ChatScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+          page: ProfileSearchPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+       ];
 }

@@ -1,25 +1,34 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Router/route.dart';
 import 'package:food_donation_app/constants.dart';
 
 // import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
 
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(ProviderScope(child: MyApp())));
 }
 
 class MyApp extends StatelessWidget {
+
   MyApp({super.key});
 
   final _appRouter = AppRouter();
@@ -53,8 +62,8 @@ class MyApp extends StatelessWidget {
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey, width: 0.8),
                 )),
-            primaryColor: primaryColor,
-            scaffoldBackgroundColor: Colors.white,
+            primaryColor: bgColor,
+            scaffoldBackgroundColor: bgColor,
             appBarTheme: const AppBarTheme(
                 color: Colors.transparent,
                 elevation: 0,
