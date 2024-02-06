@@ -44,6 +44,7 @@ class Community extends StateNotifier<CommunityState> {
           lastRecentDocument: null,
         )) {
     loadUserChatRoom();
+    getMyPosts();
   }
 
   loadUserChatRoom() async {
