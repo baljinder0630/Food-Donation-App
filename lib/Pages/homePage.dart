@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -160,13 +161,27 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
-                        child: CircleAvatar(
-                            radius: 40.r,
-                            backgroundColor: bgColor,
-                            child: Image.asset(
-                              "lib/assets/icons/user.png",
-                              height: 60.h,
-                            )),
+                        child: user.photoURL == null
+                            ? CircleAvatar(
+                                radius: 40.r,
+                                backgroundColor: bgColor,
+                                child: Image.asset(
+                                  "lib/assets/icons/user.png",
+                                  height: 60.h,
+                                ))
+                            : CircleAvatar(
+                                radius: 40.r,
+                                backgroundColor: bgColor,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    user.photoURL!,
+                                    // "https://i.pinimg.com/originals/16/5a/a3/165aa3c87d2cae578f91d28b3691b402.jpg",
+                                    width: 80.w,
+                                    height: 80.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                       ),
                       // Profile Picture of user is shown over here, default is user.png, which acts as icon.
 
@@ -420,29 +435,75 @@ class _HomePageState extends State<HomePage> {
                 ),
                 // Here FoodPickup request text and viewAll button ends.
 
-                CarouselSlider.builder(
-                  itemCount: 15,
-                  itemBuilder: (BuildContext context, int itemIndex,
-                          int pageViewIndex) =>
-                      Container(
-                    child: PickUpRequest(),
-                  ),
-                  options: CarouselOptions(
-                    height: 400.h,
-                    aspectRatio: 16 / 9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    enlargeFactor: 0.3,
-                    scrollDirection: Axis.horizontal,
-                  ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('requests')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    List<PickUpRequest> donationRequestWidgets = [];
+                    if (snapshot.hasData) {
+                      final donationRequests =
+                          snapshot.data?.docs.reversed.toList();
+                      for (var donationRequest in donationRequests!) {
+                        final donationRequestWidget = PickUpRequest(
+                          foodName: donationRequest['name'],
+                          address: donationRequest['pincodeController'],
+                          foodCategory: donationRequest['foodCategory'],
+                          postedTime: '3',
+                        );
+
+                        donationRequestWidgets.add(donationRequestWidget);
+                      }
+                    }
+                    return CarouselSlider.builder(
+                      itemCount: donationRequestWidgets.length,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
+                          Container(
+                        child: donationRequestWidgets[itemIndex],
+                      ),
+                      options: CarouselOptions(
+                        height: 400.h,
+                        aspectRatio: 16 / 9,
+                        viewportFraction: 0.8,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                    );
+                  },
                 ),
+
+                // CarouselSlider.builder(
+                //   itemCount: 15,
+                //   itemBuilder: (BuildContext context, int itemIndex,
+                //           int pageViewIndex) =>
+                //       Container(
+                //     child: PickUpRequest(),
+                //   ),
+                //   options: CarouselOptions(
+                //     height: 400.h,
+                //     aspectRatio: 16 / 9,
+                //     viewportFraction: 0.8,
+                //     initialPage: 0,
+                //     enableInfiniteScroll: true,
+                //     reverse: false,
+                //     autoPlay: true,
+                //     autoPlayInterval: Duration(seconds: 3),
+                //     autoPlayAnimationDuration: Duration(milliseconds: 800),
+                //     autoPlayCurve: Curves.fastOutSlowIn,
+                //     enlargeCenterPage: true,
+                //     enlargeFactor: 0.3,
+                //     scrollDirection: Axis.horizontal,
+                //   ),
+                // ),
 
                 // Container(
                 //   color: bgColor,
