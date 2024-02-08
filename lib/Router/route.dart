@@ -92,5 +92,5 @@ class AppRouter extends $AppRouter {
           page: ProfileSearchPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-      ];
+       ];
 }

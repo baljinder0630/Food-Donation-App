@@ -16,12 +16,12 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _currentIndex = 0;
 
-  List<Widget> _pages = [
+  final _pages = [
     HomePage(),
-    DonationRequest(),
-    PersonalDetails(),
-    DashBoardPage(),
-    CommunityHomePage()
+    const DonationRequest(),
+    const PersonalDetails(),
+    const CommunityHomePage(),
+    const DashBoardPage(),
   ];
 
   @override
@@ -34,32 +34,32 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         screens: _pages,
         items: [
           PersistentBottomNavBarItem(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             title: 'Home',
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            icon: Icon(Icons.comment),
+            icon: const Icon(Icons.comment),
             title: 'Donate Now',
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            icon: Icon(Icons.add_alarm),
+            icon: const Icon(Icons.add_alarm),
             title: 'Donate Now',
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            icon: Icon(Icons.dashboard),
-            title: 'Dashboard',
-            activeColorPrimary: Colors.blue,
-            inactiveColorPrimary: Colors.grey,
-          ),
-          PersistentBottomNavBarItem(
-            icon: Icon(Icons.group),
+            icon: const Icon(Icons.group),
             title: 'Community',
+            activeColorPrimary: Colors.blue,
+            inactiveColorPrimary: Colors.grey,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.dashboard),
+            title: 'Dashboard',
             activeColorPrimary: Colors.blue,
             inactiveColorPrimary: Colors.grey,
           ),
