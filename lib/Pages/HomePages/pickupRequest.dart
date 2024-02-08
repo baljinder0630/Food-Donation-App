@@ -6,10 +6,33 @@ import '../constants/constants.dart';
 
 @RoutePage()
 class PickUpRequest extends StatelessWidget {
-  const PickUpRequest({super.key});
+  final String foodName;
+  final String postedTime;
+  final List<dynamic> foodCategory;
+  final String address;
+
+  const PickUpRequest(
+      {required this.foodName,
+      required this.postedTime,
+      required this.foodCategory,
+      required this.address,
+      super.key});
+
+  List<String> getImagesList() {
+    List<String> images = [];
+    for (var item in foodCategory) {
+      if (item is Map<String, dynamic> && item.containsKey('imageURL')) {
+        if (item['imageURL'] != null) {
+          images.add(item['imageURL']);
+        }
+      }
+    }
+    return images;
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<String> images = getImagesList();
     return Container(
       decoration: BoxDecoration(
         color: white,
@@ -30,7 +53,7 @@ class PickUpRequest extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Idlii Sambhar & Vada, 3kg",
+                    foodName,
                     style: TextStyle(
                         color: black,
                         fontSize: 20.sp,
@@ -47,7 +70,7 @@ class PickUpRequest extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Cooked 4 hrs Ago.",
+                    "Cooked ${postedTime} Ago.",
                     style: TextStyle(
                         color: black,
                         fontSize: 17.sp,
@@ -59,28 +82,51 @@ class PickUpRequest extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
+              physics: const BouncingScrollPhysics(),
+              itemCount: images.isNotEmpty ? images.length : 4,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                if (images.isNotEmpty && index < images.length) {
                   return Container(
                     padding: EdgeInsets.only(left: 20.r),
                     child: Align(
                       widthFactor: 0.7,
                       child: CircleAvatar(
-                        radius: 65.r,
+                        radius: 70.r,
                         backgroundColor: green,
-                        child: CircleAvatar(
-                            radius: 60.r,
-                            backgroundColor: bgColor,
-                            child: Image.asset(
-                              "lib/assets/icons/food.png",
-                              height: 60.h,
-                            )),
+                        child: ClipOval(
+                          child: Image.network(
+                            images[index],
+                            width: 130.w,
+                            height: 130.h,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   );
-                }),
+                } else {
+                  return Container(
+                    padding: EdgeInsets.only(left: 20.r),
+                    child: Align(
+                      widthFactor: 0.7,
+                      child: CircleAvatar(
+                        radius: 70.r,
+                        backgroundColor: green,
+                        child: CircleAvatar(
+                          radius: 65.r,
+                          backgroundColor: bgColor,
+                          child: Image.asset(
+                            "lib/assets/icons/food.png",
+                            height: 60.h,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +142,7 @@ class PickUpRequest extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        "Meerut.",
+                        address,
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             color: red1,

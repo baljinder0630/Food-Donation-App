@@ -178,7 +178,12 @@ abstract class $AppRouter extends _i27.RootStackRouter {
     PickUpRequestRoute.name: (routeData) {
       return _i27.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i19.PickUpRequest(),
+        child: const _i19.PickUpRequest(
+          foodName: '',
+          postedTime: '',
+          foodCategory: [],
+          address: '',
+        ),
       );
     },
     PostArticleRoute.name: (routeData) {
