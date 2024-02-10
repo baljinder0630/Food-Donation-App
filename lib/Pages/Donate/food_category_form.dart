@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/button.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_alert_dialog.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
@@ -85,7 +86,7 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            showDialog(
+                            showModalBottomSheet(
                               context: context,
                               builder: (context) {
                                 return DonationConfirmationDialog(
@@ -169,7 +170,22 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                 CustomButton(
                     text: 'Next',
                     onPressed: () {
-                      context.pushRoute(const ConfirmationFormRoute());
+                      if(foodCategories.isEmpty){
+
+                        Fluttertoast.showToast(
+                            msg: "Please select at least one category.",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                        return;
+                      }
+                      else {
+                        context.pushRoute(const ConfirmationFormRoute());
+                      }
                     })
               ],
             ),
