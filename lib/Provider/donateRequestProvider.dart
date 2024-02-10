@@ -184,7 +184,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
   Future<bool> raiseRequest() async {
     try {
       state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
-
+      print(state.foodCategoryStatus);
       List<FoodCategoryModel> foodList = [];
 
       for (FoodCategory foodCategory in state.foodCategory ?? []) {
@@ -212,6 +212,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
       print("Data uploaded Successfully");
 
       state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+      print(state.foodCategoryStatus);
       return true;
     } catch (e) {
       state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);

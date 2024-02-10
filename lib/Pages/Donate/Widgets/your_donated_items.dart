@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_edit_dialog.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
-import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
 
 class YourDonatedItems extends StatefulWidget {
@@ -98,7 +97,7 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    showDialog(
+                                    showModalBottomSheet(
                                         context: context,
                                         builder: (context) {
                                           return DonationEditDialog(
