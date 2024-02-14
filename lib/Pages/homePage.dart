@@ -160,6 +160,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         child: FloatingActionButton(
+          heroTag: "cameraPreviewButton",
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {

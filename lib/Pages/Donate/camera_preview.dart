@@ -85,10 +85,12 @@ class _CameraScreenState extends State<CameraScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FloatingActionButton(
+                            heroTag: "cameraPreview",
                             onPressed: _takePicture,
                             child: const Icon(Icons.camera),
                           ),
                           FloatingActionButton(
+                            heroTag: "galleryPreview",
                             onPressed: _pickImage,
                             child: const Icon(Icons.image),
                           ),

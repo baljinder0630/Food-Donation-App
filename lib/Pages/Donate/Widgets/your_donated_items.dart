@@ -40,6 +40,7 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
         Container(
           height: 245.0,
           child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             itemCount: widget.foodCategories.length,
             itemBuilder: (context, index) => Padding(

@@ -1,9 +1,13 @@
 // ignore_for_file: file_names
 
 import 'dart:io';
-
+import 'package:food_donation_app/Models/DonationRequest/FoodCategory.model.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_donation_app/Models/DonationRequest/Request.model.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
+import 'package:uuid/uuid.dart';
 
 final donationRequestProvider =
     StateNotifierProvider<DonationRequestNotifier, DonationRequest>(
@@ -84,8 +88,10 @@ class DonationRequest {
 
 class DonationRequestNotifier extends StateNotifier<DonationRequest> {
   final StateNotifierProviderRef ref;
+  final FirebaseFirestore firestore;
   DonationRequestNotifier({required this.ref})
-      : super(DonationRequest(
+      : firestore = FirebaseFirestore.instance,
+        super(DonationRequest(
             name: '',
             phoneNumber: '',
             plotNo: '',
@@ -109,6 +115,24 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
     print("State changed");
     print(state.foodCategory?.length);
+
+    return state;
+  }
+
+  DonationRequest updatePersonalDetails(
+      String name,
+      String phoneNumber,
+      String plotNo,
+      String streetController,
+      String districtController,
+      String pincodeController) {
+    state = state.copyWith(
+        name: name,
+        phoneNumber: phoneNumber,
+        plotNo: plotNo,
+        streetController: streetController,
+        districtController: districtController,
+        pincodeController: pincodeController);
 
     return state;
   }
@@ -151,6 +175,64 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
 
   List<FoodCategory> getFoodCategories() {
     return state.foodCategory ?? [];
+  }
+
+  FoodCategoryStatus getStatus() {
+    return state.foodCategoryStatus ?? FoodCategoryStatus.initial;
+  }
+
+  Future<bool> raiseRequest() async {
+    try {
+      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
+
+      List<FoodCategoryModel> foodList = [];
+
+      for (FoodCategory foodCategory in state.foodCategory ?? []) {
+        String name = foodCategory.name!;
+        String quantity = foodCategory.quantity!;
+        String imgURL = await uploadImage(foodCategory.imageFile);
+        FoodCategoryModel food =
+            FoodCategoryModel(name: name, quantity: quantity, imageURL: imgURL);
+        foodList.add(food);
+      }
+
+      DonationRequestModel donationRequestModel = DonationRequestModel(
+        name: state.name,
+        phoneNumber: state.phoneNumber,
+        plotNo: state.plotNo,
+        streetController: state.streetController,
+        districtController: state.districtController,
+        pincodeController: state.pincodeController,
+        foodCategory: foodList,
+      );
+
+      final id = const Uuid().v4();
+      final doc = firestore.collection("requests").doc(id);
+      await doc.set(donationRequestModel.toJson());
+      print("Data uploaded Successfully");
+
+      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+      return true;
+    } catch (e) {
+      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<String> uploadImage(File? file) async {
+    try {
+      final ref =
+          FirebaseStorage.instance.ref().child("request/${Uuid().v4()}");
+      final uploadTask = ref.putFile(File(file!.path));
+      final snapshot = await uploadTask.whenComplete(() => null);
+      final url = await snapshot.ref.getDownloadURL();
+      print(url);
+      return url;
+    } catch (e) {
+      print(e.toString());
+      return "";
+    }
   }
 }
 

@@ -15,41 +15,96 @@ class DonateForm extends StatefulWidget {
   State<DonateForm> createState() => _MyApp();
 }
 
-
 class _MyApp extends State<DonateForm> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Donation App')),
         body: Column(
           children: [
-            Expanded(
+            SizedBox(
+              height: 100,
+            ),
+            GestureDetector(
               child: Container(
-                color: Colors.pink[100],
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite, size: 100, color: Colors.red),
-                      Text('Donate with Love', style: TextStyle(fontSize: 24)),
-                    ],
-                  ),
-                ),
+                child: CurvedCard(),
               ),
             ),
-            GridView.count(shrinkWrap: true, crossAxisCount: 2, children: [
-              FeatureCard(
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: const [
+                FeatureCard(
                   iconData: Icons.monetization_on_outlined,
-                  label: 'Donate Money'),
-              FeatureCard(
-                  iconData: Icons.fastfood_outlined, label: 'Donate Food'),
-              FeatureCard(
-                  iconData: Icons.people_outline_outlined, label: 'Community'),
-              FeatureCard(
-                  iconData: Icons.volunteer_activism_outlined,
-                  label: 'Volunteer')
-            ])
+                  label: 'Donate Money',
+                ),
+                FeatureCard(
+                  iconData: Icons.fastfood_outlined,
+                  label: 'Donate Food',
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CurvedCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Card(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                CurvedChildCard(),
+                SizedBox(
+                  height: 10.0,
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Add button onPressed logic here
+                },
+                child: Text('Click Me'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CurvedChildCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            // Add your image here
+            Image.asset(
+              'lib/assets/donate/Card.jpg',
+              width: 100, // Set the desired width
+              height: 100, // Set the desired height
+              fit: BoxFit.cover,
+            ),
+            
           ],
         ),
       ),
@@ -66,18 +121,25 @@ class FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 5,
-        margin: EdgeInsets.all(8),
-        child: InkWell(
-            onTap: () {},
-            splashColor: Colors.pink.withAlpha(30),
-            child: Center(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
+      elevation: 5,
+      margin: EdgeInsets.all(8),
+      child: InkWell(
+        onTap: () {},
+        splashColor: Colors.pink.withAlpha(30),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Icon(this.iconData, size: 50),
-              Text(this.label)
-            ]))));
+              Text(this.label),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
+
 
 class _DonateFormState extends State<DonateForm> {
   bool value = false;
@@ -218,6 +280,7 @@ class _DonateFormState extends State<DonateForm> {
                               ),
                               FloatingActionButton(
                                 onPressed: () {},
+                                heroTag: "categoryButton",
                                 backgroundColor: Colors.orange,
                                 shape: const CircleBorder(),
                                 mini: true,
@@ -279,6 +342,7 @@ class _DonateFormState extends State<DonateForm> {
                           width: 5.0,
                         ),
                         FloatingActionButton(
+                          heroTag: "cameraButton2",
                           onPressed: () {
                             context.navigateTo(CameraScreenRoute());
                           },
