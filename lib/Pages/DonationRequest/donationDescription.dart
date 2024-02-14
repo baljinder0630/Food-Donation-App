@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/DonationRequest/donationDescriptionHeader.dart';
 
 import '../constants/constants.dart';
- 
+
 @RoutePage()
 class DonationDescription extends StatefulWidget {
   const DonationDescription({Key? key}) : super(key: key);
@@ -19,70 +20,9 @@ class _State extends State<DonationDescription> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 300.h,
-            backgroundColor: bgColor,
-            elevation: 0.0,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "lib/assets/images/exploreImages/child.jpg",
-                fit: BoxFit.cover,
-              ),
-              stretchModes: [
-                StretchMode.blurBackground,
-                StretchMode.zoomBackground,
-              ],
-            ),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0.0),
-              child: Container(
-                height: 32.h,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(32.r),
-                    topLeft: Radius.circular(32.r),
-                  ),
-                ),
-                child: Container(
-                  width: 50.w,
-                  height: 5.h,
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.circular(100.0.r),
-                  ),
-                ),
-              ),
-            ),
-            leadingWidth: 80.w,
-            leading: Container(
-              margin: EdgeInsets.only(top: 10.r, left: 22.r),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(56.0.r),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
-                      height: 56.r,
-                      width: 56.r,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.2),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 5.0.r),
-                        child: Image.asset(
-                          "lib/assets/icons/back.png",
-                          width: 25.r,
-                        ),
-                      )),
-                ),
-              ),
-            ),
-          ),
+        physics: const BouncingScrollPhysics(),
+        slivers: <Widget>[
+          DonationDescriptionHeader(),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -91,7 +31,6 @@ class _State extends State<DonationDescription> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Live Update"),
                       Row(
                         children: [
                           const Text("2345 People Contributed"),
@@ -130,7 +69,7 @@ class _State extends State<DonationDescription> {
                 Padding(
                   padding: EdgeInsets.all(10.0.r),
                   child: Text(
-                    "jhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsf fgjadwh kjafh kjgshdg",
+                    "jhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsf fgjadwh kjafh kjgshdg",
                     style: TextStyle(
                       fontSize: 18.sp,
                     ),

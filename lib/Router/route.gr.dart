@@ -47,6 +47,8 @@ import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i19;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i17;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i24;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i25;
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart'
+    as _i31;
 
 abstract class $AppRouter extends _i27.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -125,6 +127,12 @@ abstract class $AppRouter extends _i27.RootStackRouter {
       return _i27.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i11.DonationDescription(),
+      );
+    },
+    PickupRequestPageRoute.name: (routeData) {
+      return _i27.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i31.PickupRequestPage(),
       );
     },
     DonationRequestRoute.name: (routeData) {
@@ -435,6 +443,20 @@ class DonationDescriptionRoute extends _i27.PageRouteInfo<void> {
         );
 
   static const String name = 'DonationDescriptionRoute';
+
+  static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i31.PickupRequestPageRoute]
+class PickupRequestPageRoute extends _i27.PageRouteInfo<void> {
+  const PickupRequestPageRoute({List<_i27.PageRouteInfo>? children})
+      : super(
+          PickupRequestPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PickupRequestPageRoute';
 
   static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
 }

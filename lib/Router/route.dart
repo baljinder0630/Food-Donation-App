@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: "Route")
@@ -43,6 +44,10 @@ class AppRouter extends $AppRouter {
         ),
         CustomRoute(
           page: DonationDescriptionRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: PickupRequestPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(

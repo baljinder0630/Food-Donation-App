@@ -11,6 +11,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../Router/route.gr.dart';
+import 'Community/Widgets/myAppBar.dart';
+import 'Community/Widgets/searchBar.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
 
@@ -111,10 +113,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String userName = "User";
+  String profilePic = "";
+
+  void setData() {
+    if (user.displayName != null) {
+      userName = user.displayName!;
+    } else {
+      userName = "User";
+    }
+
+    if (user.photoURL != null) {
+      profilePic = user.photoURL!;
+
+      print(
+          "Inside the setData function: printing user PhotoURL ${user.photoURL!}");
+      print(
+          "Inside the setData function: printing user PhotoURL ${profilePic}");
+    }
+
+    // print(
+    //     "Outside the setData function: printing user PhotoURL ${user.photoURL!}");
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setData();
     getLocation();
   }
 
@@ -143,14 +169,87 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
-      // appBar: AppBar(title: Text('Dashboard')),
+
+      // children: [
+      //   MyAppBar(
+      //     centerWidget: Padding(
+      //       padding: EdgeInsets.only(left: 57.w),
+      //       child: MySearchBar(title: "Donation Request"),
+      //     ),
+      //     // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+      //     rightWidget: Padding(
+      //       padding: EdgeInsets.only(
+      //           right: 16.0), // Adjust the left padding as needed
+      //       child: Container(
+      //         decoration: BoxDecoration(
+      //           shape: BoxShape.circle,
+      //           color: Colors.white,
+      //         ),
+      //         child: IconButton(
+      //           icon: Icon(Icons.local_shipping),
+      //           onPressed: () {
+      //             context
+      //                 .pushRoute(const DonationTrackingPageRoute());
+      //           },
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   SizedBox(
+      //     height: 20.h,
+      //   ),
+      //   categoryWidget(),
+      // ],
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-              floating: true,
-              expandedHeight: 100.h,
-              title: Center(child: Text("H O M E P A G E"))),
+            expandedHeight: 200,
+            backgroundColor: bgColor,
+            elevation: 0.0,
+            stretch: true,
+            floating: true,
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return FlexibleSpaceBar(
+                    background: Column(
+                  children: [
+                    SizedBox(
+                      height: 50.h,
+                    ),
+                    MyAppBar(
+                      centerWidget: Padding(
+                        padding: EdgeInsets.only(left: 57.w),
+                        child: MySearchBar(title: "Donation Request"),
+                      ),
+                      // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
+                      rightWidget: Padding(
+                        padding: EdgeInsets.only(right: 16.0),
+                        // Adjust the left padding as needed
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.local_shipping),
+                            onPressed: () {
+                              context
+                                  .pushRoute(const DonationTrackingPageRoute());
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    categoryWidget(),
+                  ],
+                ));
+              },
+            ),
+          ),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -161,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
-                        child: user.photoURL == null
+                        child: profilePic == ""
                             ? CircleAvatar(
                                 radius: 40.r,
                                 backgroundColor: bgColor,
@@ -174,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                                 backgroundColor: bgColor,
                                 child: ClipOval(
                                   child: Image.network(
-                                    user.photoURL!,
+                                    profilePic,
                                     // "https://i.pinimg.com/originals/16/5a/a3/165aa3c87d2cae578f91d28b3691b402.jpg",
                                     width: 80.w,
                                     height: 80.h,
@@ -195,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(children: [
                               Expanded(
                                 child: Text(
-                                  "Hello, " + user.displayName!,
+                                  "Hello, " + userName,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20.sp,
@@ -265,10 +364,7 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r),
                   padding: EdgeInsets.all(15.r),
                   width: double.infinity,
-                  height: 70.h,
-                  decoration: BoxDecoration(
-                      // color: purple1,
-                      borderRadius: BorderRadius.circular(15.r)),
+                  height: 50.h,
                   child: Text(
                     "Explore",
                     style:
@@ -277,100 +373,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 //Explore Ends here.
 
-                // Container(
-                //   margin: const EdgeInsets.symmetric(horizontal: 10),
-                //   padding: const EdgeInsets.symmetric(vertical: 10),
-                //   child: mainOptions(context),
-                // ),
-                // Here 4 widgets are done.
-
-                // Container(
-                //   margin: EdgeInsets.symmetric(horizontal: 10.r),
-                //   padding: EdgeInsets.all(10.r),
-                //   height: 100.h,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text(
-                //         "Nearby hunger spots you can serve in ",
-                //         style: TextStyle(
-                //             color: black,
-                //             fontSize: 18.sp,
-                //             overflow: TextOverflow.ellipsis),
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           SizedBox(
-                //             width: 20.w,
-                //             child: Icon(Icons.place, color: red1),
-                //           ),
-                //           Expanded(
-                //             child: Container(
-                //               padding: EdgeInsets.symmetric(horizontal: 8.0.r),
-                //               child: Text(
-                //                 "Gulbai Tekra, Navrangpura.Navrangpura",
-                //                 style: TextStyle(
-                //                   color: red1,
-                //                   fontStyle: FontStyle.italic,
-                //                   fontSize: 17.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                   overflow: TextOverflow.ellipsis,
-                //                 ),
-                //                 maxLines: 1, // Set the maximum number of lines
-                //               ),
-                //             ),
-                //           ),
-                //           //  Location is displayed, from here you can change the location. and get recommendation accordingly.
-                //
-                //           SizedBox(
-                //             width: 120.w,
-                //             height: 30.h,
-                //             child: OutlinedButton(
-                //               onPressed: () {
-                //                 context.pushRoute(const DonationRequestRoute());
-                //               },
-                //               style: OutlinedButton.styleFrom(
-                //                   backgroundColor: null),
-                //               child: Text(
-                //                 "View All",
-                //                 style: TextStyle(
-                //                   decoration: TextDecoration.underline,
-                //                   fontStyle: FontStyle.italic,
-                //                   decorationColor: red1,
-                //                   decorationThickness: 2,
-                //                   color: red1,
-                //                   fontSize: 14.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Here hungerSpot text with view All button ends..
-
-                // SizedBox(
-                //   height: 380.h,
-                //   child: ListView.builder(
-                //       physics: const BouncingScrollPhysics(),
-                //       itemCount: postId.length,
-                //       scrollDirection: Axis.horizontal,
-                //       itemBuilder: (context, index) {
-                //         return HungerSpot(child: postId[index]);
-                //       }),
-                // ),
-
-                // Here HungerSpots cards ends.
-
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
                   padding: EdgeInsets.all(10.r),
-                  height: 90.h,
+                  height: 100.h,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -411,7 +417,10 @@ class _HomePageState extends State<HomePage> {
                             width: 120.w,
                             height: 30.h,
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context
+                                    .pushRoute(const PickupRequestPageRoute());
+                              },
                               style: OutlinedButton.styleFrom(
                                   backgroundColor: null),
                               child: Text(
@@ -589,13 +598,41 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return DonationRequestCard();
-              },
-              childCount: 12,
-            ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('ngorequests')
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return SliverToBoxAdapter(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              List<DocumentSnapshot> documents = snapshot.data!.docs;
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    final document = documents[index];
+                    return DonationRequestCard(
+                      spotName: document['name'],
+                      spotCity: document['city'],
+                      noOfServing: document['numberOfServings'],
+                      requestType: document['requestType'],
+                      percentDone: document['percentageRemaining'],
+                      spotStreet: document['streetName'],
+                      contactNumber: document['percentageRemaining'],
+                      description: document['description'],
+                      pincode: document['pinCode'],
+                      spotState: document['state'],
+                    );
+                  },
+                  childCount: documents.length,
+                ),
+              );
+            },
           ),
         ],
       ),

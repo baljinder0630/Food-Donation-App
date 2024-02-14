@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,20 +8,21 @@ import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
+import '../HomePages/pickupRequest.dart';
 import '../homePage.dart';
 import 'YourDonationRequest.dart';
 
 @RoutePage()
-class DonationRequest extends StatefulWidget {
-  const DonationRequest({super.key});
+class PickupRequestPage extends StatefulWidget {
+  const PickupRequestPage({super.key});
 
   @override
-  State<DonationRequest> createState() => _DonationRequestState();
+  State<PickupRequestPage> createState() => _PickupRequestPageState();
 }
 
-class _DonationRequestState extends State<DonationRequest> {
+class _PickupRequestPageState extends State<PickupRequestPage> {
   var selectedCategory = 0;
-  List<String> categories = ["All", "Food Request", "Fund Request"];
+  List<String> categories = ["AllPIXKUPSFDJI", "Food Request", "Fund Request"];
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _DonationRequestState extends State<DonationRequest> {
             Container(
               padding: EdgeInsets.all(10),
               child: const Text(
-                "Donation Request",
+                "PickUp Request",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -65,7 +67,7 @@ class _DonationRequestState extends State<DonationRequest> {
             MyAppBar(
               centerWidget: Padding(
                 padding: EdgeInsets.only(left: 57.w),
-                child: MySearchBar(title: "Donation Request"),
+                child: MySearchBar(title: "Pickup Request"),
               ),
               // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
               rightWidget: Padding(
@@ -92,47 +94,6 @@ class _DonationRequestState extends State<DonationRequest> {
             SizedBox(
               height: 20.h,
             ),
-
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('ngorequests')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                List<DocumentSnapshot> documents = snapshot.data!.docs;
-                return Expanded(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      final document = documents[index];
-                      return DonationRequestCard(
-                        spotName: document['name'],
-                        spotCity: document['city'],
-                        noOfServing: document['numberOfServings'],
-                        requestType: document['requestType'],
-                        percentDone: document['percentageRemaining'],
-                        spotStreet: document['streetName'],
-                        contactNumber: document['percentageRemaining'],
-                        description: document['description'],
-                        pincode: document['pinCode'],
-                        spotState: document['state'],
-                      );
-                    },
-                  ),
-                ));
-              },
-            ),
-
             // categoryWidget(),
             //   Expanded(
             //     child: Container(
@@ -141,10 +102,48 @@ class _DonationRequestState extends State<DonationRequest> {
             //       child: ListView.builder(
             //           itemCount: 5,
             //           itemBuilder: (context, index) {
-            //           //   return DonationRequestCard();
+            //           //   return DonationRequestCard(
+            //           //     spotName: null,
+            //           //     spotCity: null,
+            //           //     noOfServing: null,
+            //           //     requestType: null,
+            //           //   );
             //           // }),
             //     ),
             //   ),
+
+            StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('requests').snapshots(),
+              builder: (context, snapshot) {
+                List<PickUpRequest> donationRequestWidgets = [];
+                if (snapshot.hasData) {
+                  final donationRequests =
+                      snapshot.data?.docs.reversed.toList();
+                  for (var donationRequest in donationRequests!) {
+                    final donationRequestWidget = PickUpRequest(
+                      foodName: donationRequest['name'],
+                      address: donationRequest['pincodeController'],
+                      foodCategory: donationRequest['foodCategory'],
+                      postedTime: '3',
+                    );
+
+                    donationRequestWidgets.add(donationRequestWidget);
+                  }
+                }
+                return Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    height: 500,
+                    child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return donationRequestWidgets[index];
+                        }),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
