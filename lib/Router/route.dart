@@ -92,5 +92,13 @@ class AppRouter extends $AppRouter {
           page: ProfileSearchPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-       ];
+        CustomRoute(
+          page: ChattingPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+          page: IncomingRequestRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+      ];
 }

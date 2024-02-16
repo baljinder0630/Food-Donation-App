@@ -176,7 +176,6 @@ class UserAuth extends StateNotifier<AuthState> {
 
   logout() async {
     await FirebaseAuth.instance.signOut();
-    state.user = null;
     state = state.copyWith(
       user: null,
       authStatus: AuthStatus.processed,

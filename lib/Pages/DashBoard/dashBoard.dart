@@ -216,15 +216,16 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                         actions: [
                           TextButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                context.popRoute();
                               },
                               child: Text('Cancel')),
                           TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                ref.read(authStateProvider.notifier).logout();
-                              },
-                              child: Text('Logout')),
+                            onPressed: () {
+                              AutoRouter.of(context).replace(SignUpPageRoute());
+                              ref.read(authStateProvider.notifier).logout();
+                            },
+                            child: Text('Logout'),
+                          )
                         ],
                       );
                     }),
@@ -246,67 +247,81 @@ class ProfileWidget extends ConsumerStatefulWidget {
 class _ProfileWidgetState extends ConsumerState<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: 20.h), // Add some padding
-        CircleAvatar(
-            backgroundColor: Colors.grey[300], // Add your color here
-            radius: 60.r,
-            // backgroundImage:
-            // AssetImage('assets/profile.jpg'), // Add path to your image file
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 20.h), // Add some padding
+          CircleAvatar(
+            radius: 62.r,
+            backgroundColor: Colors.white,
+            child: CircleAvatar(
+                backgroundColor: Colors.grey[300], // Add your color here
+                radius: 60.r,
+                // backgroundImage:
+                // AssetImage('assets/profile.jpg'), // Add path to your image file
+                child: Text(
+                  nameProfile(ref.watch(authStateProvider).user!.displayName),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30.sp,
+                    fontFamily: 'Outfit',
+                    fontWeight: FontWeight.w500,
+                    height: 0,
+                    letterSpacing: 0.56.sp,
+                  ),
+                )),
+          ),
+          SizedBox(height: 20.h), // Add some padding
+          Container(
+            height: 32.h, // Adjust the height as needed
+            width: 300.w, // Adjust the width as needed
+            alignment: Alignment.center,
             child: Text(
-              nameProfile(ref.watch(authStateProvider).user!.displayName),
+              ref.watch(authStateProvider).user!.displayName ?? "",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 30.sp,
-                fontFamily: 'Outfit',
-                fontWeight: FontWeight.w500,
-                height: 0,
-                letterSpacing: 0.56.sp,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
               ),
-            )),
-        SizedBox(height: 20.h), // Add some padding
-        Container(
-          height: 32.h, // Adjust the height as needed
-          width: 300.w, // Adjust the width as needed
-          alignment: Alignment.center,
-          child: Text(
-            ref.watch(authStateProvider).user!.displayName ?? "",
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        SizedBox(height: 20.h), // Add some padding
-        Container(
-          alignment: Alignment.center,
-          width: 350.w, // Adjust the width as needed
-          decoration: BoxDecoration(
-            color: Colors.green[100], // Add your color here
-            borderRadius:
-                BorderRadius.circular(5.r), // Adjust the radius as needed
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStatColumn(
-                    ref.watch(communityProvider).myPosts!.length.toString() ??
-                        '0',
-                    'posts'),
-                Container(
-                    width: 1.w,
-                    height: 80.h,
-                    color: Colors.white), // Add some padding
-                _buildStatColumn('891', 'connects')
-              ],
+          SizedBox(height: 20.h), // Add some padding
+          Container(
+            alignment: Alignment.center,
+            width: 350.w, // Adjust the width as needed
+            decoration: BoxDecoration(
+              color: Colors.green[100], // Add your color here
+              borderRadius:
+                  BorderRadius.circular(5.r), // Adjust the radius as needed
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildStatColumn(
+                      ref.watch(communityProvider).myPosts!.length.toString() ??
+                          '0',
+                      'posts'),
+                  Container(
+                      width: 1.w,
+                      height: 80.h,
+                      color: Colors.white), // Add some padding
+                  _buildStatColumn(
+                      ref
+                              .watch(authStateProvider)
+                              .user!
+                              .totalConnects
+                              .toString() ??
+                          "0",
+                      'connects')
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
