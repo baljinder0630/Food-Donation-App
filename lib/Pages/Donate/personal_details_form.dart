@@ -19,6 +19,8 @@ class PersonalDetails extends ConsumerStatefulWidget {
   ConsumerState<PersonalDetails> createState() => _PersonalDetailsState();
 }
 
+
+
 class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();

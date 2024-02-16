@@ -263,6 +263,7 @@ abstract class $AppRouter extends _i31.RootStackRouter {
         child: const _i30.IncomingRequest(),
       );
     },
+    
   };
 }
 
@@ -825,3 +826,5 @@ class IncomingRequestRoute extends _i31.PageRouteInfo<void> {
 
   static const _i31.PageInfo<void> page = _i31.PageInfo<void>(name);
 }
+
+

@@ -7,22 +7,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:developer';
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
+import 'package:food_donation_app/Provider/raiseRequestProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 
 @RoutePage()
-class RaiseRequest extends StatefulWidget {
+class RaiseRequest extends ConsumerStatefulWidget {
   const RaiseRequest({Key? key}) : super(key: key);
 
   @override
-  State<RaiseRequest> createState() => _RaiseDonationReq();
+  ConsumerState<RaiseRequest> createState() => _RaiseDonationReq();
 }
 
-class _RaiseDonationReq extends State<RaiseRequest> {
+class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
   final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
   final _ngoController = TextEditingController();
@@ -39,33 +43,134 @@ class _RaiseDonationReq extends State<RaiseRequest> {
     super.dispose();
   }
 
-  void uploadDonationRequest() async {
-  raisemodel donationRequest = raisemodel(
-    id: Uuid().v4(),
-    ngoName: _ngoController.text,
-    requestType: _selectedRequestType, // Assuming you have a variable to store the selected request type
-    mobileNumber: _mobileNumberController.text,
-    plotNo: _PlotnoController.text,
-    streetNo: _StreetnoController.text,
-    landmark: _LandmarkController.text,
-    district: _DistrictController.text,
-    pincode: _PincodeController.text,
-  );
-  final CollectionReference donationRequests =
-        FirebaseFirestore.instance.collection('donationRequests');
-
-    // Upload data to Firebase
-    await donationRequests.add(donationRequest.toMap());
-
-    // Perform any necessary actions after the data is uploaded
-    // showSuccessDialog();
-    context.pushRoute(const DonationTrackingPageRoute());
-    setState(() {
-      // Clear text controllers or any other necessary state changes
-      _ngoController.text = '';
-      _mobileNumberController.text = '';
-      
-    });
+  
+  showSuccessDialog() {
+    showGeneralDialog(
+      context: context,
+      transitionDuration: Duration(milliseconds: 300),
+      barrierDismissible: true,
+      barrierLabel: '',
+      transitionBuilder: (context, anim1, anim2, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 1),
+            end: Offset.zero,
+          ).animate(anim1),
+          child: child,
+        );
+      },
+      pageBuilder: (context, ani1, ani2) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: SimpleDialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            children: [
+              Container(
+                width: 378,
+                padding: EdgeInsets.all(19.20),
+                decoration: ShapeDecoration(
+                  color: Color(0xFFFEFEFE),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28.80),
+                  ),
+                  shadows: const [
+                    BoxShadow(
+                      color: Color(0x3F000000),
+                      blurRadius: 12,
+                      offset: Offset(1.20, 1.20),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Posted Successfully',
+                      style: TextStyle(
+                        color: Color(0xFF201F24),
+                        fontSize: 19.20,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w600,
+                        height: 0,
+                        letterSpacing: 0.38,
+                      ),
+                    ),
+                    SizedBox(height: 19.20),
+                    Image.asset(
+                      "lib/assets/Community/PostSuccessfully.png",
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(height: 19.20),
+                    Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'THANK YOU',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF5272FC),
+                              fontSize: 19.20,
+                              fontStyle: FontStyle.italic,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w800,
+                              height: 0,
+                              letterSpacing: 4.03,
+                            ),
+                          ),
+                          SizedBox(height: 9.60),
+                          SizedBox(
+                            width: 323.52,
+                            child: Text(
+                              '"HOPE IS LIKE A FLAME; IT CAN NEVER BE EXTINGUISHED, EVEN IN THE DARKEST OF TIMES." WE HOPE YOU GET A BETTER SUPPORT',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF201F24),
+                                fontSize: 13.44,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                                letterSpacing: 0.54,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 19.20),
+                    Text(
+                      'Further Notifications Will be Updated ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF201F24),
+                        fontSize: 13.44,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                        letterSpacing: 0.54,
+                      ),
+                    ),
+                    SizedBox(height: 19.20),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.pushRoute(const DonationTrackingPageRoute());
+                      },
+                      child: Text('Go to Donation Tracking'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -172,7 +277,7 @@ class _RaiseDonationReq extends State<RaiseRequest> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              uploadDonationRequest();
+                              // ref.read(raiseRequestProvider.notifier).uploadDonationRequest(raise)
                             }
                           },
                           child: Text(
