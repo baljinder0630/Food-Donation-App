@@ -53,127 +53,21 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
                                 (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Container(
-                                    margin: EdgeInsets.only(
-                                        left: 24.w,
-                                        right: 24.w,
-                                        bottom: 10.h,
-                                        top: 10.h),
-                                    width: 376.w,
-                                    height: 83.h,
-                                    padding: EdgeInsets.all(14.r),
-                                    decoration: ShapeDecoration(
-                                      color: const Color(0xFFFEFEFE),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.r),
-                                      ),
-                                      shadows: const [
-                                        BoxShadow(
-                                          color: Color(0x3F000000),
-                                          blurRadius: 8,
-                                          offset: Offset(0, 0),
-                                          spreadRadius: 0,
-                                        )
-                                      ],
-                                    ),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          // Adding Shimmer effect to the user card
-                                          Shimmer(
-                                            gradient: const LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                                  Colors.grey,
-                                                  Colors.white,
-                                                  Colors.grey
-                                                ]),
-                                            child: Container(
-                                              width: 59.85.w,
-                                              height: 64.60.h,
-                                              decoration: ShapeDecoration(
-                                                color: Colors.grey,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(17),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                height: 18.h,
-                                                width: 100.w,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 5.w),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey[300]!,
-                                                  highlightColor:
-                                                      Colors.grey[100]!,
-                                                  child: Container(
-                                                    color: Colors.grey[300],
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 4.h),
-                                              Container(
-                                                height: 10.h,
-                                                width: 100.w,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 5.w),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey[300]!,
-                                                  highlightColor:
-                                                      Colors.grey[100]!,
-                                                  child: Container(
-                                                    color: Colors.grey[300],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Flexible(
-                                              child: Shimmer(
-                                            gradient: LinearGradient(colors: [
-                                              Colors.grey,
-                                              Colors.white,
-                                              Colors.grey
-                                            ]),
-                                            child: Container(
-                                              width: 86.70.w,
-                                              height: 34.40.h,
-                                              decoration: ShapeDecoration(
-                                                color: Colors.grey,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          9.50.r),
-                                                ),
-                                              ),
-                                            ),
-                                          ))
-                                        ]));
+                                return UserCardShimmerEffect();
                               }
                               if (snapshot.hasError) {
                                 return Text("Something went wrong");
                               }
-                              if (snapshot.hasData) {
+                              if (snapshot.hasData &&
+                                  snapshot.data.data() != null) {
                                 final userModel = snapshot.data.data()
                                     as Map<String, dynamic>;
 
                                 return UserCard(
                                     user: UserModel.fromMap(userModel));
                               }
-                              return Text("data");
+
+                              return SizedBox();
                             },
                           );
                         }),
@@ -184,5 +78,103 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
             },
           )),
     );
+  }
+}
+
+class UserCardShimmerEffect extends StatelessWidget {
+  const UserCardShimmerEffect({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin:
+            EdgeInsets.only(left: 24.w, right: 24.w, bottom: 10.h, top: 10.h),
+        width: 376.w,
+        height: 83.h,
+        padding: EdgeInsets.all(14.r),
+        decoration: ShapeDecoration(
+          color: const Color(0xFFFEFEFE),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          shadows: const [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 8,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Adding Shimmer effect to the user card
+              Shimmer(
+                gradient: const LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Colors.grey, Colors.white, Colors.grey]),
+                child: Container(
+                  width: 59.85.w,
+                  height: 64.60.h,
+                  decoration: ShapeDecoration(
+                    color: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 18.h,
+                    width: 100.w,
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Container(
+                    height: 10.h,
+                    width: 100.w,
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Flexible(
+                  child: Shimmer(
+                gradient: LinearGradient(
+                    colors: [Colors.grey, Colors.white, Colors.grey]),
+                child: Container(
+                  width: 86.70.w,
+                  height: 34.40.h,
+                  decoration: ShapeDecoration(
+                    color: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9.50.r),
+                    ),
+                  ),
+                ),
+              ))
+            ]));
   }
 }
