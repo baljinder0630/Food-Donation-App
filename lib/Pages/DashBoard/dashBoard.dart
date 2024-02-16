@@ -216,15 +216,16 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                         actions: [
                           TextButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                context.popRoute();
                               },
                               child: Text('Cancel')),
                           TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                ref.read(authStateProvider.notifier).logout();
-                              },
-                              child: Text('Logout')),
+                            onPressed: () {
+                              AutoRouter.of(context).replace(SignUpPageRoute());
+                              ref.read(authStateProvider.notifier).logout();
+                            },
+                            child: Text('Logout'),
+                          )
                         ],
                       );
                     }),
@@ -307,7 +308,14 @@ class _ProfileWidgetState extends ConsumerState<ProfileWidget> {
                       width: 1.w,
                       height: 80.h,
                       color: Colors.white), // Add some padding
-                  _buildStatColumn('891', 'connects')
+                  _buildStatColumn(
+                      ref
+                              .watch(authStateProvider)
+                              .user!
+                              .totalConnects
+                              .toString() ??
+                          "0",
+                      'connects')
                 ],
               ),
             ),

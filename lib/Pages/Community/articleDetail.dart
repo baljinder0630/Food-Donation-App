@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +94,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 5.w),
-                          decoration: BoxDecoration(color: Color(0xFFFEFEFE)),
+                          decoration: BoxDecoration(color: Colors.transparent),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
