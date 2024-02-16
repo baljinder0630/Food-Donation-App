@@ -7,6 +7,7 @@ import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../HomePages/pickupRequest.dart';
 import '../homePage.dart';
@@ -23,6 +24,65 @@ class PickupRequestPage extends StatefulWidget {
 class _PickupRequestPageState extends State<PickupRequestPage> {
   var selectedCategory = 0;
   List<String> categories = ["AllPIXKUPSFDJI", "Food Request", "Fund Request"];
+
+  Widget categoryWidget() {
+    return Container(
+      margin: EdgeInsets.only(left: 24.w),
+      alignment: Alignment.centerLeft,
+      height: 43.h,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedCategory = index;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10.r),
+                  decoration: ShapeDecoration(
+                    color: index == selectedCategory
+                        ? Color(0xFF5272FC)
+                        : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Text(
+                    categories[index],
+                    style: TextStyle(
+                      color: index == selectedCategory
+                          ? const Color(0xFFF9F8FD)
+                          : const Color(0xFF201F24),
+                      fontSize: 18.sp,
+                      fontFamily: 'Outfit',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.72.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.sp),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +196,7 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                     padding: EdgeInsets.symmetric(vertical: 10),
                     height: 500,
                     child: ListView.builder(
-                        itemCount: 5,
+                        itemCount: donationRequestWidgets.length,
                         itemBuilder: (context, index) {
                           return donationRequestWidgets[index];
                         }),

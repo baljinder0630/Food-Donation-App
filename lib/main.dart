@@ -16,7 +16,6 @@ Future<void> _messageHandler(RemoteMessage message) async {
 }
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -28,7 +27,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   MyApp({super.key});
 
   final _appRouter = AppRouter();
@@ -62,10 +60,10 @@ class MyApp extends StatelessWidget {
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey, width: 0.8),
                 )),
-            primaryColor: bgColor,
+            primaryColor: white,
             scaffoldBackgroundColor: bgColor,
-            appBarTheme: const AppBarTheme(
-                color: Colors.transparent,
+            appBarTheme: AppBarTheme(
+                color: bgColor,
                 elevation: 0,
                 iconTheme: IconThemeData(color: Colors.black)),
             elevatedButtonTheme: ElevatedButtonThemeData(

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../constants/constants.dart';
 
@@ -83,7 +84,7 @@ class PickUpRequest extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
-              itemCount: images.isNotEmpty ? images.length : 4,
+              itemCount: images.isNotEmpty ? images.length : 3,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 if (images.isNotEmpty && index < images.length) {
@@ -91,17 +92,33 @@ class PickUpRequest extends StatelessWidget {
                     padding: EdgeInsets.only(left: 20.r),
                     child: Align(
                       widthFactor: 0.7,
-                      child: CircleAvatar(
-                        radius: 70.r,
-                        backgroundColor: green,
-                        child: ClipOval(
-                          child: Image.network(
-                            images[index],
-                            width: 130.w,
-                            height: 130.h,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      child: Image.network(
+                        images[index],
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            // Image is fully loaded
+                            return CircleAvatar(
+                              radius: 70.r,
+                              backgroundColor: green,
+                              child: ClipOval(
+                                  child: Image.network(
+                                images[index],
+                                width: 130.w,
+                                height: 130.h,
+                                fit: BoxFit.cover,
+                              )),
+                            );
+                          } else {
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: CircleAvatar(
+                                radius: 70.r,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   );
@@ -128,6 +145,88 @@ class PickUpRequest extends StatelessWidget {
               },
             ),
           ),
+
+          // Expanded(
+          //   child: ListView.builder(
+          //     physics: const BouncingScrollPhysics(),
+          //     itemCount: images.isNotEmpty ? images.length : 3,
+          //     scrollDirection: Axis.horizontal,
+          //     itemBuilder: (context, index) {
+          //       if (images.isNotEmpty && index < images.length) {
+          //         return Container(
+          //           padding: EdgeInsets.only(left: 20.r),
+          //           child: Align(
+          //             widthFactor: 0.7,
+          //             child: CircleAvatar(
+          //               radius: 70.r,
+          //               backgroundColor: green,
+          //               child: ClipOval(
+          //                 child: Image.network(
+          //                   images[index],
+          //                   width: 130.w,
+          //                   height: 130.h,
+          //                   fit: BoxFit.cover,
+          //                   loadingBuilder: (BuildContext context, Widget child,
+          //                       ImageChunkEvent? loadingProgress) {
+          //                     if (loadingProgress == null) {
+          //                       // Image is fully loaded
+          //                       return CircleAvatar(
+          //                         radius: 70.r,
+          //                         backgroundColor: green,
+          //                         child: ClipOval(
+          //                             child:Image.network(
+          //                               images[index],
+          //                               width: 130.w, height: 130.h,
+          //                               fit:BoxFit.cover,
+          //                             )
+          //                         ),
+          //                       );
+          //                     } else {
+          //                       // Image is still loading, show shimmer effect or loading indicator
+          //                       return Shimmer.fromColors(
+          //                           baseColor: Colors.grey[300]!,
+          //                           highlightColor: Colors.grey[100]!,
+          //                           child: CircleAvatar(
+          //                             radius: 70.r,
+          //                           )); // Replace ShimmerEffect with your shimmer widget
+          //                     }
+          //                   },
+          //                 ),
+          //
+          //                 // child: images[index] != null
+          //                 //     ? Image.network(
+          //                 //         images[index],
+          //                 //         width: 130.w,
+          //                 //         height: 130.h,
+          //                 //         fit: BoxFit.cover,
+          //                 //       )
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       } else {
+          //         return Container(
+          //           padding: EdgeInsets.only(left: 20.r),
+          //           child: Align(
+          //             widthFactor: 0.7,
+          //             child: CircleAvatar(
+          //               radius: 70.r,
+          //               backgroundColor: green,
+          //               child: CircleAvatar(
+          //                 radius: 65.r,
+          //                 backgroundColor: bgColor,
+          //                 child: Image.asset(
+          //                   "lib/assets/icons/food.png",
+          //                   height: 60.h,
+          //                 ),
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       }
+          //     },
+          //   ),
+          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -174,7 +273,7 @@ class PickUpRequest extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 135.w,
+                width: 125.w,
                 child: OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(backgroundColor: bgColor),
@@ -198,7 +297,7 @@ class PickUpRequest extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 135.w,
+                width: 125.w,
                 child: OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(backgroundColor: green),

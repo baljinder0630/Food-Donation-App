@@ -22,6 +22,65 @@ class _DonationRequestState extends State<DonationRequest> {
   var selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
 
+  Widget categoryWidget() {
+    return Container(
+      margin: EdgeInsets.only(left: 24.w),
+      alignment: Alignment.centerLeft,
+      height: 43.h,
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedCategory = index;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10.r),
+                  decoration: ShapeDecoration(
+                    color: index == selectedCategory
+                        ? Color(0xFF5272FC)
+                        : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Text(
+                    categories[index],
+                    style: TextStyle(
+                      color: index == selectedCategory
+                          ? const Color(0xFFF9F8FD)
+                          : const Color(0xFF201F24),
+                      fontSize: 18.sp,
+                      fontFamily: 'Outfit',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.72.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.sp),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +129,14 @@ class _DonationRequestState extends State<DonationRequest> {
               // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
               rightWidget: Padding(
                 padding: EdgeInsets.only(
-                    right: 16.0), // Adjust the left padding as needed
+                    right: 16.0.r), // Adjust the left padding as needed
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.local_shipping),
+                    icon: const Icon(Icons.local_shipping),
                     onPressed: () {
                       context.pushRoute(const DonationTrackingPageRoute());
                     },
