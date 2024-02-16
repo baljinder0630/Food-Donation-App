@@ -47,6 +47,7 @@ import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i19;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i17;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i24;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i25;
+import 'package:food_donation_app/Pages/Donationland/landdonation.dart' as _i31;
 
 abstract class $AppRouter extends _i27.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -178,7 +179,12 @@ abstract class $AppRouter extends _i27.RootStackRouter {
     PickUpRequestRoute.name: (routeData) {
       return _i27.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i19.PickUpRequest(),
+        child: const _i19.PickUpRequest(
+          foodName: '',
+          postedTime: '',
+          foodCategory: [],
+          address: '',
+        ),
       );
     },
     PostArticleRoute.name: (routeData) {
@@ -227,6 +233,12 @@ abstract class $AppRouter extends _i27.RootStackRouter {
       return _i27.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i26.SuccessPage(),
+      );
+    },
+    landDonationRoute.name: (routeData) {
+      return _i27.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i31.landDonation(),
       );
     },
   };
@@ -708,6 +720,18 @@ class SuccessPageRoute extends _i27.PageRouteInfo<void> {
         );
 
   static const String name = 'SuccessPageRoute';
+
+  static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
+}
+
+class landDonationRoute extends _i27.PageRouteInfo<void> {
+  const landDonationRoute({List<_i27.PageRouteInfo>? children})
+      : super(
+          SuccessPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'landDonationRoute';
 
   static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
 }

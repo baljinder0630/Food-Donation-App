@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-class raisemodel {
+class Raisemodel {
   final String id;
   final String ngoName;
   final String requestType;
@@ -11,7 +11,7 @@ class raisemodel {
   final String district;
   final String pincode;
 
-  raisemodel({
+  Raisemodel({
     required this.id,
     required this.ngoName,
     required this.requestType,
@@ -23,8 +23,8 @@ class raisemodel {
     required this.pincode,
   });
 
-  factory raisemodel.fromMap(Map<String, dynamic> json) {
-    return raisemodel(
+  factory Raisemodel.fromMap(Map<String, dynamic> json) {
+    return Raisemodel(
       id: json['id'] ?? Uuid().v4(), // Generate a new id if not provided
       ngoName: json['ngoName'] ?? '',
       requestType: json['requestType'] ?? '',
@@ -49,5 +49,28 @@ class raisemodel {
       'district': district,
       'pincode': pincode,
     };
+  }
+  Raisemodel copyWith({
+    String? id,
+    String? ngoName,
+    String? requestType,
+    String? mobileNumber,
+    String? plotNo,
+    String? streetNo,
+    String? landmark,
+    String? district,
+    String? pincode,
+  }) {
+    return Raisemodel(
+      id: id ?? this.id,
+      ngoName: ngoName ?? this.ngoName,
+      requestType: requestType ?? this.requestType,
+      mobileNumber: mobileNumber ?? this.mobileNumber,
+      plotNo: plotNo ?? this.plotNo,
+      streetNo: streetNo ?? this.streetNo,
+      landmark: landmark ?? this.landmark,
+      district: district ?? this.district,
+      pincode: pincode ?? this.pincode,
+    );
   }
 }

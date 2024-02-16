@@ -6,16 +6,41 @@ import '../constants/constants.dart';
 
 @RoutePage()
 class PickUpRequest extends StatelessWidget {
-  const PickUpRequest({super.key});
+  final String foodName;
+  final String postedTime;
+  final List<dynamic> foodCategory;
+  final String address;
+
+  const PickUpRequest(
+      {required this.foodName,
+      required this.postedTime,
+      required this.foodCategory,
+      required this.address,
+      super.key});
+
+  List<String> getImagesList() {
+    List<String> images = [];
+    for (var item in foodCategory) {
+      if (item is Map<String, dynamic> && item.containsKey('imageURL')) {
+        if (item['imageURL'] != null) {
+          images.add(item['imageURL']);
+        }
+      }
+    }
+    return images;
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<String> images = getImagesList();
     return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: purple3, borderRadius: BorderRadius.circular(12.r)),
+        color: white,
+        borderRadius: BorderRadius.circular(30.r),
+      ),
+      padding: EdgeInsets.all(10.r),
+      margin: EdgeInsets.all(10.r),
+      alignment: Alignment.center,
       height: 400.h,
       width: 300.w,
       child: Column(
@@ -23,15 +48,15 @@ class PickUpRequest extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.all(10),
-            child: const Row(
+            padding: EdgeInsets.all(10.r),
+            child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    "Idlii Sambhar & Vada, 3kg",
+                    foodName,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                        color: black,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                         overflow: TextOverflow.ellipsis),
                   ),
@@ -40,15 +65,15 @@ class PickUpRequest extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: const Row(
+            padding: EdgeInsets.symmetric(horizontal: 10.r),
+            child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    "Cooked 4 hrs Ago.",
+                    "Cooked ${postedTime} Ago.",
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
+                        color: black,
+                        fontSize: 17.sp,
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),
@@ -57,48 +82,71 @@ class PickUpRequest extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
+              physics: const BouncingScrollPhysics(),
+              itemCount: images.isNotEmpty ? images.length : 4,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                if (images.isNotEmpty && index < images.length) {
                   return Container(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20.r),
                     child: Align(
                       widthFactor: 0.7,
                       child: CircleAvatar(
-                        radius: 65.r,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                            radius: 60.r,
-                            backgroundColor: purple1,
-                            child: Image.asset(
-                              "lib/assets/icons/food.png",
-                              height: 60.h,
-                            )),
+                        radius: 70.r,
+                        backgroundColor: green,
+                        child: ClipOval(
+                          child: Image.network(
+                            images[index],
+                            width: 130.w,
+                            height: 130.h,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   );
-                }),
+                } else {
+                  return Container(
+                    padding: EdgeInsets.only(left: 20.r),
+                    child: Align(
+                      widthFactor: 0.7,
+                      child: CircleAvatar(
+                        radius: 70.r,
+                        backgroundColor: green,
+                        child: CircleAvatar(
+                          radius: 65.r,
+                          backgroundColor: bgColor,
+                          child: Image.asset(
+                            "lib/assets/icons/food.png",
+                            height: 60.h,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                padding: EdgeInsets.symmetric(horizontal: 6.r),
                 width: 330.w,
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.place,
-                      color: Colors.white,
+                      color: red1,
                     ),
                     Expanded(
                       child: Text(
-                        "Meerut.",
+                        address,
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: Colors.white,
-                            fontSize: 17,
+                            color: red1,
+                            fontSize: 17.sp,
                             overflow: TextOverflow.ellipsis),
                       ),
                     ),
@@ -108,16 +156,15 @@ class PickUpRequest extends StatelessWidget {
               ),
               Container(
                 width: 330.w,
-                padding: const EdgeInsets.only(
-                    top: 8, bottom: 8, left: 11, right: 8),
-                child: const Expanded(
-                  child: Text(
-                    "2 km away(approx).",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white,
-                        fontSize: 17,
-                        overflow: TextOverflow.ellipsis),
+                padding: EdgeInsets.only(
+                    top: 8.r, bottom: 8.r, left: 11.r, right: 8.r),
+                child: Text(
+                  "2 km away(approx).",
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: black,
+                    fontSize: 17.sp,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
@@ -130,18 +177,18 @@ class PickUpRequest extends StatelessWidget {
                 width: 135.w,
                 child: OutlinedButton(
                   onPressed: () {},
-                  style: OutlinedButton.styleFrom(backgroundColor: null),
-                  child: const SizedBox(
-                    width: 230,
+                  style: OutlinedButton.styleFrom(backgroundColor: bgColor),
+                  child: SizedBox(
+                    width: 230.w,
                     child: Center(
                       child: Text(
                         "Accept",
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
+                          fontFamily: textFont,
                           fontStyle: FontStyle.italic,
-                          decorationColor: Colors.white,
+                          decorationColor: green,
                           decorationThickness: 2,
-                          color: Colors.white,
+                          color: green,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -154,19 +201,18 @@ class PickUpRequest extends StatelessWidget {
                 width: 135.w,
                 child: OutlinedButton(
                   onPressed: () {},
-                  style: OutlinedButton.styleFrom(backgroundColor: null),
-                  child: const SizedBox(
-                    width: 230,
+                  style: OutlinedButton.styleFrom(backgroundColor: green),
+                  child: SizedBox(
+                    width: 230.w,
                     child: Center(
                       child: Text(
                         "Reject",
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
                           fontStyle: FontStyle.italic,
-                          decorationColor: Colors.white,
+                          decorationColor: white,
                           decorationThickness: 2,
-                          color: Colors.white,
-                          fontSize: 14,
+                          color: white,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

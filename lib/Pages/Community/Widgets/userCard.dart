@@ -153,7 +153,8 @@ class _UserCardState extends ConsumerState<UserCard> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 9.50.w, vertical: 7.60.h),
                         decoration: ShapeDecoration(
-                          color: Color(0xFF5272FC),
+                          color: Color(Colors.grey.value),
+                          // color: Color(0xFF5272FC),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9.50.r),
                           ),

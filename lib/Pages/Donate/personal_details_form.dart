@@ -1,22 +1,29 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/button.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_phone_no_field.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
+import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-
+import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shimmer/shimmer.dart';
 @RoutePage()
-class PersonalDetails extends StatefulWidget {
+class PersonalDetails extends ConsumerStatefulWidget {
   const PersonalDetails({super.key});
 
   @override
-  State<PersonalDetails> createState() => _PersonalDetailsState();
+  ConsumerState<PersonalDetails> createState() => _PersonalDetailsState();
 }
 
-class _PersonalDetailsState extends State<PersonalDetails> {
+
+
+class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController plotNoController = TextEditingController();
@@ -39,7 +46,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                   Container(
                     height: 250.h,
                     width: MediaQuery.of(context).size.width * 0.6,
-                    // child: Image.asset('images/personal_details.png'),
                     child: const Center(child: Text("Space for some image")),
                   ),
                   Subheading(text: 'Fill Personal Details'),
@@ -166,6 +172,15 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         CustomButton(
                             text: 'Next',
                             onPressed: () {
+                              ref
+                                  .read(donationRequestProvider.notifier)
+                                  .updatePersonalDetails(
+                                      nameController.text,
+                                      phoneController.text,
+                                      plotNoController.text,
+                                      streetController.text,
+                                      districtController.text,
+                                      pincodeController.text);
                               context.pushRoute(const FoodCategoryFormRoute());
                             })
                       ],
