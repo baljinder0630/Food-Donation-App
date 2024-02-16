@@ -9,10 +9,8 @@ import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
 import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 @RoutePage()
 class PersonalDetails extends ConsumerStatefulWidget {
   const PersonalDetails({super.key});
@@ -172,6 +170,24 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                         CustomButton(
                             text: 'Next',
                             onPressed: () {
+                              if (nameController.text.trim().isEmpty ||
+                                  phoneController.text.trim().isEmpty ||
+                                  plotNoController.text.trim().isEmpty ||
+                                  streetController.text.trim().isEmpty ||
+                                  districtController.text.trim().isEmpty ||
+                                  pincodeController.text.trim().isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: "Please fill all fields before proceeding.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                                return;
+                              }
+                              else{
                               ref
                                   .read(donationRequestProvider.notifier)
                                   .updatePersonalDetails(
@@ -181,8 +197,14 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                                       streetController.text,
                                       districtController.text,
                                       pincodeController.text);
+                              nameController.text = "";
+                              phoneController.text = "";
+                              plotNoController.text = "";
+                              streetController.text = "";
+                              districtController.text = "";
+                              pincodeController.text = "";
                               context.pushRoute(const FoodCategoryFormRoute());
-                            })
+                            }})
                       ],
                     ),
                   ),

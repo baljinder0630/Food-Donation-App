@@ -93,9 +93,12 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
-          page: landDonationRoute.page,
+          page: ChattingPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-        
-       ];
+        CustomRoute(
+          page: IncomingRequestRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+      ];
 }

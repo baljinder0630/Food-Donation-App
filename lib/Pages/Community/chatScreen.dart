@@ -5,14 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/Community/ChatRoom.model.dart';
 import 'package:food_donation_app/Models/Community/Chatting.model.dart';
 import 'package:food_donation_app/Models/User.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
-import 'package:pinput/pinput.dart';
 
 @RoutePage()
 class ChatScreen extends ConsumerStatefulWidget {
@@ -34,6 +32,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     String currentUserUid = ref.watch(authStateProvider).user!.uid;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         leadingWidth: 100.w,
@@ -51,24 +50,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               CircleAvatar(
                 backgroundColor: Colors.black,
                 radius: 16.r,
-                child: Image.network(
-                  TargetUserImage,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Center(
-                      child: Text(
-                        nameProfile(TargetUserName),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                          letterSpacing: 0.96.sp,
+                child: ClipOval(
+                  child: Image.network(
+                    TargetUserImage,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Center(
+                        child: Text(
+                          nameProfile(TargetUserName),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                            letterSpacing: 0.96.sp,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
               SizedBox(
@@ -151,11 +152,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                               : CrossAxisAlignment.start,
                                       children: [
                                         Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w),
                                             decoration: BoxDecoration(
                                                 color: (chattingModel.sender ==
                                                         currentUserUid)
                                                     ? const Color(0xFF6A4DFF)
-                                                    : const Color(0xFFF2F3F4),
+                                                    : const Color(0xFFF2F4F5),
                                                 borderRadius: (chattingModel.sender ==
                                                         currentUserUid)
                                                     ? BorderRadius.only(
@@ -171,16 +174,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                                         topRight:
                                                             BorderRadius.circular(20.r)
                                                                 .topRight,
-                                                        bottomLeft:
-                                                            BorderRadius.circular(20.r).bottomLeft,
+                                                        bottomLeft: BorderRadius.circular(20.r).bottomLeft,
                                                         bottomRight: BorderRadius.circular(20.r).bottomRight)),
                                             child: TextButton(
                                               onPressed: () {},
                                               child: Text(
                                                   chattingModel.lastmessage
                                                       .toString(),
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
+                                                  style: TextStyle(
+                                                    color:
+                                                        (chattingModel.sender ==
+                                                                currentUserUid)
+                                                            ? Colors.white
+                                                            : Colors.black,
                                                   )),
                                             )),
                                         Padding(
@@ -229,7 +235,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
                           controller: msgcontroller,
                           maxLines: null,
                           keyboardType: TextInputType.multiline,

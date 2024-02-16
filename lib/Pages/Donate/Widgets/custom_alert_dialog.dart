@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/actionbutton.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DonationConfirmationDialog extends StatelessWidget {
   int? index;
@@ -73,12 +74,9 @@ class DonationConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final picker = ImagePicker();
 
-    return AlertDialog(
-      title: Text(
-        'Donate $category?',
-        style: const TextStyle(fontSize: 20.0),
-      ),
-      content: Column(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           CustomTextFormField(
@@ -124,6 +122,11 @@ class DonationConfirmationDialog extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage:  FileImage(File(imageController.text))
+                  ),
+                  const Spacer(),
                   Container(
                     width: 60,
                     height: 60,
@@ -146,32 +149,55 @@ class DonationConfirmationDialog extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          )
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ActionButton(
+                    text: 'Cancel',
+                    onPressed: () {
+                      foodController.text = "";
+                      quantityController.text = "";
+                      imageController.text = "";
+                      Navigator.of(context).pop();
+                    },
+                  ),
+
+                  ActionButton(
+                    text: 'Donate',
+                    onPressed: () {
+                      File img = File(imageController.text);
+                      String foodType = foodController.text;
+                      String quantity = quantityController.text;
+                      if(imageController.text.trim().isEmpty||foodType.trim().isEmpty||quantity.trim().isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please fill all fields before proceeding.",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                        return;
+                      }
+                      updateFoodCategory(
+                        foodController.text,
+                        quantityController.text,
+                        img,
+                        ref,
+                      );
+                      foodController.text = "";
+                      quantityController.text = "";
+                      imageController.text = "";
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
         ],
-      ),
-      actions: <Widget>[
-        ActionButton(
-            text: 'Cancel',
-            onPressed: () {
-              foodController.text = "";
-              quantityController.text = "";
-              imageController.text = "";
-              Navigator.of(context).pop();
-            }),
-        ActionButton(
-          text: 'Donate',
-          onPressed: () {
-            File img = File(imageController.text);
-            updateFoodCategory(
-                foodController.text, quantityController.text, img, ref);
-            foodController.text = "";
-            quantityController.text = "";
-            imageController.text = "";
-            Navigator.of(context).pop();
-          },
-        )
-      ],
-    );
+      ),]));
+
   }
 }
+
