@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,21 +7,31 @@ import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../HomePages/pickupRequest.dart';
+import '../constants/constants.dart';
 import '../homePage.dart';
 import 'YourDonationRequest.dart';
 
 @RoutePage()
-class DonationRequest extends StatefulWidget {
-  const DonationRequest({super.key});
+class PickupRequestPage extends StatefulWidget {
+  const PickupRequestPage({super.key});
 
   @override
-  State<DonationRequest> createState() => _DonationRequestState();
+  State<PickupRequestPage> createState() => _PickupRequestPageState();
 }
 
-class _DonationRequestState extends State<DonationRequest> {
+class _PickupRequestPageState extends State<PickupRequestPage> {
   var selectedCategory = 0;
-  List<String> categories = ["All", "Food Request", "Fund Request"];
+  List<String> categories = [
+    "All",
+    "Fruits & Veggies",
+    "Bread & Bakery",
+    "Dairy Products",
+    "Drinks & Beverages",
+    "Packed Items"
+  ];
 
   Widget categoryWidget() {
     return Container(
@@ -28,7 +39,7 @@ class _DonationRequestState extends State<DonationRequest> {
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -43,9 +54,7 @@ class _DonationRequestState extends State<DonationRequest> {
                 child: Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: ShapeDecoration(
-                    color: index == selectedCategory
-                        ? Color(0xFF5272FC)
-                        : Colors.white,
+                    color: index == selectedCategory ? green : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
@@ -97,46 +106,38 @@ class _DonationRequestState extends State<DonationRequest> {
           ],
         ),
         child: FloatingActionButton(
-          backgroundColor: Color(0xffFEFEFE),
-          shape: OvalBorder(),
+          backgroundColor: const Color(0xffFEFEFE),
+          shape: const OvalBorder(),
           onPressed: () {
-            context.pushRoute(const RaiseRequestRoute());
+            context.pushRoute(const PersonalDetailsRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
+          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              child: const Text(
-                "Donation Request",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis),
-              ),
-            ),
+            SizedBox(height: 5.h),
             MyAppBar(
               centerWidget: Padding(
                 padding: EdgeInsets.only(left: 57.w),
-                child: MySearchBar(title: "Donation Request"),
+                child: GestureDetector(
+                  onTap: () {
+                    context.pushRoute(const ProfileSearchPageRoute());
+                  },
+                  child: MySearchBar(title: "Pickup Requests"),
+                ),
               ),
-              // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
               rightWidget: Padding(
-                padding: EdgeInsets.only(
-                    right: 16.0.r), // Adjust the left padding as needed
+                padding: EdgeInsets.only(right: 16.0.r),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: white,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.local_shipping),
+                    icon: const Icon(Icons.browse_gallery_outlined),
                     onPressed: () {
                       context.pushRoute(const DonationTrackingPageRoute());
                     },
@@ -152,61 +153,75 @@ class _DonationRequestState extends State<DonationRequest> {
               height: 20.h,
             ),
 
+            // Here ends the AppBar and filters...
+
             StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('ngorequests')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
+              stream:
+                  FirebaseFirestore.instance.collection('requests').snapshots(),
+              builder: (context, snapshot) {
+                List<PickUpRequest> donationRequestWidgets = [];
+                if (snapshot.hasData) {
+                  final donationRequests =
+                      snapshot.data?.docs.reversed.toList();
+                  for (var donationRequest in donationRequests!) {
+                    final address = donationRequest['plotNo'] +
+                        ", " +
+                        donationRequest['streetController'] +
+                        ", " +
+                        donationRequest['districtController'] +
+                        ", " +
+                        donationRequest['pincodeController'];
+                    final createdTime = donationRequest['postedTime'];
+                    final cookedBefore = getCookedTime(createdTime);
+                    final donationRequestWidget = PickUpRequest(
+                      snapshot: snapshot,
+                      foodName: donationRequest['name'],
+                      address: address,
+                      postedTime: cookedBefore,
+                      foodCategory: donationRequest['foodCategory'],
+                    );
+
+                    donationRequestWidgets.add(donationRequestWidget);
+                  }
                 }
-                List<DocumentSnapshot> documents = snapshot.data!.docs;
                 return Expanded(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      final document = documents[index];
-                      return DonationRequestCard(
-                        spotName: document['name'],
-                        spotCity: document['city'],
-                        noOfServing: document['numberOfServings'],
-                        requestType: document['requestType'],
-                        percentDone: document['percentageRemaining'],
-                        spotStreet: document['streetName'],
-                        contactNumber: document['percentageRemaining'],
-                        description: document['description'],
-                        pincode: document['pinCode'],
-                        spotState: document['state'],
-                      );
-                    },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10.r),
+                    height: 400.h,
+                    child: ListView.builder(
+                        itemCount: donationRequestWidgets.length,
+                        itemBuilder: (context, index) {
+                          return donationRequestWidgets[index];
+                        }),
                   ),
-                ));
+                );
               },
             ),
-
-            // categoryWidget(),
-            //   Expanded(
-            //     child: Container(
-            //       padding: EdgeInsets.symmetric(vertical: 10),
-            //       height: 500,
-            //       child: ListView.builder(
-            //           itemCount: 5,
-            //           itemBuilder: (context, index) {
-            //           //   return DonationRequestCard();
-            //           // }),
-            //     ),
-            //   ),
           ],
         ),
       ),
     );
+  }
+}
+
+String getCookedTime(Timestamp creationTimestamp) {
+  if (creationTimestamp == null) {
+    return "-";
+  }
+
+  DateTime creationTime = creationTimestamp.toDate();
+
+  DateTime currentTime = DateTime.now();
+
+  Duration difference = currentTime.difference(creationTime);
+
+  if (difference.inDays > 0) {
+    return '${difference.inDays} days';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours} hours';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} minutes';
+  } else {
+    return '${difference.inSeconds} seconds';
   }
 }

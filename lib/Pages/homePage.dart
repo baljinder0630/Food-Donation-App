@@ -1,16 +1,19 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:shimmer/shimmer.dart';
 import '../Router/route.gr.dart';
+import 'Community/Widgets/myAppBar.dart';
+import 'Community/Widgets/searchBar.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
 
@@ -23,14 +26,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var selectedCategory = 0;
+  int selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
-  final List postId = [
-    '11',
-    '12',
-    '13',
-    '14',
-  ];
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -40,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       CameraPosition(target: LatLng(33.6844, 73.0479), zoom: 14);
 
   final List<Marker> _markers = <Marker>[
-    Marker(
+    const Marker(
         markerId: MarkerId("1"),
         position: LatLng(33.4322, 73.2232),
         infoWindow: InfoWindow(
@@ -53,9 +50,9 @@ class _HomePageState extends State<HomePage> {
       print("${value.latitude} ${value.longitude}");
 
       _markers.add(Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position: LatLng(value.latitude, value.longitude),
-          infoWindow: InfoWindow(title: "My Current Location")));
+          infoWindow: const InfoWindow(title: "My Current Location")));
 
       CameraPosition cameraPosition = CameraPosition(
         zoom: 14,
@@ -111,11 +108,107 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String userName = "User";
+  String profilePic = "";
+
+  void setData() {
+    if (user.displayName != null) {
+      userName = user.displayName!;
+    } else {
+      userName = "User";
+    }
+
+    if (user.photoURL != null) {
+      profilePic = user.photoURL!;
+
+      if (kDebugMode) {
+        print(
+            "Inside the setData function: printing user PhotoURL ${user.photoURL!}");
+      }
+      if (kDebugMode) {
+        print(
+            "Inside the setData function: printing user PhotoURL $profilePic");
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setData();
     getLocation();
+  }
+
+  Widget categoryWidget() {
+    return Container(
+      margin: EdgeInsets.only(left: 24.w),
+      alignment: Alignment.centerLeft,
+      height: 43.h,
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedCategory = index;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10.r),
+                  decoration: ShapeDecoration(
+                    color: index == selectedCategory ? green : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x3F000000),
+                        blurRadius: 8,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Text(
+                    categories[index],
+                    style: TextStyle(
+                      color: index == selectedCategory
+                          ? const Color(0xFFF9F8FD)
+                          : const Color(0xFF201F24),
+                      fontSize: 18.sp,
+                      fontFamily: 'Outfit',
+                      fontWeight: FontWeight.w500,
+                      height: 0,
+                      letterSpacing: 0.72.sp,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.sp),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  String generateUniqueIdentifier() {
+    // Get current timestamp in milliseconds
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    // Generate random number
+    int randomNumber =
+        Random().nextInt(1000000); // Adjust upper bound as needed
+
+    // Concatenate timestamp and random number to create unique identifier
+    String uniqueIdentifier = '$timestamp$randomNumber';
+
+    return uniqueIdentifier;
   }
 
   @override
@@ -134,7 +227,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         child: FloatingActionButton(
-          heroTag: "cameraPreviewButton",
+          heroTag: generateUniqueIdentifier(),
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {
@@ -144,14 +237,59 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
-      // appBar: AppBar(title: Text('Dashboard')),
+
+      // PERFECT...Floating action button to add donation requests...
+
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-              floating: true,
-              expandedHeight: 100.h,
-              title: Center(child: Text("H O M E P A G E"))),
+            expandedHeight: 200,
+            backgroundColor: bgColor,
+            surfaceTintColor: bgColor,
+            stretch: true,
+            floating: true,
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return FlexibleSpaceBar(
+                  background: Column(
+                    children: [
+                      SizedBox(
+                        height: 50.h,
+                      ),
+                      MyAppBar(
+                        centerWidget: Padding(
+                          padding: EdgeInsets.only(left: 57.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              context.pushRoute(const ProfileSearchPageRoute());
+                            },
+                            child: MySearchBar(title: "Hunger Spots"),
+                          ),
+                        ),
+                        rightWidget: Padding(
+                          padding: EdgeInsets.only(left: 8.0.r),
+                          child: Image.asset(
+                            "lib/assets/Community/peoples.png",
+                            width: 106.w,
+                            height: 126.h,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      categoryWidget(),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // App bar is looking fine... Just add the functionality of search and filters.
+
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -162,7 +300,7 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
-                        child: user.photoURL == null
+                        child: profilePic == ""
                             ? CircleAvatar(
                                 radius: 40.r,
                                 backgroundColor: bgColor,
@@ -175,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                                 backgroundColor: bgColor,
                                 child: ClipOval(
                                   child: Image.network(
-                                    user.photoURL!,
+                                    profilePic,
                                     // "https://i.pinimg.com/originals/16/5a/a3/165aa3c87d2cae578f91d28b3691b402.jpg",
                                     width: 80.w,
                                     height: 80.h,
@@ -196,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(children: [
                               Expanded(
                                 child: Text(
-                                  "Hello, " + user.displayName!,
+                                  "Hello, $userName",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20.sp,
@@ -267,9 +405,6 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(15.r),
                   width: double.infinity,
                   height: 70.h,
-                  decoration: BoxDecoration(
-                      // color: purple1,
-                      borderRadius: BorderRadius.circular(15.r)),
                   child: Text(
                     "Explore",
                     style:
@@ -278,100 +413,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 //Explore Ends here.
 
-                // Container(
-                //   margin: const EdgeInsets.symmetric(horizontal: 10),
-                //   padding: const EdgeInsets.symmetric(vertical: 10),
-                //   child: mainOptions(context),
-                // ),
-                // Here 4 widgets are done.
-
-                // Container(
-                //   margin: EdgeInsets.symmetric(horizontal: 10.r),
-                //   padding: EdgeInsets.all(10.r),
-                //   height: 100.h,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text(
-                //         "Nearby hunger spots you can serve in ",
-                //         style: TextStyle(
-                //             color: black,
-                //             fontSize: 18.sp,
-                //             overflow: TextOverflow.ellipsis),
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           SizedBox(
-                //             width: 20.w,
-                //             child: Icon(Icons.place, color: red1),
-                //           ),
-                //           Expanded(
-                //             child: Container(
-                //               padding: EdgeInsets.symmetric(horizontal: 8.0.r),
-                //               child: Text(
-                //                 "Gulbai Tekra, Navrangpura.Navrangpura",
-                //                 style: TextStyle(
-                //                   color: red1,
-                //                   fontStyle: FontStyle.italic,
-                //                   fontSize: 17.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                   overflow: TextOverflow.ellipsis,
-                //                 ),
-                //                 maxLines: 1, // Set the maximum number of lines
-                //               ),
-                //             ),
-                //           ),
-                //           //  Location is displayed, from here you can change the location. and get recommendation accordingly.
-                //
-                //           SizedBox(
-                //             width: 120.w,
-                //             height: 30.h,
-                //             child: OutlinedButton(
-                //               onPressed: () {
-                //                 context.pushRoute(const DonationRequestRoute());
-                //               },
-                //               style: OutlinedButton.styleFrom(
-                //                   backgroundColor: null),
-                //               child: Text(
-                //                 "View All",
-                //                 style: TextStyle(
-                //                   decoration: TextDecoration.underline,
-                //                   fontStyle: FontStyle.italic,
-                //                   decorationColor: red1,
-                //                   decorationThickness: 2,
-                //                   color: red1,
-                //                   fontSize: 14.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Here hungerSpot text with view All button ends..
-
-                // SizedBox(
-                //   height: 380.h,
-                //   child: ListView.builder(
-                //       physics: const BouncingScrollPhysics(),
-                //       itemCount: postId.length,
-                //       scrollDirection: Axis.horizontal,
-                //       itemBuilder: (context, index) {
-                //         return HungerSpot(child: postId[index]);
-                //       }),
-                // ),
-
-                // Here HungerSpots cards ends.
-
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
                   padding: EdgeInsets.all(10.r),
-                  height: 90.h,
+                  height: 100.h,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,7 +457,10 @@ class _HomePageState extends State<HomePage> {
                             width: 120.w,
                             height: 30.h,
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context
+                                    .pushRoute(const PickupRequestPageRoute());
+                              },
                               style: OutlinedButton.styleFrom(
                                   backgroundColor: null),
                               child: Text(
@@ -441,82 +489,83 @@ class _HomePageState extends State<HomePage> {
                       .collection('requests')
                       .snapshots(),
                   builder: (context, snapshot) {
-                    List<PickUpRequest> donationRequestWidgets = [];
-                    if (snapshot.hasData) {
-                      final donationRequests =
-                          snapshot.data?.docs.reversed.toList();
-                      for (var donationRequest in donationRequests!) {
-                        final donationRequestWidget = PickUpRequest(
-                          foodName: donationRequest['name'],
-                          address: donationRequest['pincodeController'],
-                          foodCategory: donationRequest['foodCategory'],
-                          postedTime: '3',
-                        );
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Return shimmer loading animation while waiting for data
+                      return CarouselSlider(
+                        items: [
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 300.w,
+                              height: 400.h,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        options: CarouselOptions(
+                            height: 400.sp,
+                            disableCenter: true,
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.7,
+                            initialPage: 2,
+                            scrollPhysics: const NeverScrollableScrollPhysics(),
+                            enlargeFactor: 0.4),
+                      );
+                    } else {
+                      // Data has been loaded, build the carousel
+                      List<PickUpRequest> donationRequestWidgets = [];
+                      if (snapshot.hasData) {
+                        final donationRequests =
+                            snapshot.data?.docs.reversed.toList();
+                        for (var donationRequest in donationRequests!) {
+                          final address = donationRequest['plotNo'] +
+                              ", " +
+                              donationRequest['streetController'] +
+                              ", " +
+                              donationRequest['districtController'] +
+                              ", " +
+                              donationRequest['pincodeController'];
+                          final createdTime = donationRequest['postedTime'];
+                          final cookedBefore = getCookedTime(createdTime);
+                          final donationRequestWidget = PickUpRequest(
+                            snapshot: snapshot,
+                            foodName: donationRequest['name'],
+                            address: address,
+                            postedTime: cookedBefore,
+                            foodCategory: donationRequest['foodCategory'],
+                          );
 
-                        donationRequestWidgets.add(donationRequestWidget);
+                          donationRequestWidgets.add(donationRequestWidget);
+                        }
                       }
+                      return CarouselSlider.builder(
+                        itemCount: donationRequestWidgets.length,
+                        itemBuilder: (BuildContext context, int itemIndex,
+                                int pageViewIndex) =>
+                            Container(
+                          child: donationRequestWidgets[itemIndex],
+                        ),
+                        options: CarouselOptions(
+                            height: 400.h,
+                            disableCenter: true,
+                            autoPlay: false,
+                            // Remove this feature after updating the fetching method.
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.7,
+                            initialPage: 2,
+                            enlargeFactor: 0.4),
+                      );
                     }
-                    return CarouselSlider.builder(
-                      itemCount: donationRequestWidgets.length,
-                      itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
-                          Container(
-                        child: donationRequestWidgets[itemIndex],
-                      ),
-                      options: CarouselOptions(
-                        height: 400.h,
-                        aspectRatio: 16 / 9,
-                        viewportFraction: 0.8,
-                        initialPage: 0,
-                        enableInfiniteScroll: true,
-                        reverse: false,
-                        autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: true,
-                        enlargeFactor: 0.3,
-                        scrollDirection: Axis.horizontal,
-                      ),
-                    );
                   },
                 ),
 
-                // CarouselSlider.builder(
-                //   itemCount: 15,
-                //   itemBuilder: (BuildContext context, int itemIndex,
-                //           int pageViewIndex) =>
-                //       Container(
-                //     child: PickUpRequest(),
-                //   ),
-                //   options: CarouselOptions(
-                //     height: 400.h,
-                //     aspectRatio: 16 / 9,
-                //     viewportFraction: 0.8,
-                //     initialPage: 0,
-                //     enableInfiniteScroll: true,
-                //     reverse: false,
-                //     autoPlay: true,
-                //     autoPlayInterval: Duration(seconds: 3),
-                //     autoPlayAnimationDuration: Duration(milliseconds: 800),
-                //     autoPlayCurve: Curves.fastOutSlowIn,
-                //     enlargeCenterPage: true,
-                //     enlargeFactor: 0.3,
-                //     scrollDirection: Axis.horizontal,
-                //   ),
-                // ),
-
-                // Container(
-                //   color: bgColor,
-                //   height: 450.h,
-                //   child: ListView.builder(
-                //       physics: const BouncingScrollPhysics(),
-                //       itemCount: postId.length,
-                //       scrollDirection: Axis.horizontal,
-                //       itemBuilder: (context, index) {
-                //         return const PickUpRequest();
-                //       }),
-                // ),
+                // Here Slider for pickup requests ends...
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
@@ -590,189 +639,119 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return DonationRequestCard();
-              },
-              childCount: 12,
-            ),
+
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('ngorequests')
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              List<DocumentSnapshot> documents = snapshot.data!.docs;
+              return documents.isNotEmpty
+                  ? SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          final document = documents[index];
+                          final reqType = document['requestType'];
+
+                          if (selectedCategory == 1 && reqType) {
+                            return DonationRequestCard(
+                              spotName: document['name'],
+                              spotCity: document['city'],
+                              noOfServing: document['numberOfServings'],
+                              requestType: document['requestType'],
+                              percentDone: document['percentageRemaining'],
+                              spotStreet: document['streetName'],
+                              contactNumber: document['percentageRemaining'],
+                              description: document['description'],
+                              pincode: document['pinCode'],
+                              spotState: document['state'],
+                            );
+                          } else if (selectedCategory == 2 && !reqType) {
+                            return DonationRequestCard(
+                              spotName: document['name'],
+                              spotCity: document['city'],
+                              noOfServing: document['numberOfServings'],
+                              requestType: document['requestType'],
+                              percentDone: document['percentageRemaining'],
+                              spotStreet: document['streetName'],
+                              contactNumber: document['percentageRemaining'],
+                              description: document['description'],
+                              pincode: document['pinCode'],
+                              spotState: document['state'],
+                            );
+                          } else {
+                            return DonationRequestCard(
+                              spotName: document['name'],
+                              spotCity: document['city'],
+                              noOfServing: document['numberOfServings'],
+                              requestType: document['requestType'],
+                              percentDone: document['percentageRemaining'],
+                              spotStreet: document['streetName'],
+                              contactNumber: document['percentageRemaining'],
+                              description: document['description'],
+                              pincode: document['pinCode'],
+                              spotState: document['state'],
+                            );
+                          }
+                        },
+                        childCount: documents.length,
+                      ),
+                    )
+                  : SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 50.h,
+                        child: Center(
+                          child: Text(
+                            "No more HungerSpots",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.56.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+
+              //   Here the hungerSpot cards ends...
+            },
           ),
         ],
       ),
     );
   }
-}
 
-Widget mainOptions(BuildContext context) {
-  final List<Map<String, String>> gridMap = [
-    {
-      'title': "Donate",
-      'description': "1,11+ Requests",
-      'image': "lib/assets/images/exploreImages/donate.png",
-      'action': '/donate',
-    },
-    {
-      'title': "Articles",
-      'description': "know the consequences and tips",
-      'image': "lib/assets/images/exploreImages/articles.png",
-      'action': '/articles',
-    },
-    {
-      'title': "Community",
-      'description': "connect with people and seek help",
-      'image': "lib/assets/images/exploreImages/community.png",
-      'action': '/community',
-    },
-    {
-      'title': "Volunteer",
-      'description': "support with donation",
-      'image': "lib/assets/images/exploreImages/volunteer.png",
-      'action': '/volunteer',
+  String getCookedTime(Timestamp creationTimestamp) {
+    if (creationTimestamp == null) {
+      return "-";
     }
-  ];
-  return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: 4,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-      itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-              color: white, borderRadius: BorderRadius.circular(12.0)),
-          height: 200.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Center(
-                      child: Text(
-                        "${gridMap.elementAt(index)['title']}",
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8, right: 8),
-                    child: Text(
-                      "${gridMap.elementAt(index)['description']}",
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                    child: Image.asset("${gridMap.elementAt(index)['image']}",
-                        height: 70.h,
-                        width: double.infinity,
-                        fit: BoxFit.cover),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      });
-}
 
-Widget filterCard(BuildContext context) {
-  final List<String> filters = [
-    "All",
-    "Food Request",
-    "Fund Request",
-    "Food Request",
-    "Fund Request"
-  ];
-  return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: filters.length,
-    itemBuilder: (context, index) {
-      return Container(
-          // width: 30,
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.lightGreen),
-          child: Center(
-            child: Text("${filters[index]}"),
-          ));
-    },
-  );
-}
+    DateTime creationTime = creationTimestamp.toDate();
 
-Widget categoryWidget() {
-  var selectedCategory = 0;
-  List<String> categories = ["All", "Food Request", "Fund Request"];
-  return Container(
-    alignment: Alignment.centerLeft,
-    height: 43.h,
-    child: ListView.builder(
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                // setState(() {
-                //   selectedCategory = index;
-                // });
-              },
-              child: Container(
-                padding: EdgeInsets.all(10.r),
-                decoration: ShapeDecoration(
-                  color: index == selectedCategory
-                      ? Color(0xFF5272FC)
-                      : Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                  shadows: const [
-                    BoxShadow(
-                      color: Color(0x3F000000),
-                      blurRadius: 8,
-                      offset: Offset(0, 0),
-                      spreadRadius: 0,
-                    )
-                  ],
-                ),
-                child: Text(
-                  categories[index],
-                  style: TextStyle(
-                    color: index == selectedCategory
-                        ? const Color(0xFFF9F8FD)
-                        : const Color(0xFF201F24),
-                    fontSize: 18.sp,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w500,
-                    height: 0,
-                    letterSpacing: 0.72.sp,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 16.sp),
-          ],
-        );
-      },
-    ),
-  );
+    DateTime currentTime = DateTime.now();
+
+    Duration difference = currentTime.difference(creationTime);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays} days';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes';
+    } else {
+      return '${difference.inSeconds} seconds';
+    }
+  }
 }
+// Here ends the Home Page...

@@ -7,7 +7,36 @@ import '../../Router/route.gr.dart';
 import '../constants/constants.dart';
 
 class DonationRequestCard extends StatelessWidget {
-  const DonationRequestCard({super.key});
+  final String spotName;
+  final bool requestType;
+  final String noOfServing;
+  final String spotCity;
+  final String contactNumber;
+  final String description;
+  final String percentDone;
+  final String pincode;
+  final String spotState;
+  final String spotStreet;
+
+  const DonationRequestCard(
+      {super.key,
+      required this.spotName,
+      required this.spotCity,
+      required this.noOfServing,
+      required this.requestType,
+      required this.percentDone,
+      required this.contactNumber,
+      required this.description,
+      required this.pincode,
+      required this.spotState,
+      required this.spotStreet});
+
+  String getReq() {
+    if (requestType == true) {
+      return "Food Donation";
+    }
+    return "Fund Donation";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +80,7 @@ class DonationRequestCard extends StatelessWidget {
                     Container(
                       child: Expanded(
                         child: Text(
-                          "Feeding India  Feeding India Feeding India",
+                          spotName,
                           style: TextStyle(
                             color: black,
                             fontSize: 20.sp,
@@ -90,7 +119,7 @@ class DonationRequestCard extends StatelessWidget {
                                     ),
                                     Expanded(
                                         child: Text(
-                                      "Food Donation",
+                                      getReq(),
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 15.sp,
@@ -113,7 +142,7 @@ class DonationRequestCard extends StatelessWidget {
                                     ),
                                     Expanded(
                                         child: Text(
-                                      "600 People",
+                                      "${noOfServing} People",
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 15.sp,
@@ -140,7 +169,7 @@ class DonationRequestCard extends StatelessWidget {
                                     ),
                                     Expanded(
                                         child: Text(
-                                      "Karam Foundation",
+                                      spotStreet,
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 15.sp,
@@ -182,7 +211,7 @@ class DonationRequestCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 10.r),
                       child: Column(
                         children: [
-                          getPercent(),
+                          getPercent(percentDone, noOfServing),
                         ],
                       ),
                     ),
@@ -253,11 +282,13 @@ class DonationRequestCard extends StatelessWidget {
   }
 }
 
-Widget getPercent() {
+Widget getPercent(String percentRem, String noOfServings) {
+  double percentDone = 0.4;
+  // double.parse(percentRem) / double.parse(noOfServings) - 1.0;
   return Center(
     child: CircularPercentIndicator(
       radius: 35.r,
-      percent: 0.4,
+      percent: percentDone,
       progressColor: green,
       lineWidth: 5.r,
       backgroundColor: bgColor,
