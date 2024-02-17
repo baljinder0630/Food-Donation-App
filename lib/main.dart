@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey, width: 0.8),
                 )),
-            primaryColor: bgColor,
+            primaryColor: white,
             scaffoldBackgroundColor: bgColor,
             appBarTheme: const AppBarTheme(
                 color: Colors.transparent,

@@ -45,6 +45,7 @@ dependencies:
   intl_phone_field: ^3.1.0
   persistent_bottom_nav_bar: ^5.0.2
   camera: any
+  url_launcher: ^6.2.4
   image_picker: any
   pinput: any
   #  flutter_stripe: any
