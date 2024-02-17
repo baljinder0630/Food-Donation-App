@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       CameraPosition(target: LatLng(33.6844, 73.0479), zoom: 14);
 
   final List<Marker> _markers = <Marker>[
-    Marker(
+    const Marker(
         markerId: MarkerId("1"),
         position: LatLng(33.4322, 73.2232),
         infoWindow: InfoWindow(
@@ -49,9 +50,9 @@ class _HomePageState extends State<HomePage> {
       print("${value.latitude} ${value.longitude}");
 
       _markers.add(Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position: LatLng(value.latitude, value.longitude),
-          infoWindow: InfoWindow(title: "My Current Location")));
+          infoWindow: const InfoWindow(title: "My Current Location")));
 
       CameraPosition cameraPosition = CameraPosition(
         zoom: 14,
@@ -120,14 +121,15 @@ class _HomePageState extends State<HomePage> {
     if (user.photoURL != null) {
       profilePic = user.photoURL!;
 
-      print(
-          "Inside the setData function: printing user PhotoURL ${user.photoURL!}");
-      print(
-          "Inside the setData function: printing user PhotoURL ${profilePic}");
+      if (kDebugMode) {
+        print(
+            "Inside the setData function: printing user PhotoURL ${user.photoURL!}");
+      }
+      if (kDebugMode) {
+        print(
+            "Inside the setData function: printing user PhotoURL $profilePic");
+      }
     }
-
-    // print(
-    //     "Outside the setData function: printing user PhotoURL ${user.photoURL!}");
   }
 
   @override
@@ -258,7 +260,12 @@ class _HomePageState extends State<HomePage> {
                       MyAppBar(
                         centerWidget: Padding(
                           padding: EdgeInsets.only(left: 57.w),
-                          child: MySearchBar(title: "Hunger Spots"),
+                          child: GestureDetector(
+                            onTap: () {
+                              context.pushRoute(const ProfileSearchPageRoute());
+                            },
+                            child: MySearchBar(title: "Hunger Spots"),
+                          ),
                         ),
                         rightWidget: Padding(
                           padding: EdgeInsets.only(left: 8.0.r),
@@ -327,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(children: [
                               Expanded(
                                 child: Text(
-                                  "Hello, " + userName,
+                                  "Hello, $userName",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20.sp,
@@ -517,11 +524,21 @@ class _HomePageState extends State<HomePage> {
                         final donationRequests =
                             snapshot.data?.docs.reversed.toList();
                         for (var donationRequest in donationRequests!) {
+                          final address = donationRequest['plotNo'] +
+                              ", " +
+                              donationRequest['streetController'] +
+                              ", " +
+                              donationRequest['districtController'] +
+                              ", " +
+                              donationRequest['pincodeController'];
+                          final createdTime = donationRequest['postedTime'];
+                          final cookedBefore = getCookedTime(createdTime);
                           final donationRequestWidget = PickUpRequest(
+                            snapshot: snapshot,
                             foodName: donationRequest['name'],
-                            address: donationRequest['pincodeController'],
+                            address: address,
+                            postedTime: cookedBefore,
                             foodCategory: donationRequest['foodCategory'],
-                            postedTime: '3',
                           );
 
                           donationRequestWidgets.add(donationRequestWidget);
@@ -622,15 +639,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          //  SliverToBoxAdapter(
-          //     child: Container(
-          //       decoration: BoxDecoration(color: Colors.purple),
-          //       height: 50.h,
-          //       child: Text("heyy"),
-          //     ),
-          //   ),
-
-          // selectedCategory == 0 ?
 
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -698,100 +706,52 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   : SliverToBoxAdapter(
-                      child: Container(
+                      child: SizedBox(
                         height: 50.h,
-                        padding: EdgeInsets.all(10.r),
-                        child: Center(child: Text("No more hungerspots")),
+                        child: Center(
+                          child: Text(
+                            "No more HungerSpots",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontFamily: 'Outfit',
+                              fontWeight: FontWeight.w500,
+                              height: 0,
+                              letterSpacing: 0.56.sp,
+                            ),
+                          ),
+                        ),
                       ),
                     );
+
+              //   Here the hungerSpot cards ends...
             },
           ),
         ],
       ),
     );
   }
-}
 
-Widget filterCard(BuildContext context) {
-  final List<String> filters = [
-    "All",
-    "Food Request",
-    "Fund Request",
-    "Food Request",
-    "Fund Request"
-  ];
-  return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: filters.length,
-    itemBuilder: (context, index) {
-      return Container(
-          // width: 30,
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.lightGreen),
-          child: Center(
-            child: Text("${filters[index]}"),
-          ));
-    },
-  );
-}
+  String getCookedTime(Timestamp creationTimestamp) {
+    if (creationTimestamp == null) {
+      return "-";
+    }
 
-// Widget categoryWidget() {
-//   var selectedCategory = 0;
-//   List<String> categories = ["All", "Food Request", "Fund Request"];
-//   return Container(
-//     alignment: Alignment.centerLeft,
-//     height: 45.h,
-//     child: ListView.builder(
-//       physics: const BouncingScrollPhysics(),
-//       scrollDirection: Axis.horizontal,
-//       itemCount: categories.length,
-//       itemBuilder: (context, index) {
-//         return Row(
-//           children: [
-//             GestureDetector(
-//               onTap: () {
-//                 // setState(() {
-//                 //   selectedCategory = index;
-//                 // });
-//               },
-//               child: Container(
-//                 padding: EdgeInsets.all(10.r),
-//                 decoration: ShapeDecoration(
-//                   color: index == selectedCategory ? green : Colors.white,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(15.r),
-//                   ),
-//                   shadows: const [
-//                     BoxShadow(
-//                       color: Color(0x3F000000),
-//                       blurRadius: 8,
-//                       offset: Offset(0, 0),
-//                       spreadRadius: 0,
-//                     )
-//                   ],
-//                 ),
-//                 child: Text(
-//                   categories[index],
-//                   style: TextStyle(
-//                     color: index == selectedCategory
-//                         ? const Color(0xFFF9F8FD)
-//                         : const Color(0xFF201F24),
-//                     fontSize: 18.sp,
-//                     fontFamily: 'Outfit',
-//                     fontWeight: FontWeight.w500,
-//                     height: 0,
-//                     letterSpacing: 0.72.sp,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(width: 16.sp),
-//           ],
-//         );
-//       },
-//     ),
-//   );
-// }
+    DateTime creationTime = creationTimestamp.toDate();
+
+    DateTime currentTime = DateTime.now();
+
+    Duration difference = currentTime.difference(creationTime);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays} days';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hours';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minutes';
+    } else {
+      return '${difference.inSeconds} seconds';
+    }
+  }
+}
+// Here ends the Home Page...

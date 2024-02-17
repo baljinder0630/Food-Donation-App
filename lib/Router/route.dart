@@ -47,6 +47,10 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: AcceptPickupRequestPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
           page: PickupRequestPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
@@ -97,5 +101,5 @@ class AppRouter extends $AppRouter {
           page: ProfileSearchPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-       ];
+      ];
 }

@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i27;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart' as _i29;
 import 'package:food_donation_app/bottomNavBar.dart' as _i1;
 import 'package:food_donation_app/Models/Community/Post.model.dart' as _i28;
@@ -49,6 +50,8 @@ import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i24;
 import 'package:food_donation_app/Pages/SplashScreen/splashScreen.dart' as _i25;
 import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart'
     as _i31;
+import 'package:food_donation_app/Pages/DonationRequest/acceptPickupRequest.dart'
+    as _i32;
 
 abstract class $AppRouter extends _i27.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -129,6 +132,12 @@ abstract class $AppRouter extends _i27.RootStackRouter {
         child: const _i11.DonationDescription(),
       );
     },
+    AcceptPickupRequestPageRoute.name: (routeData) {
+      return _i27.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i32.AcceptPickupRequestPage(),
+      );
+    },
     PickupRequestPageRoute.name: (routeData) {
       return _i27.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -191,6 +200,7 @@ abstract class $AppRouter extends _i27.RootStackRouter {
           postedTime: '',
           foodCategory: [],
           address: '',
+          snapshot: null,
         ),
       );
     },
@@ -321,6 +331,21 @@ class ArticleSearchPageRoute extends _i27.PageRouteInfo<void> {
         );
 
   static const String name = 'ArticleSearchPageRoute';
+
+  static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i32.AcceptPickupRequestPage]
+class AcceptPickupRequestPageRoute extends _i27.PageRouteInfo<void> {
+  const AcceptPickupRequestPageRoute({
+    List<_i27.PageRouteInfo>? children,
+  }) : super(
+          AcceptPickupRequestPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AcceptPickupRequestPageRoute';
 
   static const _i27.PageInfo<void> page = _i27.PageInfo<void>(name);
 }

@@ -10,6 +10,7 @@ import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../HomePages/pickupRequest.dart';
+import '../constants/constants.dart';
 import '../homePage.dart';
 import 'YourDonationRequest.dart';
 
@@ -23,7 +24,14 @@ class PickupRequestPage extends StatefulWidget {
 
 class _PickupRequestPageState extends State<PickupRequestPage> {
   var selectedCategory = 0;
-  List<String> categories = ["AllPIXKUPSFDJI", "Food Request", "Fund Request"];
+  List<String> categories = [
+    "All",
+    "Fruits & Veggies",
+    "Bread & Bakery",
+    "Dairy Products",
+    "Drinks & Beverages",
+    "Packed Items"
+  ];
 
   Widget categoryWidget() {
     return Container(
@@ -31,7 +39,7 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -46,9 +54,7 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                 child: Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: ShapeDecoration(
-                    color: index == selectedCategory
-                        ? Color(0xFF5272FC)
-                        : Colors.white,
+                    color: index == selectedCategory ? green : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
@@ -100,46 +106,38 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
           ],
         ),
         child: FloatingActionButton(
-          backgroundColor: Color(0xffFEFEFE),
-          shape: OvalBorder(),
+          backgroundColor: const Color(0xffFEFEFE),
+          shape: const OvalBorder(),
           onPressed: () {
-            context.pushRoute(const RaiseRequestRoute());
+            context.pushRoute(const PersonalDetailsRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
+          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              child: const Text(
-                "PickUp Request",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis),
-              ),
-            ),
+            SizedBox(height: 5.h),
             MyAppBar(
               centerWidget: Padding(
                 padding: EdgeInsets.only(left: 57.w),
-                child: MySearchBar(title: "Pickup Request"),
+                child: GestureDetector(
+                  onTap: () {
+                    context.pushRoute(const ProfileSearchPageRoute());
+                  },
+                  child: MySearchBar(title: "Pickup Requests"),
+                ),
               ),
-              // static const IconData local_shipping = IconData(0xe3a6, fontFamily: 'MaterialIcons'),
               rightWidget: Padding(
-                padding: EdgeInsets.only(
-                    right: 16.0), // Adjust the left padding as needed
+                padding: EdgeInsets.only(right: 16.0.r),
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: white,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.local_shipping),
+                    icon: const Icon(Icons.browse_gallery_outlined),
                     onPressed: () {
                       context.pushRoute(const DonationTrackingPageRoute());
                     },
@@ -154,23 +152,8 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
             SizedBox(
               height: 20.h,
             ),
-            // categoryWidget(),
-            //   Expanded(
-            //     child: Container(
-            //       padding: EdgeInsets.symmetric(vertical: 10),
-            //       height: 500,
-            //       child: ListView.builder(
-            //           itemCount: 5,
-            //           itemBuilder: (context, index) {
-            //           //   return DonationRequestCard(
-            //           //     spotName: null,
-            //           //     spotCity: null,
-            //           //     noOfServing: null,
-            //           //     requestType: null,
-            //           //   );
-            //           // }),
-            //     ),
-            //   ),
+
+            // Here ends the AppBar and filters...
 
             StreamBuilder<QuerySnapshot>(
               stream:
@@ -181,11 +164,21 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                   final donationRequests =
                       snapshot.data?.docs.reversed.toList();
                   for (var donationRequest in donationRequests!) {
+                    final address = donationRequest['plotNo'] +
+                        ", " +
+                        donationRequest['streetController'] +
+                        ", " +
+                        donationRequest['districtController'] +
+                        ", " +
+                        donationRequest['pincodeController'];
+                    final createdTime = donationRequest['postedTime'];
+                    final cookedBefore = getCookedTime(createdTime);
                     final donationRequestWidget = PickUpRequest(
+                      snapshot: snapshot,
                       foodName: donationRequest['name'],
-                      address: donationRequest['pincodeController'],
+                      address: address,
+                      postedTime: cookedBefore,
                       foodCategory: donationRequest['foodCategory'],
-                      postedTime: '3',
                     );
 
                     donationRequestWidgets.add(donationRequestWidget);
@@ -193,8 +186,8 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                 }
                 return Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    height: 500,
+                    padding: EdgeInsets.symmetric(vertical: 10.r),
+                    height: 400.h,
                     child: ListView.builder(
                         itemCount: donationRequestWidgets.length,
                         itemBuilder: (context, index) {
@@ -208,5 +201,27 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
         ),
       ),
     );
+  }
+}
+
+String getCookedTime(Timestamp creationTimestamp) {
+  if (creationTimestamp == null) {
+    return "-";
+  }
+
+  DateTime creationTime = creationTimestamp.toDate();
+
+  DateTime currentTime = DateTime.now();
+
+  Duration difference = currentTime.difference(creationTime);
+
+  if (difference.inDays > 0) {
+    return '${difference.inDays} days';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours} hours';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} minutes';
+  } else {
+    return '${difference.inSeconds} seconds';
   }
 }

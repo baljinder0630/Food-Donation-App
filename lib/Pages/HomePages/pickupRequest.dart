@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../Router/route.gr.dart';
 import '../constants/constants.dart';
 
 @RoutePage()
@@ -11,12 +13,14 @@ class PickUpRequest extends StatelessWidget {
   final String postedTime;
   final List<dynamic> foodCategory;
   final String address;
+  final AsyncSnapshot<QuerySnapshot<Object?>>? snapshot;
 
   const PickUpRequest(
       {required this.foodName,
       required this.postedTime,
       required this.foodCategory,
       required this.address,
+      required this.snapshot,
       super.key});
 
   List<String> getImagesList() {
@@ -102,12 +106,25 @@ class PickUpRequest extends StatelessWidget {
                               radius: 70.r,
                               backgroundColor: green,
                               child: ClipOval(
-                                  child: Image.network(
-                                images[index],
-                                width: 130.w,
-                                height: 130.h,
-                                fit: BoxFit.cover,
-                              )),
+                                child: Image.network(
+                                  images[index],
+                                  errorBuilder: (BuildContext context,
+                                      Object error, StackTrace? stackTrace) {
+                                    print('Error loading image: $error');
+                                    return CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      // Placeholder color
+                                      child: Icon(
+                                        Icons.error,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  width: 130.w,
+                                  height: 130.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             );
                           } else {
                             return Shimmer.fromColors(
@@ -275,7 +292,9 @@ class PickUpRequest extends StatelessWidget {
               SizedBox(
                 width: 125.w,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushRoute(AcceptPickupRequestPageRoute());
+                  },
                   style: OutlinedButton.styleFrom(backgroundColor: bgColor),
                   child: SizedBox(
                     width: 230.w,
