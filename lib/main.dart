@@ -16,19 +16,22 @@ Future<void> _messageHandler(RemoteMessage message) async {
 }
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
+  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(ProviderScope(child: MyApp())));
 }
 
 class MyApp extends StatelessWidget {
-
   MyApp({super.key});
 
   final _appRouter = AppRouter();

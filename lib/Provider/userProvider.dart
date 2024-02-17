@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/User.model.dart';
@@ -22,12 +23,13 @@ class UserAuth extends StateNotifier<AuthState> {
                 totalConnects: 0),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
+            messaging: FirebaseMessaging.instance,
           ),
         ) {
     checkAuthentication();
   }
 
-  checkAuthentication() {
+  checkAuthentication() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         state = state.copyWith(
@@ -62,6 +64,15 @@ class UserAuth extends StateNotifier<AuthState> {
           log("User is signed in!");
         });
       }
+    });
+    state.messaging!.requestPermission();
+    await state.messaging!.getToken().then((value) async {
+      log("Token fetched");
+      if (FirebaseAuth.instance.currentUser == null) return;
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({"token": value});
     });
   }
 
@@ -197,22 +208,26 @@ class AuthState {
   UserModel? user;
   AuthStatus? authStatus;
   AppStatus? appStatus;
+  FirebaseMessaging? messaging;
 
   AuthState({
     this.user,
     this.authStatus,
     this.appStatus,
+    this.messaging,
   });
 
   AuthState copyWith({
     UserModel? user,
     AuthStatus? authStatus,
     AppStatus? appStatus,
+    FirebaseMessaging? messaging,
   }) {
     return AuthState(
       user: user ?? this.user,
       authStatus: authStatus ?? this.authStatus,
       appStatus: appStatus ?? this.appStatus,
+      messaging: messaging ?? this.messaging,
     );
   }
 }

@@ -58,9 +58,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       return Center(
                         child: Text(
                           nameProfile(TargetUserName),
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20.sp,
+                            fontSize: 15.sp,
                             fontFamily: 'Outfit',
                             fontWeight: FontWeight.w400,
                             height: 0,
