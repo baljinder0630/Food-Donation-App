@@ -7,6 +7,7 @@ import 'package:food_donation_app/Models/Community/ChatRoom.model.dart';
 import 'package:food_donation_app/Models/Community/Chatting.model.dart';
 import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_donation_app/Models/Community/connections.dart';
 import 'package:food_donation_app/Models/User.model.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:uuid/uuid.dart';
@@ -42,6 +43,7 @@ class Community extends StateNotifier<CommunityState> {
           suggestionLoading: PostStatus.initial,
           lastRcmdDocument: null,
           lastRecentDocument: null,
+          connections: [],
         )) {
     loadUserChatRoom();
     getMyPosts();
@@ -437,20 +439,19 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
-  getPeoples(int from) async {
-    try {
-      final snapshot = await firestore
-          .collection("users")
-          .where("uid", isNotEqualTo: ref.watch(authStateProvider).user!.uid)
-          .get();
-      final people = snapshot.docs.map((value) {
-        return UserModel.fromMap(value.data());
-      }).toList();
-      log("Peoples loaded" + people.length.toString());
-      state = state.copyWith(users: people);
-    } catch (e) {
-      print(e);
-    }
+  Stream<Object?>? getPeoples(int from) {
+    return firestore
+        .collection("users")
+        .where("uid", isNotEqualTo: ref.read(authStateProvider).user!.uid)
+        .snapshots();
+  }
+
+  Stream<Object?>? getConnectedPeoples(int from) {
+    return firestore
+        .collection("users")
+        .doc(ref.watch(authStateProvider).user!.uid)
+        .collection("connections")
+        .snapshots();
   }
 
   getChatRoom(targetUid) {
@@ -666,17 +667,108 @@ class Community extends StateNotifier<CommunityState> {
     }
   }
 
+  getConnections() async {
+    try {
+      await firestore
+          .collection("users")
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .collection("connections")
+          .get()
+          .then((value) {
+        if (value.docs.isNotEmpty) {
+          List<Connections> connections = value.docs
+              .map((e) => Connections.fromMap(e.data() as Map<String, dynamic>))
+              .toList();
+          state = state.copyWith(connections: connections);
+          connections.forEach((element) {
+            log(element.toMap().toString());
+          });
+        }
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  getConnectionStatus(String targetUserId) async {
+    if (await firestore
+        .collection("users")
+        .doc(ref.watch(authStateProvider).user!.uid)
+        .collection("connections")
+        .doc(targetUserId)
+        .get()
+        .then((value) {
+      if (value.data() == null) return false;
+      Connections connections =
+          Connections.fromMap(value.data() as Map<String, dynamic>);
+      return connections.status == ConnectionStatus.accepted;
+    })) {
+      return ConnectionStatus.accepted;
+    }
+
+    if (await firestore
+        .collection("users")
+        .doc(ref.watch(authStateProvider).user!.uid)
+        .collection("outgoingRequests")
+        .doc(targetUserId)
+        .get()
+        .then((value) {
+      if (value.data() == null) return false;
+      Connections connections =
+          Connections.fromMap(value.data() as Map<String, dynamic>);
+      return connections.status == ConnectionStatus.pending;
+    })) {
+      return ConnectionStatus.pending;
+    }
+
+    return ConnectionStatus.initial;
+  }
+
   sendConnectionReq(targetUserId) async {
     try {
-      await firestore.collection("connections").doc(targetUserId).set(
-        {
-          "connections":
-              FieldValue.arrayUnion([ref.watch(authStateProvider).user!.uid])
-        },
-        SetOptions(merge: true),
-      );
+      if (state.connections != [] &&
+          state.connections!.any((element) => element.userId == targetUserId)) {
+        log("Connection already exist");
+        return;
+      }
+
+      if (await firestore
+          .collection("users")
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .collection("connections")
+          .doc(targetUserId)
+          .get()
+          .then((value) => value.data() != null)) {
+        log("User already connected");
+        return;
+      }
+
+      await firestore
+          .collection("users")
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .collection("outgoingRequests")
+          .doc(targetUserId)
+          .set(
+            Connections(userId: targetUserId, status: ConnectionStatus.pending)
+                .toMap(),
+            SetOptions(merge: true),
+          );
+      await firestore
+          .collection("users")
+          .doc(targetUserId)
+          .collection("incomingRequests")
+          .doc(ref.watch(authStateProvider).user!.uid)
+          .set(
+            Connections(
+                    userId: ref.watch(authStateProvider).user!.uid,
+                    status: ConnectionStatus.pending)
+                .toMap(),
+            SetOptions(merge: true),
+          );
+
+      log("Connection request sent");
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -712,76 +804,77 @@ class CommunityState {
   DocumentSnapshot? lastRcmdDocument;
   DocumentSnapshot? lastRecentDocument;
   UploadArticleStatus? uploadArticleStatus;
+  List<Connections>? connections;
 
-  CommunityState({
-    this.posts,
-    this.recentPosts,
-    this.myPosts,
-    this.bookMarkedPosts,
-    this.featuredPosts,
-    this.userChatRoom,
-    this.users,
-    this.userSearchSuggestion,
-    this.chattingUsers,
-    this.allUsersChatRoom,
-    this.suggestionLoading,
-    this.currentChatRoomUid = "",
-    this.articleSearchSuggestions,
-    this.rcmdPostStatus,
-    this.recentPostStatus,
-    this.nextRcmdPostLoading,
-    this.nextRecentPostLoading,
-    this.featuredPostStatus,
-    this.uploadArticleStatus,
-    this.lastRecentDocument,
-    this.lastRcmdDocument,
-  });
+  CommunityState(
+      {this.posts,
+      this.recentPosts,
+      this.myPosts,
+      this.bookMarkedPosts,
+      this.featuredPosts,
+      this.userChatRoom,
+      this.users,
+      this.userSearchSuggestion,
+      this.chattingUsers,
+      this.allUsersChatRoom,
+      this.suggestionLoading,
+      this.currentChatRoomUid = "",
+      this.articleSearchSuggestions,
+      this.rcmdPostStatus,
+      this.recentPostStatus,
+      this.nextRcmdPostLoading,
+      this.nextRecentPostLoading,
+      this.featuredPostStatus,
+      this.uploadArticleStatus,
+      this.lastRecentDocument,
+      this.lastRcmdDocument,
+      this.connections});
 
-  CommunityState copyWith({
-    List<PostModel>? posts,
-    List<PostModel>? myPosts,
-    List<PostModel>? recentPosts,
-    List<PostModel>? bookMarkedPosts,
-    List<PostModel>? featuredPosts,
-    List<PostModel>? articleSearchSuggestions,
-    List<UserModel>? users,
-    List<UserModel>? userSearchSuggestion,
-    List<UserModel>? chattingUsers,
-    List<Chatroommodel>? userChatRoom,
-    String? currentChatRoomUid,
-    PostStatus? featuredPostStatus,
-    PostStatus? recentPostStatus,
-    PostStatus? rcmdPostStatus,
-    PostStatus? nextRcmdPostLoading,
-    PostStatus? nextRecentPostLoading,
-    PostStatus? suggestionLoading,
-    UploadArticleStatus? uploadArticleStatus,
-    DocumentSnapshot? lastRcmdDocument,
-    DocumentSnapshot? lastRecentDocument,
-  }) {
+  CommunityState copyWith(
+      {List<PostModel>? posts,
+      List<PostModel>? myPosts,
+      List<PostModel>? recentPosts,
+      List<PostModel>? bookMarkedPosts,
+      List<PostModel>? featuredPosts,
+      List<PostModel>? articleSearchSuggestions,
+      List<UserModel>? users,
+      List<UserModel>? userSearchSuggestion,
+      List<UserModel>? chattingUsers,
+      List<Chatroommodel>? userChatRoom,
+      String? currentChatRoomUid,
+      PostStatus? featuredPostStatus,
+      PostStatus? recentPostStatus,
+      PostStatus? rcmdPostStatus,
+      PostStatus? nextRcmdPostLoading,
+      PostStatus? nextRecentPostLoading,
+      PostStatus? suggestionLoading,
+      UploadArticleStatus? uploadArticleStatus,
+      DocumentSnapshot? lastRcmdDocument,
+      DocumentSnapshot? lastRecentDocument,
+      List<Connections>? connections}) {
     return CommunityState(
-      posts: posts ?? this.posts,
-      myPosts: myPosts ?? this.myPosts,
-      bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
-      featuredPosts: featuredPosts ?? this.featuredPosts,
-      users: users ?? this.users,
-      userSearchSuggestion: userSearchSuggestion ?? this.userSearchSuggestion,
-      chattingUsers: chattingUsers ?? this.chattingUsers,
-      recentPosts: recentPosts ?? this.recentPosts,
-      userChatRoom: userChatRoom ?? this.userChatRoom,
-      currentChatRoomUid: currentChatRoomUid ?? this.currentChatRoomUid,
-      articleSearchSuggestions: articleSearchSuggestions ?? [],
-      rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
-      featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
-      recentPostStatus: recentPostStatus ?? this.recentPostStatus,
-      uploadArticleStatus: uploadArticleStatus ?? this.uploadArticleStatus,
-      lastRcmdDocument: lastRcmdDocument ?? this.lastRcmdDocument,
-      lastRecentDocument: lastRecentDocument ?? this.lastRecentDocument,
-      nextRcmdPostLoading: nextRcmdPostLoading ?? this.nextRcmdPostLoading,
-      suggestionLoading: suggestionLoading ?? this.suggestionLoading,
-      nextRecentPostLoading:
-          nextRecentPostLoading ?? this.nextRecentPostLoading,
-    );
+        posts: posts ?? this.posts,
+        myPosts: myPosts ?? this.myPosts,
+        bookMarkedPosts: bookMarkedPosts ?? this.bookMarkedPosts,
+        featuredPosts: featuredPosts ?? this.featuredPosts,
+        users: users ?? this.users,
+        userSearchSuggestion: userSearchSuggestion ?? this.userSearchSuggestion,
+        chattingUsers: chattingUsers ?? this.chattingUsers,
+        recentPosts: recentPosts ?? this.recentPosts,
+        userChatRoom: userChatRoom ?? this.userChatRoom,
+        currentChatRoomUid: currentChatRoomUid ?? this.currentChatRoomUid,
+        articleSearchSuggestions: articleSearchSuggestions ?? [],
+        rcmdPostStatus: rcmdPostStatus ?? this.rcmdPostStatus,
+        featuredPostStatus: featuredPostStatus ?? this.featuredPostStatus,
+        recentPostStatus: recentPostStatus ?? this.recentPostStatus,
+        uploadArticleStatus: uploadArticleStatus ?? this.uploadArticleStatus,
+        lastRcmdDocument: lastRcmdDocument ?? this.lastRcmdDocument,
+        lastRecentDocument: lastRecentDocument ?? this.lastRecentDocument,
+        nextRcmdPostLoading: nextRcmdPostLoading ?? this.nextRcmdPostLoading,
+        suggestionLoading: suggestionLoading ?? this.suggestionLoading,
+        nextRecentPostLoading:
+            nextRecentPostLoading ?? this.nextRecentPostLoading,
+        connections: connections ?? this.connections);
   }
 }
 

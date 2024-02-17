@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/actionbutton.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DonationEditDialog extends StatelessWidget {
   final int index;
@@ -73,14 +74,15 @@ class DonationEditDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final picker = ImagePicker();
 
-    return AlertDialog(
-      title: const Text(
-        'Edit Food Details',
-        style: TextStyle(fontSize: 20.0),
-      ),
-      content: Column(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const Text(
+            'Edit Food Details',
+            style: TextStyle(fontSize: 20.0),
+          ),
           CustomTextFormField(
               hintText: 'Food Type', controller: foodController),
           SizedBox(height: 10.0),
@@ -146,32 +148,51 @@ class DonationEditDialog extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+
+                    ActionButton(
+                        text: 'Cancel',
+                        onPressed: () {
+                          foodController.text = "";
+                          quantityController.text = "";
+                          imageController.text = "";
+                          Navigator.of(context).pop();
+                        }),
+                    ActionButton(
+                      text: 'Donate',
+                      onPressed: () {
+                        File img = File(imageController.text);
+                        String foodType = foodController.text;
+                        String quantity = quantityController.text;
+                        if(imageController.text.trim().isEmpty||foodType.trim().isEmpty||quantity.trim().isEmpty){
+                          Fluttertoast.showToast(
+                              msg: "Please fill all fields before proceeding.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          return;
+                        }
+                        editFoodCategory(
+                            index, foodController.text, quantityController.text, img, ref);
+                        foodController.text = "";
+                        quantityController.text = "";
+                        imageController.text = "";
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                ],
+              )
             ],
           )
         ],
       ),
-      actions: <Widget>[
-        ActionButton(
-            text: 'Cancel',
-            onPressed: () {
-              foodController.text = "";
-              quantityController.text = "";
-              imageController.text = "";
-              Navigator.of(context).pop();
-            }),
-        ActionButton(
-          text: 'Donate',
-          onPressed: () {
-            File img = File(imageController.text);
-            editFoodCategory(
-                index, foodController.text, quantityController.text, img, ref);
-            foodController.text = "";
-            quantityController.text = "";
-            imageController.text = "";
-            Navigator.of(context).pop();
-          },
-        )
-      ],
     );
   }
 }

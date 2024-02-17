@@ -9,9 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/Community/allChats.dart';
-import 'package:food_donation_app/Pages/Community/allPosts.dart';
+import 'package:food_donation_app/Pages/Community/connectedUserPage.dart';
+import 'package:food_donation_app/Pages/Community/incomingRequests.dart';
 import 'package:food_donation_app/Pages/Community/peoplePage.dart';
-import 'package:food_donation_app/Pages/Community/recentPosts.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
@@ -25,12 +25,7 @@ class CommunityHomePage extends ConsumerStatefulWidget {
 
 class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   int selectedCategory = 0;
-  List<String> categories = [
-    "All",
-    "Recents",
-    "Chat",
-    "People",
-  ];
+  List<String> categories = ["All", "People", "Requests"];
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -38,37 +33,10 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Your code here
-      ref.read(communityProvider.notifier).getRcmdPosts();
-      ref.read(communityProvider.notifier).getFeaturedPosts();
-      ref.read(communityProvider.notifier).getRecentPosts();
       ref.read(communityProvider.notifier).getPeoples(0);
       ref.read(communityProvider.notifier).loadChatRooms();
     });
-    _scrollController.addListener(() {
-      if (selectedCategory == 0) {
-        if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-          ref.read(communityProvider.notifier).getNextPosts();
-        }
-      } else if (selectedCategory == 1) {
-        if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-          ref.read(communityProvider.notifier).getNextRecentPosts();
-        }
-      }
-      // else if(selectedCategory == 3){
-      //   if (_scrollController.position.pixels ==
-      //       _scrollController.position.maxScrollExtent) {
-      //     ref.read(communityProvider.notifier).getNextPeoples();
-      //   }
-      // }
-      // else if(selectedCategory == 2){
-      //   if (_scrollController.position.pixels ==
-      //       _scrollController.position.maxScrollExtent) {
-      //     ref.read(communityProvider.notifier).loadChatRooms();
-      //   }
-      // }
-    });
+
     super.initState();
   }
 
@@ -153,151 +121,69 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 // ),
                 // SizedBox(height: 10.h),
                 MyAppBar(
-                    centerWidget: selectedCategory == 3 || selectedCategory == 2
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 57.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.pushRoute(ProfileSearchPageRoute());
-                              },
-                              child: MySearchBar(title: "Profile"),
-                            ),
-                          )
-                        : Padding(
-                            padding: EdgeInsets.only(left: 57.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.pushRoute(ArticleSearchPageRoute());
-                              },
-                              child: MySearchBar(title: "Articles"),
-                            ),
-                          ),
-                    rightWidget: selectedCategory == 3 || selectedCategory == 2
-                        ? SizedBox()
-                        : Padding(
-                            padding: EdgeInsets.only(right: 34.18.w),
-                            child: GestureDetector(
-                                onTap: () {
-                                  context.navigateTo(ArticleHistoryRoute());
-                                },
-                                child: SearchHistory(context)),
-                          )),
+                    centerWidget: Padding(
+                      padding: EdgeInsets.only(left: 57.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pushRoute(ProfileSearchPageRoute());
+                        },
+                        child: MySearchBar(title: "Profile"),
+                      ),
+                    ),
+                    rightWidget: Padding(
+                      padding: EdgeInsets.only(right: 34.18.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            context.navigateTo(ChattingPageRoute());
+                          },
+                          child: SearchHistory(context)),
+                    )),
                 SizedBox(
                   height: 10.h,
                 ),
                 Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      if (selectedCategory == 0) {
-                        await ref
-                            .read(communityProvider.notifier)
-                            .getFeaturedPosts();
-                        await ref
-                            .read(communityProvider.notifier)
-                            .getRcmdPosts();
-                      } else if (selectedCategory == 1) {
-                        await ref
-                            .read(communityProvider.notifier)
-                            .getRecentPosts();
-                      }
-                      // else if(selectedCategory == 2)
-                      //   return await ref
-                      //       .read(communityProvider.notifier)
-                      //       .loadChatRooms();
-                      // else if(selectedCategory == 3)
-                      //   return await ref
-                      //       .read(communityProvider.notifier)
-                      //       .getPeoples(0);
-                    },
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.zero,
-                      physics: BouncingScrollPhysics(),
-                      controller: _scrollController,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          categoryWidget(),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          GestureDetector(
-                              onHorizontalDragEnd: (details) {
-                                log(details.primaryVelocity.toString() +
-                                    "  " +
-                                    selectedCategory.toString());
-                                if (details.primaryVelocity! > 0) {
-                                  setState(() {
-                                    selectedCategory--;
-                                    if (selectedCategory < 0) {
-                                      selectedCategory = 0;
-                                    }
-                                  });
-                                } else {
-                                  setState(() {
-                                    selectedCategory++;
-                                    if (selectedCategory > 3) {
-                                      selectedCategory = 3;
-                                    }
-                                  });
-                                }
-                              },
-                              child:
-                                  getSelectedCategoryWidget(selectedCategory))
-                        ],
-                      ),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.zero,
+                    physics: BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        categoryWidget(),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        GestureDetector(
+                            onHorizontalDragEnd: (details) {
+                              log(details.primaryVelocity.toString() +
+                                  "  " +
+                                  selectedCategory.toString());
+                              if (details.primaryVelocity! > 0) {
+                                setState(() {
+                                  selectedCategory--;
+                                  if (selectedCategory < 0) {
+                                    selectedCategory = 0;
+                                  }
+                                });
+                              } else {
+                                setState(() {
+                                  selectedCategory++;
+                                  if (selectedCategory > 2) {
+                                    selectedCategory = 2;
+                                  }
+                                });
+                              }
+                            },
+                            child: getSelectedCategoryWidget(selectedCategory))
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          selectedCategory == 0
-              ? Align(
-                  alignment: Alignment.bottomRight,
-                  child: InkWell(
-                    onTap: () async {
-                      context.pushRoute(PostArticleRoute());
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(bottom: 30.h, right: 30.w),
-                        width: 60.r,
-                        height: 60.r,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFEFEFE),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x3F000000),
-                              blurRadius: 8,
-                              offset: Offset(0, 0),
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Icon(Icons.add_circle_rounded,
-                            size: 36.r, color: Color(0xFF5272FC))),
-                  ),
-                )
-              : SizedBox(),
-          selectedCategory != 3 && selectedCategory != 2
-              ? Positioned(
-                  top: 117.h,
-                  right: -32.w,
-                  child: Image.asset("lib/assets/Community/books and cup.png",
-                      height: 82.h, width: 71.w, fit: BoxFit.contain),
-                )
-              : Positioned(
-                  top: 27.h,
-                  right: -37.w,
-                  child: Image.asset(
-                    "lib/assets/Community/peoples.png",
-                    width: 106.w,
-                    height: 126.h,
-                    fit: BoxFit.contain,
-                  ),
-                )
         ],
       ),
     );
@@ -307,14 +193,11 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
 Widget getSelectedCategoryWidget(int selectedCategory) {
   switch (selectedCategory) {
     case 0:
-      return AllPosts();
-    // Add more cases as needed
-    case 1:
-      return RecentPosts();
-    case 2:
-      return Container(child: AllChatsPage());
-    case 3:
       return Container(child: PeoplePage());
+    case 1:
+      return Container(child: ConnectedUserPage());
+    case 2:
+      return Container(child: IncomingRequest());
     default:
       return Container(
         child: Center(
@@ -330,14 +213,15 @@ Widget SearchHistory(context) {
       height: 28.80,
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
-        color: Color(0xFFFEFEFE),
+        color: Colors.transparent,
+        // color: Color(0xFFFEFEFE),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
       ),
       child: Icon(
-        Icons.history_rounded,
+        Icons.chat,
         size: 28.8.r,
-        color: Colors.black,
+        color: Color(0xFFFEFEFE),
       ));
 }

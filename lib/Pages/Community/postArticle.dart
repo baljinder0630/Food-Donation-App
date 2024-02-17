@@ -543,7 +543,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                             contentPadding: EdgeInsets.all(10.r),
                             filled: true,
                             fillColor: Color(0xFFFEFEFE),
-                            hintText: "Description minimum of 200 Words",
+                            hintText: "Description minimum of 200 Chars",
                             hintStyle: TextStyle(
                               color: Color(0xFF201F24),
                               fontSize: 14.sp,

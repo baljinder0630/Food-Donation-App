@@ -2,10 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
-import 'package:food_donation_app/Pages/Donate/personal_details_form.dart';
 import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart';
+import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
 
 @RoutePage()
 class AppBottomNavigationBar extends StatefulWidget {
@@ -19,9 +20,10 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   final _pages = [
     HomePage(),
     const DonationRequest(),
-    const PersonalDetails(),
+    const landDonation(),
     const CommunityHomePage(),
     const DashBoardPage(),
+    // const ProfilePage(),
   ];
 
   @override
