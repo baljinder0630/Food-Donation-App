@@ -147,18 +147,21 @@ class _HomePageState extends State<HomePage> {
       // appBar: AppBar(title: Text('Dashboard')),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
+        
         slivers: [
-          SliverAppBar(
-              floating: true,
-              expandedHeight: 100.h,
-              title: Center(child: Text("H O M E P A G E"))),
+          
           SliverToBoxAdapter(
             child: Column(
               children: [
+                SizedBox(
+                  height: 50.h,
+                ),
                 Container(
+                  
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
+                      
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
@@ -254,11 +257,17 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
                   width: double.infinity,
-                  height: 200.h,
+                  height: 250.h,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.r)),
-                  child: const Center(child: Text("Space for some animation.")),
+                      
+                      borderRadius: BorderRadius.circular(15.r),
+                      image: DecorationImage(
+                      image: AssetImage("lib/assets/general/sad1.png"),
+                      fit: BoxFit.cover,
+                      )
+                      ),
+                      
+                  
                 ),
                 // Animation ends here.
 

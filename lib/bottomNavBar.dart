@@ -4,9 +4,11 @@ import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
 import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart';
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
+import 'package:food_donation_app/Pages/contributions/contributions.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
+import 'package:food_donation_app/Pages/splash/Splash1.dart';
 
 @RoutePage()
 class AppBottomNavigationBar extends StatefulWidget {
@@ -18,8 +20,8 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int _currentIndex = 0;
 
   final _pages = [
-    HomePage(),
-    const DonationRequest(),
+    const HomePage(),
+    SplashScreen(),
     const landDonation(),
     const CommunityHomePage(),
     const DashBoardPage(),
