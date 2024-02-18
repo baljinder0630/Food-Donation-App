@@ -231,7 +231,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {
-            context.pushRoute(const RaiseRequestRoute());
+            // context.pushRoute(const RaiseRequestRoute());
+            context.pushRoute(const ChatBotScreenRoute());
           },
           elevation: 0.0,
           child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
