@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: "Route")
@@ -45,6 +46,14 @@ class AppRouter extends $AppRouter {
           page: DonationDescriptionRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
+        // CustomRoute(
+        //   page: AcceptPickupRequestPageRoute.page,
+        //   transitionsBuilder: TransitionsBuilders.slideTop,
+        // ),
+        CustomRoute(
+          page: PickupRequestPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
         CustomRoute(
           page: ArticleDetailRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
@@ -84,6 +93,10 @@ class AppRouter extends $AppRouter {
         CustomRoute(
             page: ConfirmationFormRoute.page,
             transitionsBuilder: TransitionsBuilders.slideTop),
+
+        CustomRoute(
+            page: ChatBotScreenRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideTop),
         CustomRoute(
           page: ChatScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
@@ -96,6 +109,13 @@ class AppRouter extends $AppRouter {
           page: ChattingPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+          page: PhoneScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+            page: OtpScreenRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideBottom),
         CustomRoute(
           page: IncomingRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
