@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Pages/Donate/donateform.dart';
 
+@RoutePage()
 class OtpScreen extends StatefulWidget {
   final String id;
 
@@ -34,7 +37,7 @@ class _OtpScreenState extends State<OtpScreen> {
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.orange),
+      border: Border.all(color: Colors.green),
       borderRadius: BorderRadius.circular(8),
     );
 
@@ -53,6 +56,31 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/img1.png',
+                width: 150,
+                height: 150,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              const Text(
+                "Phone Verification",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                "We need to register your phone without getting started!",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               Pinput(
                 length: 6,
                 defaultPinTheme: defaultPinTheme,
@@ -73,28 +101,40 @@ class _OtpScreenState extends State<OtpScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    // Form is valid, proceed with verification
-                    print(widget.id);
-                    print(_codeController.text);
                     try {
                       PhoneAuthCredential credential =
                           PhoneAuthProvider.credential(
                         verificationId: widget.id,
                         smsCode: _codeController.text,
                       );
-
-                      UserCredential user =
-                          await auth.signInWithCredential(credential);
-                      print(user);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DonateForm()),
-                      );
+                      await auth.signInWithCredential(credential);
+                      Fluttertoast.showToast(
+                          msg: "OTP verified successfully.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      // context.pushRoute(ChatBotScreenRoute());
                     } catch (e) {
+                      Fluttertoast.showToast(
+                          msg: "Error while verifying phone number.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                       print("Error: $e");
                     }
                   }
                 },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade600,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
                 child: const Text("Verify Phone Number"),
               ),
               SizedBox(

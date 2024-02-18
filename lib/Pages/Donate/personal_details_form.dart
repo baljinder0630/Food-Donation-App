@@ -19,8 +19,6 @@ class PersonalDetails extends ConsumerStatefulWidget {
   ConsumerState<PersonalDetails> createState() => _PersonalDetailsState();
 }
 
-
-
 class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -177,34 +175,34 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                                   districtController.text.trim().isEmpty ||
                                   pincodeController.text.trim().isEmpty) {
                                 Fluttertoast.showToast(
-                                    msg: "Please fill all fields before proceeding.",
+                                    msg:
+                                        "Please fill all fields before proceeding.",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
                                     backgroundColor: Colors.green,
                                     textColor: Colors.white,
-                                    fontSize: 16.0
-                                );
+                                    fontSize: 16.0);
                                 return;
+                              } else {
+                                ref
+                                    .read(donationRequestProvider.notifier)
+                                    .updatePersonalDetails(
+                                        nameController.text,
+                                        phoneController.text,
+                                        plotNoController.text,
+                                        streetController.text,
+                                        districtController.text,
+                                        pincodeController.text);
+                                nameController.text = "";
+                                phoneController.text = "";
+                                plotNoController.text = "";
+                                streetController.text = "";
+                                districtController.text = "";
+                                pincodeController.text = "";
+                                context.pushRoute(const PhoneScreenRoute());
                               }
-                              else{
-                              ref
-                                  .read(donationRequestProvider.notifier)
-                                  .updatePersonalDetails(
-                                      nameController.text,
-                                      phoneController.text,
-                                      plotNoController.text,
-                                      streetController.text,
-                                      districtController.text,
-                                      pincodeController.text);
-                              nameController.text = "";
-                              phoneController.text = "";
-                              plotNoController.text = "";
-                              streetController.text = "";
-                              districtController.text = "";
-                              pincodeController.text = "";
-                              context.pushRoute(const FoodCategoryFormRoute());
-                            }})
+                            })
                       ],
                     ),
                   ),
