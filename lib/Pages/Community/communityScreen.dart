@@ -25,7 +25,7 @@ class CommunityHomePage extends ConsumerStatefulWidget {
 
 class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   int selectedCategory = 0;
-  List<String> categories = ["All", "People", "Requests"];
+  List<String> categories = ["All", "Connected", "Requests"];
   ScrollController _scrollController = ScrollController();
 
   @override
