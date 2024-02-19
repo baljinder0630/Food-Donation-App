@@ -1,22 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:food_donation_app/Models/Raisereq/raise.model.dart';
-import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donation_app/Pages/Donate/Widgets/custom_phone_no_field.dart';
+import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
+import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
+import 'package:food_donation_app/Pages/DonationRequest/Widgets/CustomTextField.dart';
+
+import 'package:food_donation_app/Provider/raiseRequestProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:developer';
-import 'dart:async';
-import 'dart:io';
+
 import 'dart:ui';
-import 'package:food_donation_app/Provider/raiseRequestProvider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-
-
 
 @RoutePage()
 class RaiseRequest extends ConsumerStatefulWidget {
@@ -27,24 +23,28 @@ class RaiseRequest extends ConsumerStatefulWidget {
 }
 
 class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
-  final _formKey = GlobalKey<FormState>();
   final _mobileNumberController = TextEditingController();
   final _ngoController = TextEditingController();
-  final _PlotnoController = TextEditingController();
-  final _StreetnoController = TextEditingController();
-  final _LandmarkController = TextEditingController();
-  final _DistrictController = TextEditingController();
-  final _PincodeController = TextEditingController();
-  String _selectedRequestType = '';
+  final _plotnoController = TextEditingController();
+  final _streetnoController = TextEditingController();
+  final _servingsController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _pincodeController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
   @override
   void dispose() {
     _mobileNumberController.dispose();
+    _ngoController.dispose();
+    _plotnoController.dispose();
+    _servingsController.dispose();
+    _districtController.dispose();
+    _pincodeController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
-  
-  showSuccessDialog() {
+  showSuccessDialog(BuildContext context) {
     showGeneralDialog(
       context: context,
       transitionDuration: Duration(milliseconds: 300),
@@ -88,7 +88,7 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Posted Successfully',
                       style: TextStyle(
                         color: Color(0xFF201F24),
@@ -99,14 +99,14 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
                         letterSpacing: 0.38,
                       ),
                     ),
-                    SizedBox(height: 19.20),
+                    const SizedBox(height: 19.20),
                     Image.asset(
                       "lib/assets/Community/PostSuccessfully.png",
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(height: 19.20),
+                    const SizedBox(height: 19.20),
                     Container(
-                      child: Column(
+                      child: const Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,8 +143,8 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 19.20),
-                    Text(
+                    const SizedBox(height: 19.20),
+                    const Text(
                       'Further Notifications Will be Updated ',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -159,9 +159,9 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
                     SizedBox(height: 19.20),
                     ElevatedButton(
                       onPressed: () {
-                        context.pushRoute(const DonationTrackingPageRoute());
+                        context.pushRoute(const LandDonationRoute());
                       },
-                      child: Text('Go to Donation Tracking'),
+                      child: const Center(child: Text('Go back')),
                     ),
                   ],
                 ),
@@ -175,338 +175,272 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
 
   @override
   Widget build(BuildContext context) {
+    final submissionStatus = ref.watch(raiseRequestProvider).raiseRequestStatus;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Raise Donation Request"),
-        leading: MyBackButton(),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: CustomTextField(
-                    label: "Name of Trust or NGO's",
-                    controller: _ngoController,
-                    maxLength: 200,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Center(
+      body: SafeArea(
+        child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 40.h, 0.0, 0.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomDropdown(
-                        label: 'Type of Request',
-                        items: ['Option 1', 'Option 2', 'Option 3'],
-                        value: null,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedRequestType = value ?? '';
-                            
-                          });
-                        },
-                      ),
-                      SizedBox(height: 16),
                       Container(
-                        width: 337.w,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                label: "Mobile Number",
-                                controller: _mobileNumberController,
-                                maxLength: 10,
-                              ),
+                        height: 250.h,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child:
+                            const Center(child: Text("Space for some image")),
+                      ),
+                      Subheading(text: 'Raise Donation Request'),
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 7.0, vertical: 30.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
                             ),
-                            SizedBox(width: 16),
+                          ],
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Column(
+                          children: [
+                            CustomTextFormField(
+                              hintText: 'Name of organisation',
+                              controller: _ngoController,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Name cannot be empty';
+                                } else if (text.length < 2 ||
+                                    text.length > 49) {
+                                  return 'Please enter a valid name';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.0.h,
+                            ),
+                            CustomPhoneNumberField(
+                                hintText: 'Phone Number',
+                                controller: _mobileNumberController),
+                            SizedBox(
+                              height: 15.0.h,
+                            ),
+                            CustomTextFormField(
+                              hintText: 'Plot No',
+                              controller: _plotnoController,
+                              validator: (text) {
+                                if (text == null || text.length > 49) {
+                                  return 'Please enter valid details.';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.0.h,
+                            ),
+                            CustomTextFormField(
+                              hintText: 'Street Name',
+                              controller: _streetnoController,
+                              validator: (text) {
+                                if (text == null || text.length > 49) {
+                                  return 'Please enter valid details.';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.0.h,
+                            ),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: CustomTextFormField(
+                                    hintText: 'District',
+                                    controller: _districtController,
+                                    validator: (text) {
+                                      if (text == null || text.length > 49) {
+                                        return 'Please enter valid details.';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(50)
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                ),
+                                Flexible(
+                                  child: CustomTextFormField(
+                                    hintText: 'PinCode',
+                                    controller: _pincodeController,
+                                    validator: (text) {
+                                      if (text == null || text.length > 49) {
+                                        return 'Please enter valid details.';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(50)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20.0.h,
+                            ),
+                            CustomTextFormField(
+                              hintText: 'Number of servings',
+                              controller: _servingsController,
+                              validator: (text) {
+                                if (text == null || text.length > 49) {
+                                  return 'Please enter valid details.';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(50)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20.0.h,
+                            ),
+                            CustomTextField(
+                                hintText: 'Description',
+                                controller: _descriptionController),
+                            SizedBox(
+                              height: 20.0.h,
+                            ),
                             ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Send OTP'),
-                            ),
+                                child: (submissionStatus == 'processing')
+                                    ? Center(
+                                        child: SizedBox(
+                                          width: 20.r,
+                                          height: 20.r,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        'Save',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color(0xFFF9F8FD),
+                                          fontSize: 28.sp,
+                                          fontFamily: 'Outfit',
+                                          fontWeight: FontWeight.w600,
+                                          height: 0,
+                                          letterSpacing: 1.12.sp,
+                                        ),
+                                      ),
+                                onPressed: () async {
+                                  if (_ngoController.text.trim().isEmpty ||
+                                      _mobileNumberController.text
+                                          .trim()
+                                          .isEmpty ||
+                                      _plotnoController.text.trim().isEmpty ||
+                                      _streetnoController.text.trim().isEmpty ||
+                                      _districtController.text.trim().isEmpty ||
+                                      _pincodeController.text.trim().isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Please fill all fields before proceeding.",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    return;
+                                  } else {
+                                    String ngoName = _ngoController.text;
+                                    String mobileNumber =
+                                        _mobileNumberController.text;
+                                    String plotNo = _plotnoController.text;
+                                    String streetNo = _streetnoController.text;
+                                    String district = _districtController.text;
+                                    String pincode = _pincodeController.text;
+                                    String description = "";
+                                    String numberOfServings =
+                                        _servingsController.text;
+                                    String requestsFulfilled = "0";
+                                    bool uploaded = await ref
+                                        .read(raiseRequestProvider.notifier)
+                                        .uploadFoodDonationRequest(
+                                            ngoName,
+                                            mobileNumber,
+                                            plotNo,
+                                            streetNo,
+                                            district,
+                                            pincode,
+                                            description,
+                                            numberOfServings,
+                                            requestsFulfilled);
+
+                                    _descriptionController.text = "";
+                                    _districtController.text = "";
+                                    _mobileNumberController.text = "";
+                                    _ngoController.text = "";
+                                    _pincodeController.text = "";
+                                    _plotnoController.text = "";
+                                    _servingsController.text = "";
+                                    _streetnoController.text = "";
+
+                                    if (uploaded == true) {
+                                      showSuccessDialog(context);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Error while submitting the form.",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.green,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                    print('Submitted');
+                                  }
+                                })
                           ],
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      CustomTextField(
-                        label: "Plot No.",
-                        controller: _PlotnoController,
-                        maxLength: 20,
-                      ),
-                      SizedBox(height: 16),
-                      CustomTextField(
-                        label: "Street Number",
-                        controller: _StreetnoController,
-                        maxLength: 20,
-                      ),
-                      SizedBox(height: 16),
-                      CustomTextField(
-                        label: "Landmark",
-                        controller: _LandmarkController,
-                        maxLength: 20,
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                        width: 337.w,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                label: "District",
-                                controller: _DistrictController,
-                                maxLength: 20,
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: CustomTextField(
-                                label: "Pincode",
-                                controller: _PincodeController,
-                                maxLength: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Container(
-                        width: 337.w,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // ref.read(raiseRequestProvider.notifier).uploadDonationRequest(raise)
-                            }
-                          },
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            // width: 337.w,
-                            primary: Colors.blue,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 32.0.w,
-                              vertical: 16.0.w,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
                         ),
                       ),
                     ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownFormField({
-    required String label,
-    required List<String> items,
-  }) {
-    return Container(
-      width: 337.w,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: label,
-          contentPadding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
-        items: items.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (value) {},
+                  )),
+            )),
       ),
     );
   }
 }
-
-class CustomTextField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final int maxLength;
-  final ValueChanged<String>? onEditingComplete;
-  final String? Function(String?)? validator;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final Widget? suffixIcon;
-  final int maxLines;
-  final VoidCallback? onTap;
-
-  const CustomTextField({
-    Key? key,
-    required this.label,
-    required this.controller,
-    this.maxLength = 200,
-    this.onEditingComplete,
-    this.validator,
-    this.keyboardType,
-    this.obscureText = false,
-    this.suffixIcon,
-    this.maxLines = 1,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 337.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.r),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 5,
-            offset: Offset(0, 0),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        maxLength: maxLength,
-        onEditingComplete: () {
-          onEditingComplete?.call(controller.text);
-          FocusScope.of(context).nextFocus();
-        },
-        validator: validator,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        maxLines: maxLines,
-        onTap: onTap,
-        decoration: InputDecoration(
-          counter: SizedBox.shrink(),
-          contentPadding: EdgeInsets.all(10.r),
-          filled: true,
-          fillColor: Color(0xFFFEFEFE),
-          hintText: label,
-          hintStyle: TextStyle(
-            color: Color(0xFF201F24),
-            fontSize: 14.sp,
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w400,
-            height: 0,
-            letterSpacing: 1.40.sp,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-          suffixIcon: suffixIcon,
-        ),
-      ),
-    );
-  }
-}
-
-class CustomDropdown extends StatelessWidget {
-  final String label;
-  final List<String> items;
-  final String? value;
-  final ValueChanged<String?>? onChanged;
-  final String? Function(String?)? validator;
-  final VoidCallback? onTap;
-
-  const CustomDropdown({
-    Key? key,
-    required this.label,
-    required this.items,
-    this.value,
-    this.onChanged,
-    this.validator,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 337.w, // You may need to replace this with your desired width
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.r),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 5,
-            offset: Offset(0, 0),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: DropdownButtonFormField<String>(
-        value: value,
-        items: items
-            .map((item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                ))
-            .toList(),
-        onChanged: onChanged,
-        validator: validator,
-        onTap: onTap,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFFEFEFE),
-          hintText: label,
-          hintStyle: TextStyle(
-            color: Color(0xFF201F24),
-            fontSize: 14.sp,
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w400,
-            height: 0,
-            letterSpacing: 1.40.sp,
-          ),
-          contentPadding: EdgeInsets.all(10.r),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.r),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// You might need to adjust the width and other styling based on your design requirements.
