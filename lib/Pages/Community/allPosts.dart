@@ -6,7 +6,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/Community/Post.model.dart';
 import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Functions/timeAgo.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
@@ -166,14 +165,10 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          featuredPosts[index].subject.length >
-                                                  35
-                                              ? toCamelCase(featuredPosts[index]
-                                                      .subject
-                                                      .substring(0, 35)) +
-                                                  "..."
-                                              : toCamelCase(
-                                                  featuredPosts[index].subject),
+                                          toCamelCase(
+                                              featuredPosts[index].subject),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: Color(0xFFB3B3B8),
                                             fontSize: 14.sp,
@@ -190,16 +185,9 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           // color: Colors.red,
                                           child: SingleChildScrollView(
                                             child: Text(
-                                              featuredPosts[index]
-                                                          .description
-                                                          .length >
-                                                      100
-                                                  ? featuredPosts[index]
-                                                          .description
-                                                          .substring(0, 100) +
-                                                      "..."
-                                                  : featuredPosts[index]
-                                                      .description,
+                                              featuredPosts[index].description,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: Color(0xFFF9F8FD),
                                                 fontSize: 14.sp,
@@ -288,6 +276,8 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                               const SizedBox(width: 8),
                                               Text(
                                                 featuredPosts[index].username,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: Color(0xFFF9F8FD),
                                                   fontSize: 14.sp,
@@ -322,6 +312,8 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                                 timeAgo(featuredPosts[index]
                                                     .createdTime
                                                     .toDate()),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: Color(0xFF8E7474),
                                                   fontSize: 12.sp,

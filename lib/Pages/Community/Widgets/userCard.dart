@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -152,45 +153,50 @@ class _UserCardState extends ConsumerState<UserCard> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                widget.user.photoURL != null || widget.user.photoURL.isEmpty
-                    ? Container(
-                        width: 59.85.w,
-                        height: 64.60.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(17),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                              nameProfile(widget.user.displayName).isNotEmpty
-                                  ? nameProfile(widget.user.displayName)
-                                  : "NA",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.sp,
-                                fontFamily: 'Outfit',
-                                fontWeight: FontWeight.w500,
-                                height: 0,
-                                letterSpacing: 0.56.sp,
-                              )),
-                        ))
-                    : Container(
-                        width: 59.85.w,
-                        height: 64.60.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.black,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                "https://via.placeholder.com/60x65"),
-                            fit: BoxFit.fill,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(17),
-                          ),
-                        ),
-                      ),
+                // widget.user.photoURL != null || widget.user.photoURL.isEmpty
+                Container(
+                  width: 59.85.w,
+                  height: 64.60.h,
+                  decoration: ShapeDecoration(
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.user.photoURL,
+                      fit: BoxFit.fill,
+                      errorWidget: (context, error, stackTrace) {
+                        return Container(
+                            width: 59.85.w,
+                            height: 64.60.h,
+                            decoration: ShapeDecoration(
+                              color: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.r),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                  nameProfile(widget.user.displayName)
+                                          .isNotEmpty
+                                      ? nameProfile(widget.user.displayName)
+                                      : "NA",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0,
+                                    letterSpacing: 0.56.sp,
+                                  )),
+                            ));
+                      },
+                    ),
+                  ),
+                ),
                 Flexible(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

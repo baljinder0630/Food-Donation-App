@@ -266,8 +266,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {
-            _openMap(lat, long);
-            // context.pushRoute(const RaiseRequestRoute());
+            context.pushRoute(const ChatBotScreenRoute());
           },
           elevation: 0.0,
           child: Icon(Icons.smart_toy_outlined, size: 36.r, color: green),
@@ -278,6 +277,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
+        
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
@@ -347,10 +347,15 @@ class _HomePageState extends ConsumerState<HomePage> {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                SizedBox(
+                  height: 50.h,
+                ),
                 Container(
+                  
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
+                      
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
@@ -469,16 +474,14 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                 Container(
                   width: double.infinity,
-                  height: 200.h,
-                  decoration: BoxDecoration(
-                    color: green.withOpacity(0.45),
-                  ),
-                  child: ClipRRect(
-                    child: Image.asset(
-                      "lib/assets/icons/animation_difference.png",
-                      height: 200.h,
-                    ),
-                  ),
+                  height: 250.h,
+                  decoration: BoxDecoration(    
+                      borderRadius: BorderRadius.circular(15.r),
+                      image: DecorationImage(
+                      image: AssetImage("lib/assets/general/sad1.png"),
+                      fit: BoxFit.cover,
+                      )
+                      ),
                 ),
                 // Animation ends here.
 

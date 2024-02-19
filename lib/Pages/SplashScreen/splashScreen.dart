@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
@@ -16,27 +15,6 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  late FirebaseMessaging firebaseMessaging;
-  @override
-  void initState() {
-    firebaseMessaging = FirebaseMessaging.instance;
-    firebaseMessaging.getToken().then((value) {
-      // TODO: Save token to firestore
-      log("Firebase messaging token ");
-      print(value.toString());
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      log("message recieved");
-      log(event.notification!.body.toString());
-      //  show this notification
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      log('Message clicked!');
-    });
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.listen(authStateProvider, (previous, next) {
