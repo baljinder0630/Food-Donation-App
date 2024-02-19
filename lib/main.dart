@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,16 +8,11 @@ import 'package:food_donation_app/Router/route.dart';
 import 'package:food_donation_app/constants.dart';
 import 'firebase_options.dart';
 
-Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(ProviderScope(child: MyApp())));

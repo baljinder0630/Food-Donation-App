@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,13 +208,10 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                               width: 150.w,
                                               height: 16.sp,
                                               child: Text(
-                                                posts[index].subject.length > 15
-                                                    ? toCamelCase(posts[index]
-                                                            .subject
-                                                            .substring(0, 15)) +
-                                                        "..."
-                                                    : toCamelCase(
-                                                        posts[index].subject),
+                                                toCamelCase(
+                                                    posts[index].subject),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: Color(0xFFBFAAAA),
                                                   fontSize: 14.sp,
@@ -239,7 +232,6 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                                     shape: OvalBorder(),
                                                   ),
                                                 ),
-                                                SizedBox(width: 4.w),
                                                 Text(
                                                   timeAgo(posts[index]
                                                       .createdTime
@@ -274,13 +266,9 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                           width: 241.w,
                                           height: 50.h,
                                           child: Text(
-                                            posts[index].description.length >
-                                                    100
-                                                ? posts[index]
-                                                        .description
-                                                        .substring(0, 96) +
-                                                    "..."
-                                                : posts[index].description,
+                                            posts[index].description,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: Color(0xFF201F24),
                                               fontSize: 14.sp,

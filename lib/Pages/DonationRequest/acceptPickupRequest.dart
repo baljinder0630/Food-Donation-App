@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../Router/route.gr.dart';
 import '../Community/Widgets/myAppBar.dart';
 
+@RoutePage()
 class AcceptPickupRequestPage extends StatefulWidget {
   const AcceptPickupRequestPage({super.key});
 

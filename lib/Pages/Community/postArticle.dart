@@ -178,6 +178,55 @@ class _PostArticleState extends ConsumerState<PostArticle> {
     log("Cropped Image Path: ${BeforeCrop.path}");
   }
 
+  showCameraOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.r),
+                child: const Text(
+                  'Choose an option',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.camera_alt, color: Colors.blue),
+                title: Text("Camera", style: TextStyle(color: Colors.blue)),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.photo, color: Colors.blue),
+                title: Text("Gallery", style: TextStyle(color: Colors.blue)),
+              ),
+              SizedBox(height: 20.h)
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   showSuccessDialog() {
     showGeneralDialog(
         context: context,
@@ -306,55 +355,6 @@ class _PostArticleState extends ConsumerState<PostArticle> {
             ),
           );
         });
-  }
-
-  showCameraOptions() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r),
-              topRight: Radius.circular(20.r),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: const Text(
-                  'Choose an option',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              ListTile(
-                onTap: () async {
-                  await _getImage(ImageSource.camera);
-                  Navigator.pop(context);
-                },
-                leading: Icon(Icons.camera_alt, color: Colors.blue),
-                title: Text("Camera", style: TextStyle(color: Colors.blue)),
-              ),
-              ListTile(
-                onTap: () async {
-                  await _getImage(ImageSource.gallery);
-                  Navigator.pop(context);
-                },
-                leading: Icon(Icons.photo, color: Colors.blue),
-                title: Text("Gallery", style: TextStyle(color: Colors.blue)),
-              ),
-              SizedBox(height: 20.h)
-            ],
-          ),
-        );
-      },
-    );
   }
 
   imagePreview() {
