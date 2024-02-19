@@ -174,8 +174,9 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                     final createdTime = donationRequest['postedTime'];
                     final cookedBefore = getCookedTime(createdTime);
                     final donationRequestWidget = PickUpRequest(
+                      phoneNumber: donationRequest['phoneNumber'],
                       snapshot: snapshot,
-                      foodName: donationRequest['name'],
+                      foodName1: donationRequest['name'],
                       address: address,
                       postedTime: cookedBefore,
                       foodCategory: donationRequest['foodCategory'],

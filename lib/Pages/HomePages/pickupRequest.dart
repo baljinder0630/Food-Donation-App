@@ -9,19 +9,22 @@ import '../constants/constants.dart';
 
 @RoutePage()
 class PickUpRequest extends StatelessWidget {
-  final String foodName;
+  final String foodName1;
   final String postedTime;
   final List<dynamic> foodCategory;
   final String address;
+  final String phoneNumber;
   final AsyncSnapshot<QuerySnapshot<Object?>>? snapshot;
 
-  const PickUpRequest(
-      {required this.foodName,
-      required this.postedTime,
-      required this.foodCategory,
-      required this.address,
-      required this.snapshot,
-      super.key});
+  const PickUpRequest({
+    required this.foodName1,
+    required this.postedTime,
+    required this.foodCategory,
+    required this.address,
+    required this.snapshot,
+    required this.phoneNumber,
+    Key? key, // Use Key? key instead of super.key
+  }) : super(key: key);
 
   List<String> getImagesList() {
     List<String> images = [];
@@ -58,7 +61,7 @@ class PickUpRequest extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    foodName,
+                    foodName1,
                     style: TextStyle(
                         color: black,
                         fontSize: 20.sp,
@@ -101,28 +104,30 @@ class PickUpRequest extends StatelessWidget {
                         loadingBuilder: (BuildContext context, Widget child,
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) {
-                            // Image is fully loaded
                             return CircleAvatar(
-                              radius: 70.r,
+                              radius: 69.r,
                               backgroundColor: green,
-                              child: ClipOval(
-                                child: Image.network(
-                                  images[index],
-                                  errorBuilder: (BuildContext context,
-                                      Object error, StackTrace? stackTrace) {
-                                    print('Error loading image: $error');
-                                    return CircleAvatar(
-                                      backgroundColor: Colors.grey,
-                                      // Placeholder color
-                                      child: Icon(
-                                        Icons.error,
-                                        color: Colors.white,
-                                      ),
-                                    );
-                                  },
-                                  width: 130.w,
-                                  height: 130.h,
-                                  fit: BoxFit.cover,
+                              child: CircleAvatar(
+                                radius: 65.r,
+                                backgroundColor: bgColor,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    images[index],
+                                    errorBuilder: (BuildContext context,
+                                        Object error, StackTrace? stackTrace) {
+                                      print('Error loading image: $error');
+                                      return const CircleAvatar(
+                                        backgroundColor: Colors.grey,
+                                        child: Icon(
+                                          Icons.error,
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    },
+                                    width: 130.w,
+                                    height: 130.h,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             );
@@ -293,7 +298,13 @@ class PickUpRequest extends StatelessWidget {
                 width: 125.w,
                 child: OutlinedButton(
                   onPressed: () {
-                    context.pushRoute(AcceptPickupRequestPageRoute());
+                    context.pushRoute(AcceptPickupRequestPageRoute(
+                      foodName: foodName1,
+                      postedTime: postedTime,
+                      foodCategory: foodCategory,
+                      address: address,
+                      phoneNumber: phoneNumber,
+                    ));
                   },
                   style: OutlinedButton.styleFrom(backgroundColor: bgColor),
                   child: SizedBox(

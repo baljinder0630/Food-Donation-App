@@ -535,8 +535,9 @@ class _HomePageState extends State<HomePage> {
                           final cookedBefore = getCookedTime(createdTime);
                           final donationRequestWidget = PickUpRequest(
                             snapshot: snapshot,
-                            foodName: donationRequest['name'],
+                            foodName1: donationRequest['name'],
                             address: address,
+                            phoneNumber: donationRequest['phoneNumber'],
                             postedTime: cookedBefore,
                             foodCategory: donationRequest['foodCategory'],
                           );
