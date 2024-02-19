@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
+import 'package:food_donation_app/Pages/Donate/personal_details_form.dart';
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -20,7 +21,8 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     HomePage(),
     PostHomePage(),
     // const DonationRequest(),
-    const landDonation(),
+    // const landDonation(),
+    PersonalDetails(),
     const CommunityHomePage(),
     const DashBoardPage(),
     // const ProfilePage(),

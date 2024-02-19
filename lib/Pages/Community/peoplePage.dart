@@ -29,7 +29,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
               QuerySnapshot? data = snapshot.data as QuerySnapshot?;
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.hasError) {
-                  return Text("Something went wrong");
+                  return SizedBox();
                 }
                 if (snapshot.hasData && data!.docs.isNotEmpty) {
                   final users = data.docs

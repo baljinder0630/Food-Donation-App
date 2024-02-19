@@ -160,7 +160,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                                 color: (chattingModel.sender ==
                                                         currentUserUid)
                                                     ? const Color(0xFF6A4DFF)
-                                                    : const Color(0xFFF2F4F5),
+                                                    : Colors.green
+                                                        .withOpacity(0.5),
                                                 borderRadius: (chattingModel.sender ==
                                                         currentUserUid)
                                                     ? BorderRadius.only(

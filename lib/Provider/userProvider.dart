@@ -62,6 +62,10 @@ class UserAuth extends StateNotifier<AuthState> {
         log("User Data Fetched");
       } else {
         log("User does not exist");
+        state = state.copyWith(
+          authStatus: AuthStatus.processed,
+          appStatus: AppStatus.unAuthenticated,
+        );
       }
     });
   }
