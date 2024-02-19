@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,15 +44,6 @@ class UserAuth extends StateNotifier<AuthState> {
         fetchUserData(user.uid);
       }
     });
-    // state.messaging!.requestPermission();
-    // await state.messaging!.getToken().then((value) async {
-    //   log("Token fetched");
-    //   if (FirebaseAuth.instance.currentUser == null) return;
-    //   await FirebaseFirestore.instance
-    //       .collection("users")
-    //       .doc(FirebaseAuth.instance.currentUser!.uid)
-    //       .update({"token": value});
-    // });
   }
 
   fetchUserData(uid) async {

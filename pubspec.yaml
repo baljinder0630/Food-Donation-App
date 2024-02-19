@@ -65,7 +65,6 @@ dependencies:
   shimmer: ^3.0.0
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
-  firebase_messaging: ^14.7.10
   dialog_flowtter: ^0.3.3
   fluttertoast: any
   flutter_svg: ^2.0.9
