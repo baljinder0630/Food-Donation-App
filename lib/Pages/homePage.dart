@@ -231,7 +231,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {
-            context.pushRoute(const RaiseRequestRoute());
+            // context.pushRoute(const RaiseRequestRoute());
+            context.pushRoute(const ChatBotScreenRoute());
           },
           elevation: 0.0,
           child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
@@ -242,6 +243,7 @@ class _HomePageState extends State<HomePage> {
 
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
+        
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
@@ -293,10 +295,15 @@ class _HomePageState extends State<HomePage> {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                SizedBox(
+                  height: 50.h,
+                ),
                 Container(
+                  
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
+                      
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
@@ -392,11 +399,17 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
                   width: double.infinity,
-                  height: 200.h,
+                  height: 250.h,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.r)),
-                  child: const Center(child: Text("Space for some animation.")),
+                      
+                      borderRadius: BorderRadius.circular(15.r),
+                      image: DecorationImage(
+                      image: AssetImage("lib/assets/general/sad1.png"),
+                      fit: BoxFit.cover,
+                      )
+                      ),
+                      
+                  
                 ),
                 // Animation ends here.
 

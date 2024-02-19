@@ -46,10 +46,10 @@ class AppRouter extends $AppRouter {
           page: DonationDescriptionRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
-        CustomRoute(
-          page: AcceptPickupRequestPageRoute.page,
-          transitionsBuilder: TransitionsBuilders.slideTop,
-        ),
+        // CustomRoute(
+        //   page: AcceptPickupRequestPageRoute.page,
+        //   transitionsBuilder: TransitionsBuilders.slideTop,
+        // ),
         CustomRoute(
           page: PickupRequestPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
@@ -93,6 +93,10 @@ class AppRouter extends $AppRouter {
         CustomRoute(
             page: ConfirmationFormRoute.page,
             transitionsBuilder: TransitionsBuilders.slideTop),
+
+        CustomRoute(
+            page: ChatBotScreenRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideTop),
         CustomRoute(
           page: ChatScreenRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
@@ -105,6 +109,13 @@ class AppRouter extends $AppRouter {
           page: ChattingPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+          page: PhoneScreenRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
+        CustomRoute(
+            page: OtpScreenRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideBottom),
         CustomRoute(
           page: IncomingRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,

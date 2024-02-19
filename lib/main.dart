@@ -7,8 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Router/route.dart';
 import 'package:food_donation_app/constants.dart';
-
-// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {

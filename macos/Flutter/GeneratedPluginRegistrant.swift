@@ -18,7 +18,6 @@ import path_provider_foundation
 import shared_preferences_foundation
 import smart_auth
 import sqflite
-import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioplayersDarwinPlugin.register(with: registry.registrar(forPlugin: "AudioplayersDarwinPlugin"))

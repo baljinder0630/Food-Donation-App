@@ -294,7 +294,7 @@ class PickUpRequest extends StatelessWidget {
                 width: 125.w,
                 child: OutlinedButton(
                   onPressed: () {
-                    context.pushRoute(AcceptPickupRequestPageRoute());
+                    // context.pushRoute(AcceptPickupRequestPageRoute());
                   },
                   style: OutlinedButton.styleFrom(backgroundColor: bgColor),
                   child: SizedBox(
