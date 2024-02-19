@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/User.model.dart';
+import 'package:uuid/uuid.dart';
 
 final authStateProvider = StateNotifierProvider<UserAuth, AuthState>((ref) {
   return UserAuth();
@@ -23,7 +26,8 @@ class UserAuth extends StateNotifier<AuthState> {
                 totalConnects: 0),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
-            messaging: FirebaseMessaging.instance,
+            // messaging: FirebaseMessaging.instance,
+            profilePicUpdateStatus: ProfilePicUpdateStatus.initial,
           ),
         ) {
     checkAuthentication();
@@ -38,41 +42,37 @@ class UserAuth extends StateNotifier<AuthState> {
         );
         log("User is currently signed out!");
       } else {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .where("uid", isEqualTo: user.uid)
-            .get()
-            .then((value) {
-          if (value.docs.length == 0) {
-            // log("No user found");
-            // state = state.copyWith(
-            //   authStatus: AuthStatus.processed,
-            //   appStatus: AppStatus.unAuthenticated,
-            // );
-            return;
-          }
-          state = state.copyWith(
-            user: UserModel(
-                uid: value.docs[0].data()['uid'].toString(),
-                email: value.docs[0].data()['email'].toString(),
-                displayName: value.docs[0].data()['displayName'].toString(),
-                photoURL: value.docs[0].data()['photoURL'].toString(),
-                totalConnects: value.docs[0].data()['totalConnects'] ?? 0),
-            authStatus: AuthStatus.processed,
-            appStatus: AppStatus.authenticated,
-          );
-          log("User is signed in!");
-        });
+        fetchUserData(user.uid);
       }
     });
-    state.messaging!.requestPermission();
-    await state.messaging!.getToken().then((value) async {
-      log("Token fetched");
-      if (FirebaseAuth.instance.currentUser == null) return;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({"token": value});
+    // state.messaging!.requestPermission();
+    // await state.messaging!.getToken().then((value) async {
+    //   log("Token fetched");
+    //   if (FirebaseAuth.instance.currentUser == null) return;
+    //   await FirebaseFirestore.instance
+    //       .collection("users")
+    //       .doc(FirebaseAuth.instance.currentUser!.uid)
+    //       .update({"token": value});
+    // });
+  }
+
+  fetchUserData(uid) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        state = state.copyWith(
+          user: UserModel.fromMap(
+              documentSnapshot.data() as Map<String, dynamic>),
+          authStatus: AuthStatus.processed,
+          appStatus: AppStatus.authenticated,
+        );
+        log("User Data Fetched");
+      } else {
+        log("User does not exist");
+      }
     });
   }
 
@@ -194,6 +194,51 @@ class UserAuth extends StateNotifier<AuthState> {
     );
   }
 
+  Future<String> uploadImage(File? file) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child("users/${Uuid().v4()}");
+      final uploadTask = ref.putFile(File(file!.path));
+      final snapshot = await uploadTask.whenComplete(() => null);
+      final url = await snapshot.ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      log(e.toString());
+      return "";
+    }
+  }
+
+  updateProfilePic(File imgUrl) async {
+    try {
+      if (FirebaseAuth.instance.currentUser == null || imgUrl == null) return;
+
+      state = state.copyWith(
+          profilePicUpdateStatus: ProfilePicUpdateStatus.processing);
+
+      String url = await uploadImage(File(imgUrl.path));
+
+      await FirebaseAuth.instance.currentUser!
+          .updatePhotoURL(url)
+          .whenComplete(() async => {
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .update({"photoURL": url}).whenComplete(() =>
+                        fetchUserData(FirebaseAuth.instance.currentUser!.uid)),
+                state = state.copyWith(
+                  profilePicUpdateStatus: ProfilePicUpdateStatus.processed,
+                )
+              })
+          .onError((error, stackTrace) {
+        state = state.copyWith(
+            profilePicUpdateStatus: ProfilePicUpdateStatus.error);
+      });
+    } catch (e) {
+      print(e);
+      state =
+          state.copyWith(profilePicUpdateStatus: ProfilePicUpdateStatus.error);
+    }
+  }
+
   showSnackBar(message, context, color) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -208,26 +253,31 @@ class AuthState {
   UserModel? user;
   AuthStatus? authStatus;
   AppStatus? appStatus;
-  FirebaseMessaging? messaging;
+  // FirebaseMessaging? messaging;
+  ProfilePicUpdateStatus? profilePicUpdateStatus;
 
   AuthState({
     this.user,
     this.authStatus,
     this.appStatus,
-    this.messaging,
+    // this.messaging,
+    this.profilePicUpdateStatus,
   });
 
   AuthState copyWith({
     UserModel? user,
     AuthStatus? authStatus,
     AppStatus? appStatus,
-    FirebaseMessaging? messaging,
+    // FirebaseMessaging? messaging,
+    ProfilePicUpdateStatus? profilePicUpdateStatus,
   }) {
     return AuthState(
       user: user ?? this.user,
       authStatus: authStatus ?? this.authStatus,
       appStatus: appStatus ?? this.appStatus,
-      messaging: messaging ?? this.messaging,
+      // messaging: messaging ?? this.messaging,
+      profilePicUpdateStatus:
+          profilePicUpdateStatus ?? this.profilePicUpdateStatus,
     );
   }
 }
@@ -235,3 +285,5 @@ class AuthState {
 enum AuthStatus { initial, processing, processed, error }
 
 enum AppStatus { initial, authenticated, unAuthenticated }
+
+enum ProfilePicUpdateStatus { initial, processing, processed, error }

@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,9 @@ import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 @RoutePage()
 class DashBoardPage extends ConsumerStatefulWidget {
@@ -245,34 +251,198 @@ class ProfileWidget extends ConsumerStatefulWidget {
 }
 
 class _ProfileWidgetState extends ConsumerState<ProfileWidget> {
+  final _picker = ImagePicker();
+
   @override
+  Future<void> _getImage(ImageSource imageSource) async {
+    if (imageSource == ImageSource.gallery) {
+      final pickedFile =
+          await _picker.pickImage(source: imageSource, imageQuality: 50);
+      if (pickedFile != null) {
+        imagecrop(pickedFile);
+      }
+    } else {
+      Permission permission = Permission.camera;
+
+      if (await permission.isGranted) {
+        final pickedFile =
+            await _picker.pickImage(source: imageSource, imageQuality: 50);
+        if (pickedFile != null) {
+          imagecrop(pickedFile);
+        }
+      } else {
+        log("Permission Not Granted");
+        PermissionStatus permissionStatus = await permission.request();
+        switch (permissionStatus) {
+          case PermissionStatus.granted:
+            _getImage(imageSource);
+            break;
+          case PermissionStatus.denied:
+            log("Permission Denied");
+            break;
+          case PermissionStatus.permanentlyDenied:
+            // The user opted to never again see the permission request dialog for this
+            // app. The only way to change the permission's status now is through a
+            // system setting. Open the app settings screen.
+            openAppSettings();
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  void imagecrop(XFile BeforeCrop) async {
+    if (BeforeCrop != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: BeforeCrop.path,
+        compressQuality: 50,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Edit Image',
+            toolbarColor: Colors.teal,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+          ),
+          IOSUiSettings(
+            title: 'Edit Image',
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        ref
+            .read(authStateProvider.notifier)
+            .updateProfilePic(File(croppedFile.path));
+      }
+    }
+
+    log("Cropped Image Path: ${BeforeCrop.path}");
+  }
+
+  showCameraOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.r),
+                child: const Text(
+                  'Choose an option',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.camera_alt, color: Colors.blue),
+                title: Text("Camera", style: TextStyle(color: Colors.blue)),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.photo, color: Colors.blue),
+                title: Text("Gallery", style: TextStyle(color: Colors.blue)),
+              ),
+              SizedBox(height: 20.h)
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
+    final updatePicStatus = ref.watch(authStateProvider).profilePicUpdateStatus;
+
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 20.h), // Add some padding
-          CircleAvatar(
-            radius: 62.r,
-            backgroundColor: Colors.white,
-            child: CircleAvatar(
-                backgroundColor: Colors.grey[300], // Add your color here
-                radius: 60.r,
-                // backgroundImage:
-                // AssetImage('assets/profile.jpg'), // Add path to your image file
-                child: Text(
-                  nameProfile(ref.watch(authStateProvider).user!.displayName),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30.sp,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w500,
-                    height: 0,
-                    letterSpacing: 0.56.sp,
-                  ),
-                )),
-          ),
+
+          updatePicStatus == ProfilePicUpdateStatus.processing
+              ? CircleAvatar(
+                  radius: 62.r,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                      backgroundColor: Colors.grey[300], // Add your color here
+                      radius: 60.r,
+                      child: Center(child: CircularProgressIndicator())),
+                )
+              : Stack(
+                  children: [
+                    Container(
+                      child: CircleAvatar(
+                        radius: 62.r,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                            backgroundColor:
+                                Colors.grey[300], // Add your color here
+                            radius: 60.r,
+                            // backgroundImage:
+                            // AssetImage('assets/profile.jpg'), // Add path to your image file
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    ref.watch(authStateProvider).user!.photoURL,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) => Text(
+                                  nameProfile(ref
+                                      .watch(authStateProvider)
+                                      .user!
+                                      .displayName),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 30.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0,
+                                    letterSpacing: 0.56.sp,
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                          radius: 20.r,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                            icon: Icon(Icons.edit,
+                                color: Colors.black, size: 20.r),
+                            onPressed: () {
+                              showCameraOptions();
+                            },
+                          ),
+                        ))
+                  ],
+                ),
           SizedBox(height: 20.h), // Add some padding
           Container(
             height: 32.h, // Adjust the height as needed
