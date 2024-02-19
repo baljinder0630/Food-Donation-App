@@ -15,16 +15,29 @@ class UserAuth extends StateNotifier<AuthState> {
       : super(
           AuthState(
             user: UserModel(
-                uid: "",
-                email: "",
-                displayName: "",
-                photoURL: "",
-                totalConnects: 0),
+              uid: "",
+              email: "",
+              displayName: "",
+              photoURL: "",
+              totalConnects: 0,
+            ),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
           ),
         ) {
     checkAuthentication();
+  }
+
+  String getUid() {
+    return state.user!.uid ?? "";
+  }
+
+  String getDisplayName() {
+    return state.user!.displayName ?? "User";
+  }
+
+  String getPhotoUrl() {
+    return state.user!.photoURL ?? "null";
   }
 
   checkAuthentication() {
@@ -51,11 +64,12 @@ class UserAuth extends StateNotifier<AuthState> {
           }
           state = state.copyWith(
             user: UserModel(
-                uid: value.docs[0].data()['uid'].toString(),
-                email: value.docs[0].data()['email'].toString(),
-                displayName: value.docs[0].data()['displayName'].toString(),
-                photoURL: value.docs[0].data()['photoURL'].toString(),
-                totalConnects: value.docs[0].data()['totalConnects'] ?? 0),
+              uid: value.docs[0].data()['uid'].toString(),
+              email: value.docs[0].data()['email'].toString(),
+              displayName: value.docs[0].data()['displayName'].toString(),
+              photoURL: value.docs[0].data()['photoURL'].toString(),
+              totalConnects: value.docs[0].data()['totalConnects'] ?? 0,
+            ),
             authStatus: AuthStatus.processed,
             appStatus: AppStatus.authenticated,
           );

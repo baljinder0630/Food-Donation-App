@@ -3,34 +3,39 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
+import 'package:food_donation_app/Provider/userProvider.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../Router/route.gr.dart';
+import 'Community/Functions/nameProfile.dart';
 import 'Community/Widgets/myAppBar.dart';
 import 'Community/Widgets/searchBar.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
 
 @RoutePage()
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
+  late String lat;
+  late String long;
+  late Position _currentPosition;
+  late String _address = '';
   int selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
-
-  final user = FirebaseAuth.instance.currentUser!;
-
   final Completer<GoogleMapController> _controller = Completer();
 
   static const CameraPosition _kGooglePlex =
@@ -45,99 +50,139 @@ class _HomePageState extends State<HomePage> {
         ))
   ];
 
-  getLocation() {
-    getUserCurrentLocation().then((value) async {
-      print("${value.latitude} ${value.longitude}");
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error("Location Services are Disabled");
+    }
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error("Location Permissions are Denied");
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          "Location permissions are permanently denied, we cannot request permission");
+    }
 
-      _markers.add(Marker(
-          markerId: const MarkerId('1'),
-          position: LatLng(value.latitude, value.longitude),
-          infoWindow: const InfoWindow(title: "My Current Location")));
-
-      CameraPosition cameraPosition = CameraPosition(
-        zoom: 14,
-        target: LatLng(value.latitude, value.longitude),
-      );
-
-      final GoogleMapController controller = await _controller.future;
-
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-      setState(() {});
-    });
+    _currentPosition = await Geolocator.getCurrentPosition();
+    _getAddressFromLatLng();
+    print(
+        "Fetching Location... \nLatitude: ${_currentPosition.latitude}.\n Longitude: ${_currentPosition.longitude}. \n Adress is $_address");
   }
 
-  Future<Position> getUserCurrentLocation() async {
+  Future<void> _getAddressFromLatLng() async {
     try {
-      await Geolocator.requestPermission().then((value) async {
-        // Check if the permission is granted before proceeding
-        if (value != LocationPermission.denied) {
-          return await Geolocator.getCurrentPosition();
-        } else {
-          // Handle the case where permission is not granted
-          print("Location permission not granted");
-          return await Geolocator.getCurrentPosition();
-        }
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+
+      Placemark place = placemarks[0];
+      setState(() {
+        _address = "${place.street}, ${place.locality}, ${place.country}";
       });
-    } catch (error) {
-      print("Error while getting location: $error");
-      return Position(
-        latitude: 0,
-        longitude: 0,
-        timestamp: DateTime.now(),
-        accuracy: 0.0,
-        altitude: 0.0,
-        heading: 0.0,
-        speed: 0.0,
-        speedAccuracy: 0.0,
-        altitudeAccuracy: 0,
-        headingAccuracy: 0,
-      );
-    }
-    return Position(
-      latitude: 0,
-      longitude: 0,
-      timestamp: DateTime.now(),
-      accuracy: 0.0,
-      altitude: 0.0,
-      heading: 0.0,
-      speed: 0.0,
-      speedAccuracy: 0.0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0,
-    );
-  }
-
-  String userName = "User";
-  String profilePic = "";
-
-  void setData() {
-    if (user.displayName != null) {
-      userName = user.displayName!;
-    } else {
-      userName = "User";
-    }
-
-    if (user.photoURL != null) {
-      profilePic = user.photoURL!;
-
-      if (kDebugMode) {
-        print(
-            "Inside the setData function: printing user PhotoURL ${user.photoURL!}");
-      }
-      if (kDebugMode) {
-        print(
-            "Inside the setData function: printing user PhotoURL $profilePic");
-      }
+    } catch (e) {
+      print(e);
     }
   }
+
+  String generateUniqueIdentifier() {
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+    int randomNumber = Random().nextInt(1000000);
+    String uniqueIdentifier = '$timestamp$randomNumber';
+    return uniqueIdentifier;
+  }
+
+  Future<void> _openMap(String lat, String long) async {
+    String googleURL =
+        'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+    await canLaunchUrlString(googleURL)
+        ? await launchUrl(googleURL as Uri)
+        : throw 'Could Not Launch $googleURL';
+  }
+
+  // getLocation() {
+  //   getUserCurrentLocation().then((value) async {
+  //     print("${value.latitude} ${value.longitude}");
+  //
+  //     _markers.add(Marker(
+  //         markerId: const MarkerId('1'),
+  //         position: LatLng(value.latitude, value.longitude),
+  //         infoWindow: const InfoWindow(title: "My Current Location")));
+  //
+  //     CameraPosition cameraPosition = CameraPosition(
+  //       zoom: 14,
+  //       target: LatLng(value.latitude, value.longitude),
+  //     );
+  //
+  //     final GoogleMapController controller = await _controller.future;
+  //
+  //     controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  //
+  //     setState(() {});
+  //   });
+  // }
+
+  // Future<Position> getUserCurrentLocation() async {
+  //   try {
+  //     await Geolocator.requestPermission().then((value) async {
+  //       // Check if the permission is granted before proceeding
+  //       if (value != LocationPermission.denied) {
+  //         return await Geolocator.getCurrentPosition();
+  //       } else {
+  //         // Handle the case where permission is not granted
+  //         print("Location permission not granted");
+  //         return await Geolocator.getCurrentPosition();
+  //       }
+  //       setState(() {});
+  //     });
+  //   } catch (error) {
+  //     print("Error while getting location: $error");
+  //     return Position(
+  //       latitude: 0,
+  //       longitude: 0,
+  //       timestamp: DateTime.now(),
+  //       accuracy: 0.0,
+  //       altitude: 0.0,
+  //       heading: 0.0,
+  //       speed: 0.0,
+  //       speedAccuracy: 0.0,
+  //       altitudeAccuracy: 0,
+  //       headingAccuracy: 0,
+  //     );
+  //   }
+  //   return Position(
+  //     latitude: 0,
+  //     longitude: 0,
+  //     timestamp: DateTime.now(),
+  //     accuracy: 0.0,
+  //     altitude: 0.0,
+  //     heading: 0.0,
+  //     speed: 0.0,
+  //     speedAccuracy: 0.0,
+  //     altitudeAccuracy: 0,
+  //     headingAccuracy: 0,
+  //   );
+  // }
+  //
+  // void _liveLocation() {
+  //   LocationSettings locationSettings = const LocationSettings(
+  //     accuracy: LocationAccuracy.high,
+  //     distanceFilter: 100,
+  //   );
+  //   Geolocator.getPositionStream(locationSettings: locationSettings)
+  //       .listen((Position position) {
+  //     lat = position.latitude.toString();
+  //     long = position.longitude.toString();
+  //   });
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    setData();
-    getLocation();
+    _getCurrentLocation();
   }
 
   Widget categoryWidget() {
@@ -146,6 +191,7 @@ class _HomePageState extends State<HomePage> {
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
+        padding: EdgeInsets.all(0.r),
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
@@ -197,22 +243,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String generateUniqueIdentifier() {
-    // Get current timestamp in milliseconds
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
-
-    // Generate random number
-    int randomNumber =
-        Random().nextInt(1000000); // Adjust upper bound as needed
-
-    // Concatenate timestamp and random number to create unique identifier
-    String uniqueIdentifier = '$timestamp$randomNumber';
-
-    return uniqueIdentifier;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final id = ref.read(authStateProvider.notifier).getUid();
+    final userName = ref.read(authStateProvider.notifier).getDisplayName();
+    final profilePic = ref.read(authStateProvider.notifier).getPhotoUrl();
     return Scaffold(
       floatingActionButton: Container(
         decoration: const BoxDecoration(
@@ -231,10 +266,11 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color(0xffFEFEFE),
           shape: const OvalBorder(),
           onPressed: () async {
-            context.pushRoute(const RaiseRequestRoute());
+            _openMap(lat, long);
+            // context.pushRoute(const RaiseRequestRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
+          child: Icon(Icons.smart_toy_outlined, size: 36.r, color: green),
         ),
       ),
 
@@ -267,13 +303,31 @@ class _HomePageState extends State<HomePage> {
                             child: MySearchBar(title: "Hunger Spots"),
                           ),
                         ),
+                        // rightWidget: Padding(
+                        //   padding: EdgeInsets.only(left: 8.0.r),
+                        //   child: Image.asset(
+                        //     "lib/assets/Community/peoples.png",
+                        //     width: 106.w,
+                        //     height: 126.h,
+                        //     fit: BoxFit.contain,
+                        //   ),
+                        // ),
                         rightWidget: Padding(
-                          padding: EdgeInsets.only(left: 8.0.r),
-                          child: Image.asset(
-                            "lib/assets/Community/peoples.png",
-                            width: 106.w,
-                            height: 126.h,
-                            fit: BoxFit.contain,
+                          padding: EdgeInsets.only(left: 10.w, right: 24.18.w),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.edit_location_alt_outlined,
+                              size: 30.r,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => {
+                              _getCurrentLocation()
+                              // _getCurrentLocation().then((value) {
+                              //   lat = '${value.latitude}';
+                              //   long = '${value.longitude}';
+                              //   print("$lat + $long");
+                              // })
+                            },
                           ),
                         ),
                       ),
@@ -300,13 +354,29 @@ class _HomePageState extends State<HomePage> {
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
-                        child: profilePic == ""
-                            ? CircleAvatar(
-                                radius: 40.r,
-                                backgroundColor: bgColor,
-                                child: Image.asset(
-                                  "lib/assets/icons/user.png",
-                                  height: 60.h,
+                        child: profilePic.isEmpty || profilePic == "null"
+                            ? Container(
+                                width: 59.85.w,
+                                height: 64.60.h,
+                                decoration: ShapeDecoration(
+                                  color: Colors.grey,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                      nameProfile(userName).isNotEmpty
+                                          ? nameProfile(userName)
+                                          : "NA",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 26.sp,
+                                        fontFamily: 'Outfit',
+                                        fontWeight: FontWeight.w300,
+                                        height: 0,
+                                        letterSpacing: 0.56.sp,
+                                      )),
                                 ))
                             : CircleAvatar(
                                 radius: 40.r,
@@ -314,10 +384,18 @@ class _HomePageState extends State<HomePage> {
                                 child: ClipOval(
                                   child: Image.network(
                                     profilePic,
-                                    // "https://i.pinimg.com/originals/16/5a/a3/165aa3c87d2cae578f91d28b3691b402.jpg",
                                     width: 80.w,
                                     height: 80.h,
                                     fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      // Return a fallback image in case of an error
+                                      return Image.asset(
+                                        "lib/assets/icons/user.png",
+                                        height: 60.h,
+                                      );
+                                    },
                                   ),
                                 ),
                               ),
@@ -356,7 +434,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    "Meerut.",
+                                    _address,
                                     style: TextStyle(
                                         fontStyle: FontStyle.italic,
                                         color: red1,
@@ -390,21 +468,25 @@ class _HomePageState extends State<HomePage> {
                 // ),
 
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.r),
                   width: double.infinity,
                   height: 200.h,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.r)),
-                  child: const Center(child: Text("Space for some animation.")),
+                    color: green.withOpacity(0.45),
+                  ),
+                  child: ClipRRect(
+                    child: Image.asset(
+                      "lib/assets/icons/animation_difference.png",
+                      height: 200.h,
+                    ),
+                  ),
                 ),
                 // Animation ends here.
 
                 Container(
                   margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r),
-                  padding: EdgeInsets.all(15.r),
+                  padding: EdgeInsets.only(top: 15.r, right: 15.r, left: 15.r),
                   width: double.infinity,
-                  height: 70.h,
+                  height: 50.h,
                   child: Text(
                     "Explore",
                     style:
@@ -415,7 +497,8 @@ class _HomePageState extends State<HomePage> {
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
-                  padding: EdgeInsets.all(10.r),
+                  padding:
+                      EdgeInsets.only(bottom: 15.r, right: 15.r, left: 15.r),
                   height: 100.h,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -439,7 +522,7 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.r),
                               child: Text(
-                                "Gulbai Tekra, Navrangpura.Navrangpura",
+                                _address,
                                 style: TextStyle(
                                   color: red1,
                                   fontStyle: FontStyle.italic,
@@ -509,13 +592,11 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                         options: CarouselOptions(
-                            height: 400.sp,
-                            disableCenter: true,
-                            enlargeCenterPage: true,
-                            viewportFraction: 0.7,
-                            initialPage: 2,
-                            scrollPhysics: const NeverScrollableScrollPhysics(),
-                            enlargeFactor: 0.4),
+                          height: 370.h,
+                          autoPlay: false,
+                          viewportFraction: 0.7,
+                          initialPage: 2,
+                        ),
                       );
                     } else {
                       // Data has been loaded, build the carousel
@@ -553,14 +634,11 @@ class _HomePageState extends State<HomePage> {
                           child: donationRequestWidgets[itemIndex],
                         ),
                         options: CarouselOptions(
-                            height: 400.h,
-                            disableCenter: true,
-                            autoPlay: false,
-                            // Remove this feature after updating the fetching method.
-                            enlargeCenterPage: true,
-                            viewportFraction: 0.7,
-                            initialPage: 2,
-                            enlargeFactor: 0.4),
+                          height: 370.h,
+                          autoPlay: false,
+                          viewportFraction: 0.7,
+                          initialPage: 2,
+                        ),
                       );
                     }
                   },
@@ -594,7 +672,7 @@ class _HomePageState extends State<HomePage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.0.r),
                               child: Text(
-                                "Gulbai Tekra, Navrangpura.Navrangpura",
+                                _address,
                                 style: TextStyle(
                                   color: red1,
                                   fontStyle: FontStyle.italic,
