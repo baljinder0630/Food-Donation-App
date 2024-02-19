@@ -8,6 +8,8 @@ import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
 
+import 'Pages/constants/constants.dart';
+
 @RoutePage()
 class AppBottomNavigationBar extends StatefulWidget {
   @override
@@ -40,31 +42,31 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.home),
             title: 'Home',
-            activeColorPrimary: Colors.blue,
+            activeColorPrimary: green,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.comment),
             title: 'Donate Now',
-            activeColorPrimary: Colors.blue,
+            activeColorPrimary: green,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.add_alarm),
             title: 'Donate Now',
-            activeColorPrimary: Colors.blue,
+            activeColorPrimary: green,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.group),
             title: 'Community',
-            activeColorPrimary: Colors.blue,
+            activeColorPrimary: green,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.dashboard),
             title: 'Dashboard',
-            activeColorPrimary: Colors.blue,
+            activeColorPrimary: green,
             inactiveColorPrimary: Colors.grey,
           ),
         ],

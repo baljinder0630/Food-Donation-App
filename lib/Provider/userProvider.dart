@@ -18,11 +18,12 @@ class UserAuth extends StateNotifier<AuthState> {
       : super(
           AuthState(
             user: UserModel(
-                uid: "",
-                email: "",
-                displayName: "",
-                photoURL: "",
-                totalConnects: 0),
+              uid: "",
+              email: "",
+              displayName: "",
+              photoURL: "",
+              totalConnects: 0,
+            ),
             authStatus: AuthStatus.initial,
             appStatus: AppStatus.initial,
             // messaging: FirebaseMessaging.instance,
@@ -32,7 +33,20 @@ class UserAuth extends StateNotifier<AuthState> {
     checkAuthentication();
   }
 
+  String getUid() {
+    return state.user!.uid ?? "";
+  }
+
+  String getDisplayName() {
+    return state.user!.displayName ?? "User";
+  }
+
+  String getPhotoUrl() {
+    return state.user!.photoURL ?? "null";
+  }
+
   checkAuthentication() async {
+
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         state = state.copyWith(
