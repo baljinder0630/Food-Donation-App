@@ -16,15 +16,13 @@ class landDonation extends ConsumerStatefulWidget {
 }
 
 class CharityHomePage extends ConsumerState<landDonation> {
-  List<Map<dynamic, dynamic>> posters =[
+  List<Map<dynamic, dynamic>> posters = [
     {
       'img': 'lib/assets/posters/pos1.png',
     },
     {
       'img': 'lib/assets/posters/pos2.jpg',
     },
-
-
   ];
   List<Map<dynamic, dynamic>> data = [
     {
@@ -96,7 +94,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
                       padding: EdgeInsets.only(right: 34.18.w),
                     ),
                   ),
-                 SizedBox(
+                  SizedBox(
                     height: 40.w,
                   ),
                   DonationCarousel(posters),
@@ -167,7 +165,6 @@ class CharityHomePage extends ConsumerState<landDonation> {
       options: CarouselOptions(
         height: 200.0,
         aspectRatio: screenWidth / 200.0,
-       
         enlargeCenterPage: true,
         autoPlay: true,
       ),
@@ -183,7 +180,6 @@ class CharityHomePage extends ConsumerState<landDonation> {
             // context.pushRoute(item['redirect']);
           },
           child: Container(
-            
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
@@ -197,10 +193,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -235,19 +229,19 @@ class CharityHomePage extends ConsumerState<landDonation> {
           ),
           SizedBox(height: 8.0.r),
           ElevatedButton(
-             onPressed: () async {
+            onPressed: () async {
               try {
                 if (data[index]['category'] == 'Food Donation') {
-                  await context.pushRoute(FoodCategoryFormRoute());
+                  await context.pushRoute(const PersonalDetailsRoute());
                 } else if (data[index]['category'] == 'Fund donation') {
-                  await context.pushRoute(DonationRequestRoute());
+                  await context.pushRoute(const RazorpayPaymentGatewayRoute());
                 } else if (data[index]['category'] == 'Community') {
-                  await context.pushRoute(CommunityHomePageRoute());
+                  await context.pushRoute(const CommunityHomePageRoute());
                 } else if (data[index]['category'] == 'Chat-Bot') {
-                  await context.pushRoute(RaiseRequestRoute());
+                  await context.pushRoute(const RaiseRequestRoute());
                 } else {
                   // Default redirection for other categories
-                  await context.pushRoute(RaiseRequestRoute());
+                  await context.pushRoute(const RaiseRequestRoute());
                 }
               } catch (e) {
                 print('Error during redirection: $e');

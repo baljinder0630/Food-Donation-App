@@ -55,6 +55,18 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: RazorpayPaymentGatewayRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: HomePageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: LandDonationRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
           page: ArticleDetailRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
