@@ -191,7 +191,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   Widget categoryWidget() {
     return Container(
-      margin: EdgeInsets.only(left: 24.w),
+      padding: EdgeInsets.only(left: 24.w),
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
@@ -286,6 +286,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             expandedHeight: 210.h,
             backgroundColor: bgColor,
             surfaceTintColor: bgColor,
+            // bgcolor tha dono me phle
             stretch: true,
             floating: true,
             flexibleSpace: LayoutBuilder(
@@ -351,6 +352,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Column(
               children: [
                 Container(
+                  // decoration: BoxDecoration(
+                  //   color: red1.withOpacity(0.25),
+                  //   borderRadius: BorderRadius.only(
+                  //       bottomLeft: Radius.circular(30),
+                  //       bottomRight: Radius.circular(30)),
+                  // ),
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
@@ -475,19 +482,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //   ),
                 // ),
 
-                Container(
-                  width: double.infinity,
-                  height: 250.h,
-                  decoration: BoxDecoration(
-                    color: green.withOpacity(0.45),
-                  ),
-                  child: ClipRRect(
-                    child: Image.asset(
-                      "lib/assets/icons/animation_difference.png",
-                      height: 200.h,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 250.h,
+                //   decoration: BoxDecoration(
+                //     color: green.withOpacity(0.45),
+                //     borderRadius: BorderRadius.only(
+                //         bottomLeft: Radius.circular(30),
+                //         bottomRight: Radius.circular(30)),
+                //   ),
+                //   child: ClipRRect(
+                //     child: Image.asset(
+                //       "lib/assets/icons/animation_difference.png",
+                //       height: 200.h,
+                //     ),
+                //   ),
+                // ),
                 // Animation ends here.
 
                 Container(

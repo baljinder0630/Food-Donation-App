@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/DonationRequest/donationDescriptionHeader.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Community/Functions/toCamelCase.dart';
 import '../constants/constants.dart';
@@ -40,7 +41,13 @@ class DonationDescription extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
-          DonationDescriptionHeader(),
+          DonationDescriptionHeader(
+            requestName: requestName,
+            ngoName: NGOName,
+            ngoImage: "",
+            totalRequest: totalRequest,
+            remainingRequest: remainingRequest,
+          ),
           SliverToBoxAdapter(
             child: Column(
               children: [
@@ -79,14 +86,13 @@ class DonationDescription extends StatelessWidget {
                                 SizedBox(
                                   width: 10.r,
                                 ),
-                                Expanded(
-                                  child: Text(
-                                    "Food Request",
-                                    style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        color: black,
-                                        fontSize: 17.sp,
-                                        overflow: TextOverflow.ellipsis),
+                                Text(
+                                  "Food Request",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: black,
+                                    fontSize: 17.sp,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -94,18 +100,20 @@ class DonationDescription extends StatelessWidget {
                             SizedBox(
                               height: 5.h,
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width - 30.w,
-                              child: Expanded(
-                                child: Text(
-                                  "$remainingRequest of $totalRequest completed",
-                                  style: TextStyle(
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "$remainingRequest of $totalRequest completed",
+                                    style: TextStyle(
                                       fontStyle: FontStyle.italic,
                                       color: red1,
                                       fontSize: 17.sp,
-                                      overflow: TextOverflow.ellipsis),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -155,16 +163,20 @@ class DonationDescription extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10.0.r),
-                  child: Text(
-                    // "jhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadhjhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadhjhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadhjhdfahkjshfjkhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsfhasfsgjfshjkhdfkjhajdfhakjdhfj adfkj af akjlsh kjsfhkjadh kjahsf fgjadwh kjafh kjgshdg",
-                    description,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                    ),
-                  ),
+                Container(
+                  padding: EdgeInsets.all(10.r),
+                  height: 320.h,
+                  child: description == ""
+                      ? Center(
+                          child: Text("No description"),
+                        )
+                      : Text(
+                          description,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                          ),
+                        ),
                 ),
                 SizedBox(
                   height: 8.h,

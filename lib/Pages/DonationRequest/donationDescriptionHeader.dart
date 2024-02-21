@@ -11,20 +11,21 @@ import '../Community/Functions/toCamelCase.dart';
 import '../constants/constants.dart';
 
 class DonationDescriptionHeader extends StatelessWidget {
-  // final String requestName;
-  // final String ngoImage;
-  // final String ngoName;
+  final String requestName;
+  final String ngoImage;
+  final String ngoName;
+
   // final Position position;
-  // final String totalRequest;
-  // final String remainingRequest;
+  final String totalRequest;
+  final String remainingRequest;
 
   DonationDescriptionHeader({
-    // required this.requestName,
-    // required this.ngoName,
-    // required this.ngoImage,
+    required this.requestName,
+    required this.ngoName,
+    required this.ngoImage,
     // required this.position,
-    // required this.totalRequest,
-    // required this.remainingRequest,
+    required this.totalRequest,
+    required this.remainingRequest,
     super.key,
   });
 
@@ -122,7 +123,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  toCamelCase("requestName"),
+                                  toCamelCase(requestName),
                                   style: TextStyle(
                                       color: white,
                                       fontSize: 20.sp,
@@ -133,7 +134,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                               SizedBox(height: 2.h),
                               Expanded(
                                 child: Text(
-                                  toCamelCase("ngoName"),
+                                  toCamelCase(ngoName),
                                   style: TextStyle(
                                       color: white,
                                       fontSize: 18.sp,
@@ -175,7 +176,8 @@ class DonationDescriptionHeader extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 10.r),
                           child: Column(
                             children: [
-                              getPercent("30", "3", Colors.white),
+                              getPercent(
+                                  remainingRequest, totalRequest, Colors.white),
                             ],
                           ),
                         ),
