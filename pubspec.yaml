@@ -73,7 +73,7 @@ dependencies:
   grouped_list: ^4.0.0
   smart_auth: any
   video_player: ^2.8.2
-
+  circle_nav_bar: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
