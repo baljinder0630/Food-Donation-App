@@ -89,8 +89,7 @@ class UserCardShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin:
-            EdgeInsets.only(left: 24.w, right: 24.w, bottom: 10.h, top: 10.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h, top: 5.h),
         width: 376.w,
         height: 83.h,
         padding: EdgeInsets.all(14.r),
@@ -99,14 +98,14 @@ class UserCardShimmerEffect extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r),
           ),
-          shadows: const [
-            BoxShadow(
-              color: Color(0x3F000000),
-              blurRadius: 8,
-              offset: Offset(0, 0),
-              spreadRadius: 0,
-            )
-          ],
+          // shadows: const [
+          //   BoxShadow(
+          //     color: Color(0x3F000000),
+          //     blurRadius: 8,
+          //     offset: Offset(0, 0),
+          //     spreadRadius: 0,
+          //   )
+          // ],
         ),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,8 +118,8 @@ class UserCardShimmerEffect extends StatelessWidget {
                     end: Alignment.centerRight,
                     colors: [Colors.grey, Colors.white, Colors.grey]),
                 child: Container(
-                  width: 59.85.w,
-                  height: 64.60.h,
+                  width: 60.w,
+                  height: 65.h,
                   decoration: ShapeDecoration(
                     color: Colors.grey,
                     shape: RoundedRectangleBorder(
@@ -135,7 +134,7 @@ class UserCardShimmerEffect extends StatelessWidget {
                 children: [
                   Container(
                     height: 18.h,
-                    width: 100.w,
+                    width: 200.w,
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
                     child: Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
@@ -148,7 +147,7 @@ class UserCardShimmerEffect extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Container(
                     height: 10.h,
-                    width: 100.w,
+                    width: 200.w,
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
                     child: Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,

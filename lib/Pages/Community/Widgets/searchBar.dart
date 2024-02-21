@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../constants/constants.dart';
+
 class MySearchBar extends StatefulWidget {
   String title;
+
   MySearchBar({required this.title, super.key});
 
   @override
@@ -60,7 +63,8 @@ class _MySearchBarState extends State<MySearchBar> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Color(0xFF5272FC),
+                // color: Color(0xFF5272FC),
+                color: red1,
                 fontSize: 18.sp,
                 fontFamily: 'Outfit',
                 fontWeight: FontWeight.w400,

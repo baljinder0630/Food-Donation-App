@@ -18,10 +18,13 @@ import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:uuid/uuid.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../constants/constants.dart';
+
 @RoutePage()
 class PostArticle extends ConsumerStatefulWidget {
   bool isEdit = false;
   PostModel? post;
+
   PostArticle({this.isEdit = false, this.post, super.key});
 
   @override
@@ -157,7 +160,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Edit Image',
-            toolbarColor: Colors.teal,
+            toolbarColor: green,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false,
           ),
@@ -208,16 +211,16 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   await _getImage(ImageSource.camera);
                   Navigator.pop(context);
                 },
-                leading: Icon(Icons.camera_alt, color: Colors.blue),
-                title: Text("Camera", style: TextStyle(color: Colors.blue)),
+                leading: Icon(Icons.camera_alt, color: green),
+                title: Text("Camera", style: TextStyle(color: green)),
               ),
               ListTile(
                 onTap: () async {
                   await _getImage(ImageSource.gallery);
                   Navigator.pop(context);
                 },
-                leading: Icon(Icons.photo, color: Colors.blue),
-                title: Text("Gallery", style: TextStyle(color: Colors.blue)),
+                leading: Icon(Icons.photo, color: green),
+                title: Text("Gallery", style: TextStyle(color: green)),
               ),
               SizedBox(height: 20.h)
             ],

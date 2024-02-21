@@ -21,7 +21,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("users")
@@ -33,7 +33,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return const Text("Something went wrong");
             }
             if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
               return ListView.builder(
@@ -48,18 +48,18 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                     builder: (BuildContext context,
                         AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return Text("Something went wrong");
+                        return const Text("Something went wrong");
                       }
 
                       if (snapshot.hasData && !snapshot.data!.exists) {
-                        return Text("Document does not exist");
+                        return const Text("Document does not exist");
                       }
 
                       if (snapshot.connectionState == ConnectionState.done) {
                         Map<String, dynamic> data =
                             snapshot.data!.data() as Map<String, dynamic>;
                         return ListTile(
-                          leading: Container(
+                          leading: SizedBox(
                             height: 50.r,
                             width: 50.r,
                             child: ClipOval(
@@ -74,12 +74,12 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                             ),
                           ),
                           title: Text(data['displayName']),
-                          subtitle: Text('Connection Request'),
+                          subtitle: const Text('Connection Request'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               TextButton(
-                                child: Text('Accept'),
+                                child: const Text('Accept'),
                                 onPressed: () async {
                                   try {
                                     await FirebaseFirestore.instance
@@ -138,7 +138,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                 },
                               ),
                               TextButton(
-                                child: Text('Ignore'),
+                                child: const Text('Ignore'),
                                 onPressed: () {},
                               ),
                             ],
@@ -146,19 +146,19 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                         );
                       }
 
-                      return Text("Loading");
+                      return const Text("Loading");
                     },
                   );
                 },
               );
             } else {
-              return Text(
+              return const Text(
                 'No incoming requests',
                 style: TextStyle(fontFamily: "Poppins"),
               );
             }
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),

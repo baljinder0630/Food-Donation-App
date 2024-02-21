@@ -15,6 +15,8 @@ import 'package:food_donation_app/Pages/Community/peoplePage.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
+import '../constants/constants.dart';
+
 @RoutePage()
 class CommunityHomePage extends ConsumerStatefulWidget {
   const CommunityHomePage({super.key});
@@ -61,9 +63,7 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                 child: Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: ShapeDecoration(
-                    color: index == selectedCategory
-                        ? Color(0xFF5272FC)
-                        : Colors.white,
+                    color: index == selectedCategory ? green : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
@@ -209,19 +209,19 @@ Widget getSelectedCategoryWidget(int selectedCategory) {
 
 Widget SearchHistory(context) {
   return Container(
-      width: 28.80,
-      height: 28.80,
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Colors.transparent,
-        // color: Color(0xFFFEFEFE),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+    width: 28.80,
+    height: 28.80,
+    clipBehavior: Clip.antiAlias,
+    decoration: ShapeDecoration(
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.r),
       ),
-      child: Icon(
-        Icons.chat,
-        size: 28.8.r,
-        color: Color(0xFFFEFEFE),
-      ));
+    ),
+    child: Icon(
+      Icons.chat,
+      size: 28.8.r,
+      color: Color(0xFFFEFEFE),
+    ),
+  );
 }
