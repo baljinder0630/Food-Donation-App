@@ -20,7 +20,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     ref.listen(authStateProvider, (previous, next) {
       if (next.appStatus == AppStatus.authenticated) {
         context.router.replace(const AppBottomNavigationBarRoute());
-        // context.router.replace(const CommunityHomePageRoute());
       } else {
         context.router.replace(const SignUpPageRoute());
       }
