@@ -51,39 +51,111 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Aahar'),
-      ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: MessagesScreen(messages: messages),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/chatbot_background.png',
+              fit: BoxFit.cover,
+            ),
           ),
-          Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-              color: Colors.deepPurple,
-              child: Container(
-                margin: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    Expanded(
+          Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).padding.top + kToolbarHeight,
+                child: AppBar(
+                  title: const Text(
+                    'Aahar',
+                    style: TextStyle(fontSize: 25.0),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ),
+              ),
+              Expanded(
+                child: MessagesScreen(messages: messages),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    children: [
+                      Expanded(
                         child: TextField(
-                            controller: _controller,
-                            cursorColor: Colors.white,
-                            style: const TextStyle(color: Colors.white))),
-                    IconButton(
+                          controller: _controller,
+                          cursorColor: Colors.green,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your query here',
+                            prefixIcon: const Icon(Icons.chat_bubble_outline),
+                            hintStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorStyle: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      IconButton(
                         onPressed: () {
                           sendMessage(_controller.text);
                           _controller.clear();
                         },
                         icon: const Icon(
                           Icons.send,
-                          color: Colors.white,
-                        ))
-                  ],
+                          size: 25.0,
+                          color: Colors.green,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          sendMessage(_controller.text);
+                          _controller.clear();
+                        },
+                        icon: const Icon(
+                          Icons.mic_outlined,
+                          size: 25.0,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ))
+              ),
+            ],
+          ),
         ],
       ),
     );

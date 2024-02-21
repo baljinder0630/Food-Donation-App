@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +58,7 @@ class _RazorpayPaymentGatewayState
                 decoration: ShapeDecoration(
                   color: Color(0xFFFEFEFE),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28.80),
+                    borderRadius: BorderRadius.circular(50.80),
                   ),
                   shadows: const [
                     BoxShadow(
@@ -202,60 +201,174 @@ class _RazorpayPaymentGatewayState
   @override
   Widget build(BuildContext context) {
     final paymentStatus = ref.watch(fundRequestProvider).status;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: TextField(
-                controller: amountTextEditingController,
-                decoration:
-                    const InputDecoration(hintText: "Enter your Amount"),
+      resizeToAvoidBottomInset: false,
+      body: Stack(children: [
+        Positioned.fill(
+          child: Image.asset(
+            'assets/phone_background.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Center(
+            child: Container(
+          width: 0.95 * screenWidth,
+          height: 0.7 * screenHeight,
+          padding: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
               ),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.green),
-                child: paymentStatus == 'processing'
-                    ? Center(
-                        child: SizedBox(
-                          width: 20.r,
-                          height: 20.r,
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Fund Donation",
+                style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: SizedBox(
+                  width: 400,
+                  height: 250,
+                  child: Image.asset('assets/fund_donation.png'),
+                ),
+              ),
+              TextField(
+                controller: amountTextEditingController,
+                cursorColor: Colors.green,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: 'Enter your amount here',
+                  prefixIcon: const Icon(Icons.monetization_on),
+                  hintStyle: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.green,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.green,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.green,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.green,
+                      width: 1.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  errorStyle: const TextStyle(color: Colors.black),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.red),
+                      onPressed: () async {
+                        await context.popRoute();
+                      },
+                      child: Center(
+                        child: Text(
+                          'Cancel',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 28.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w600,
+                            height: 0,
+                            letterSpacing: 1.12.sp,
                           ),
                         ),
-                      )
-                    : Text(
-                        'Pay Now',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 28.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w600,
-                          height: 0,
-                          letterSpacing: 1.12.sp,
-                        ),
-                      ),
-                onPressed: () {
-                  var options = {
-                    'key': "rzp_test_5qGuiLCMwKPmFo",
-                    'amount':
-                        (int.parse(amountTextEditingController.text) * 100)
-                            .toString(),
-                    'name': 'Aahar',
-                    'description': 'Aahar Fund Request Payment',
-                    'timeout': 300,
-                  };
-                  _razorpay.open(options);
-                })
-          ],
-        ),
-      ),
+                      )),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.green),
+                      child: paymentStatus == 'processing'
+                          ? Center(
+                              child: SizedBox(
+                                width: screenWidth - 40,
+                                height: 20.r,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              'Proceed',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 28.sp,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                                letterSpacing: 1.12.sp,
+                              ),
+                            ),
+                      onPressed: () {
+                        if (amountTextEditingController.text.length == 0) {
+                          Fluttertoast.showToast(
+                              msg: "Please enter amount.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        } else {
+                          final options = {
+                            'key': "rzp_test_5qGuiLCMwKPmFo",
+                            'amount':
+                                (int.parse(amountTextEditingController.text) *
+                                        100)
+                                    .toString(),
+                            'name': 'Aahar',
+                            'description': 'Aahar Fund Request Payment',
+                            'timeout': 300,
+                          };
+                          _razorpay.open(options);
+                        }
+                      }),
+                ],
+              )
+            ],
+          ),
+        )),
+      ]),
     );
   }
 }

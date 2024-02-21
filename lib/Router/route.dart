@@ -121,6 +121,10 @@ class AppRouter extends $AppRouter {
           page: ChattingPageRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+          page: PersonalDetailsRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        ),
         // CustomRoute(
         //   page: PhoneScreenRoute.page,
         //   transitionsBuilder: TransitionsBuilders.slideLeft,
