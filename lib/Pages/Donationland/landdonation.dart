@@ -43,17 +43,27 @@ class CharityHomePage extends ConsumerState<landDonation> {
     },
     {
       'img': 'lib/assets/donateimg/chatbot.png',
-      'category': 'Chat-Bot',
-      'redirect': 'RaiseRequestRoute()',
+      'category': 'Resolve Query',
+      'redirect': ChatBotScreenRoute(),
     },
     {
       'img': 'images/groceries.png',
-      'category': 'Food items & supplies',
+      'category': 'Be a Volunteer',
       'redirect': 'RaiseRequestRoute()',
     },
     {
       'img': 'images/vegetables.png',
-      'category': 'Packed items',
+      'category': 'Raise a Request',
+      'redirect': 'RaiseRequestRoute()',
+    },
+    {
+      'img': 'images/vegetables.png',
+      'category': 'Connect',
+      'redirect': 'RaiseRequestRoute()',
+    },
+    {
+      'img': 'images/vegetables.png',
+      'category': 'your contributions',
       'redirect': 'RaiseRequestRoute()',
     }
   ];
@@ -153,6 +163,9 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 return buildGridItem(context, index + 2);
               },
             ),
+            SizedBox(
+              height: 40.r,
+            ),
           ],
         ),
       ),
@@ -237,8 +250,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                   await context.pushRoute(const RazorpayPaymentGatewayRoute());
                 } else if (data[index]['category'] == 'Community') {
                   await context.pushRoute(const CommunityHomePageRoute());
-                } else if (data[index]['category'] == 'Chat-Bot') {
-                  await context.pushRoute(const RaiseRequestRoute());
+                } else if (data[index]['category'] == 'Resolve Query') {
+                  await context.pushRoute(const ChatBotScreenRoute());
                 } else {
                   // Default redirection for other categories
                   await context.pushRoute(const RaiseRequestRoute());

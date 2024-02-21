@@ -792,7 +792,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
-
   grouped_list:
     dependency: "direct main"
     description:
@@ -801,7 +800,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
-
   html:
     dependency: transitive
     description:

@@ -110,6 +110,9 @@ flutter:
     - lib/assets/logo/
     - assets/dialog_flow_auth.json
     - assets/img1.png
+    - assets/fund_donation.png
+    - assets/phone_background.png
+    - assets/chatbot_background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
