@@ -12,8 +12,11 @@ import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constants/constants.dart';
+
 class UserCard extends ConsumerStatefulWidget {
   final UserModel user;
+
   const UserCard({required this.user, super.key});
 
   @override
@@ -41,23 +44,23 @@ class _UserCardState extends ConsumerState<UserCard> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
                 margin: EdgeInsets.only(
-                    left: 24.w, right: 24.w, bottom: 10.h, top: 10.h),
-                width: 376.w,
+                    left: 10.w, right: 10.w, bottom: 5.h, top: 5.h),
+                width: MediaQuery.of(context).size.width,
                 height: 83.h,
                 padding: EdgeInsets.all(14.r),
                 decoration: ShapeDecoration(
-                  color: const Color(0xFFFEFEFE),
+                  color: white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  shadows: const [
-                    BoxShadow(
-                      color: Color(0x3F000000),
-                      blurRadius: 8,
-                      offset: Offset(0, 0),
-                      spreadRadius: 0,
-                    )
-                  ],
+                  // shadows: const [
+                  //   BoxShadow(
+                  //     color: Color(0x3F000000),
+                  //     blurRadius: 8,
+                  //     offset: Offset(0, 0),
+                  //     spreadRadius: 0,
+                  //   )
+                  // ],
                 ),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,12 +73,12 @@ class _UserCardState extends ConsumerState<UserCard> {
                             end: Alignment.centerRight,
                             colors: [Colors.grey, Colors.white, Colors.grey]),
                         child: Container(
-                          width: 59.85.w,
-                          height: 64.60.h,
+                          width: 60.w,
+                          height: 65.h,
                           decoration: ShapeDecoration(
                             color: Colors.grey,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(17),
+                              borderRadius: BorderRadius.circular(17.r),
                             ),
                           ),
                         ),
@@ -86,7 +89,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                         children: [
                           Container(
                             height: 18.h,
-                            width: 100.w,
+                            width: 200.w,
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: Shimmer.fromColors(
                               baseColor: Colors.grey[300]!,
@@ -99,7 +102,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                           SizedBox(height: 4.h),
                           Container(
                             height: 10.h,
-                            width: 100.w,
+                            width: 200.w,
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: Shimmer.fromColors(
                               baseColor: Colors.grey[300]!,
@@ -130,9 +133,9 @@ class _UserCardState extends ConsumerState<UserCard> {
           }
 
           return Container(
-            margin: EdgeInsets.only(
-                left: 24.w, right: 24.w, bottom: 10.h, top: 10.h),
-            width: 376.w,
+            margin:
+                EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h, top: 5.h),
+            width: MediaQuery.of(context).size.width,
             height: 83.h,
             padding: EdgeInsets.all(14.r),
             decoration: ShapeDecoration(
@@ -140,23 +143,23 @@ class _UserCardState extends ConsumerState<UserCard> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.r),
               ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x3F000000),
-                  blurRadius: 8,
-                  offset: Offset(0, 0),
-                  spreadRadius: 0,
-                )
-              ],
+              // shadows: const [
+              //   BoxShadow(
+              //     color: Color(0x3F000000),
+              //     blurRadius: 8,
+              //     offset: Offset(0, 0),
+              //     spreadRadius: 0,
+              //   )
+              // ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // widget.user.photoURL != null || widget.user.photoURL.isEmpty
                 Container(
-                  width: 59.85.w,
-                  height: 64.60.h,
+                  width: 60.w,
+                  height: 65.h,
                   decoration: ShapeDecoration(
                     color: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -170,10 +173,10 @@ class _UserCardState extends ConsumerState<UserCard> {
                       fit: BoxFit.fill,
                       errorWidget: (context, error, stackTrace) {
                         return Container(
-                            width: 59.85.w,
-                            height: 64.60.h,
+                            width: 60.w,
+                            height: 65.h,
                             decoration: ShapeDecoration(
-                              color: Colors.grey,
+                              color: bgColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.r),
                               ),
@@ -186,7 +189,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                                       : "NA",
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16.sp,
+                                    fontSize: 20.sp,
                                     fontFamily: 'Outfit',
                                     fontWeight: FontWeight.w500,
                                     height: 0,
@@ -202,48 +205,46 @@ class _UserCardState extends ConsumerState<UserCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 100.w,
+                        padding: EdgeInsets.all(10.r),
+                        width: 130.w,
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Center(
-                              child: Container(
-                                height: 18.h,
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                child: Text(
-                                  widget.user.displayName.isEmpty
-                                      ? "NO NAME"
-                                      : widget.user.displayName.toUpperCase(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Color(0xFF201F24),
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0,
-                                    letterSpacing: 0.56.sp,
-                                  ),
+                            Container(
+                              height: 18.h,
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Text(
+                                widget.user.displayName.isEmpty
+                                    ? "NO NAME"
+                                    : widget.user.displayName.toUpperCase(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Color(0xFF201F24),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
+                                  letterSpacing: 0.56.sp,
                                 ),
                               ),
                             ),
                             SizedBox(height: 2.h),
-                            Center(
-                              child: Container(
-                                height: 15.h,
-                                child: Text(
-                                  widget.user.totalConnects.toString() +
-                                      " connects",
-                                  style: TextStyle(
-                                    color: Color(0xFF201F24),
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w300,
-                                    height: 0,
-                                    letterSpacing: 0.48.sp,
-                                  ),
+                            Container(
+                              padding: EdgeInsets.only(left: 8.r),
+                              width: 130.w,
+                              height: 15.h,
+                              child: Text(
+                                widget.user.totalConnects.toString() +
+                                    " connects",
+                                style: TextStyle(
+                                  color: Color(0xFF201F24),
+                                  fontSize: 12.sp,
+                                  fontFamily: 'Outfit',
+                                  fontWeight: FontWeight.w300,
+                                  height: 0,
+                                  letterSpacing: 0.48.sp,
                                 ),
                               ),
                             ),
@@ -289,7 +290,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                                                 color: connection ==
                                                         ConnectionStatus.pending
                                                     ? Color(Colors.grey.value)
-                                                    : Color(0xFF5272FC),
+                                                    : green,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -354,18 +355,18 @@ class _UserCardState extends ConsumerState<UserCard> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 9.50.w, vertical: 6.5.h),
                               decoration: ShapeDecoration(
-                                color: Color(0xFFFEFEFE),
+                                color: bgColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                 ),
-                                shadows: const [
-                                  BoxShadow(
-                                    color: Color(0x3F000000),
-                                    blurRadius: 8,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
+                                // shadows: const [
+                                //   BoxShadow(
+                                //     color: Color(0x3F000000),
+                                //     blurRadius: 8,
+                                //     offset: Offset(0, 0),
+                                //     spreadRadius: 0,
+                                //   )
+                                // ],
                               ),
                               child: Center(
                                 child: Container(

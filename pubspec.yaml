@@ -103,6 +103,8 @@ flutter:
     - lib/assets/images/exploreImages/
     - lib/assets/Community/
     - images/
+    - assets/
+    - assets/chatBg.png
     - lib/assets/icons/
     - lib/assets/images/
     - lib/assets/donateimg/
