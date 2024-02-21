@@ -10,10 +10,12 @@ import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+
+// import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher_string.dart';
 import '../Router/route.gr.dart';
 import 'Community/Functions/nameProfile.dart';
 import 'Community/Widgets/myAppBar.dart';
@@ -36,19 +38,20 @@ class _HomePageState extends ConsumerState<HomePage> {
   late String _address = '';
   int selectedCategory = 0;
   List<String> categories = ["All", "Food Request", "Fund Request"];
-  final Completer<GoogleMapController> _controller = Completer();
 
-  static const CameraPosition _kGooglePlex =
-      CameraPosition(target: LatLng(33.6844, 73.0479), zoom: 14);
+  // final Completer<GoogleMapController> _controller = Completer();
 
-  final List<Marker> _markers = <Marker>[
-    const Marker(
-        markerId: MarkerId("1"),
-        position: LatLng(33.4322, 73.2232),
-        infoWindow: InfoWindow(
-          title: "Marker Title",
-        ))
-  ];
+  // static const CameraPosition _kGooglePlex =
+  //     CameraPosition(target: LatLng(33.6844, 73.0479), zoom: 14);
+
+  // final List<Marker> _markers = <Marker>[
+  //   const Marker(
+  //       markerId: MarkerId("1"),
+  //       position: LatLng(33.4322, 73.2232),
+  //       infoWindow: InfoWindow(
+  //         title: "Marker Title",
+  //       ))
+  // ];
 
   Future<void> _getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -80,7 +83,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       Placemark place = placemarks[0];
       setState(() {
-        _address = "${place.street}, ${place.locality}, ${place.country}";
+        _address =
+            "${place.street} ${place.subLocality} ${place.locality} ${place.country}, ${place.postalCode}";
       });
     } catch (e) {
       print(e);
@@ -94,13 +98,13 @@ class _HomePageState extends ConsumerState<HomePage> {
     return uniqueIdentifier;
   }
 
-  Future<void> _openMap(String lat, String long) async {
-    String googleURL =
-        'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrl(googleURL as Uri)
-        : throw 'Could Not Launch $googleURL';
-  }
+  // Future<void> _openMap(String lat, String long) async {
+  //   String googleURL =
+  //       'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  //   await canLaunchUrlString(googleURL)
+  //       ? await launchUrl(googleURL as Uri)
+  //       : throw 'Could Not Launch $googleURL';
+  // }
 
   // getLocation() {
   //   getUserCurrentLocation().then((value) async {
@@ -187,7 +191,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   Widget categoryWidget() {
     return Container(
-      margin: EdgeInsets.only(left: 24.w),
+      padding: EdgeInsets.only(left: 24.w),
       alignment: Alignment.centerLeft,
       height: 43.h,
       child: ListView.builder(
@@ -245,7 +249,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final id = ref.read(authStateProvider.notifier).getUid();
+    // final id = ref.read(authStateProvider.notifier).getUid();
     final userName = ref.read(authStateProvider.notifier).getDisplayName();
     final profilePic = ref.read(authStateProvider.notifier).getPhotoUrl();
     return Scaffold(
@@ -277,12 +281,12 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
-        
         slivers: [
           SliverAppBar(
-            expandedHeight: 200,
+            expandedHeight: 210.h,
             backgroundColor: bgColor,
             surfaceTintColor: bgColor,
+            // bgcolor tha dono me phle
             stretch: true,
             floating: true,
             flexibleSpace: LayoutBuilder(
@@ -347,42 +351,36 @@ class _HomePageState extends ConsumerState<HomePage> {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                SizedBox(
-                  height: 50.h,
-                ),
                 Container(
-                  
+                  // decoration: BoxDecoration(
+                  //   color: red1.withOpacity(0.25),
+                  //   borderRadius: BorderRadius.only(
+                  //       bottomLeft: Radius.circular(30),
+                  //       bottomRight: Radius.circular(30)),
+                  // ),
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
-                      
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
                         child: profilePic.isEmpty || profilePic == "null"
-                            ? Container(
-                                width: 59.85.w,
-                                height: 64.60.h,
-                                decoration: ShapeDecoration(
-                                  color: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(17),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                      nameProfile(userName).isNotEmpty
-                                          ? nameProfile(userName)
-                                          : "NA",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 26.sp,
-                                        fontFamily: 'Outfit',
-                                        fontWeight: FontWeight.w300,
-                                        height: 0,
-                                        letterSpacing: 0.56.sp,
-                                      )),
-                                ))
+                            ? CircleAvatar(
+                                radius: 40.r,
+                                backgroundColor: bgColor,
+                                child: Text(
+                                    nameProfile(userName).isNotEmpty
+                                        ? nameProfile(userName)
+                                        : "NA",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 27.sp,
+                                      fontFamily: 'Outfit',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                      letterSpacing: 0.56.sp,
+                                    )),
+                              )
                             : CircleAvatar(
                                 radius: 40.r,
                                 backgroundColor: bgColor,
@@ -396,9 +394,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         Object exception,
                                         StackTrace? stackTrace) {
                                       // Return a fallback image in case of an error
-                                      return Image.asset(
-                                        "lib/assets/icons/user.png",
-                                        height: 60.h,
+                                      return CircleAvatar(
+                                        radius: 40.r,
+                                        backgroundColor: bgColor,
+                                        child: Text(
+                                            nameProfile(userName).isNotEmpty
+                                                ? nameProfile(userName)
+                                                : "NA",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 27.sp,
+                                              fontFamily: 'Outfit',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                              letterSpacing: 0.56.sp,
+                                            )),
                                       );
                                     },
                                   ),
@@ -472,17 +482,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //   ),
                 // ),
 
-                Container(
-                  width: double.infinity,
-                  height: 250.h,
-                  decoration: BoxDecoration(    
-                      borderRadius: BorderRadius.circular(15.r),
-                      image: DecorationImage(
-                      image: AssetImage("lib/assets/general/sad1.png"),
-                      fit: BoxFit.cover,
-                      )
-                      ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 250.h,
+                //   decoration: BoxDecoration(
+                //     color: green.withOpacity(0.45),
+                //     borderRadius: BorderRadius.only(
+                //         bottomLeft: Radius.circular(30),
+                //         bottomRight: Radius.circular(30)),
+                //   ),
+                //   child: ClipRRect(
+                //     child: Image.asset(
+                //       "lib/assets/icons/animation_difference.png",
+                //       height: 200.h,
+                //     ),
+                //   ),
+                // ),
                 // Animation ends here.
 
                 Container(
@@ -724,7 +739,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                .collection('ngorequests')
+                .collection('ngoRequests')
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -742,46 +757,56 @@ class _HomePageState extends ConsumerState<HomePage> {
                         (BuildContext context, int index) {
                           final document = documents[index];
                           final reqType = document['requestType'];
+                          final reqStatus = document['raiseRequestStatus'];
 
-                          if (selectedCategory == 1 && reqType) {
+                          if (selectedCategory == 1 && reqType == "Food") {
                             return DonationRequestCard(
-                              spotName: document['name'],
-                              spotCity: document['city'],
-                              noOfServing: document['numberOfServings'],
-                              requestType: document['requestType'],
-                              percentDone: document['percentageRemaining'],
-                              spotStreet: document['streetName'],
-                              contactNumber: document['percentageRemaining'],
+                              createdTime: document['createdTime'],
                               description: document['description'],
-                              pincode: document['pinCode'],
-                              spotState: document['state'],
+                              spotCity: document['district'],
+                              ngoID: document['id'],
+                              contactNumber: document['mobileNumber'],
+                              requestName: document['ngoName'],
+                              noOfServing: document['numberOfServings'],
+                              pincode: document['pincode'],
+                              plotNo: document['plotNo'],
+                              requestType: document['requestType'],
+                              percentFulfilled: document['requestsFulfilled'],
+                              spotStreet: document['streetNo'],
                             );
-                          } else if (selectedCategory == 2 && !reqType) {
+                          } else if (selectedCategory == 2 &&
+                              reqType == "Fund") {
                             return DonationRequestCard(
-                              spotName: document['name'],
-                              spotCity: document['city'],
-                              noOfServing: document['numberOfServings'],
-                              requestType: document['requestType'],
-                              percentDone: document['percentageRemaining'],
-                              spotStreet: document['streetName'],
-                              contactNumber: document['percentageRemaining'],
+                              createdTime: document['createdTime'],
                               description: document['description'],
-                              pincode: document['pinCode'],
-                              spotState: document['state'],
+                              spotCity: document['district'],
+                              ngoID: document['id'],
+                              contactNumber: document['mobileNumber'],
+                              requestName: document['ngoName'],
+                              noOfServing: document['numberOfServings'],
+                              pincode: document['pincode'],
+                              plotNo: document['plotNo'],
+                              requestType: document['requestType'],
+                              percentFulfilled: document['requestsFulfilled'],
+                              spotStreet: document['streetNo'],
+                            );
+                          } else if (selectedCategory == 0) {
+                            return DonationRequestCard(
+                              createdTime: document['createdTime'],
+                              description: document['description'],
+                              spotCity: document['district'],
+                              ngoID: document['id'],
+                              contactNumber: document['mobileNumber'],
+                              requestName: document['ngoName'],
+                              noOfServing: document['numberOfServings'],
+                              pincode: document['pincode'],
+                              plotNo: document['plotNo'],
+                              requestType: document['requestType'],
+                              percentFulfilled: document['requestsFulfilled'],
+                              spotStreet: document['streetNo'],
                             );
                           } else {
-                            return DonationRequestCard(
-                              spotName: document['name'],
-                              spotCity: document['city'],
-                              noOfServing: document['numberOfServings'],
-                              requestType: document['requestType'],
-                              percentDone: document['percentageRemaining'],
-                              spotStreet: document['streetName'],
-                              contactNumber: document['percentageRemaining'],
-                              description: document['description'],
-                              pincode: document['pinCode'],
-                              spotState: document['state'],
-                            );
+                            return SizedBox();
                           }
                         },
                         childCount: documents.length,
@@ -815,10 +840,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   String getCookedTime(Timestamp creationTimestamp) {
-    if (creationTimestamp == null) {
-      return "-";
-    }
-
     DateTime creationTime = creationTimestamp.toDate();
 
     DateTime currentTime = DateTime.now();

@@ -7,6 +7,7 @@ import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 
+import '../constants/constants.dart';
 import '../homePage.dart';
 import 'YourDonationRequest.dart';
 
@@ -43,9 +44,7 @@ class _DonationRequestState extends State<DonationRequest> {
                 child: Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: ShapeDecoration(
-                    color: index == selectedCategory
-                        ? Color(0xFF5272FC)
-                        : Colors.white,
+                    color: index == selectedCategory ? green : Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.r),
                     ),
@@ -103,23 +102,14 @@ class _DonationRequestState extends State<DonationRequest> {
             context.pushRoute(const RaiseRequestRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.add_circle_rounded,
-              size: 36.r, color: Color(0xFF5272FC)),
+          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              child: const Text(
-                "Donation Request",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis),
-              ),
+            SizedBox(
+              height: 20.h,
             ),
             MyAppBar(
               centerWidget: Padding(
@@ -151,59 +141,105 @@ class _DonationRequestState extends State<DonationRequest> {
             SizedBox(
               height: 20.h,
             ),
-
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('ngorequests')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                List<DocumentSnapshot> documents = snapshot.data!.docs;
-                return Expanded(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      final document = documents[index];
-                      return DonationRequestCard(
-                        spotName: document['name'],
-                        spotCity: document['city'],
-                        noOfServing: document['numberOfServings'],
-                        requestType: document['requestType'],
-                        percentDone: document['percentageRemaining'],
-                        spotStreet: document['streetName'],
-                        contactNumber: document['percentageRemaining'],
-                        description: document['description'],
-                        pincode: document['pinCode'],
-                        spotState: document['state'],
+            SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height - 300.h,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('ngoRequests')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
-                    },
-                  ),
-                ));
-              },
+                    }
+                    List<DocumentSnapshot> documents = snapshot.data!.docs;
+                    return documents.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: documents.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final document = documents[index];
+                              final reqType = document['requestType'];
+                              if (selectedCategory == 1 && reqType == "Food") {
+                                return DonationRequestCard(
+                                  createdTime: document['createdTime'],
+                                  description: document['description'],
+                                  spotCity: document['district'],
+                                  ngoID: document['id'],
+                                  contactNumber: document['mobileNumber'],
+                                  requestName: document['ngoName'],
+                                  noOfServing: document['numberOfServings'],
+                                  pincode: document['pincode'],
+                                  plotNo: document['plotNo'],
+                                  requestType: document['requestType'],
+                                  percentFulfilled:
+                                      document['requestsFulfilled'],
+                                  spotStreet: document['streetNo'],
+                                );
+                              } else if (selectedCategory == 2 &&
+                                  reqType == "Fund") {
+                                return DonationRequestCard(
+                                  createdTime: document['createdTime'],
+                                  description: document['description'],
+                                  spotCity: document['district'],
+                                  ngoID: document['id'],
+                                  contactNumber: document['mobileNumber'],
+                                  requestName: document['ngoName'],
+                                  noOfServing: document['numberOfServings'],
+                                  pincode: document['pincode'],
+                                  plotNo: document['plotNo'],
+                                  requestType: document['requestType'],
+                                  percentFulfilled:
+                                      document['requestsFulfilled'],
+                                  spotStreet: document['streetNo'],
+                                );
+                              } else if (selectedCategory == 0) {
+                                return DonationRequestCard(
+                                  createdTime: document['createdTime'],
+                                  description: document['description'],
+                                  spotCity: document['district'],
+                                  ngoID: document['id'],
+                                  contactNumber: document['mobileNumber'],
+                                  requestName: document['ngoName'],
+                                  noOfServing: document['numberOfServings'],
+                                  pincode: document['pincode'],
+                                  plotNo: document['plotNo'],
+                                  requestType: document['requestType'],
+                                  percentFulfilled:
+                                      document['requestsFulfilled'],
+                                  spotStreet: document['streetNo'],
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            })
+                        : Container(
+                            child: SizedBox(
+                              height: 50.h,
+                              child: Center(
+                                child: Text(
+                                  "No more HungerSpots",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w500,
+                                    height: 0,
+                                    letterSpacing: 0.56.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                    //   Here the hungerSpot cards ends...
+                  },
+                ),
+              ),
             ),
-
-            // categoryWidget(),
-            //   Expanded(
-            //     child: Container(
-            //       padding: EdgeInsets.symmetric(vertical: 10),
-            //       height: 500,
-            //       child: ListView.builder(
-            //           itemCount: 5,
-            //           itemBuilder: (context, index) {
-            //           //   return DonationRequestCard();
-            //           // }),
-            //     ),
-            //   ),
           ],
         ),
       ),
