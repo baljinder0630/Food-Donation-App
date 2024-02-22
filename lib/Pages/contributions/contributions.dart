@@ -4,14 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 
+import 'package:fl_chart/fl_chart.dart';
 
-
-import 'package:fl_chart/fl_chart.dart'; // Import the fl_chart package
-
-
-
+@RoutePage()
 class Contribution extends ConsumerStatefulWidget {
   const Contribution({super.key});
   @override
@@ -21,46 +19,72 @@ class Contribution extends ConsumerStatefulWidget {
 class _ContributionState extends ConsumerState<Contribution> {
   @override
   Widget build(BuildContext context) {
+    final data = [
+      Contri('Jan', 10),
+      Contri('Feb', 20),
+      Contri('Mar', 30),
+      Contri('Apr', 40),
+    ];
+
+    // Create a series object with the data and some properties
+    final series = [
+      charts.Series<Contri, String>(
+        id: 'Contributions',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (Contri contri, _) => contri.month,
+        measureFn: (Contri contri, _) => contri.amount,
+        data: data,
+      )
+    ];
+
     return SafeArea(
-        child: Scaffold(
-            body: SingleChildScrollView(
-                 child: Column(children: [
-                 SizedBox(height: 50,),
-                 Text(
-                    'Your Contributions',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 18,
-                        color: const Color(0xff1c140c),
-                        fontFamily: 'EpilogueRoman-Bold',
-                        fontWeight: FontWeight.bold),
-                    maxLines: 9999,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height:20.h),
-                   ScatterPlotExample(),
-                   SizedBox(height: 20.h),
-
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Display two items in each row
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                    ),
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return buildGridItem(context, index);
-                    },
-                  ),
-
-                ]))));
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 50),
+              Text(
+                'Your Contributions',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  fontSize: 18,
+                  color: const Color(0xff1c140c),
+                  fontFamily: 'EpilogueRoman-Bold',
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 9999,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: charts.BarChart(
+                  series, // Use charts.BarChart instead of BarChart
+                  animate: true,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Display two items in each row
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                ),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return buildGridItem(context, index);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
-
 
 Widget buildGridItem(BuildContext context, int index) {
   // Define your data for each grid item
@@ -112,115 +136,9 @@ Widget buildGridItem(BuildContext context, int index) {
   );
 }
 
-// class BarGraphWidget extends StatelessWidget {
-//   final List<Map<String, dynamic>> dailyData = [
-//     {'day': 'Mon', 'value': 10},
-//     {'day': 'Tue', 'value': 15},
-//     {'day': 'Wed', 'value': 12},
-//     {'day': 'Thu', 'value': 18},
-//     {'day': 'Fri', 'value': 14},
-//     {'day': 'Sat', 'value': 16},
-//     {'day': 'Sun', 'value': 11},
-//   ];
+class Contri {
+  final String month;
+  final int amount;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     List<BarChartGroupData> barChartData = [];
-
-//     for (int i = 0; i < dailyData.length; i++) {
-//       Map<String, dynamic> data = dailyData[i];
-
-//       barChartData.add(
-//         BarChartGroupData(
-//           x: i,
-//           barsSpace: 8.0.r,
-//           barRods: [
-//             BarChartRodData(
-//               y: 0, // Set a dummy value or adjust as needed
-//               toY: data['value'].toDouble(),
-//               color: Colors.green,
-//               width: 20.0.r,
-//             ),
-//           ],
-//         ),
-//       );
-//     }
-
-//     return SizedBox(
-//       width: MediaQuery.of(context)
-//           .size
-//           .width, // Set the width to the device width
-//       child: Container(
-//         height: 200.0.r,
-//         child: BarChart(
-//           BarChartData(
-//             alignment: BarChartAlignment.spaceAround,
-//             minY: 0, // Set the minY value
-//             maxY: 20,
-//             barGroups: barChartData,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-class ScatterPlotExample extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Create a list of scatter spots
-    final spots = [
-      ScatterSpot(0, 5),
-      ScatterSpot(10, 25),
-      ScatterSpot(12, 75),
-      ScatterSpot(13, 225),
-      ScatterSpot(16, 50),
-      ScatterSpot(24, 75),
-      ScatterSpot(25, 100),
-      ScatterSpot(34, 150),
-      ScatterSpot(37, 10),
-      ScatterSpot(45, 300),
-      ScatterSpot(52, 15),
-      ScatterSpot(56, 200),
-    ];
-
-    // Create a scatter chart data object
-    final data = ScatterChartData(
-      scatterSpots: spots,
-      minX: 0,
-      maxX: 60,
-      minY: 0,
-      maxY: 300,
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        drawVerticalLine: true,
-        horizontalInterval: 50,
-        verticalInterval: 10,
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: Colors.black, width: 1),
-      ),
-      
-      
-    );
-
-    // Create a scatter chart widget
-    final chart = ScatterChart(
-      data,
-      swapAnimationDuration: Duration(milliseconds: 150),
-      swapAnimationCurve: Curves.linear,
-    );
-
-    // Wrap the chart in a sized box
-    return SizedBox(
-      height: 300,
-      width: 400,
-      child: chart,
-    );
-  }
+  Contri(this.month, this.amount);
 }
