@@ -14,6 +14,7 @@ import 'package:food_donation_app/Provider/userProvider.dart';
 @RoutePage()
 class ArticleDetail extends ConsumerStatefulWidget {
   final PostModel article;
+
   const ArticleDetail({required this.article, super.key});
 
   @override
@@ -135,14 +136,14 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                         width: 2.w, color: Color(0xFFDAACAC)),
                                   ),
                                   color: Colors.black,
-                                  shadows: const [
-                                    BoxShadow(
-                                      color: Color(0x3F000000),
-                                      blurRadius: 8,
-                                      offset: Offset(0, 0),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
+                                  // shadows: const [
+                                  //   BoxShadow(
+                                  //     color: Color(0x3F000000),
+                                  //     blurRadius: 8,
+                                  //     offset: Offset(0, 0),
+                                  //     spreadRadius: 0,
+                                  //   )
+                                  // ],
                                 ),
                               ),
                               SizedBox(width: 8.w),

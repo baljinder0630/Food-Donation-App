@@ -266,7 +266,7 @@ class _AllChatsPageState extends ConsumerState<AllChatsPage> {
             )
           : SingleChildScrollView(
               child: Container(
-                height: 103.h * users.length,
+                height: 130.h * users.length,
                 child: ListView.builder(
                     padding: EdgeInsets.only(top: 0.h),
                     itemCount: users.length,

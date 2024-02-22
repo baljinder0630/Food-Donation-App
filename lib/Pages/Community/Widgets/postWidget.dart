@@ -9,6 +9,8 @@ import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constants/constants.dart';
+
 class PostWidget extends ConsumerStatefulWidget {
   const PostWidget({
     super.key,
@@ -36,25 +38,25 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
         context.navigateTo(ArticleDetailRoute(article: widget.post));
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 24.w),
+        margin: EdgeInsets.symmetric(horizontal: 10.w),
         child: Stack(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10.h),
-              height: 110.h,
+              margin: EdgeInsets.symmetric(vertical: 5.h),
+              height: 120.h,
               decoration: ShapeDecoration(
-                color: Color(0xFFFEFEFE),
+                color: white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                shadows: const [
-                  BoxShadow(
-                    color: Color(0x3F000000),
-                    blurRadius: 5,
-                    offset: Offset(0, 0),
-                    spreadRadius: 0,
-                  )
-                ],
+                // shadows: const [
+                //   BoxShadow(
+                //     color: Color(0x3F000000),
+                //     blurRadius: 5,
+                //     offset: Offset(0, 0),
+                //     spreadRadius: 0,
+                //   )
+                // ],
               ),
             ),
             Positioned(
@@ -62,7 +64,7 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
               top: 20.h,
               child: Container(
                 width: 90.w,
-                height: 89.h,
+                height: 90.h,
                 decoration: ShapeDecoration(
                   color: Colors.grey[300]!,
                   image: DecorationImage(
@@ -81,17 +83,23 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
               left: 114.w,
               top: 21.h,
               child: Container(
-                width: 243.w,
-                height: 89.h,
+                width: 300.w,
+                height: 90.h,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     rcmdPostLoading != PostStatus.processed
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
+                        ? Shimmer(
+                            gradient: const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.grey,
+                                  Colors.white,
+                                  Colors.grey
+                                ]),
                             child: Container(
                                 margin: EdgeInsets.only(right: 20.w),
                                 width: 200.w,
@@ -100,25 +108,38 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                           )
                         : Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                width: 150.w,
-                                height: 16.sp,
+                                width: 210.w,
+                                height: 15.h,
                                 child: Text(
-                                  widget.post.subject.length > 15
-                                      ? toCamelCase(widget.post.subject
-                                              .substring(0, 15)) +
-                                          "..."
-                                      : toCamelCase(widget.post.subject),
+                                  toCamelCase(
+                                    widget.post.subject,
+                                  ),
+                                  textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     color: Color(0xFFBFAAAA),
-                                    fontSize: 14.sp,
+                                    fontSize: 15.sp,
                                     fontFamily: 'Outfit',
                                     fontWeight: FontWeight.w500,
                                     height: 0,
-                                    letterSpacing: 0.56.sp,
+                                    overflow: TextOverflow.ellipsis,
+                                    letterSpacing: 0.67.sp,
                                   ),
+                                  // widget.post.subject.length > 15
+                                  //     ? toCamelCase(widget.post.subject
+                                  //             .substring(0, 15)) +
+                                  //         "..."
+                                  //     : toCamelCase(widget.post.subject),
+                                  // style: TextStyle(
+                                  //   color: Color(0xFFBFAAAA),
+                                  //   fontSize: 14.sp,
+                                  //   fontFamily: 'Outfit',
+                                  //   fontWeight: FontWeight.w500,
+                                  //   height: 0,
+                                  //   letterSpacing: 0.56.sp,
+                                  // ),
                                 ),
                               ),
                               Row(
@@ -149,30 +170,38 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                           ),
                     SizedBox(height: 15.h),
                     rcmdPostLoading != PostStatus.processed
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
+                        ? Shimmer(
+                            gradient: const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.grey,
+                                  Colors.white,
+                                  Colors.grey
+                                ]),
                             child: Container(
                                 margin: EdgeInsets.only(right: 20.w),
-                                width: 220.w,
+                                width: 200.w,
                                 height: 50.h,
                                 color: Colors.white),
                           )
                         : Container(
                             // color: Colors.red,
-                            width: 241.w,
-                            height: 50.h,
+                            width: 260.w,
+                            height: 60.h,
                             child: Text(
-                              widget.post.description.length > 100
-                                  ? widget.post.description.substring(0, 96) +
-                                      "..."
-                                  : widget.post.description,
+                              toCamelCase(
+                                widget.post.description,
+                              ),
+                              textAlign: TextAlign.justify,
+                              maxLines: 3,
                               style: TextStyle(
-                                color: Color(0xFF201F24),
+                                color: black.withOpacity(0.8),
                                 fontSize: 14.sp,
                                 fontFamily: 'Outfit',
                                 fontWeight: FontWeight.w500,
                                 height: 0,
+                                overflow: TextOverflow.ellipsis,
                                 letterSpacing: 0.56.sp,
                               ),
                             ),

@@ -91,9 +91,15 @@ class _UserCardState extends ConsumerState<UserCard> {
                             height: 18.h,
                             width: 200.w,
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
+                            child: Shimmer(
+                              gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.grey,
+                                    Colors.white,
+                                    Colors.grey
+                                  ]),
                               child: Container(
                                 color: Colors.grey[300],
                               ),
@@ -104,9 +110,15 @@ class _UserCardState extends ConsumerState<UserCard> {
                             height: 10.h,
                             width: 200.w,
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
+                            child: Shimmer(
+                              gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.grey,
+                                    Colors.white,
+                                    Colors.grey
+                                  ]),
                               child: Container(
                                 color: Colors.grey[300],
                               ),
@@ -116,13 +128,15 @@ class _UserCardState extends ConsumerState<UserCard> {
                       ),
                       Flexible(
                           child: Shimmer(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
                             colors: [Colors.grey, Colors.white, Colors.grey]),
                         child: Container(
                           width: 86.70.w,
                           height: 34.40.h,
                           decoration: ShapeDecoration(
-                            color: Colors.grey,
+                            color: Colors.grey[300],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(9.50.r),
                             ),
@@ -239,7 +253,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                                 widget.user.totalConnects.toString() +
                                     " connects",
                                 style: TextStyle(
-                                  color: Color(0xFF201F24),
+                                  color: black,
                                   fontSize: 12.sp,
                                   fontFamily: 'Outfit',
                                   fontWeight: FontWeight.w300,

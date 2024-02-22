@@ -36,21 +36,28 @@ class MyApp extends StatelessWidget {
         title: 'Food Donation App',
         theme: ThemeData(
             fontFamily: 'Poppins',
-            primarySwatch: Colors.teal,
-            inputDecorationTheme: const InputDecorationTheme(
+            primarySwatch: Colors.green,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: black,
+              selectionHandleColor: black.withOpacity(0.8),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
                 labelStyle: TextStyle(
-                    color: Color.fromARGB(255, 119, 119, 119),
+                    color: bgColor,
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold),
                 floatingLabelStyle: TextStyle(
                     color: Colors.black,
-                    fontSize: 18.0,
+                    fontSize: 18.0.sp,
                     fontWeight: FontWeight.bold),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: primaryColor, width: 2.0),
+                  borderSide: BorderSide(color: black, width: 2.0.w),
                 ),
                 enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 0.8),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                    width: 0.8.w,
+                  ),
                 )),
             primaryColor: white,
             scaffoldBackgroundColor: bgColor,
