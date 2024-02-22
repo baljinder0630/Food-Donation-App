@@ -72,6 +72,7 @@ dependencies:
   charts_flutter: ^0.12.0
   grouped_list: ^4.0.0
   video_player: ^2.8.2
+  flutter_native_splash: any
 
 dev_dependencies:
   flutter_test:
@@ -129,6 +130,7 @@ flutter:
     - assets/land_donation_poster1.png
     - assets/land_donation_poster2.png
     - assets/land_donation_poster3.png
+    - assets/splash_screen_animation.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
