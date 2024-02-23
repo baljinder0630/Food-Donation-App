@@ -243,7 +243,6 @@ class _HomePageState extends State<HomePage> {
 
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
-        
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
@@ -264,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.only(left: 57.w),
                           child: GestureDetector(
                             onTap: () {
-                              context.pushRoute(const ProfileSearchPageRoute());
+                              context.pushRoute(const NgoSearchPageRoute());
                             },
                             child: MySearchBar(title: "Hunger Spots"),
                           ),
@@ -299,11 +298,9 @@ class _HomePageState extends State<HomePage> {
                   height: 50.h,
                 ),
                 Container(
-                  
                   padding: EdgeInsets.all(10.r),
                   child: Row(
                     children: [
-                      
                       CircleAvatar(
                         radius: 43.r,
                         backgroundColor: green,
@@ -401,15 +398,11 @@ class _HomePageState extends State<HomePage> {
                   width: double.infinity,
                   height: 250.h,
                   decoration: BoxDecoration(
-                      
                       borderRadius: BorderRadius.circular(15.r),
                       image: DecorationImage(
-                      image: AssetImage("lib/assets/general/sad1.png"),
-                      fit: BoxFit.cover,
-                      )
-                      ),
-                      
-                  
+                        image: AssetImage("lib/assets/general/sad1.png"),
+                        fit: BoxFit.cover,
+                      )),
                 ),
                 // Animation ends here.
 
