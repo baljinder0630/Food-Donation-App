@@ -25,7 +25,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       }
     });
 
-    return Scaffold(
+    return const Scaffold(
         body: Center(
       child: Text("Splash Screen"),
     ));

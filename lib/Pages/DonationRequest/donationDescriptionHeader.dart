@@ -12,63 +12,23 @@ import '../constants/constants.dart';
 
 class DonationDescriptionHeader extends StatelessWidget {
   final String requestName;
-  final String ngoImage;
-  final String ngoName;
-
-  // final Position position;
+  final String NGOImage;
+  final String NGOName;
+  final Position ngoPosition;
+  final String ngoLocation;
   final String totalRequest;
-  final String remainingRequest;
+  final String completedRequest;
 
   DonationDescriptionHeader({
     required this.requestName,
-    required this.ngoName,
-    required this.ngoImage,
-    // required this.position,
+    required this.NGOName,
+    required this.NGOImage,
+    required this.ngoLocation,
+    required this.ngoPosition,
     required this.totalRequest,
-    required this.remainingRequest,
+    required this.completedRequest,
     super.key,
   });
-
-  late String _address;
-  late Position _currentPosition;
-
-  Future<void> _getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error("Location Services are Disabled");
-    }
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error("Location Permissions are Denied");
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          "Location permissions are permanently denied, we cannot request permission");
-    }
-
-    _currentPosition = await Geolocator.getCurrentPosition();
-    _getAddressFromLatLng();
-    print(
-        "Fetching Location... \nLatitude: ${_currentPosition.latitude}.\n Longitude: ${_currentPosition.longitude}. \n Adress is $_address");
-  }
-
-  Future<void> _getAddressFromLatLng() async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
-
-      // Placemark place = placemarks[0];
-      // setState(() {
-      //   _address =
-      //   "${place.street} ${place.subLocality} ${place.locality} ${place.country}, ${place.postalCode}";
-      // });
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +43,22 @@ class DonationDescriptionHeader extends StatelessWidget {
           return FlexibleSpaceBar(
             background: Stack(
               children: [
-                Image.asset(
-                  "lib/assets/images/exploreImages/child.jpg",
+                Image.network(
+                  NGOImage,
                   fit: BoxFit.cover,
                   height: double.infinity,
                   width: double.infinity,
                   alignment: Alignment.center,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      "lib/assets/images/exploreImages/child.jpg",
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    );
+                  },
                 ),
                 Positioned.fill(
                   child: Container(
@@ -114,7 +84,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20.r),
                     child: Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width:
                               MediaQuery.of(context).size.width - 40.r - 90.w,
                           child: Column(
@@ -134,7 +104,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                               SizedBox(height: 2.h),
                               Expanded(
                                 child: Text(
-                                  toCamelCase(ngoName),
+                                  toCamelCase(NGOName),
                                   style: TextStyle(
                                       color: white,
                                       fontSize: 18.sp,
@@ -154,7 +124,9 @@ class DonationDescriptionHeader extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      "location... ",
+                                      toCamelCase(
+                                        ngoLocation,
+                                      ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
                                           color: white,
@@ -177,7 +149,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                           child: Column(
                             children: [
                               getPercent(
-                                  remainingRequest, totalRequest, Colors.white),
+                                  completedRequest, totalRequest, Colors.white),
                             ],
                           ),
                         ),
@@ -187,7 +159,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                 ),
               ],
             ),
-            stretchModes: [
+            stretchModes: const [
               StretchMode.blurBackground,
               StretchMode.zoomBackground,
             ],
@@ -195,7 +167,7 @@ class DonationDescriptionHeader extends StatelessWidget {
         },
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(0.0),
+        preferredSize: const Size.fromHeight(0.0),
         child: Container(
           height: 32.h,
           alignment: Alignment.center,
@@ -207,8 +179,8 @@ class DonationDescriptionHeader extends StatelessWidget {
             ),
           ),
           child: Container(
-            width: 50,
-            height: 5,
+            width: 50.w,
+            height: 5.h,
             decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(100.0),
@@ -216,30 +188,30 @@ class DonationDescriptionHeader extends StatelessWidget {
           ),
         ),
       ),
-      leadingWidth: 80,
+      leadingWidth: 80.w,
       leading: GestureDetector(
         onTap: () {
           Navigator.of(context).pop();
         },
         child: Container(
-          margin: EdgeInsets.only(top: 10, left: 22),
+          margin: EdgeInsets.only(top: 10.r, left: 22.r),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(56),
+            borderRadius: BorderRadius.circular(56.r),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
               child: Container(
-                height: 56,
-                width: 56,
+                height: 56.h,
+                width: 56.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white.withOpacity(0.2),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(right: 5.0),
+                  padding: EdgeInsets.only(right: 5.0.r),
                   child: Image.asset(
                     "lib/assets/icons/back.png",
-                    width: 25,
+                    width: 25.w,
                   ),
                 ),
               ),
@@ -248,79 +220,5 @@ class DonationDescriptionHeader extends StatelessWidget {
         ),
       ),
     );
-    // return SliverAppBar(
-    //   expandedHeight: 300,
-    //   backgroundColor: bgColor,
-    //   elevation: 0.0,
-    //   pinned: true,
-    //   stretch: true,
-    //   flexibleSpace: LayoutBuilder(
-    //     builder: (BuildContext context, BoxConstraints constraints) {
-    //       return FlexibleSpaceBar(
-    //         background: Image.asset(
-    //           "lib/assets/images/exploreImages/child.jpg",
-    //           fit: BoxFit.cover,
-    //         ),
-    //         stretchModes: [
-    //           StretchMode.blurBackground,
-    //           StretchMode.zoomBackground,
-    //         ],
-    //       );
-    //     },
-    //   ),
-    //   bottom: PreferredSize(
-    //     preferredSize: Size.fromHeight(0.0),
-    //     child: Container(
-    //       height: 32,
-    //       alignment: Alignment.center,
-    //       decoration: BoxDecoration(
-    //         color: bgColor,
-    //         borderRadius: BorderRadius.only(
-    //           topRight: Radius.circular(32),
-    //           topLeft: Radius.circular(32),
-    //         ),
-    //       ),
-    //       child: Container(
-    //         width: 50,
-    //         height: 5,
-    //         decoration: BoxDecoration(
-    //           color: green,
-    //           borderRadius: BorderRadius.circular(100.0),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    //   leadingWidth: 80,
-    //   leading: GestureDetector(
-    //     onTap: () {
-    //       Navigator.of(context).pop();
-    //     },
-    //     child: Container(
-    //       margin: EdgeInsets.only(top: 10, left: 22),
-    //       child: ClipRRect(
-    //         borderRadius: BorderRadius.circular(56),
-    //         child: BackdropFilter(
-    //           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-    //           child: Container(
-    //             height: 56,
-    //             width: 56,
-    //             alignment: Alignment.center,
-    //             decoration: BoxDecoration(
-    //               shape: BoxShape.circle,
-    //               color: Colors.white.withOpacity(0.2),
-    //             ),
-    //             child: Padding(
-    //               padding: EdgeInsets.only(right: 5.0),
-    //               child: Image.asset(
-    //                 "lib/assets/icons/back.png",
-    //                 width: 25,
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

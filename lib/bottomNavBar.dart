@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
@@ -8,11 +9,12 @@ import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
 // Import other necessary packages
 
-// Import other necessary packages
-
+@RoutePage()
 class AppBottomNavigationBar extends StatefulWidget {
+  const AppBottomNavigationBar({super.key});
+
   @override
-  _AppBottomNavigationBarState createState() => _AppBottomNavigationBarState();
+  State<AppBottomNavigationBar> createState() => _AppBottomNavigationBarState();
 }
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
@@ -52,16 +54,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: const [
           Icon(Icons.home, color: Colors.green),
-          Icon(Icons.chat_bubble, color: Colors.green),
-          Icon(Icons.add, color: Colors.green),
           Icon(Icons.group, color: Colors.green),
+          Icon(Icons.add, color: Colors.green),
+          Icon(Icons.chat_bubble, color: Colors.green),
           Icon(Icons.account_circle, color: Colors.green),
         ],
         inactiveIcons: const [
           Text("Home"),
-          Text("Chat"),
-          Text("Donate"),
           Text("Community"),
+          Text("Donate"),
+          Text("Chat"),
           Text("Profile"),
         ],
         color: Colors.white,
