@@ -40,10 +40,13 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 250.h,
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: const Center(child: Text("Space for some image")),
-                  ),
+                      height: 250.h,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      // child: const Center(child: Image.asset(
+                      //   "lib/assets/Community/PostSuccessfully.png",
+                      //   fit: BoxFit.contain,
+                      // ),),
+                      child: Center()),
                   Subheading(text: 'Fill Personal Details'),
                   Container(
                     margin: const EdgeInsets.symmetric(
@@ -167,7 +170,7 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                         ),
                         CustomButton(
                             text: 'Next',
-                            onPressed: () {
+                            onPressed: () async {
                               if (nameController.text.trim().isEmpty ||
                                   phoneController.text.trim().isEmpty ||
                                   plotNoController.text.trim().isEmpty ||
@@ -185,7 +188,7 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                                     fontSize: 16.0);
                                 return;
                               } else {
-                                ref
+                                await ref
                                     .read(donationRequestProvider.notifier)
                                     .updatePersonalDetails(
                                         nameController.text,
@@ -194,13 +197,8 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                                         streetController.text,
                                         districtController.text,
                                         pincodeController.text);
-                                nameController.text = "";
-                                phoneController.text = "";
-                                plotNoController.text = "";
-                                streetController.text = "";
-                                districtController.text = "";
-                                pincodeController.text = "";
-                                context.pushRoute(const PhoneScreenRoute());
+                                context
+                                    .pushRoute(const FoodCategoryFormRoute());
                               }
                             })
                       ],

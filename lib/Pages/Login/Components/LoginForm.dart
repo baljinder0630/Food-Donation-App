@@ -19,6 +19,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     login(email, password) async {
       if (await ref
           .read(authStateProvider.notifier)
@@ -30,90 +32,190 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     final height = MediaQuery.of(context).size.height * 0.017;
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Welcome",
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: height),
-          TextFormField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            decoration: const InputDecoration(label: Text("Email")),
-            validator: (passCurrentValue) {
-              RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
-              var passNonNullValue = passCurrentValue ?? "";
-              if (passNonNullValue.isEmpty) {
-                return ("Email is required");
-              } else if (!regex.hasMatch(passNonNullValue.trim())) {
-                return ("Invalid Email! ");
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: height),
-          TextFormField(
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            decoration: const InputDecoration(label: Text("Password")),
-            controller: _passwordController,
-            validator: (value) {
-              var passNonNullValue = value ?? "";
-              if (passNonNullValue.isEmpty) {
-                return ("Password is required");
-              } else if (passNonNullValue.length < 8) {
-                return ("Password must be 8 characters long");
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: height * 7),
-          Container(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate() &&
-                    ref.watch(authStateProvider).authStatus !=
-                        AuthStatus.processing)
-                  login(_emailController.text.trim(),
-                      _passwordController.text.trim());
-              },
-              child: ref.watch(authStateProvider).authStatus ==
-                      AuthStatus.processing
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : const Text(
-                      "Sign In",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20.0),
+        width: 0.95 * screenWidth,
+        height: 0.5 * screenHeight,
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3),
             ),
-          ),
-          SizedBox(height: height),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Don't have account?",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey)),
-              TextButton(
-                onPressed: () => context.replaceRoute(SignUpPageRoute()),
-                child: const Text("Sign Up",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: primaryColor)),
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: _emailController,
+              cursorColor: Colors.green,
+              keyboardType: TextInputType.text,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              decoration: InputDecoration(
+                hintText: 'Email',
+                prefixIcon: const Icon(Icons.email),
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                errorStyle: const TextStyle(color: Colors.black),
+              ),
+              validator: (passCurrentValue) {
+                RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+                var passNonNullValue = passCurrentValue ?? "";
+                if (passNonNullValue.isEmpty) {
+                  return ("Email is required");
+                } else if (!regex.hasMatch(passNonNullValue.trim())) {
+                  return ("Invalid Email! ");
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: height),
+            TextFormField(
+              controller: _passwordController,
+              cursorColor: Colors.green,
+              keyboardType: TextInputType.visiblePassword,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              obscureText: true,
+              decoration: InputDecoration(
+                hintText: 'Password',
+                prefixIcon: const Icon(Icons.lock),
+                hintStyle: const TextStyle(
+                  color: Colors.black,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                errorStyle: const TextStyle(color: Colors.black),
+              ),
+              validator: (passCurrentValue) {
+                RegExp upperCaseRegex = RegExp(r'(?=.*?[A-Z])');
+                RegExp lowerCaseRegex = RegExp(r'(?=.*?[a-z])');
+                RegExp digitRegex = RegExp(r'(?=.*?[0-9])');
+                RegExp specialCharRegex = RegExp(r'(?=.*?[!@#\$&*~])');
+
+                var passNonNullValue = passCurrentValue ?? "";
+                List<String> errors = [];
+                if (passNonNullValue.length < 8) {
+                  errors.add("min. 8 chars");
+                }
+                if (!upperCaseRegex.hasMatch(passNonNullValue)) {
+                  errors.add("uppercase(A-Z)");
+                }
+                if (!lowerCaseRegex.hasMatch(passNonNullValue)) {
+                  errors.add("lowercase (a-z)");
+                }
+                if (!digitRegex.hasMatch(passNonNullValue)) {
+                  errors.add("digit (0-9)");
+                }
+                if (!specialCharRegex.hasMatch(passNonNullValue)) {
+                  errors.add("special char (!@#\$&*~)");
+                }
+                return errors.isEmpty ? null : "Add " + errors.join(', ');
+              },
+            ),
+            SizedBox(height: 30.0),
+            Container(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                onPressed: () {
+                  if (_formKey.currentState!.validate() &&
+                      ref.watch(authStateProvider).authStatus !=
+                          AuthStatus.processing)
+                    login(_emailController.text.trim(),
+                        _passwordController.text.trim());
+                },
+                child: ref.watch(authStateProvider).authStatus ==
+                        AuthStatus.processing
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : const Text(
+                        "Sign In",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+              ),
+            ),
+            SizedBox(height: 0.2 * height),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("New User?",
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                TextButton(
+                  onPressed: () => context.replaceRoute(SignUpPageRoute()),
+                  child: const Text("Create your account",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green)),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

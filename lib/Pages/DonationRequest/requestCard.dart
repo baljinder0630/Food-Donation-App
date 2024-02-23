@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -7,32 +10,36 @@ import '../../Router/route.gr.dart';
 import '../constants/constants.dart';
 
 class DonationRequestCard extends StatelessWidget {
-  final String spotName;
-  final bool requestType;
-  final String noOfServing;
-  final String spotCity;
-  final String contactNumber;
+  final Timestamp createdTime;
   final String description;
-  final String percentDone;
+  final String spotCity;
+  final String ngoID;
+  final String contactNumber;
+  final String requestName;
+  final String noOfServing;
   final String pincode;
-  final String spotState;
+  final String plotNo;
+  final String requestType;
+  final String percentFulfilled;
   final String spotStreet;
 
   const DonationRequestCard(
       {super.key,
-      required this.spotName,
       required this.spotCity,
       required this.noOfServing,
       required this.requestType,
-      required this.percentDone,
       required this.contactNumber,
       required this.description,
       required this.pincode,
-      required this.spotState,
-      required this.spotStreet});
+      required this.spotStreet,
+      required this.createdTime,
+      required this.ngoID,
+      required this.requestName,
+      required this.plotNo,
+      required this.percentFulfilled});
 
   String getReq() {
-    if (requestType == true) {
+    if (requestType == "Food") {
       return "Food Donation";
     }
     return "Fund Donation";
@@ -41,6 +48,7 @@ class DonationRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    Timestamp currentTime = Timestamp.now();
 
     return Container(
       margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r, bottom: 10.r),
@@ -80,7 +88,7 @@ class DonationRequestCard extends StatelessWidget {
                     Container(
                       child: Expanded(
                         child: Text(
-                          spotName,
+                          requestName,
                           style: TextStyle(
                             color: black,
                             fontSize: 20.sp,
@@ -211,7 +219,8 @@ class DonationRequestCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 10.r),
                       child: Column(
                         children: [
-                          getPercent(percentDone, noOfServing),
+                          getPercent(
+                              percentFulfilled, noOfServing, Colors.black),
                         ],
                       ),
                     ),
@@ -229,7 +238,17 @@ class DonationRequestCard extends StatelessWidget {
                   width: 180.w,
                   child: OutlinedButton(
                     onPressed: () {
-                      context.pushRoute(const DonationDescriptionRoute());
+                      context.pushRoute(DonationDescriptionRoute(
+                        requestName: requestName,
+                        NGOName: "",
+                        ngoLatitude: '',
+                        ngoLongitude: "",
+                        totalRequest: noOfServing,
+                        remainingRequest: percentFulfilled,
+                        timestamp: currentTime,
+                        description: description,
+                        phoneNumber: contactNumber,
+                      ));
                     },
                     style: OutlinedButton.styleFrom(backgroundColor: bgColor),
                     child: SizedBox(
@@ -282,8 +301,10 @@ class DonationRequestCard extends StatelessWidget {
   }
 }
 
-Widget getPercent(String percentRem, String noOfServings) {
-  double percentDone = 0.4;
+Widget getPercent(String reqFulfilled, String totalReq, Color perColor) {
+  double tr = double.parse(totalReq);
+  double rf = double.parse(reqFulfilled);
+  double percentDone = min(1.0, (rf / tr));
   // double.parse(percentRem) / double.parse(noOfServings) - 1.0;
   return Center(
     child: CircularPercentIndicator(
@@ -294,8 +315,8 @@ Widget getPercent(String percentRem, String noOfServings) {
       backgroundColor: bgColor,
       circularStrokeCap: CircularStrokeCap.round,
       center: Text(
-        "40%",
-        style: TextStyle(fontSize: 18.sp),
+        (percentDone * 100.0).toStringAsFixed(1),
+        style: TextStyle(fontSize: 18.sp, color: perColor),
       ),
     ),
   );

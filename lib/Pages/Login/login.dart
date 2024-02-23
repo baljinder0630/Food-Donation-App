@@ -15,21 +15,47 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Background(
-        title: "Sign In",
-        customWidget: Scaffold(
-          // body: SingleChildScrollView(child: LoginForm()),
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
-
-          bottomSheet: Container(
-              color: Colors.white,
-              height: height * 0.77,
-              child: SingleChildScrollView(child: LoginForm())),
-          // bottomSheet: LoginForm(),
-        ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/login_background.png', fit: BoxFit.cover),
+          GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: const SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 170.0),
+                  Center(
+                    child: Text(
+                      'WELCOME BACK',
+                      style: TextStyle(fontSize: 30.0, color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: Text(
+                      'Sign in to your account!',
+                      style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  LoginForm()
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

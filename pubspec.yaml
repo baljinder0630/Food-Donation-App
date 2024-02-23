@@ -71,7 +71,9 @@ dependencies:
   fl_chart: ^0.66.2
   charts_flutter: ^0.12.0
   grouped_list: ^4.0.0
+  smart_auth: any
   video_player: ^2.8.2
+  flutter_native_splash: any
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +104,8 @@ flutter:
     - lib/assets/images/exploreImages/
     - lib/assets/Community/
     - images/
+    - assets/
+    - assets/chatBg.png
     - lib/assets/icons/
     - lib/assets/images/
     - lib/assets/donateimg/
@@ -110,6 +114,26 @@ flutter:
     - lib/assets/logo/
     - assets/dialog_flow_auth.json
     - assets/img1.png
+    - assets/fund_donation.png
+    - assets/phone_background.png
+    - assets/chatbot_background.png
+    - assets/food_category_form_img.png
+    - assets/land_donation1.png
+    - assets/personal_details_form_img.png
+    - assets/sign_up_screen.png
+    - assets/community_background.png
+    - assets/be_volunteer.png
+    - assets/community.png
+    - assets/connect.png
+    - assets/raise_query.png
+    - assets/raise_request.png
+    - assets/sign_up_background.png
+    - assets/login_background.png
+    - assets/your_contributions.png
+    - assets/land_donation_poster1.png
+    - assets/land_donation_poster2.png
+    - assets/land_donation_poster3.png
+    - assets/splash_screen_animation.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

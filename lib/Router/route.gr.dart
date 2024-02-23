@@ -38,28 +38,37 @@ import 'package:food_donation_app/Pages/Donate/otp_screen.dart' as _i19;
 import 'package:food_donation_app/Pages/Donate/personal_details_form.dart'
     as _i20;
 import 'package:food_donation_app/Pages/Donate/phone_screen.dart' as _i21;
-import 'package:food_donation_app/Pages/Donationland/landdonation.dart' as _i22;
+import 'package:food_donation_app/Pages/Donate/razorpay_payment_gateway.dart'
+    as _i22;
+import 'package:food_donation_app/Pages/Donationland/landdonation.dart' as _i23;
 import 'package:food_donation_app/Pages/DonationRequest/acceptPickupRequest.dart'
-    as _i23;
-import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart'
     as _i24;
-import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
+import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart'
     as _i25;
-import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart'
+import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
     as _i26;
-import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart'
     as _i27;
-import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
     as _i28;
-import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
     as _i29;
-import 'package:food_donation_app/Pages/DonationRequest/YourDonationRequest.dart'
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
     as _i30;
+<<<<<<< HEAD
 import 'package:food_donation_app/Pages/homePage.dart' as _i31;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i32;
 import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i33;
 import 'package:food_donation_app/Pages/Login/login.dart' as _i34;
 import 'package:food_donation_app/Pages/ngoSearch.dart' as _i35;
+=======
+import 'package:food_donation_app/Pages/DonationRequest/YourDonationRequest.dart'
+    as _i31;
+import 'package:food_donation_app/Pages/homePage.dart' as _i32;
+import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i33;
+import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart' as _i34;
+import 'package:food_donation_app/Pages/Login/login.dart' as _i35;
+>>>>>>> origin/master
 import 'package:food_donation_app/Pages/Posts/chatScreen.dart' as _i36;
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart' as _i37;
 import 'package:food_donation_app/Pages/Signup/Signup.dart' as _i38;
@@ -214,71 +223,107 @@ abstract class $AppRouter extends _i40.RootStackRouter {
         child: const _i21.PhoneScreen(),
       );
     },
+<<<<<<< HEAD
+    LandDonationRoute.name: (routeData) {
+=======
+    RazorpayPaymentGatewayRoute.name: (routeData) {
+>>>>>>> origin/master
+      return _i40.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i22.RazorpayPaymentGateway(),
+      );
+    },
     LandDonationRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i22.landDonation(),
+        child: const _i23.landDonation(),
       );
     },
     AcceptPickupRequestPageRoute.name: (routeData) {
+<<<<<<< HEAD
+=======
+      final args = routeData.argsAs<AcceptPickupRequestPageRouteArgs>();
+>>>>>>> origin/master
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i23.AcceptPickupRequestPage(),
+        child: _i24.AcceptPickupRequestPage(
+          foodName: args.foodName,
+          postedTime: args.postedTime,
+          foodCategory: args.foodCategory,
+          address: args.address,
+          phoneNumber: args.phoneNumber,
+          key: args.key,
+        ),
       );
     },
     DonationDescriptionRoute.name: (routeData) {
+<<<<<<< HEAD
+=======
+      final args = routeData.argsAs<DonationDescriptionRouteArgs>();
+>>>>>>> origin/master
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i24.DonationDescription(),
+        child: _i25.DonationDescription(
+          requestName: args.requestName,
+          NGOName: args.NGOName,
+          ngoLatitude: args.ngoLatitude,
+          ngoLongitude: args.ngoLongitude,
+          totalRequest: args.totalRequest,
+          remainingRequest: args.remainingRequest,
+          timestamp: args.timestamp,
+          description: args.description,
+          phoneNumber: args.phoneNumber,
+          key: args.key,
+        ),
       );
     },
     DonationRequestRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i25.DonationRequest(),
+        child: const _i26.DonationRequest(),
       );
     },
     PickupRequestPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i26.PickupRequestPage(),
+        child: const _i27.PickupRequestPage(),
       );
     },
     RaiseRequestRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i27.RaiseRequest(),
+        child: const _i28.RaiseRequest(),
       );
     },
     RaiseRequest2Route.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i28.RaiseRequest2(),
+        child: const _i29.RaiseRequest2(),
       );
     },
     SuccessPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i29.SuccessPage(),
+        child: const _i30.SuccessPage(),
       );
     },
     DonationTrackingPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i30.DonationTrackingPage(),
+        child: _i31.DonationTrackingPage(),
       );
     },
     HomePageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i31.HomePage(),
+        child: const _i32.HomePage(),
       );
     },
     HungerSpotRoute.name: (routeData) {
       final args = routeData.argsAs<HungerSpotRouteArgs>();
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i32.HungerSpot(
+        child: _i33.HungerSpot(
           key: args.key,
           child: args.child,
         ),
@@ -288,12 +333,13 @@ abstract class $AppRouter extends _i40.RootStackRouter {
       final args = routeData.argsAs<PickUpRequestRouteArgs>();
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i33.PickUpRequest(
-          foodName: args.foodName,
+        child: _i34.PickUpRequest(
+          foodName1: args.foodName1,
           postedTime: args.postedTime,
           foodCategory: args.foodCategory,
           address: args.address,
           snapshot: args.snapshot,
+          phoneNumber: args.phoneNumber,
           key: args.key,
         ),
       );
@@ -301,9 +347,10 @@ abstract class $AppRouter extends _i40.RootStackRouter {
     LoginPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i34.LoginPage(),
+        child: const _i35.LoginPage(),
       );
     },
+<<<<<<< HEAD
     NgoSearchPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -313,6 +360,11 @@ abstract class $AppRouter extends _i40.RootStackRouter {
     ChattingPageRoute.name: (routeData) {
       return _i40.AutoRoutePage<dynamic>(
         routeData: routeData,
+=======
+    ChattingPageRoute.name: (routeData) {
+      return _i40.AutoRoutePage<dynamic>(
+        routeData: routeData,
+>>>>>>> origin/master
         child: const _i36.ChattingPage(),
       );
     },
@@ -733,7 +785,25 @@ class PhoneScreenRoute extends _i40.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i22.landDonation]
+=======
+/// [_i22.RazorpayPaymentGateway]
+class RazorpayPaymentGatewayRoute extends _i40.PageRouteInfo<void> {
+  const RazorpayPaymentGatewayRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          RazorpayPaymentGatewayRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RazorpayPaymentGatewayRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i23.landDonation]
+>>>>>>> origin/master
 class LandDonationRoute extends _i40.PageRouteInfo<void> {
   const LandDonationRoute({List<_i40.PageRouteInfo>? children})
       : super(
@@ -747,16 +817,40 @@ class LandDonationRoute extends _i40.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i23.AcceptPickupRequestPage]
 class AcceptPickupRequestPageRoute extends _i40.PageRouteInfo<void> {
   const AcceptPickupRequestPageRoute({List<_i40.PageRouteInfo>? children})
       : super(
+=======
+/// [_i24.AcceptPickupRequestPage]
+class AcceptPickupRequestPageRoute
+    extends _i40.PageRouteInfo<AcceptPickupRequestPageRouteArgs> {
+  AcceptPickupRequestPageRoute({
+    required String foodName,
+    required String postedTime,
+    required List<dynamic> foodCategory,
+    required String address,
+    required String phoneNumber,
+    _i42.Key? key,
+    List<_i40.PageRouteInfo>? children,
+  }) : super(
+>>>>>>> origin/master
           AcceptPickupRequestPageRoute.name,
+          args: AcceptPickupRequestPageRouteArgs(
+            foodName: foodName,
+            postedTime: postedTime,
+            foodCategory: foodCategory,
+            address: address,
+            phoneNumber: phoneNumber,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'AcceptPickupRequestPageRoute';
 
+<<<<<<< HEAD
   static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
 }
 
@@ -942,11 +1036,19 @@ class PickUpRequestRoute extends _i40.PageRouteInfo<PickUpRequestRouteArgs> {
 
 class PickUpRequestRouteArgs {
   const PickUpRequestRouteArgs({
+=======
+  static const _i40.PageInfo<AcceptPickupRequestPageRouteArgs> page =
+      _i40.PageInfo<AcceptPickupRequestPageRouteArgs>(name);
+}
+
+class AcceptPickupRequestPageRouteArgs {
+  const AcceptPickupRequestPageRouteArgs({
+>>>>>>> origin/master
     required this.foodName,
     required this.postedTime,
     required this.foodCategory,
     required this.address,
-    required this.snapshot,
+    required this.phoneNumber,
     this.key,
   });
 
@@ -958,18 +1060,304 @@ class PickUpRequestRouteArgs {
 
   final String address;
 
+<<<<<<< HEAD
   final _i42.AsyncSnapshot<_i44.QuerySnapshot<Object?>>? snapshot;
+=======
+  final String phoneNumber;
+>>>>>>> origin/master
 
   final _i42.Key? key;
 
   @override
   String toString() {
-    return 'PickUpRequestRouteArgs{foodName: $foodName, postedTime: $postedTime, foodCategory: $foodCategory, address: $address, snapshot: $snapshot, key: $key}';
+    return 'AcceptPickupRequestPageRouteArgs{foodName: $foodName, postedTime: $postedTime, foodCategory: $foodCategory, address: $address, phoneNumber: $phoneNumber, key: $key}';
   }
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i34.LoginPage]
+=======
+/// [_i25.DonationDescription]
+class DonationDescriptionRoute
+    extends _i40.PageRouteInfo<DonationDescriptionRouteArgs> {
+  DonationDescriptionRoute({
+    required String requestName,
+    required String NGOName,
+    required String ngoLatitude,
+    required String ngoLongitude,
+    required String totalRequest,
+    required String remainingRequest,
+    required _i44.Timestamp timestamp,
+    required String description,
+    required String phoneNumber,
+    _i42.Key? key,
+    List<_i40.PageRouteInfo>? children,
+  }) : super(
+          DonationDescriptionRoute.name,
+          args: DonationDescriptionRouteArgs(
+            requestName: requestName,
+            NGOName: NGOName,
+            ngoLatitude: ngoLatitude,
+            ngoLongitude: ngoLongitude,
+            totalRequest: totalRequest,
+            remainingRequest: remainingRequest,
+            timestamp: timestamp,
+            description: description,
+            phoneNumber: phoneNumber,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DonationDescriptionRoute';
+
+  static const _i40.PageInfo<DonationDescriptionRouteArgs> page =
+      _i40.PageInfo<DonationDescriptionRouteArgs>(name);
+}
+
+class DonationDescriptionRouteArgs {
+  const DonationDescriptionRouteArgs({
+    required this.requestName,
+    required this.NGOName,
+    required this.ngoLatitude,
+    required this.ngoLongitude,
+    required this.totalRequest,
+    required this.remainingRequest,
+    required this.timestamp,
+    required this.description,
+    required this.phoneNumber,
+    this.key,
+  });
+
+  final String requestName;
+
+  final String NGOName;
+
+  final String ngoLatitude;
+
+  final String ngoLongitude;
+
+  final String totalRequest;
+
+  final String remainingRequest;
+
+  final _i44.Timestamp timestamp;
+
+  final String description;
+
+  final String phoneNumber;
+
+  final _i42.Key? key;
+
+  @override
+  String toString() {
+    return 'DonationDescriptionRouteArgs{requestName: $requestName, NGOName: $NGOName, ngoLatitude: $ngoLatitude, ngoLongitude: $ngoLongitude, totalRequest: $totalRequest, remainingRequest: $remainingRequest, timestamp: $timestamp, description: $description, phoneNumber: $phoneNumber, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i26.DonationRequest]
+class DonationRequestRoute extends _i40.PageRouteInfo<void> {
+  const DonationRequestRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          DonationRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DonationRequestRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i27.PickupRequestPage]
+class PickupRequestPageRoute extends _i40.PageRouteInfo<void> {
+  const PickupRequestPageRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          PickupRequestPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PickupRequestPageRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i28.RaiseRequest]
+class RaiseRequestRoute extends _i40.PageRouteInfo<void> {
+  const RaiseRequestRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          RaiseRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RaiseRequestRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i29.RaiseRequest2]
+class RaiseRequest2Route extends _i40.PageRouteInfo<void> {
+  const RaiseRequest2Route({List<_i40.PageRouteInfo>? children})
+      : super(
+          RaiseRequest2Route.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RaiseRequest2Route';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i30.SuccessPage]
+class SuccessPageRoute extends _i40.PageRouteInfo<void> {
+  const SuccessPageRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          SuccessPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SuccessPageRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i31.DonationTrackingPage]
+class DonationTrackingPageRoute extends _i40.PageRouteInfo<void> {
+  const DonationTrackingPageRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          DonationTrackingPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DonationTrackingPageRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i32.HomePage]
+class HomePageRoute extends _i40.PageRouteInfo<void> {
+  const HomePageRoute({List<_i40.PageRouteInfo>? children})
+      : super(
+          HomePageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomePageRoute';
+
+  static const _i40.PageInfo<void> page = _i40.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i33.HungerSpot]
+class HungerSpotRoute extends _i40.PageRouteInfo<HungerSpotRouteArgs> {
+  HungerSpotRoute({
+    _i42.Key? key,
+    required String child,
+    List<_i40.PageRouteInfo>? children,
+  }) : super(
+          HungerSpotRoute.name,
+          args: HungerSpotRouteArgs(
+            key: key,
+            child: child,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'HungerSpotRoute';
+
+  static const _i40.PageInfo<HungerSpotRouteArgs> page =
+      _i40.PageInfo<HungerSpotRouteArgs>(name);
+}
+
+class HungerSpotRouteArgs {
+  const HungerSpotRouteArgs({
+    this.key,
+    required this.child,
+  });
+
+  final _i42.Key? key;
+
+  final String child;
+
+  @override
+  String toString() {
+    return 'HungerSpotRouteArgs{key: $key, child: $child}';
+  }
+}
+
+/// generated route for
+/// [_i34.PickUpRequest]
+class PickUpRequestRoute extends _i40.PageRouteInfo<PickUpRequestRouteArgs> {
+  PickUpRequestRoute({
+    required String foodName1,
+    required String postedTime,
+    required List<dynamic> foodCategory,
+    required String address,
+    required _i42.AsyncSnapshot<_i44.QuerySnapshot<Object?>>? snapshot,
+    required String phoneNumber,
+    _i42.Key? key,
+    List<_i40.PageRouteInfo>? children,
+  }) : super(
+          PickUpRequestRoute.name,
+          args: PickUpRequestRouteArgs(
+            foodName1: foodName1,
+            postedTime: postedTime,
+            foodCategory: foodCategory,
+            address: address,
+            snapshot: snapshot,
+            phoneNumber: phoneNumber,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PickUpRequestRoute';
+
+  static const _i40.PageInfo<PickUpRequestRouteArgs> page =
+      _i40.PageInfo<PickUpRequestRouteArgs>(name);
+}
+
+class PickUpRequestRouteArgs {
+  const PickUpRequestRouteArgs({
+    required this.foodName1,
+    required this.postedTime,
+    required this.foodCategory,
+    required this.address,
+    required this.snapshot,
+    required this.phoneNumber,
+    this.key,
+  });
+
+  final String foodName1;
+
+  final String postedTime;
+
+  final List<dynamic> foodCategory;
+
+  final String address;
+
+  final _i42.AsyncSnapshot<_i44.QuerySnapshot<Object?>>? snapshot;
+
+  final String phoneNumber;
+
+  final _i42.Key? key;
+
+  @override
+  String toString() {
+    return 'PickUpRequestRouteArgs{foodName1: $foodName1, postedTime: $postedTime, foodCategory: $foodCategory, address: $address, snapshot: $snapshot, phoneNumber: $phoneNumber, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i35.LoginPage]
+>>>>>>> origin/master
 class LoginPageRoute extends _i40.PageRouteInfo<void> {
   const LoginPageRoute({List<_i40.PageRouteInfo>? children})
       : super(
@@ -983,6 +1371,7 @@ class LoginPageRoute extends _i40.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i35.NgoSearchPage]
 class NgoSearchPageRoute extends _i40.PageRouteInfo<void> {
   const NgoSearchPageRoute({List<_i40.PageRouteInfo>? children})
@@ -997,6 +1386,8 @@ class NgoSearchPageRoute extends _i40.PageRouteInfo<void> {
 }
 
 /// generated route for
+=======
+>>>>>>> origin/master
 /// [_i36.ChattingPage]
 class ChattingPageRoute extends _i40.PageRouteInfo<void> {
   const ChattingPageRoute({List<_i40.PageRouteInfo>? children})

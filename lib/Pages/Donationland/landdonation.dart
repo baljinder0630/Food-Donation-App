@@ -16,19 +16,16 @@ class landDonation extends ConsumerStatefulWidget {
 }
 
 class CharityHomePage extends ConsumerState<landDonation> {
-  List<Map<dynamic, dynamic>> posters =[
-    {
-      'img': 'lib/assets/posters/pos1.png',
-    },
+  List<Map<dynamic, dynamic>> posters = [
     {
       'img': 'lib/assets/posters/pos2.jpg',
     },
-
-
+    {
+      'img': 'assets/land_donation1.png',
+    },
   ];
   List<Map<dynamic, dynamic>> data = [
     {
-      // lib\assets\donateimg\chatbot.png
       'img': 'lib/assets/donateimg/food.png',
       'category': 'Food Donation',
       'redirect': FoodCategoryFormRoute(),
@@ -39,125 +36,156 @@ class CharityHomePage extends ConsumerState<landDonation> {
       'redirect': DonationRequestRoute(),
     },
     {
-      'img': 'lib/assets/donateimg/community.png',
+      'img': 'assets/community.png',
       'category': 'Community',
       'redirect': 'CommunityHomePageRoute()',
     },
     {
-      'img': 'lib/assets/donateimg/chatbot.png',
-      'category': 'Chat-Bot',
+      'img': 'assets/raise_query.png',
+      'category': 'Resolve Query',
+      'redirect': ChatBotScreenRoute(),
+    },
+    {
+      'img': 'assets/be_volunteer.png',
+      'category': 'Be a Volunteer',
       'redirect': 'RaiseRequestRoute()',
     },
     {
-      'img': 'images/groceries.png',
-      'category': 'Food items & supplies',
+      'img': 'assets/raise_request.png',
+      'category': 'Raise Request',
       'redirect': 'RaiseRequestRoute()',
     },
     {
-      'img': 'images/vegetables.png',
-      'category': 'Packed items',
+      'img': 'assets/connect.png',
+      'category': 'Connect',
+      'redirect': 'RaiseRequestRoute()',
+    },
+    {
+      'img': 'assets/your_contributions.png',
+      'category': 'Contributions',
       'redirect': 'RaiseRequestRoute()',
     }
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MyAppBar(
-                    centerWidget: Padding(
-                      padding: EdgeInsets.only(left: 57.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pushRoute(const ArticleSearchPageRoute());
-                        },
-                        child: Container(
-                          width: 200.w,
-                          height: 40.h,
-                          padding: EdgeInsets.only(top: 5.h),
-                          child: Text("Donate Now",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 24.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.asset(
+          'assets/sign_up_screen.png',
+          fit: BoxFit.cover,
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // MyAppBar(
+                      //   centerWidget: Padding(
+                      //     padding: EdgeInsets.only(left: 57.w),
+                      //     child: GestureDetector(
+                      //       onTap: () {
+                      //         context.pushRoute(const ArticleSearchPageRoute());
+                      //       },
+                      //       child: Container(
+                      //         width: 200.w,
+                      //         height: 40.h,
+                      //         padding: EdgeInsets.only(top: 5.h),
+                      //         child: Text("Donate Now",
+                      //             textAlign: TextAlign.center,
+                      //             style: TextStyle(
+                      //                 fontSize: 24.sp,
+                      //                 fontWeight: FontWeight.bold,
+                      //                 color: Colors.white)),
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   rightWidget: Padding(
+                      //     padding: EdgeInsets.only(right: 34.18.w),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 350.w,
                       ),
-                    ),
-                    rightWidget: Padding(
-                      padding: EdgeInsets.only(right: 34.18.w),
-                    ),
-                  ),
-                 SizedBox(
-                    height: 40.w,
-                  ),
-                  DonationCarousel(posters),
-                  SizedBox(
-                    height: 40.w,
-                  ),
-                ],
-              ),
-            ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-              ),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return buildGridItem(context, index);
-              },
-            ),
-            SizedBox(
-              height: 60.r,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(
-                  'Explore Our Features',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.sp,
-                    fontFamily: 'Outfit',
-                    fontWeight: FontWeight.w500,
-                    height: 0,
-                    letterSpacing: 0.80.sp,
+                      // DonationCarousel(posters),
+                      SizedBox(
+                        height: 40.w,
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                    ),
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return buildGridItem(context, index);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 60.r,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      'Explore Our Features',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                        letterSpacing: 0.80.sp,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.r,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                    ),
+                    itemCount: data.length - 2,
+                    itemBuilder: (context, index) {
+                      return buildGridItem(context, index + 2);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 40.r,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 40.r,
-            ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-              ),
-              itemCount: data.length - 2,
-              itemBuilder: (context, index) {
-                return buildGridItem(context, index + 2);
-              },
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -167,7 +195,6 @@ class CharityHomePage extends ConsumerState<landDonation> {
       options: CarouselOptions(
         height: 200.0,
         aspectRatio: screenWidth / 200.0,
-       
         enlargeCenterPage: true,
         autoPlay: true,
       ),
@@ -176,14 +203,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
         Map<dynamic, dynamic> item = data[index];
 
         return InkWell(
-          onTap: () {
-            // log("Tapped on ${item['category']}");
-            // Navigate to the specified route or perform any action
-            // You can use item['redirect'] to get the route name
-            // context.pushRoute(item['redirect']);
-          },
+          onTap: () {},
           child: Container(
-            
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
@@ -197,10 +218,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -234,64 +253,65 @@ class CharityHomePage extends ConsumerState<landDonation> {
             ),
           ),
           SizedBox(height: 8.0.r),
-          ElevatedButton(
-             onPressed: () async {
-              try {
-                if (data[index]['category'] == 'Food Donation') {
-                  await context.pushRoute(FoodCategoryFormRoute());
-                } else if (data[index]['category'] == 'Fund donation') {
-                  await context.pushRoute(DonationRequestRoute());
-                } else if (data[index]['category'] == 'Community') {
-                  await context.pushRoute(CommunityHomePageRoute());
-                } else if (data[index]['category'] == 'Chat-Bot') {
-                  await context.pushRoute(RaiseRequestRoute());
-                } else {
-                  // Default redirection for other categories
-                  await context.pushRoute(RaiseRequestRoute());
+          Container(
+            width: 200.w,
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  if (data[index]['category'] == 'Food Donation') {
+                    await context.pushRoute(const PersonalDetailsRoute());
+                  } else if (data[index]['category'] == 'Fund donation') {
+                    await context
+                        .pushRoute(const RazorpayPaymentGatewayRoute());
+                  } else if (data[index]['category'] == 'Community') {
+                    await context.pushRoute(const CommunityHomePageRoute());
+                  } else if (data[index]['category'] == 'Resolve Query') {
+                    await context.pushRoute(const ChatBotScreenRoute());
+                  } else {
+                    await context.pushRoute(const RaiseRequestRoute());
+                  }
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Redirection Failed'),
+                        content: Text('An error occurred while redirecting.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
-              } catch (e) {
-                print('Error during redirection: $e');
-                // Show a pop-up or some other UI indicating the failure
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Redirection Failed'),
-                      content: Text('An error occurred while redirecting.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: green2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: green2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                elevation: 2.0,
+                minimumSize: Size(0, 36),
               ),
-              elevation: 2.0,
-              minimumSize: Size(0, 36), // Set the minimum size to make it mini
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0.r),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    data[index]['category'],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.0.r,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0.r),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      data[index]['category'],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0.r,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

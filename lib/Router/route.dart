@@ -55,6 +55,18 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
         CustomRoute(
+          page: RazorpayPaymentGatewayRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: HomePageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
+          page: LandDonationRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideTop,
+        ),
+        CustomRoute(
           page: ArticleDetailRoute.page,
           transitionsBuilder: TransitionsBuilders.slideTop,
         ),
@@ -110,12 +122,16 @@ class AppRouter extends $AppRouter {
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
         CustomRoute(
-          page: PhoneScreenRoute.page,
+          page: PersonalDetailsRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
-        CustomRoute(
-            page: OtpScreenRoute.page,
-            transitionsBuilder: TransitionsBuilders.slideBottom),
+        // CustomRoute(
+        //   page: PhoneScreenRoute.page,
+        //   transitionsBuilder: TransitionsBuilders.slideLeft,
+        // ),
+        // CustomRoute(
+        //     page: OtpScreenRoute.page,
+        //     transitionsBuilder: TransitionsBuilders.slideBottom),
         CustomRoute(
           page: IncomingRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
