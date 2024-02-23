@@ -3,10 +3,15 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart';
+import 'package:food_donation_app/Pages/HomePages/pickupRequest.dart';
+import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
@@ -88,7 +93,7 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                         ),
                         Tab(
                           icon: Icon(
-                            Icons.grid_on_sharp,
+                            Icons.food_bank,
                             size: 25.sp,
                             color: Colors.black,
                           ),
@@ -101,18 +106,18 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                         child: TabBarView(
                           children: [
                             // Replace with the widgets you want to display when each tab is selected
-                            Container(
-                              child: Center(
-                                child: Text(
-                                  "No Donation History",
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ), // Second tab
-
+                            // Container(
+                            //   child: Center(
+                            //     child: Text(
+                            //       "No Donation History",
+                            //       style: TextStyle(
+                            //         fontSize: 20.sp,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ), /
+                            //
                             ref.watch(communityProvider).myPosts!.length == 0
                                 ? Center(
                                     child: Text(
@@ -146,29 +151,180 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                                                     .myPosts![index],
                                               ));
                                             },
-                                            child: Container(
-                                              // margin: EdgeInsets.only(right: 20.w),
-                                              width: 300.sp,
-                                              height: 300.sp,
-                                              margin: EdgeInsets.all(5.0),
-                                              decoration: ShapeDecoration(
-                                                shape: RoundedRectangleBorder(),
-                                                image: DecorationImage(
-                                                  image:
-                                                      CachedNetworkImageProvider(
-                                                    ref
-                                                        .watch(
-                                                            communityProvider)
-                                                        .myPosts![index]
-                                                        .imgUrl,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            child: Card(
+                                              clipBehavior: Clip.antiAlias,
+                                              child: CachedNetworkImage(
+                                                imageUrl: ref
+                                                    .watch(communityProvider)
+                                                    .myPosts![index]
+                                                    .imgUrl,
+                                                fit: BoxFit.cover,
                                               ),
+
+                                              //   Container(
+                                              //     // margin: EdgeInsets.only(right: 20.w),
+                                              //     width: 300.sp,
+                                              //     height: 300.sp,
+                                              //     margin: EdgeInsets.all(5.0),
+                                              //     decoration: ShapeDecoration(
+                                              //       shape:
+                                              //           RoundedRectangleBorder(),
+                                              //       image: DecorationImage(
+                                              //         image:
+                                              //             CachedNetworkImageProvider(
+                                              //           ref
+                                              //               .watch(
+                                              //                   communityProvider)
+                                              //               .myPosts![index]
+                                              //               .imgUrl,
+                                              //         ),
+                                              //         fit: BoxFit.cover,
+                                              //       ),
+                                              //     ),
+                                              //   ),
                                             ),
                                           );
                                         }),
                                   ), // First tab
+
+                            StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('requests')
+                                  .where("uid",
+                                      isEqualTo: ref
+                                          .watch(authStateProvider)
+                                          .user!
+                                          .uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                List<PickUpRequest> donationRequestWidgets = [];
+                                if (snapshot.hasData) {
+                                  final donationRequests =
+                                      snapshot.data?.docs.reversed.toList();
+                                  for (var donationRequest
+                                      in donationRequests!) {
+                                    final address = donationRequest['plotNo'] +
+                                        ", " +
+                                        donationRequest['streetController'] +
+                                        ", " +
+                                        donationRequest['districtController'] +
+                                        ", " +
+                                        donationRequest['pincodeController'];
+                                    final createdTime =
+                                        donationRequest['postedTime'];
+                                    final cookedBefore =
+                                        getCookedTime(createdTime);
+                                    final donationRequestWidget = PickUpRequest(
+                                      phoneNumber:
+                                          donationRequest['phoneNumber'],
+                                      snapshot: snapshot,
+                                      foodName1: donationRequest['name'],
+                                      address: address,
+                                      postedTime: cookedBefore,
+                                      foodCategory:
+                                          donationRequest['foodCategory'],
+                                    );
+
+                                    donationRequestWidgets
+                                        .add(donationRequestWidget);
+                                  }
+                                }
+                                return Expanded(
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 10.r),
+                                    height: 400.h,
+                                    child: GridView.builder(
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 5.0,
+                                          mainAxisSpacing: 5.0,
+                                        ),
+                                        itemCount:
+                                            donationRequestWidgets.length,
+                                        itemBuilder: (context, index) {
+                                          return Card(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(10.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    donationRequestWidgets[
+                                                            index]
+                                                        .foodName1,
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 5.0),
+                                                  Text(
+                                                    donationRequestWidgets[
+                                                            index]
+                                                        .address,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 3.0),
+                                                  Text(
+                                                    donationRequestWidgets[
+                                                            index]
+                                                        .phoneNumber,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 6.0),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      // TODO: Navigate to the detail page
+                                                      // context.pushRoute(
+
+                                                      // );
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: green,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.r),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5.0,
+                                                              horizontal: 10.0),
+                                                      child: Text(
+                                                        "View Detail",
+                                                        style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -190,25 +346,25 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings and privacy'),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.settings),
+            //   title: const Text('Settings and privacy'),
+            //   onTap: () {},
+            // ),
 
-            const ListTile(
-                leading: Icon(Icons.message),
-                title: Text('Threads'),
-                trailing: Chip(
-                  label: Padding(
-                    padding: EdgeInsets.all(2.0),
-                    child: Text(
-                      '9+',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  backgroundColor: Colors.blue,
-                )),
+            // const ListTile(
+            //     leading: Icon(Icons.message),
+            //     title: Text('Threads'),
+            //     trailing: Chip(
+            //       label: Padding(
+            //         padding: EdgeInsets.all(2.0),
+            //         child: Text(
+            //           '9+',
+            //           style: TextStyle(color: Colors.white),
+            //         ),
+            //       ),
+            //       backgroundColor: Colors.blue,
+            //     )),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),

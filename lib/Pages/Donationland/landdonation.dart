@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 @RoutePage()
@@ -83,7 +82,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: EdgeInsets.only(top: 50.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -230,7 +229,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
 
   Widget buildGridItem(BuildContext context, int index) {
     return Container(
-      padding: EdgeInsets.all(10.0.r),
+      // padding: EdgeInsets.all(10.0.r),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -252,9 +251,9 @@ class CharityHomePage extends ConsumerState<landDonation> {
               height: 120.0.r,
             ),
           ),
-          SizedBox(height: 8.0.r),
+          // SizedBox(height: 8.0.r),
           Container(
-            width: 200.w,
+            // width: 200.w,
             child: ElevatedButton(
               onPressed: () async {
                 try {
@@ -298,19 +297,13 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 elevation: 2.0,
                 minimumSize: Size(0, 36),
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0.r),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      data[index]['category'],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0.r,
-                      ),
-                    ),
-                  ],
+              child: Text(
+                data[index]['category'],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0.r,
                 ),
               ),
             ),

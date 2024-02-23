@@ -18,12 +18,13 @@ class IncomingRequest extends ConsumerStatefulWidget {
 }
 
 class _IncomingRequestState extends ConsumerState<IncomingRequest> {
+  final firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance
+        stream: firestore
             .collection("users")
             .doc(ref.watch(authStateProvider).user!.uid)
             .collection("incomingRequests")
@@ -39,6 +40,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
               return ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, int index) {
                   final userId =
@@ -82,7 +84,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                 child: const Text('Accept'),
                                 onPressed: () async {
                                   try {
-                                    await FirebaseFirestore.instance
+                                    await firestore
                                         .collection("users")
                                         .doc(ref
                                             .watch(authStateProvider)
@@ -95,7 +97,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                                 status:
                                                     ConnectionStatus.accepted)
                                             .toMap());
-                                    await FirebaseFirestore.instance
+                                    await firestore
                                         .collection("users")
                                         .doc(userId)
                                         .collection("connections")
@@ -112,7 +114,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                                     ConnectionStatus.accepted)
                                             .toMap());
 
-                                    await FirebaseFirestore.instance
+                                    await firestore
                                         .collection("users")
                                         .doc(ref
                                             .watch(authStateProvider)
@@ -122,7 +124,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                         .doc(userId)
                                         .delete();
 
-                                    await FirebaseFirestore.instance
+                                    await firestore
                                         .collection("users")
                                         .doc(userId)
                                         .collection("outgoingRequests")
@@ -131,6 +133,21 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                             .user!
                                             .uid)
                                         .delete();
+                                    await firestore
+                                        .collection("users")
+                                        .doc(ref
+                                            .watch(authStateProvider)
+                                            .user!
+                                            .uid)
+                                        .update({
+                                      "totalConnects": FieldValue.increment(1)
+                                    });
+                                    await firestore
+                                        .collection("users")
+                                        .doc(userId)
+                                        .update({
+                                      "totalConnects": FieldValue.increment(1)
+                                    });
                                     log("Connect accepted successfully");
                                   } catch (e) {
                                     log(e.toString());
@@ -139,7 +156,26 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                               ),
                               TextButton(
                                 child: const Text('Ignore'),
-                                onPressed: () {},
+                                onPressed: () {
+                                  firestore
+                                      .collection("users")
+                                      .doc(ref
+                                          .watch(authStateProvider)
+                                          .user!
+                                          .uid)
+                                      .collection("incomingRequests")
+                                      .doc(userId)
+                                      .delete();
+                                  firestore
+                                      .collection("users")
+                                      .doc(userId)
+                                      .collection("outgoingRequests")
+                                      .doc(ref
+                                          .watch(authStateProvider)
+                                          .user!
+                                          .uid)
+                                      .delete();
+                                },
                               ),
                             ],
                           ),
@@ -166,6 +202,6 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
   }
 
   getUserData(userId) {
-    return FirebaseFirestore.instance.collection("users").doc(userId).get();
+    return firestore.collection("users").doc(userId).get();
   }
 }

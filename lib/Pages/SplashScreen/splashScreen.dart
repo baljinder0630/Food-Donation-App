@@ -14,47 +14,23 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    // precacheImage(
-    //         const AssetImage('assets/splash_screen_animation.gif'), context)
-    //     .then((_) {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // });
-    Future.delayed(const Duration(seconds: 6), () {
-      setState(() {
-        _isLoading = false;
-      });
-      _navigate();
-    });
-  }
-
-  void _navigate() {
-    final authState = ref.read(authStateProvider);
-    if (authState.appStatus == AppStatus.authenticated) {
-      context.router.replace(const AppBottomNavigationBarRoute());
-    } else {
-      context.router.replace(const SignUpPageRoute());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // ref.listen(authStateProvider, (previous, next) {
-    //   if (next.appStatus == AppStatus.authenticated) {
-    //     context.router.replace(const AppBottomNavigationBarRoute());
-    //   } else {
-    //     context.router.replace(const SignUpPageRoute());
-    //   }
-    // });
+    ref.listen(authStateProvider, (previous, next) {
+      if (next.appStatus == AppStatus.authenticated) {
+        context.router.replace(const AppBottomNavigationBarRoute());
+      } else {
+        context.router.replace(const SignUpPageRoute());
+      }
+    });
 
     return Scaffold(
-      body: Image.asset('assets/splash_screen_animation.gif'),
+      body: Image.asset(
+        'assets/splash_screen_animation.gif',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ),
     );
   }
 }
