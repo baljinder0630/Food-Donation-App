@@ -251,65 +251,63 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           } else {
                             return Container();
                           }
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: white,
+                        },
+                      ),
               ),
-              padding: EdgeInsets.only(top: 10.r),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.r),
-                  height: 80.h,
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 8.h),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: msgcontroller,
-                              maxLines: null,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                hintText: "Type a message",
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  borderSide: BorderSide(color: green),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  borderSide: BorderSide(color: green),
+              Container(
+                decoration: BoxDecoration(
+                  color: white,
+                ),
+                padding: EdgeInsets.only(top: 10.r),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.r),
+                    height: 80.h,
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 8.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: msgcontroller,
+                                maxLines: null,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  hintText: "Type a message",
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    borderSide: BorderSide(color: green),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    borderSide: BorderSide(color: green),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (msgcontroller.text.trim().isNotEmpty) {
-                                ref
-                                    .watch(communityProvider.notifier)
-                                    .SendMessage(
-                                      msgcontroller.text.trim(),
-                                      widget.TargetUser.uid,
-                                      currentUserUid,
-                                    );
-                                msgcontroller.clear();
-                              }
-                            },
-                            icon: Icon(
-                              Icons.send,
-                              color: green,
-                              size: 30,
+                            IconButton(
+                              onPressed: () {
+                                if (msgcontroller.text.trim().isNotEmpty) {
+                                  ref
+                                      .watch(communityProvider.notifier)
+                                      .SendMessage(
+                                        msgcontroller.text.trim(),
+                                        widget.TargetUser.uid,
+                                        currentUserUid,
+                                      );
+                                  msgcontroller.clear();
+                                }
+                              },
+                              icon: Icon(
+                                Icons.send,
+                                color: green,
+                                size: 30,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -558,18 +558,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //     },
                 //   ),
                 // ),
-                // TODO: Why this image ?
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.r),
-                  width: double.infinity,
-                  height: 250.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.r),
-                      image: DecorationImage(
-                        image: AssetImage("lib/assets/general/sad1.png"),
-                        fit: BoxFit.cover,
-                      )),
-                ),
                 // Container(
                 //   width: double.infinity,
                 //   height: 250.h,
