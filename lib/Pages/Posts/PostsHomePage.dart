@@ -13,6 +13,7 @@ import 'package:food_donation_app/Pages/Community/recentPosts.dart';
 import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+import '../constants/constants.dart';
 
 @RoutePage()
 class PostHomePage extends ConsumerStatefulWidget {
@@ -278,16 +279,16 @@ Widget SearchHistory(context) {
   return Container(
       width: 28.80,
       height: 28.80,
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Color(0xFFFEFEFE),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
+      // clipBehavior: Clip.antiAlias,
+      // decoration: ShapeDecoration(
+      //   color: Color(0xFFFEFEFE),
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(15),
+      //   ),
+      // ),
       child: Icon(
         Icons.history_rounded,
-        size: 28.8.r,
-        color: Colors.black,
+        size: 32.r,
+        color: Colors.white,
       ));
 }

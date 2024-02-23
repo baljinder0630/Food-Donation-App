@@ -21,6 +21,8 @@ class DonationRequest {
   String? streetController;
   String? districtController;
   String? pincodeController;
+
+  // Timestamp postedTime = Timestamp.now();
   List<FoodCategory>? foodCategory;
   FoodCategoryStatus? foodCategoryStatus;
 
@@ -32,6 +34,7 @@ class DonationRequest {
     this.districtController,
     this.pincodeController,
     this.foodCategory,
+    // required this.postedTime,
     this.foodCategoryStatus,
   });
 
@@ -55,6 +58,7 @@ class DonationRequest {
     data['name'] = name;
     data['phoneNumber'] = phoneNumber;
     data['plotNo'] = plotNo;
+    // data['postedTime'] = postedTime;
     data['streetController'] = streetController;
     data['districtController'] = districtController;
     data['pincodeController'] = pincodeController;
@@ -78,6 +82,7 @@ class DonationRequest {
         name: name ?? this.name,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         plotNo: plotNo ?? this.plotNo,
+        // postedTime: postedTime,
         streetController: streetController ?? this.streetController,
         districtController: districtController ?? this.districtController,
         pincodeController: pincodeController ?? this.pincodeController,
@@ -89,6 +94,7 @@ class DonationRequest {
 class DonationRequestNotifier extends StateNotifier<DonationRequest> {
   final StateNotifierProviderRef ref;
   final FirebaseFirestore firestore;
+
   DonationRequestNotifier({required this.ref})
       : firestore = FirebaseFirestore.instance,
         super(DonationRequest(
@@ -99,6 +105,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
             districtController: '',
             pincodeController: '',
             foodCategory: [],
+            // postedTime: Timestamp.now(),
             foodCategoryStatus: FoodCategoryStatus.initial));
 
   DonationRequest updateFoodCategory(
@@ -197,14 +204,14 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
       }
 
       DonationRequestModel donationRequestModel = DonationRequestModel(
-        name: state.name,
-        phoneNumber: state.phoneNumber,
-        plotNo: state.plotNo,
-        streetController: state.streetController,
-        districtController: state.districtController,
-        pincodeController: state.pincodeController,
-        foodCategory: foodList,
-      );
+          name: state.name,
+          phoneNumber: state.phoneNumber,
+          plotNo: state.plotNo,
+          streetController: state.streetController,
+          districtController: state.districtController,
+          pincodeController: state.pincodeController,
+          foodCategory: foodList,
+          postedTime: Timestamp.now());
 
       final id = const Uuid().v4();
       final doc = firestore.collection("requests").doc(id);

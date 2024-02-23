@@ -16,6 +16,7 @@ class Raisemodel {
   final Timestamp createdTime;
   final String raiseRequestStatus;
   final dynamic donationRequests;
+  final dynamic ngoDetails;
 
   Raisemodel(
       {required this.id,
@@ -31,11 +32,13 @@ class Raisemodel {
       required this.requestsFulfilled,
       required this.createdTime,
       required this.raiseRequestStatus,
-      this.donationRequests});
+      this.donationRequests,
+      this.ngoDetails});
 
   factory Raisemodel.fromMap(Map<String, dynamic> json) {
     return Raisemodel(
-        id: json['id'] ?? Uuid().v4(), // Generate a new id if not provided
+        id: json['id'] ?? Uuid().v4(),
+        // Generate a new id if not provided
         ngoName: json['ngoName'] ?? '',
         requestType: json['requestType'] ?? '',
         mobileNumber: json['mobileNumber'] ?? '',
@@ -48,7 +51,8 @@ class Raisemodel {
         requestsFulfilled: json['requestsFulfilled'] ?? '',
         createdTime: json['createdTime'] ?? '',
         raiseRequestStatus: json['raiseRequestStatus'] ?? 'initial',
-        donationRequests: json['donationRequests'] ?? '');
+        donationRequests: json['donationRequests'] ?? '',
+        ngoDetails: json['ngoDetails'] ?? '');
   }
 
   Map<String, dynamic> toMap() {
@@ -66,7 +70,8 @@ class Raisemodel {
       'requestsFulfilled': requestsFulfilled,
       'createdTime': createdTime,
       'raiseRequestStatus': raiseRequestStatus,
-      'donationRequests': donationRequests
+      'donationRequests': donationRequests,
+      'ngoDetails': ngoDetails
     };
   }
 
@@ -85,7 +90,8 @@ class Raisemodel {
       String? requestsFulfilled,
       Timestamp? createdTime,
       String? raiseRequestStatus,
-      dynamic donationRequests}) {
+      dynamic donationRequests,
+      dynamic ngoDetails}) {
     return Raisemodel(
         id: id ?? this.id,
         ngoName: ngoName ?? this.ngoName,
@@ -100,6 +106,7 @@ class Raisemodel {
         requestsFulfilled: requestsFulfilled ?? this.requestsFulfilled,
         createdTime: createdTime ?? this.createdTime,
         raiseRequestStatus: raiseRequestStatus ?? this.raiseRequestStatus,
-        donationRequests: donationRequests ?? this.donationRequests);
+        donationRequests: donationRequests ?? this.donationRequests,
+        ngoDetails: ngoDetails ?? this.ngoDetails);
   }
 }

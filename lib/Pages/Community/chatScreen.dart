@@ -251,14 +251,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           } else {
                             return Container();
                           }
-                        },
-                      ),
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: white,
               ),
-              Align(
+              padding: EdgeInsets.only(top: 10.r),
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: 80.h,
                   padding: EdgeInsets.symmetric(horizontal: 10.r),
+                  height: 80.h,
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 8.h),

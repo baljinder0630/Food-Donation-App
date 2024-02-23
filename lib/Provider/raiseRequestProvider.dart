@@ -12,6 +12,7 @@ final raiseRequestProvider =
 class RaiseRequestNotifier extends StateNotifier<Raisemodel> {
   final StateNotifierProviderRef ref;
   final FirebaseFirestore firestore;
+
   RaiseRequestNotifier({required this.ref})
       : firestore = FirebaseFirestore.instance,
         super(Raisemodel(
@@ -113,6 +114,70 @@ class RaiseRequestNotifier extends StateNotifier<Raisemodel> {
       print(e);
       state = state.copyWith(raiseRequestStatus: 'error');
       return false;
+    }
+  }
+
+  Future<List<dynamic>> getNGOs() async {
+    try {
+      print('here');
+      state = state.copyWith(raiseRequestStatus: 'processing');
+
+      final collectionRef = firestore.collection("ngoRequests");
+
+      final querySnapshot = await collectionRef.get();
+
+      final List<dynamic> donationRequests = [];
+
+      // Fetch user data for each donation request
+      for (final doc in querySnapshot.docs) {
+        final data = doc.data();
+        final donationRequest = {
+          'id': doc.id,
+          'ngoName': data['ngoName'] ?? '',
+          'requestType': data['requestType'] ?? '',
+          'mobileNumber': data['mobileNumber'] ?? '',
+          'plotNo': data['plotNo'] ?? '',
+          'streetNo': data['streetNo'] ?? '',
+          'district': data['district'] ?? '',
+          'pincode': data['pincode'] ?? '',
+          'description': data['description'] ?? '',
+          'numberOfServings': data['numberOfServings'] ?? '',
+          'requestsFulfilled': data['requestsFulfilled'] ?? '',
+          'createdTime': data['createdTime'] ?? Timestamp.now(),
+          'raiseRequestStatus': data['raiseRequestStatus'] ?? 'initial',
+        };
+
+        // Fetch user data for the current donation request
+        final userData = await getUserData(data['userId']);
+        if (userData != null && userData.exists) {
+          donationRequest['userName'] = userData.get('name');
+          donationRequest['userLocation'] = userData.get('location');
+          donationRequest['userProfilePicUrl'] = userData.get('profilePic');
+        }
+
+        donationRequests.add(donationRequest);
+      }
+
+      state = state.copyWith(
+        raiseRequestStatus: 'processed',
+        ngoDetails: donationRequests,
+      );
+      // print("Donation requests: $donationRequests");
+      return donationRequests;
+    } catch (e) {
+      print(e);
+      state = state.copyWith(raiseRequestStatus: 'error');
+      return [];
+    }
+  }
+
+  Future<DocumentSnapshot?> getUserData(String userId) async {
+    try {
+      final userDoc = await firestore.collection('users').doc(userId).get();
+      return userDoc;
+    } catch (e) {
+      print('Error fetching user data for user ID $userId: $e');
+      return null;
     }
   }
 }

@@ -73,11 +73,11 @@ dependencies:
   grouped_list: ^4.0.0
   smart_auth: any
   video_player: ^2.8.2
+  circle_nav_bar: any
   flutter_native_splash: any
   charts_flutter_new: any
   get: any
   flutter_animate: any
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

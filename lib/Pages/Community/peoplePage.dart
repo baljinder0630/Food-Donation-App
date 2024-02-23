@@ -38,7 +38,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                       .toList();
 
                   return Container(
-                    height: 103.h * users.length,
+                    height: 110.h * users.length,
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: users.length,
@@ -49,7 +49,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                   );
                 }
               }
-              return Text("data");
+              return SizedBox();
             },
           )),
     );
