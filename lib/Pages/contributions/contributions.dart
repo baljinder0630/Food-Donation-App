@@ -18,31 +18,31 @@ class _ContributionState extends ConsumerState<Contribution> {
     NewBooks(
         year: "2008",
         books: 500,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2009",
         books: 1200,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2010",
         books: 250,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2011",
         books: 800,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2012",
         books: 900,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2013",
         books: 750,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
     NewBooks(
         year: "2014",
         books: 900,
-        barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.green)),
   ];
 
   @override
@@ -79,7 +79,7 @@ class _ContributionState extends ConsumerState<Contribution> {
                 padding: EdgeInsets.only(
                     top: 20.0.h), // Adjust the top padding as needed
                 height: 300,
-                child: charts.BarChart(series, animate: true),
+                // child: charts.BarChart(series, animate: true),
               ),
               SizedBox(height: 20.h),
 

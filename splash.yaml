@@ -1,0 +1,9 @@
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/splash_screen_animation.gif
+
+  android_12:
+    color: "#FFFFFF"
+    image: assets/splash_screen_animation.gif
+
+  web: false

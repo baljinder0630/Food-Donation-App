@@ -41,7 +41,7 @@ class FoodCategoryGrid extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: Colors.green.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: const Offset(0, 2),
@@ -63,7 +63,7 @@ class FoodCategoryGrid extends StatelessWidget {
                         Colors.white,
                         // Color.fromARGB(176, 255, 55, 0),
 
-                        primaryColor
+                        Colors.green,
                       ],
                       radius: 1.0,
                       stops: [0.0, 1.0],
