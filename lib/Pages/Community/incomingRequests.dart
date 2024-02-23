@@ -23,6 +23,7 @@ class IncomingRequest extends ConsumerStatefulWidget {
 
 class _IncomingRequestState extends ConsumerState<IncomingRequest> {
   final firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -87,124 +88,16 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                 ),
                               ),
                             ),
-                          ),
-                          title: Text(data['displayName']),
-                          subtitle: const Text('Connection Request'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              TextButton(
-                                child: const Text('Accept'),
-                                onPressed: () async {
-                                  try {
-                                    await firestore
-                                        .collection("users")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .collection("connections")
-                                        .doc(userId)
-                                        .set(Connections(
-                                                userId: userId,
-                                                status:
-                                                    ConnectionStatus.accepted)
-                                            .toMap());
-                                    await firestore
-                                        .collection("users")
-                                        .doc(userId)
-                                        .collection("connections")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .set(Connections(
-                                                userId: ref
-                                                    .watch(authStateProvider)
-                                                    .user!
-                                                    .uid,
-                                                status:
-                                                    ConnectionStatus.accepted)
-                                            .toMap());
-
-                                    await firestore
-                                        .collection("users")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .collection("incomingRequests")
-                                        .doc(userId)
-                                        .delete();
-
-                                    await firestore
-                                        .collection("users")
-                                        .doc(userId)
-                                        .collection("outgoingRequests")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .delete();
-                                    await firestore
-                                        .collection("users")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .update({
-                                      "totalConnects": FieldValue.increment(1)
-                                    });
-                                    await firestore
-                                        .collection("users")
-                                        .doc(userId)
-                                        .update({
-                                      "totalConnects": FieldValue.increment(1)
-                                    });
-                                    log("Connect accepted successfully");
-                                  } catch (e) {
-                                    log(e.toString());
-                                  }
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Ignore'),
-                                onPressed: () {
-                                  firestore
-                                      .collection("users")
-                                      .doc(ref
-                                          .watch(authStateProvider)
-                                          .user!
-                                          .uid)
-                                      .collection("incomingRequests")
-                                      .doc(userId)
-                                      .delete();
-                                  firestore
-                                      .collection("users")
-                                      .doc(userId)
-                                      .collection("outgoingRequests")
-                                      .doc(ref
-                                          .watch(authStateProvider)
-                                          .user!
-                                          .uid)
-                                      .delete();
-                                },
-                              ),
-                            ),
+                            title: Text(data['displayName']),
+                            subtitle: const Text('Connection Request'),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TextButton(
-                                  style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              green)),
                                   child: const Text('Accept'),
                                   onPressed: () async {
                                     try {
-                                      await FirebaseFirestore.instance
+                                      await firestore
                                           .collection("users")
                                           .doc(ref
                                               .watch(authStateProvider)
@@ -217,7 +110,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                                   status:
                                                       ConnectionStatus.accepted)
                                               .toMap());
-                                      await FirebaseFirestore.instance
+                                      await firestore
                                           .collection("users")
                                           .doc(userId)
                                           .collection("connections")
@@ -234,7 +127,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                                       ConnectionStatus.accepted)
                                               .toMap());
 
-                                      await FirebaseFirestore.instance
+                                      await firestore
                                           .collection("users")
                                           .doc(ref
                                               .watch(authStateProvider)
@@ -244,7 +137,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                           .doc(userId)
                                           .delete();
 
-                                      await FirebaseFirestore.instance
+                                      await firestore
                                           .collection("users")
                                           .doc(userId)
                                           .collection("outgoingRequests")
@@ -253,6 +146,21 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                               .user!
                                               .uid)
                                           .delete();
+                                      await firestore
+                                          .collection("users")
+                                          .doc(ref
+                                              .watch(authStateProvider)
+                                              .user!
+                                              .uid)
+                                          .update({
+                                        "totalConnects": FieldValue.increment(1)
+                                      });
+                                      await firestore
+                                          .collection("users")
+                                          .doc(userId)
+                                          .update({
+                                        "totalConnects": FieldValue.increment(1)
+                                      });
                                       log("Connect accepted successfully");
                                     } catch (e) {
                                       log(e.toString());
@@ -260,12 +168,27 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                   },
                                 ),
                                 TextButton(
-                                  style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              red1)),
                                   child: const Text('Ignore'),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    firestore
+                                        .collection("users")
+                                        .doc(ref
+                                            .watch(authStateProvider)
+                                            .user!
+                                            .uid)
+                                        .collection("incomingRequests")
+                                        .doc(userId)
+                                        .delete();
+                                    firestore
+                                        .collection("users")
+                                        .doc(userId)
+                                        .collection("outgoingRequests")
+                                        .doc(ref
+                                            .watch(authStateProvider)
+                                            .user!
+                                            .uid)
+                                        .delete();
+                                  },
                                 ),
                               ],
                             ),

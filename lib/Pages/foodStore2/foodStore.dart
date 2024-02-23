@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +26,7 @@ class foodStore extends ConsumerStatefulWidget {
   ConsumerState<foodStore> createState() => _foodStore();
 }
 
-class _foodStore extends ConsumerState<foodStore>{
+class _foodStore extends ConsumerState<foodStore> {
   final List<String> images = [
     'https://example.com/image1.jpg',
     'https://example.com/image2.jpg',
@@ -77,45 +76,47 @@ class _foodStore extends ConsumerState<foodStore>{
       'redirect': 'RaiseRequestRoute()',
     }
   ];
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child : SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
+        body: SafeArea(
+            child: SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
             height: 70.h,
           ),
-            MyAppBar(
-                centerWidget: Padding(
-                  padding: EdgeInsets.only(left: 57.w),
-                  child: GestureDetector(
-                    onTap: () {
-                      context.pushRoute(const ProfileSearchPageRoute());
-                    },
-                    child: MySearchBar(title: "Pickup Requests"),
-                  ),
+          MyAppBar(
+            centerWidget: Padding(
+              padding: EdgeInsets.only(left: 57.w),
+              child: GestureDetector(
+                onTap: () {
+                  context.pushRoute(const ProfileSearchPageRoute());
+                },
+                child: MySearchBar(title: "Pickup Requests"),
+              ),
+            ),
+            rightWidget: Padding(
+              padding: EdgeInsets.only(right: 16.0.r),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: white,
                 ),
-                rightWidget: Padding(
-                  padding: EdgeInsets.only(right: 16.0.r),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: white,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.browse_gallery_outlined),
-                      onPressed: () {
-                        context.pushRoute(const DonationTrackingPageRoute());
-                      },
-                    ),
-                  ),
+                child: IconButton(
+                  icon: const Icon(Icons.browse_gallery_outlined),
+                  onPressed: () {
+                    context.pushRoute(const DonationTrackingPageRoute());
+                  },
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
-              CarouselSlider(
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          CarouselSlider(
             options: CarouselOptions(
               height: 200.0,
               enlargeCenterPage: true,
@@ -150,13 +151,11 @@ class _foodStore extends ConsumerState<foodStore>{
               );
             }).toList(),
           ),
-          
           SizedBox(
-                height: 20.h,
-              ),
-          
-           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0.h),
+            height: 20.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -187,7 +186,8 @@ class _foodStore extends ConsumerState<foodStore>{
                         width: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.green, // Background color for "View All"
+                          color:
+                              Colors.green, // Background color for "View All"
                         ),
                         child: Center(
                           child: Icon(
@@ -199,14 +199,15 @@ class _foodStore extends ConsumerState<foodStore>{
                     ),
                   );
                 }
-          
+
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.green, // Background color for category images
+                      color:
+                          Colors.green, // Background color for category images
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
@@ -223,7 +224,6 @@ class _foodStore extends ConsumerState<foodStore>{
           SizedBox(
             height: 20.h,
           ),
-          
           Container(
             padding: const EdgeInsets.all(10.0),
             child: GridView.builder(
@@ -240,15 +240,10 @@ class _foodStore extends ConsumerState<foodStore>{
               },
             ),
           ),
-          
-          
-          
-          ],),
-        )
-      )
-    );
+        ],
+      ),
+    )));
   }
-
 
   Widget buildGridItem(BuildContext context, int index) {
     return Container(
@@ -340,5 +335,4 @@ class _foodStore extends ConsumerState<foodStore>{
       ),
     );
   }
-
 }
