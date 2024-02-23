@@ -1,18 +1,13 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
-import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../HomePages/pickupRequest.dart';
 import '../constants/constants.dart';
-import '../homePage.dart';
-import 'YourDonationRequest.dart';
 
 @RoutePage()
 class PickupRequestPage extends StatefulWidget {
@@ -130,17 +125,20 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                 ),
               ),
               rightWidget: Padding(
-                padding: EdgeInsets.only(right: 16.0.r),
+                padding: EdgeInsets.only(right: 20.0.r),
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: white,
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.browse_gallery_outlined),
-                    onPressed: () {
+                  child: InkWell(
+                    onTap: () {
                       context.pushRoute(const DonationTrackingPageRoute());
                     },
+                    child: Padding(
+                      padding: EdgeInsets.all(5.r),
+                      child: Icon(Icons.browse_gallery_outlined),
+                    ),
                   ),
                 ),
               ),

@@ -303,7 +303,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           padding: EdgeInsets.only(left: 57.w),
                           child: GestureDetector(
                             onTap: () {
-                              context.pushRoute(const ProfileSearchPageRoute());
+                              context.pushRoute(const NgoSearchPageRoute());
                             },
                             child: MySearchBar(title: "Hunger Spots"),
                           ),
@@ -482,7 +482,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //     },
                 //   ),
                 // ),
-
+                // TODO: Why this image ?
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.r),
+                  width: double.infinity,
+                  height: 250.h,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.r),
+                      image: DecorationImage(
+                        image: AssetImage("lib/assets/general/sad1.png"),
+                        fit: BoxFit.cover,
+                      )),
+                ),
                 // Container(
                 //   width: double.infinity,
                 //   height: 250.h,
@@ -618,6 +629,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       );
                     } else {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Error fetching data"),
+                        );
+                      }
                       // Data has been loaded, build the carousel
                       List<PickUpRequest> donationRequestWidgets = [];
                       if (snapshot.hasData) {

@@ -136,5 +136,9 @@ class AppRouter extends $AppRouter {
           page: IncomingRequestRoute.page,
           transitionsBuilder: TransitionsBuilders.slideLeft,
         ),
+        CustomRoute(
+          page: NgoSearchPageRoute.page,
+          transitionsBuilder: TransitionsBuilders.slideLeft,
+        )
       ];
 }
