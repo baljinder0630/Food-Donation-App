@@ -482,7 +482,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //     },
                 //   ),
                 // ),
-
+                // TODO: Why this image ?
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.r),
                   width: double.infinity,
@@ -629,6 +629,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       );
                     } else {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text("Error fetching data"),
+                        );
+                      }
                       // Data has been loaded, build the carousel
                       List<PickUpRequest> donationRequestWidgets = [];
                       if (snapshot.hasData) {

@@ -9,6 +9,14 @@ import 'package:food_donation_app/constants.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
+          body: Center(
+        child: Text(
+          "Something Went wrong.",
+          style: TextStyle(color: Colors.red),
+        ),
+      ));
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

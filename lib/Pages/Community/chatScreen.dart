@@ -39,6 +39,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       appBar: AppBar(
         elevation: 0,
         leadingWidth: 100.w,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
         leading: Container(
           // color: Colors.green,
@@ -95,8 +96,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
         ),
       ),
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/chatBg.png"),
             // Make sure the image is in your assets folder
@@ -104,210 +107,208 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 .cover, // This will fill the background of the body with the image
           ),
         ),
-        child: Column(
-          children: [
-            Expanded(
-              child: (ref.watch(communityProvider).currentChatRoomUid == "")
-                  ? Center(
-                      child: Text("Say Hi to " + TargetUserName + "!",
-                          style: TextStyle(
-                            color: const Color.fromARGB(255, 181, 189, 194),
-                            fontSize: 20.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w400,
-                            height: 0,
-                            letterSpacing: 0.96.sp,
-                          )),
-                    )
-                  : StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("ChatRoom")
-                          .doc(currentChatRoomUid)
-                          .collection("Messages")
-                          .orderBy("sendOn", descending: true)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        //
-                        //
-                        if (snapshot.connectionState ==
-                            ConnectionState.active) {
-                          QuerySnapshot querySnapshot =
-                              snapshot.data as QuerySnapshot;
-                          // if (!snapshot.hasData) {
-                          //   log("Loading Data");
-                          //   return Text("data loading");
-                          // }
-                          if (snapshot.hasData) {
-                            // log(snapshot.data!.docs.length.toString());
-                            //
-                            //
-                            return ListView.builder(
-                              reverse: true,
-                              itemCount: querySnapshot.docs.length,
-                              itemBuilder: (context, index) {
-                                // log("message1");
-                                Chattingmodel chattingModel =
-                                    Chattingmodel.fromMap(
-                                        querySnapshot.docs[index].data()
-                                            as Map<String, dynamic>);
-                                // log(chattingModel.toString());
-                                return Padding(
-                                  padding: EdgeInsets.all(8.0.sp),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        (chattingModel.sender == currentUserUid)
-                                            ? MainAxisAlignment.end
-                                            : MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            (chattingModel.sender ==
-                                                    currentUserUid)
-                                                ? CrossAxisAlignment.end
-                                                : CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              decoration: BoxDecoration(
-                                                color: (chattingModel.sender ==
-                                                        currentUserUid)
-                                                    ? bgColor
-                                                    : green,
-                                                borderRadius: (chattingModel.sender ==
-                                                        currentUserUid)
-                                                    ? BorderRadius.only(
-                                                        topLeft:
-                                                            BorderRadius.circular(20.r)
-                                                                .topLeft,
-                                                        bottomLeft:
-                                                            BorderRadius.circular(20.r)
-                                                                .bottomLeft,
-                                                        bottomRight:
-                                                            BorderRadius.circular(20.r)
-                                                                .bottomRight)
-                                                    : BorderRadius.only(
-                                                        topRight:
-                                                            BorderRadius.circular(20.r)
-                                                                .topRight,
-                                                        bottomLeft:
-                                                            BorderRadius.circular(20.r)
-                                                                .bottomLeft,
-                                                        bottomRight:
-                                                            BorderRadius.circular(20.r)
-                                                                .bottomRight),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Color(0x3F000000),
-                                                    blurRadius: 10,
-                                                    offset: Offset(0, 0),
-                                                    spreadRadius: 0,
-                                                  )
-                                                ],
-                                              ),
-                                              child: TextButton(
-                                                onPressed: () {},
-                                                child: Text(
-                                                    chattingModel.lastmessage
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 17.sp,
-                                                      color: (chattingModel
-                                                                  .sender ==
-                                                              currentUserUid)
-                                                          ? black
-                                                          : white,
-                                                    )),
-                                              )),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                right: 6.w, top: 2.r),
-                                            child: Text(
-                                              DateTime.parse(chattingModel
-                                                      .sendtime
-                                                      .toString())
-                                                  .toLocal()
-                                                  .toString()
-                                                  .substring(11, 16),
-                                              style: TextStyle(
-                                                  fontSize: 13.sp,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: true,
+          body: Column(
+            children: [
+              Expanded(
+                child: (ref.watch(communityProvider).currentChatRoomUid == "")
+                    ? Center()
+                    : StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("ChatRoom")
+                            .doc(currentChatRoomUid)
+                            .collection("Messages")
+                            .orderBy("sendOn", descending: true)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          //
+                          //
+                          if (snapshot.connectionState ==
+                              ConnectionState.active) {
+                            QuerySnapshot querySnapshot =
+                                snapshot.data as QuerySnapshot;
+                            // if (!snapshot.hasData) {
+                            //   log("Loading Data");
+                            //   return Text("data loading");
+                            // }
+                            if (snapshot.hasData) {
+                              // log(snapshot.data!.docs.length.toString());
+                              //
+                              //
+                              return ListView.builder(
+                                reverse: true,
+                                itemCount: querySnapshot.docs.length,
+                                itemBuilder: (context, index) {
+                                  // log("message1");
+                                  Chattingmodel chattingModel =
+                                      Chattingmodel.fromMap(
+                                          querySnapshot.docs[index].data()
+                                              as Map<String, dynamic>);
+                                  // log(chattingModel.toString());
+                                  return Padding(
+                                    padding: EdgeInsets.all(8.0.sp),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          (chattingModel.sender ==
+                                                  currentUserUid)
+                                              ? MainAxisAlignment.end
+                                              : MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              (chattingModel.sender ==
+                                                      currentUserUid)
+                                                  ? CrossAxisAlignment.end
+                                                  : CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                                decoration: BoxDecoration(
                                                   color:
-                                                      black.withOpacity(0.7)),
+                                                      (chattingModel.sender ==
+                                                              currentUserUid)
+                                                          ? bgColor
+                                                          : green,
+                                                  borderRadius: (chattingModel.sender ==
+                                                          currentUserUid)
+                                                      ? BorderRadius.only(
+                                                          topLeft:
+                                                              BorderRadius.circular(20.r)
+                                                                  .topLeft,
+                                                          bottomLeft:
+                                                              BorderRadius.circular(20.r)
+                                                                  .bottomLeft,
+                                                          bottomRight:
+                                                              BorderRadius.circular(20.r)
+                                                                  .bottomRight)
+                                                      : BorderRadius.only(
+                                                          topRight:
+                                                              BorderRadius.circular(20.r)
+                                                                  .topRight,
+                                                          bottomLeft:
+                                                              BorderRadius.circular(20.r)
+                                                                  .bottomLeft,
+                                                          bottomRight:
+                                                              BorderRadius.circular(20.r)
+                                                                  .bottomRight),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color(0x3F000000),
+                                                      blurRadius: 10,
+                                                      offset: Offset(0, 0),
+                                                      spreadRadius: 0,
+                                                    )
+                                                  ],
+                                                ),
+                                                child: TextButton(
+                                                  onPressed: () {},
+                                                  child: Text(
+                                                      chattingModel.lastmessage
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 17.sp,
+                                                        color: (chattingModel
+                                                                    .sender ==
+                                                                currentUserUid)
+                                                            ? black
+                                                            : white,
+                                                      )),
+                                                )),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: 6.w, top: 2.r),
+                                              child: Text(
+                                                DateTime.parse(chattingModel
+                                                        .sendtime
+                                                        .toString())
+                                                    .toLocal()
+                                                    .toString()
+                                                    .substring(11, 16),
+                                                style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    color:
+                                                        black.withOpacity(0.7)),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          } else if (snapshot.hasError) {
-                            return const Center(
-                              child: Text(
-                                  "An error occured! Please check your internet connection."),
-                            );
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            } else if (snapshot.hasError) {
+                              return const Center(
+                                child: Text(
+                                    "An error occured! Please check your internet connection."),
+                              );
+                            } else {
+                              return Container();
+                            }
                           } else {
                             return Container();
                           }
-                        } else {
-                          return Container();
-                        }
-                      },
-                    ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 80.h,
-                padding: EdgeInsets.symmetric(horizontal: 10.r),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 8.h),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: msgcontroller,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              hintText: "Type a message",
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.r),
-                                borderSide: BorderSide(color: green),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.r),
-                                borderSide: BorderSide(color: green),
+                        },
+                      ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 80.h,
+                  padding: EdgeInsets.symmetric(horizontal: 10.r),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: msgcontroller,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                hintText: "Type a message",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderSide: BorderSide(color: green),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderSide: BorderSide(color: green),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            if (msgcontroller.text.trim().isNotEmpty) {
-                              ref.watch(communityProvider.notifier).SendMessage(
-                                    msgcontroller.text.trim(),
-                                    widget.TargetUser.uid,
-                                    currentUserUid,
-                                  );
-                              msgcontroller.clear();
-                            }
-                          },
-                          icon: Icon(
-                            Icons.send,
-                            color: green,
-                            size: 30,
+                          IconButton(
+                            onPressed: () {
+                              if (msgcontroller.text.trim().isNotEmpty) {
+                                ref
+                                    .watch(communityProvider.notifier)
+                                    .SendMessage(
+                                      msgcontroller.text.trim(),
+                                      widget.TargetUser.uid,
+                                      currentUserUid,
+                                    );
+                                msgcontroller.clear();
+                              }
+                            },
+                            icon: Icon(
+                              Icons.send,
+                              color: green,
+                              size: 30,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
