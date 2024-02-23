@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:flutter/services.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,9 +24,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       }
     });
 
-    return const Scaffold(
-        body: Center(
-      child: Text("Splash Screen"),
-    ));
+    return Scaffold(
+      body: Image.asset(
+        'assets/splash_screen_animation.gif',
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ),
+    );
   }
 }

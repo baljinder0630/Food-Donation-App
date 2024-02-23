@@ -35,8 +35,9 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     return Form(
       key: _formKey,
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20.0),
         width: 0.95 * screenWidth,
-        height: 0.75 * screenHeight,
+        height: 0.65 * screenHeight,
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -310,8 +311,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                 const Text("Already have an account?",
                     style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey)),
+                        color: Colors.black)),
                 TextButton(
                   onPressed: () => context.replaceRoute(LoginPageRoute()),
                   child: const Text("Sign In",

@@ -218,29 +218,31 @@ class _UserCardState extends ConsumerState<UserCard> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(10.r),
-                        width: 130.w,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 18.h,
-                              padding: EdgeInsets.symmetric(horizontal: 5.w),
-                              child: Text(
-                                widget.user.displayName.isEmpty
-                                    ? "NO NAME"
-                                    : widget.user.displayName.toUpperCase(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Color(0xFF201F24),
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Outfit',
-                                  fontWeight: FontWeight.w600,
-                                  height: 0,
-                                  letterSpacing: 0.56.sp,
+                      Flexible(
+                        child: Container(
+                          padding: EdgeInsets.all(10.r),
+                          // width: 130.w,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 18.h,
+                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                child: Text(
+                                  widget.user.displayName.isEmpty
+                                      ? "NO NAME"
+                                      : widget.user.displayName.toUpperCase(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Color(0xFF201F24),
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Outfit',
+                                    fontWeight: FontWeight.w600,
+                                    height: 0,
+                                    letterSpacing: 0.56.sp,
+                                  ),
                                 ),
                               ),
                             ),
@@ -261,8 +263,8 @@ class _UserCardState extends ConsumerState<UserCard> {
                                   letterSpacing: 0.48.sp,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Row(

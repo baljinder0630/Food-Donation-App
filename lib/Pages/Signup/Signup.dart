@@ -13,40 +13,47 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
-    // final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: const SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 30.0),
-                Center(
-                  child: Text(
-                    'SIGN UP',
-                    style:
-                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/sign_up_background.png', fit: BoxFit.cover),
+          GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: const SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 100.0),
+                  Center(
+                    child: Text(
+                      'SIGN UP',
+                      style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Center(
-                  child: Text(
-                    'Let\'s create your account!',
-                    style: TextStyle(fontSize: 17.0),
+                  SizedBox(
+                    height: 10.0,
                   ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                SignupForm()
-              ],
+                  Center(
+                    child: Text(
+                      'Let\'s create your account!',
+                      style: TextStyle(fontSize: 17.0, color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  SignupForm()
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

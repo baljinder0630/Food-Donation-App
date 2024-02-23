@@ -46,7 +46,6 @@ class UserAuth extends StateNotifier<AuthState> {
   }
 
   checkAuthentication() async {
-
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         state = state.copyWith(
@@ -73,7 +72,8 @@ class UserAuth extends StateNotifier<AuthState> {
           authStatus: AuthStatus.processed,
           appStatus: AppStatus.authenticated,
         );
-        log("User Data Fetched");
+
+        // log("User Data Fetched + ${state.user!.toMap().toString()}");
       } else {
         state = state.copyWith(
           authStatus: AuthStatus.processed,
