@@ -297,6 +297,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.0"
+  charts_flutter_new:
+    dependency: "direct main"
+    description:
+      name: charts_flutter_new
+      sha256: c8c106c5d6acd145d6969f85aa65412ccf2c27bbb0177ec11c10a285a286524a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -582,6 +590,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: "direct main"
+    description:
+      name: flutter_animate
+      sha256: "7c8a6594a9252dad30cc2ef16e33270b6248c4dedc3b3d06c86c4f3f4dc05ae5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -630,6 +646,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.9.0"
+  flutter_shaders:
+    dependency: transitive
+    description:
+      name: flutter_shaders
+      sha256: "02750b545c01ff4d8e9bbe8f27a7731aa3778402506c67daa1de7f5fc3f4befe"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -744,6 +768,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.6"
   glob:
     dependency: transitive
     description:

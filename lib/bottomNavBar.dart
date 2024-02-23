@@ -7,6 +7,8 @@ import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
+import 'package:food_donation_app/Pages/foodStore2/foodStoreDescription.dart';
+import 'package:food_donation_app/Pages/foodStore2/foodStore.dart';
 
 import 'Pages/constants/constants.dart';
 
@@ -21,11 +23,13 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
 
   final _pages = [
     HomePage(),
-    PostHomePage(),
+    const FoodStoreDescription(),
+    //PostHomePage(),
     // const DonationRequest(),
     const landDonation(),
     // PersonalDetails(),
-    const CommunityHomePage(),
+    // const FoodStoreDescription(),
+    const foodStore(),
     const DashBoardPage(),
     // const ProfilePage(),
   ];
