@@ -73,6 +73,7 @@ dependencies:
   grouped_list: ^4.0.0
   smart_auth: any
   video_player: ^2.8.2
+  charts_flutter_new: any
 
 dev_dependencies:
   flutter_test:
