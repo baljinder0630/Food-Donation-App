@@ -72,13 +72,14 @@ dependencies:
   charts_flutter: ^0.12.0
   grouped_list: ^4.0.0
   smart_auth: any
-  video_player: ^2.8.2
   circle_nav_bar: any
   flutter_native_splash: any
   charts_flutter_new: any
   get: any
   flutter_animate: any
   smooth_page_indicator: any
+  preload_page_view: any
+  video_player: any
 
 dev_dependencies:
   flutter_test:
@@ -137,6 +138,7 @@ flutter:
     - assets/sign_up_background.png
     - assets/login_background.png
     - assets/your_contributions.png
+    - assets/disaster_news.png
     - assets/land_donation_poster1.png
     - assets/land_donation_poster2.png
     - assets/land_donation_poster3.png

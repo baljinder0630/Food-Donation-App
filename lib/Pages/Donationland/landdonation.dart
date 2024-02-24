@@ -27,22 +27,22 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'lib/assets/donateimg/food.png',
       'category': 'Food Donation',
-      'redirect': FoodCategoryFormRoute(),
+      'redirect': const FoodCategoryFormRoute(),
     },
     {
       'img': 'lib/assets/donateimg/fund.png',
       'category': 'Fund donation',
-      'redirect': DonationRequestRoute(),
+      'redirect': const RazorpayPaymentGatewayRoute(),
     },
     {
       'img': 'assets/community.png',
       'category': 'Community',
-      'redirect': 'CommunityHomePageRoute()',
+      'redirect': const CommunityHomePageRoute(),
     },
     {
       'img': 'assets/raise_query.png',
       'category': 'Resolve Query',
-      'redirect': ChatBotScreenRoute(),
+      'redirect': const ChatBotScreenRoute(),
     },
     {
       'img': 'assets/be_volunteer.png',
@@ -52,17 +52,22 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/raise_request.png',
       'category': 'Raise Request',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': const RaiseRequestRoute(),
     },
     {
       'img': 'assets/connect.png',
       'category': 'Connect',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': const ChatBotScreenRoute(),
     },
     {
       'img': 'assets/your_contributions.png',
       'category': 'Contributions',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': const AppBottomNavigationBarRoute(),
+    },
+    {
+      'img': 'assets/disaster_news.png',
+      'category': 'Disaster News',
+      'redirect': const DisasterNewsFeedPageRoute(),
     }
   ];
 
@@ -266,6 +271,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     await context.pushRoute(const CommunityHomePageRoute());
                   } else if (data[index]['category'] == 'Resolve Query') {
                     await context.pushRoute(const ChatBotScreenRoute());
+                  } else if (data[index]['category'] == 'Disaster News') {
+                    await context.pushRoute(const DisasterNewsFeedPageRoute());
                   } else {
                     await context.pushRoute(const RaiseRequestRoute());
                   }
