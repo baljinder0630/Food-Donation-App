@@ -112,6 +112,7 @@ flutter:
     - images/
     - assets/
     - assets/chatBg.png
+    - assets/SchemeImages/
     - lib/assets/icons/
     - lib/assets/images/
     - lib/assets/donateimg/

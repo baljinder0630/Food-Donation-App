@@ -25,7 +25,6 @@ class ArticleHistory extends ConsumerStatefulWidget {
 }
 
 class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
-  @override
   int selected = 0;
 
   @override
@@ -38,6 +37,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     final myPosts = ref.watch(communityProvider).myPosts;
     final myBookmarkedPosts = ref.watch(communityProvider).bookMarkedPosts;
@@ -100,15 +100,15 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                              title: Text('Delete Post'),
-                              content: Text(
+                              title: const Text('Delete Post'),
+                              content: const Text(
                                   'Are you sure you want to delete this post?'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     context.popRoute();
                                   },
-                                  child: Text('Cancel'),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () async {
@@ -118,7 +118,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                                       context.popRoute();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                        content: Text('Post Deleted',
+                                        content: const Text('Post Deleted',
                                             style: TextStyle(
                                               color: Colors.white,
                                             )),
@@ -128,15 +128,16 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                                       context.popRoute();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                        content: Text('Failed to delete post',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
+                                        content:
+                                            const Text('Failed to delete post',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                )),
                                         backgroundColor: red1,
                                       ));
                                     }
                                   },
-                                  child: Text('Delete'),
+                                  child: const Text('Delete'),
                                 ),
                               ]);
                         });
@@ -163,7 +164,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                     // context.popRoute();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
+                        content: const Text(
                           'Post Unbookmarked',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -174,7 +175,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                     // context.popRoute();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Failed to unbookmark post',
+                        content: const Text('Failed to unbookmark post',
                             style: TextStyle(color: Colors.white)),
                         backgroundColor: red1,
                       ),
@@ -185,7 +186,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
           ]);
     }
 
-    Widget HistoryTile(BuildContext context, PostModel post) {
+    Widget historyTile(BuildContext context, PostModel post) {
       return GestureDetector(
         onLongPressStart: (details) async {
           showMenuItems(post, details);
@@ -229,7 +230,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 ),
               ),
               SizedBox(height: 10.h),
-              Container(
+              SizedBox(
                 height: 110.h,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -241,23 +242,26 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        SizedBox(
                           height: 22.h,
                           width: 365.w,
                           child: Text(
                             toCamelCase(post.subject),
                             style: TextStyle(
-                              color: const Color(0xFFBFAAAA),
-                              fontSize: 15.sp,
+                              color: brown,
+                              fontSize: 17.sp,
                               fontFamily: 'Outfit',
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.bold,
                               height: 0,
                               overflow: TextOverflow.ellipsis,
                               letterSpacing: 0.67.sp,
                             ),
                           ),
                         ),
-                        SizedBox(height: 6.h),
+                        SizedBox(height: 5.h),
                         SizedBox(
                           width: 365.w,
                           height: 40.h,
@@ -266,10 +270,10 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                             maxLines: 3,
                             textAlign: TextAlign.justify,
                             style: TextStyle(
-                              color: const Color(0xFF201F24),
+                              color: black,
                               fontSize: 14.sp,
                               fontFamily: 'Outfit',
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               height: 0,
                               overflow: TextOverflow.ellipsis,
                               letterSpacing: 0.56.sp,
@@ -287,16 +291,16 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                         Container(
                           width: 4.80.w,
                           height: 4.80.h,
-                          decoration: const ShapeDecoration(
-                            color: Color(0xFFD9D9D9),
-                            shape: OvalBorder(),
+                          decoration: ShapeDecoration(
+                            color: brown,
+                            shape: const OvalBorder(),
                           ),
                         ),
                         SizedBox(width: 4.80.w),
                         Text(
                           timeAgo(post.createdTime.toDate()),
                           style: TextStyle(
-                            color: const Color(0xFF8E7474),
+                            color: brown,
                             fontSize: 14.40.sp,
                             fontFamily: 'Outfit',
                             fontWeight: FontWeight.w300,
@@ -327,7 +331,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 child: Text(
                   'Article History',
                   style: TextStyle(
-                    color: const Color(0xFFFEFEFE),
+                    color: white,
                     fontSize: 20.sp,
                     fontFamily: 'Outfit',
                     fontWeight: FontWeight.w600,
@@ -464,8 +468,8 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                   SizedBox(
                     height: 15.h,
                   ),
-                  if (myPosts!.length <= 0 && selected == 0)
-                    Container(
+                  if (myPosts!.isEmpty && selected == 0)
+                    SizedBox(
                       height: 400.h,
                       width: 400.w,
                       child: Center(
@@ -482,8 +486,8 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                         ),
                       ),
                     ),
-                  if (myBookmarkedPosts!.length <= 0 && selected == 1)
-                    Container(
+                  if (myBookmarkedPosts!.isEmpty && selected == 1)
+                    SizedBox(
                       height: 400.h,
                       width: 400.w,
                       child: Center(
@@ -505,8 +509,8 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: selected == 0
-                          ? myPosts!.length
-                          : myBookmarkedPosts!.length,
+                          ? myPosts.length
+                          : myBookmarkedPosts.length,
                       itemBuilder: (context, index) {
                         return Container(
                           height: 340.h,
@@ -523,7 +527,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                                             ? myPosts[index]
                                             : myBookmarkedPosts[index]));
                                   },
-                                  child: HistoryTile(
+                                  child: historyTile(
                                       context,
                                       selected == 0
                                           ? myPosts[index]

@@ -16,9 +16,9 @@ import '../constants/constants.dart';
 
 @RoutePage()
 class ChatScreen extends ConsumerStatefulWidget {
-  final UserModel TargetUser;
+  final UserModel targetUser;
 
-  const ChatScreen({required this.TargetUser, super.key});
+  const ChatScreen({required this.targetUser, super.key});
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -27,11 +27,11 @@ class ChatScreen extends ConsumerStatefulWidget {
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    String TargetUserImage = widget.TargetUser.photoURL.toString();
-    String TargetUserName = widget.TargetUser.displayName.toString();
+    String TargetUserImage = widget.targetUser.photoURL.toString();
+    String TargetUserName = widget.targetUser.displayName.toString();
     TextEditingController msgcontroller = TextEditingController();
     var currentChatRoomUid = ref.watch(communityProvider).currentChatRoomUid;
-    log("Current Chat Room Uid: " + currentChatRoomUid.toString());
+    log("Current Chat Room Uid: $currentChatRoomUid");
     String currentUserUid = ref.watch(authStateProvider).user!.uid;
 
     return Scaffold(
@@ -41,59 +41,54 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         leadingWidth: 100.w,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        leading: Container(
-          // color: Colors.green,
-          child: const Center(
-            child: MyBackButton(),
-          ),
+        leading: const Center(
+          child: MyBackButton(),
         ),
-        title: Container(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.black,
-                radius: 16.r,
-                child: ClipOval(
-                  child: Image.network(
-                    TargetUserImage,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return Center(
-                        child: Text(
-                          nameProfile(TargetUserName),
-                          maxLines: 1,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.sp,
-                            fontFamily: 'Outfit',
-                            fontWeight: FontWeight.w400,
-                            height: 0,
-                            letterSpacing: 0.96.sp,
-                          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.black,
+              radius: 16.r,
+              child: ClipOval(
+                child: Image.network(
+                  TargetUserImage,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Center(
+                      child: Text(
+                        nameProfile(TargetUserName),
+                        maxLines: 1,
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                          fontFamily: 'Outfit',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                          letterSpacing: 0.96.sp,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
-              SizedBox(
-                width: 10.w,
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Text(
+              TargetUserName,
+              style: TextStyle(
+                color: const Color(0xFF201F24),
+                fontSize: 24.sp,
+                fontFamily: 'Outfit',
+                fontWeight: FontWeight.w400,
+                height: 0,
+                letterSpacing: 0.96.sp,
               ),
-              Text(
-                TargetUserName,
-                style: TextStyle(
-                  color: const Color(0xFF201F24),
-                  fontSize: 24.sp,
-                  fontFamily: 'Outfit',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
-                  letterSpacing: 0.96.sp,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
       resizeToAvoidBottomInset: false,
@@ -114,7 +109,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             children: [
               Expanded(
                 child: (ref.watch(communityProvider).currentChatRoomUid == "")
-                    ? Center()
+                    ? const Center()
                     : StreamBuilder(
                         stream: FirebaseFirestore.instance
                             .collection("ChatRoom")
@@ -294,7 +289,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                       .watch(communityProvider.notifier)
                                       .SendMessage(
                                         msgcontroller.text.trim(),
-                                        widget.TargetUser.uid,
+                                        widget.targetUser.uid,
                                         currentUserUid,
                                       );
                                   msgcontroller.clear();

@@ -60,13 +60,14 @@ class DonationRequestCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 10.r, right: 10.r, bottom: 10.r),
       width: double.infinity,
-      height: 205.h,
+      height: 215.h,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: white,
         ),
       ], borderRadius: BorderRadius.circular(20.r)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
