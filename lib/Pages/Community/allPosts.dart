@@ -14,6 +14,8 @@ import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../constants/constants.dart';
+
 class AllPosts extends ConsumerStatefulWidget {
   const AllPosts({
     super.key,
@@ -48,10 +50,13 @@ class _AppPostsState extends ConsumerState<AllPosts> {
       return featuredPostLoading != PostStatus.processed
           ? CarouselSlider(
               items: [
-                Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
+                Shimmer(
+                  gradient: const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Colors.grey, Colors.white, Colors.grey]),
                   child: Container(
+                    padding: EdgeInsets.only(top: 10.r),
                     width: 30.sp,
                     height: 200.sp,
                     decoration: ShapeDecoration(
@@ -350,40 +355,46 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                   itemCount: 3,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 24.w),
+                      margin: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Stack(
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10.h),
+                            margin: EdgeInsets.symmetric(vertical: 5.h),
                             height: 110.h,
                             decoration: ShapeDecoration(
                               color: Color(0xFFFEFEFE),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.r),
                               ),
-                              shadows: const [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 5,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
-                                )
-                              ],
+                              // shadows: const [
+                              //   BoxShadow(
+                              //     color: Color(0x3F000000),
+                              //     blurRadius: 5,
+                              //     offset: Offset(0, 0),
+                              //     spreadRadius: 0,
+                              //   )
+                              // ],
                             ),
                           ),
                           Positioned(
                             left: 10.w,
                             top: 20.h,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
+                            child: Shimmer(
+                              gradient: const LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.grey,
+                                    Colors.white,
+                                    Colors.grey
+                                  ]),
                               child: Container(
                                 width: 90.w,
-                                height: 89.h,
+                                height: 90.h,
                                 decoration: ShapeDecoration(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.r),
+                                    borderRadius: BorderRadius.circular(10.r),
                                   ),
                                 ),
                               ),
@@ -393,31 +404,54 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                             left: 114.w,
                             top: 21.h,
                             child: Container(
-                              width: 243.w,
-                              height: 89.h,
+                              width: 300.w,
+                              height: 90.h,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
+                                  Shimmer(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Colors.grey,
+                                          Colors.white,
+                                          Colors.grey
+                                        ]),
                                     child: Container(
-                                        // margin: EdgeInsets.only(right: 20.w),
-                                        width: 200.w,
-                                        height: 16.sp,
-                                        color: Colors.white),
+                                      // margin: EdgeInsets.only(right: 20.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.r)),
+                                        color: white,
+                                      ),
+                                      width: 240.w,
+                                      height: 16.sp,
+                                    ),
                                   ),
                                   SizedBox(height: 15.h),
-                                  Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
+                                  Shimmer(
+                                    gradient: const LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Colors.grey,
+                                          Colors.white,
+                                          Colors.grey
+                                        ]),
                                     child: Container(
-                                        // margin: EdgeInsets.only(right: 20.w),
-                                        width: 220.w,
-                                        height: 50.h,
-                                        color: Colors.white),
+                                      // margin: EdgeInsets.only(right: 20.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.r),
+                                        ),
+                                        color: white,
+                                      ),
+                                      width: 240.w,
+                                      height: 50.h,
+                                    ),
                                   )
                                 ],
                               ),

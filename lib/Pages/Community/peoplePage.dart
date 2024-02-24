@@ -22,6 +22,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
     return Container(
       // height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
+          padding: EdgeInsets.zero,
           physics: BouncingScrollPhysics(),
           child: StreamBuilder(
             stream: ref.watch(communityProvider.notifier).getPeoples(0),
@@ -37,8 +38,9 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                       .toList();
 
                   return Container(
-                    height: 103.h * users.length,
+                    height: 110.h * users.length,
                     child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           return UserCard(
@@ -47,7 +49,7 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                   );
                 }
               }
-              return Text("data");
+              return SizedBox();
             },
           )),
     );

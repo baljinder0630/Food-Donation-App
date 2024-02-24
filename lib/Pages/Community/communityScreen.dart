@@ -152,9 +152,9 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
                           height: 10.h,
                         ),
                         categoryWidget(),
-                        SizedBox(
-                          height: 20.h,
-                        ),
+                        // SizedBox(
+                        //   height: 20.h,
+                        // ),
                         GestureDetector(
                             onHorizontalDragEnd: (details) {
                               log(details.primaryVelocity.toString() +

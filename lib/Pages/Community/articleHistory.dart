@@ -12,6 +12,8 @@ import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
+
+import '../constants/constants.dart';
 // import 'package:vibration/vibration.dart';
 
 @RoutePage()
@@ -115,22 +117,22 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                                         .deletePost(post.id)) {
                                       context.popRoute();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          .showSnackBar(SnackBar(
                                         content: Text('Post Deleted',
                                             style: TextStyle(
                                               color: Colors.white,
                                             )),
-                                        backgroundColor: Colors.green,
+                                        backgroundColor: green,
                                       ));
                                     } else {
                                       context.popRoute();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          .showSnackBar(SnackBar(
                                         content: Text('Failed to delete post',
                                             style: TextStyle(
                                               color: Colors.white,
                                             )),
-                                        backgroundColor: Colors.red,
+                                        backgroundColor: red1,
                                       ));
                                     }
                                   },
@@ -160,21 +162,21 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                       .removeBookMark(post.id)) {
                     // context.popRoute();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
                           'Post Unbookmarked',
                           style: TextStyle(color: Colors.white),
                         ),
-                        backgroundColor: Colors.green,
+                        backgroundColor: green,
                       ),
                     );
                   } else {
                     // context.popRoute();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text('Failed to unbookmark post',
                             style: TextStyle(color: Colors.white)),
-                        backgroundColor: Colors.red,
+                        backgroundColor: red1,
                       ),
                     );
                   }
@@ -189,31 +191,31 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
           showMenuItems(post, details);
         },
         child: Container(
-          width: 367.w,
-          height: 338.h,
+          width: MediaQuery.of(context).size.width,
+          height: 360.h,
           decoration: ShapeDecoration(
             // color: Colors.redAccent,
             color: const Color(0xFFFEFEFE),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
             ),
-            shadows: const [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 9.60,
-                offset: Offset(0, 0),
-                spreadRadius: 0,
-              )
-            ],
+            // shadows: const [
+            //   BoxShadow(
+            //     color: Color(0x3F000000),
+            //     blurRadius: 9.60,
+            //     offset: Offset(0, 0),
+            //     spreadRadius: 0,
+            //   )
+            // ],
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 10.h),
               Container(
-                width: 320.w,
-                height: 180.h,
+                width: 370.w,
+                height: 210.h,
                 decoration: ShapeDecoration(
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(
@@ -226,9 +228,9 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                   ),
                 ),
               ),
-              SizedBox(height: 14.h),
+              SizedBox(height: 10.h),
               Container(
-                height: 101.h,
+                height: 110.h,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -241,38 +243,42 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                       children: [
                         Container(
                           height: 22.h,
-                          width: 310.w,
+                          width: 365.w,
                           child: Text(
                             toCamelCase(post.subject),
                             style: TextStyle(
                               color: const Color(0xFFBFAAAA),
-                              fontSize: 16.80.sp,
+                              fontSize: 15.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w500,
                               height: 0,
+                              overflow: TextOverflow.ellipsis,
                               letterSpacing: 0.67.sp,
                             ),
                           ),
                         ),
                         SizedBox(height: 6.h),
                         SizedBox(
-                          width: 289.20.w,
+                          width: 365.w,
                           height: 40.h,
                           child: Text(
                             post.description,
+                            maxLines: 3,
+                            textAlign: TextAlign.justify,
                             style: TextStyle(
                               color: const Color(0xFF201F24),
-                              fontSize: 16.80.sp,
+                              fontSize: 14.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w500,
                               height: 0,
-                              letterSpacing: 0.67.sp,
+                              overflow: TextOverflow.ellipsis,
+                              letterSpacing: 0.56.sp,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 6.h),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -364,7 +370,7 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                 padding: EdgeInsets.zero,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 14.h),
+                    padding: EdgeInsets.only(top: 8.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -375,14 +381,12 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                             });
                           },
                           child: Container(
-                            width: 149.w,
+                            width: 170.w,
                             height: 43.h,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w, vertical: 10.h),
                             decoration: ShapeDecoration(
-                              color: selected == 0
-                                  ? const Color(0xFF77C19D)
-                                  : Colors.white,
+                              color: selected == 0 ? green : Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.r),
                               ),
@@ -419,14 +423,12 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                             });
                           },
                           child: Container(
-                            width: 149.w,
+                            width: 170.w,
                             height: 43.h,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w, vertical: 10.h),
                             decoration: ShapeDecoration(
-                              color: selected == 1
-                                  ? const Color(0xFF77C19D)
-                                  : Colors.white,
+                              color: selected == 1 ? green : Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -460,38 +462,46 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 15.h,
                   ),
                   if (myPosts!.length <= 0 && selected == 0)
-                    Center(
-                      child: Text(
-                        'No Post Found',
-                        style: TextStyle(
-                          color: const Color(0xFF201F24),
-                          fontSize: 16.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                          letterSpacing: 0.64.sp,
+                    Container(
+                      height: 400.h,
+                      width: 400.w,
+                      child: Center(
+                        child: Text(
+                          'No Post Found',
+                          style: TextStyle(
+                            color: const Color(0xFF201F24),
+                            fontSize: 16.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                            letterSpacing: 0.64.sp,
+                          ),
                         ),
                       ),
                     ),
                   if (myBookmarkedPosts!.length <= 0 && selected == 1)
-                    Center(
-                      child: Text(
-                        'No Post Bookmarked',
-                        style: TextStyle(
-                          color: const Color(0xFF201F24),
-                          fontSize: 16.sp,
-                          fontFamily: 'Outfit',
-                          fontWeight: FontWeight.w500,
-                          height: 0,
-                          letterSpacing: 0.64.sp,
+                    Container(
+                      height: 400.h,
+                      width: 400.w,
+                      child: Center(
+                        child: Text(
+                          'No Post Bookmarked',
+                          style: TextStyle(
+                            color: const Color(0xFF201F24),
+                            fontSize: 16.sp,
+                            fontFamily: 'Outfit',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                            letterSpacing: 0.64.sp,
+                          ),
                         ),
                       ),
                     ),
                   ListView.builder(
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsets.only(bottom: 40.r),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: selected == 0
@@ -499,20 +509,26 @@ class _ArticleHistoryState extends ConsumerState<ArticleHistory> {
                           : myBookmarkedPosts!.length,
                       itemBuilder: (context, index) {
                         return Container(
-                            margin: EdgeInsets.only(
-                                left: 29.w, right: 33.w, bottom: 24.h),
-                            child: GestureDetector(
-                                onTap: () {
-                                  context.pushRoute(ArticleDetailRoute(
-                                      article: selected == 0
+                          height: 340.h,
+                          margin: EdgeInsets.symmetric(vertical: 5.r),
+                          child: Container(
+                              margin: EdgeInsets.only(
+                                left: 10.w,
+                                right: 10.w,
+                              ),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    context.pushRoute(ArticleDetailRoute(
+                                        article: selected == 0
+                                            ? myPosts[index]
+                                            : myBookmarkedPosts[index]));
+                                  },
+                                  child: HistoryTile(
+                                      context,
+                                      selected == 0
                                           ? myPosts[index]
-                                          : myBookmarkedPosts[index]));
-                                },
-                                child: HistoryTile(
-                                    context,
-                                    selected == 0
-                                        ? myPosts[index]
-                                        : myBookmarkedPosts[index])));
+                                          : myBookmarkedPosts[index]))),
+                        );
                       })
                 ],
               ),

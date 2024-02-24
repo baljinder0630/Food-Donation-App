@@ -73,7 +73,11 @@ dependencies:
   grouped_list: ^4.0.0
   smart_auth: any
   video_player: ^2.8.2
+  circle_nav_bar: any
   flutter_native_splash: any
+  charts_flutter_new: any
+  get: any
+  flutter_animate: any
   smooth_page_indicator: any
 
 dev_dependencies:
@@ -115,6 +119,8 @@ flutter:
     - lib/assets/logo/
     - assets/dialog_flow_auth.json
     - assets/img1.png
+    - assets/food_category.png
+    - assets/food_c.png
     - assets/fund_donation.png
     - assets/phone_background.png
     - assets/chatbot_background.png

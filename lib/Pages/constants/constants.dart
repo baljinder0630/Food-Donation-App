@@ -14,6 +14,6 @@ Color black = const Color(0xff000000);
 const String textFont = 'Outfit';
 //Extras..
 Color blue1 = const Color(0xFF5272FC);
-Color purple0 = const Color(0xFFE0AAFF);
-Color purple5 = const Color(0xFF240046);
+Color purple0 = const Color(0xFF000000);
+Color purple5 = const Color(0xFFE3C4FF);
 // Color bgColor = const Color(0xfff1f2f4);

@@ -39,7 +39,7 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
                   OutlineInputBorder(borderRadius: BorderRadius.circular(13.r)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(13.r),
-                  borderSide: BorderSide(color: green1, width: 2)),
+                  borderSide: BorderSide(color: black, width: 1)),
             ),
             onChanged: (value) {
               EasyDebounce.debounce(
@@ -64,10 +64,9 @@ class Article_SearchPageState extends ConsumerState<ArticleSearchPage> {
                 suggestionLoading == PostStatus.processing
                     ? Padding(
                         padding: EdgeInsets.only(top: 20.h),
-                        child: const Center(
+                        child: Center(
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Color(0xFFFE4E74)),
+                            valueColor: AlwaysStoppedAnimation<Color>(green),
                             strokeWidth: 5.0,
                           ),
                         ),

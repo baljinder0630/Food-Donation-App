@@ -41,6 +41,7 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
                   return Container(
                     height: 103.h * connections.length,
                     child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: connections.length,
                         itemBuilder: (context, index) {
                           return FutureBuilder(

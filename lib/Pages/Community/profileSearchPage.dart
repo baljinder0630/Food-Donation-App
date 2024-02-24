@@ -47,7 +47,7 @@ class Article_SearchPageState extends ConsumerState<ProfileSearchPage> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(13.r)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13.r),
-                borderSide: BorderSide(color: green1, width: 2)),
+                borderSide: BorderSide(color: black, width: 1)),
           ),
           onChanged: (value) {
             EasyDebounce.debounce(
