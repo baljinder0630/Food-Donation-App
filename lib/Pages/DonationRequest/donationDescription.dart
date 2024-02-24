@@ -129,7 +129,7 @@ class DonationDescription extends StatelessWidget {
                                           "${getServings(completedRequest)}  of ${getServings(totalRequest)} funds collected",
                                           style: TextStyle(
                                             fontStyle: FontStyle.italic,
-                                            color: red1,
+                                            color: brown,
                                             fontSize: 17.sp,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -138,7 +138,8 @@ class DonationDescription extends StatelessWidget {
                                           "${getServings(completedRequest)}  of ${getServings(totalRequest)} requests completed",
                                           style: TextStyle(
                                             fontStyle: FontStyle.italic,
-                                            color: red1,
+                                            color: brown,
+                                            fontWeight: FontWeight.w700,
                                             fontSize: 17.sp,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -176,7 +177,7 @@ class DonationDescription extends StatelessWidget {
                           child: Icon(
                             Icons.phone,
                             size: 24,
-                            color: red1,
+                            color: brown,
                           ),
                         ),
                       ),
@@ -206,6 +207,8 @@ class DonationDescription extends StatelessWidget {
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontSize: 18.sp,
+                            color: black.withOpacity(0.6),
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                 ),

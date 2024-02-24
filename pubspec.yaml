@@ -80,6 +80,7 @@ dependencies:
   smooth_page_indicator: any
   preload_page_view: any
   video_player: any
+  share: any
 
 dev_dependencies:
   flutter_test:
