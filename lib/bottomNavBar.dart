@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
-import 'package:food_donation_app/Pages/Community/communityScreen.dart';
-import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
-import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
+import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
-import 'package:food_donation_app/Pages/foodStore2/foodStoreDescription.dart';
-import 'package:food_donation_app/Pages/foodStore2/foodStore.dart';
 
+import 'Pages/DashBoard/dashBoard.dart';
+import 'Pages/GovernmentScheme/schemePage.dart';
 import 'Pages/constants/constants.dart';
 
 @RoutePage()
@@ -37,11 +36,12 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   }
 
   final _pages = [
-    HomePage(),
-    PostHomePage(),
-    landDonation(),
-    CommunityHomePage(),
-    DashBoardPage(),
+    const HomePage(),
+    const PostHomePage(),
+    const landDonation(),
+    const CommunityHomePage(),
+    const DashBoardPage(),
+    // SchemePage(),
   ];
 
   @override
@@ -55,33 +55,56 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         children: _pages,
       ),
       bottomNavigationBar: CircleNavBar(
-        activeIcons: const [
-          Icon(Icons.home, color: Colors.green),
-          Icon(Icons.group, color: Colors.green),
-          Icon(Icons.add, color: Colors.green),
-          Icon(Icons.chat_bubble, color: Colors.green),
-          Icon(Icons.account_circle, color: Colors.green),
+        activeIcons: [
+          Icon(Icons.home_outlined, color: green, size: 38.r),
+          Icon(Icons.group_rounded, color: green, size: 35.r),
+          Icon(Icons.explore_outlined, color: green, size: 40.r),
+          Icon(Icons.chat_outlined, color: green, size: 35.r),
+          Icon(Icons.account_circle_outlined, color: green, size: 38.r),
         ],
-        inactiveIcons: const [
-          Text("Home"),
-          Text("Community"),
-          Text("Donate"),
-          Text("Chat"),
-          Text("Profile"),
+        inactiveIcons: [
+          Text(
+            "Home",
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
+          ),
+          Text(
+            "Community",
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
+          ),
+          Text(
+            "Explore",
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
+          ),
+          Text(
+            "Chat",
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
+          ),
+          Text(
+            "Profile",
+            style: TextStyle(
+              fontSize: 14.sp,
+            ),
+          ),
         ],
         color: Colors.white,
         circleColor: Colors.white,
-        height: 60,
-        circleWidth: 60,
+        height: 63.h,
+        circleWidth: 63.w,
         activeIndex: tabIndex,
         onTap: (index) {
-          // Assuming onTap is the correct method to use
           setState(() {
             tabIndex = index;
           });
           pageController.jumpToPage(index);
         },
-        // Other properties as before
       ),
     );
   }

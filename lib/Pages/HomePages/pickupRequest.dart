@@ -45,12 +45,12 @@ class PickUpRequest extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: white,
-        borderRadius: BorderRadius.circular(30.r),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       padding: EdgeInsets.all(10.r),
-      margin: EdgeInsets.all(10.r),
+      margin: EdgeInsets.all(5.r),
       alignment: Alignment.center,
-      height: 400.h,
+      height: 330.h,
       width: 300.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +82,7 @@ class PickUpRequest extends StatelessWidget {
                     "Cooked ${postedTime} Ago.",
                     style: TextStyle(
                         color: black,
-                        fontSize: 17.sp,
+                        fontSize: 15.sp,
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),
@@ -106,10 +106,10 @@ class PickUpRequest extends StatelessWidget {
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) {
                             return CircleAvatar(
-                              radius: 69.r,
-                              backgroundColor: green,
+                              radius: 60.r,
+                              backgroundColor: black,
                               child: CircleAvatar(
-                                radius: 65.r,
+                                radius: 58.r,
                                 backgroundColor: bgColor,
                                 child: ClipOval(
                                   child: Image.network(
@@ -137,7 +137,7 @@ class PickUpRequest extends StatelessWidget {
                               baseColor: Colors.grey[300]!,
                               highlightColor: Colors.grey[100]!,
                               child: CircleAvatar(
-                                radius: 70.r,
+                                radius: 58.r,
                               ),
                             );
                           }
@@ -151,14 +151,14 @@ class PickUpRequest extends StatelessWidget {
                     child: Align(
                       widthFactor: 0.7,
                       child: CircleAvatar(
-                        radius: 70.r,
+                        radius: 58.r,
                         backgroundColor: green,
                         child: CircleAvatar(
                           radius: 65.r,
                           backgroundColor: bgColor,
                           child: Image.asset(
                             "lib/assets/icons/food.png",
-                            height: 60.h,
+                            height: 55.h,
                           ),
                         ),
                       ),
@@ -168,88 +168,6 @@ class PickUpRequest extends StatelessWidget {
               },
             ),
           ),
-
-          // Expanded(
-          //   child: ListView.builder(
-          //     physics: const BouncingScrollPhysics(),
-          //     itemCount: images.isNotEmpty ? images.length : 3,
-          //     scrollDirection: Axis.horizontal,
-          //     itemBuilder: (context, index) {
-          //       if (images.isNotEmpty && index < images.length) {
-          //         return Container(
-          //           padding: EdgeInsets.only(left: 20.r),
-          //           child: Align(
-          //             widthFactor: 0.7,
-          //             child: CircleAvatar(
-          //               radius: 70.r,
-          //               backgroundColor: green,
-          //               child: ClipOval(
-          //                 child: Image.network(
-          //                   images[index],
-          //                   width: 130.w,
-          //                   height: 130.h,
-          //                   fit: BoxFit.cover,
-          //                   loadingBuilder: (BuildContext context, Widget child,
-          //                       ImageChunkEvent? loadingProgress) {
-          //                     if (loadingProgress == null) {
-          //                       // Image is fully loaded
-          //                       return CircleAvatar(
-          //                         radius: 70.r,
-          //                         backgroundColor: green,
-          //                         child: ClipOval(
-          //                             child:Image.network(
-          //                               images[index],
-          //                               width: 130.w, height: 130.h,
-          //                               fit:BoxFit.cover,
-          //                             )
-          //                         ),
-          //                       );
-          //                     } else {
-          //                       // Image is still loading, show shimmer effect or loading indicator
-          //                       return Shimmer.fromColors(
-          //                           baseColor: Colors.grey[300]!,
-          //                           highlightColor: Colors.grey[100]!,
-          //                           child: CircleAvatar(
-          //                             radius: 70.r,
-          //                           )); // Replace ShimmerEffect with your shimmer widget
-          //                     }
-          //                   },
-          //                 ),
-          //
-          //                 // child: images[index] != null
-          //                 //     ? Image.network(
-          //                 //         images[index],
-          //                 //         width: 130.w,
-          //                 //         height: 130.h,
-          //                 //         fit: BoxFit.cover,
-          //                 //       )
-          //               ),
-          //             ),
-          //           ),
-          //         );
-          //       } else {
-          //         return Container(
-          //           padding: EdgeInsets.only(left: 20.r),
-          //           child: Align(
-          //             widthFactor: 0.7,
-          //             child: CircleAvatar(
-          //               radius: 70.r,
-          //               backgroundColor: green,
-          //               child: CircleAvatar(
-          //                 radius: 65.r,
-          //                 backgroundColor: bgColor,
-          //                 child: Image.asset(
-          //                   "lib/assets/icons/food.png",
-          //                   height: 60.h,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         );
-          //       }
-          //     },
-          //   ),
-          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -260,15 +178,17 @@ class PickUpRequest extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.place,
-                      color: red1,
+                      color: brown,
+                      size: 18.sp,
                     ),
                     Expanded(
                       child: Text(
                         address,
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: red1,
-                            fontSize: 17.sp,
+                            color: brown,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
                             overflow: TextOverflow.ellipsis),
                       ),
                     ),
@@ -285,7 +205,7 @@ class PickUpRequest extends StatelessWidget {
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     color: black,
-                    fontSize: 17.sp,
+                    fontSize: 16.sp,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -295,8 +215,7 @@ class PickUpRequest extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: 125.w,
+              Expanded(
                 child: OutlinedButton(
                   onPressed: () {
                     context.pushRoute(AcceptPickupRequestPageRoute(
@@ -306,11 +225,14 @@ class PickUpRequest extends StatelessWidget {
                       address: address,
                       phoneNumber: phoneNumber,
                     ));
-
                   },
-                  style: OutlinedButton.styleFrom(backgroundColor: bgColor),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: bgColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
                   child: SizedBox(
-                    width: 230.w,
                     child: Center(
                       child: Text(
                         "Accept",
@@ -320,7 +242,7 @@ class PickUpRequest extends StatelessWidget {
                           decorationColor: green,
                           decorationThickness: 2,
                           color: green,
-                          fontSize: 14,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -329,12 +251,18 @@ class PickUpRequest extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 125.w,
+                width: 10.r,
+              ),
+              Expanded(
                 child: OutlinedButton(
                   onPressed: () {},
-                  style: OutlinedButton.styleFrom(backgroundColor: green),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
                   child: SizedBox(
-                    width: 230.w,
                     child: Center(
                       child: Text(
                         "Reject",
@@ -343,7 +271,7 @@ class PickUpRequest extends StatelessWidget {
                           decorationColor: white,
                           decorationThickness: 2,
                           color: white,
-                          fontSize: 14.sp,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

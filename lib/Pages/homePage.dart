@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:auto_route/auto_route.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +12,6 @@ import 'package:food_donation_app/Provider/raiseRequestProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 // import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +23,6 @@ import 'Community/Widgets/myAppBar.dart';
 import 'Community/Widgets/searchBar.dart';
 import 'HomePages/pickupRequest.dart';
 import 'constants/constants.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -91,7 +87,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       // Fetch user data for the current donation request
       final userData = await getUserData(data['id']);
       // print(userData);
-      if (userData != null && userData.exists) {
+      if (userData.exists) {
         donationRequest['uid'] = userData.get('uid');
         donationRequest['email'] = userData.get('email');
         donationRequest['displayName'] = userData.get('displayName');
@@ -261,18 +257,22 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Container(
       child: itemCount >= 2
           ? Container(
+              margin: EdgeInsets.all(20.r),
               height: 60.h,
               width: 60.w,
               child: FloatingActionButton(
                 onPressed: () {
                   context.pushRoute(const PickupRequestPageRoute());
                 },
-                backgroundColor: Colors.green,
-                child: Icon(Icons.arrow_forward),
-                shape: CircleBorder(),
+                backgroundColor: brown.withOpacity(0.4),
+                shape: const CircleBorder(),
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: white,
+                ),
               ),
             )
-          : SizedBox(), // If less than or equal to 2 items, don't show button
+          : const SizedBox(), // If less than or equal to 2 items, don't show button
     );
   }
 
@@ -360,7 +360,14 @@ class _HomePageState extends ConsumerState<HomePage> {
             context.pushRoute(const ChatBotScreenRoute());
           },
           elevation: 0.0,
-          child: Icon(Icons.smart_toy_outlined, size: 36.r, color: green),
+          child: Image.asset(
+            'lib/assets/icons/chatbot_1.png',
+            // Replace 'your_image.png' with the path to your image asset
+            width: 38.w, // Adjust the width of the image
+            height: 38.h, // Adjust the height of the image
+            color: green, // You can also apply color to your image if needed
+          ),
+          // child: Icon(Icons.smart_toy_outlined, size: 36.r, color: green),
         ),
       ),
 
@@ -426,666 +433,581 @@ class _HomePageState extends ConsumerState<HomePage> {
           // App bar is looking fine... Just add the functionality of search and filters.
 
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Container(
-                  // decoration: BoxDecoration(
-                  //   color: red1.withOpacity(0.25),
-                  //   borderRadius: BorderRadius.only(
-                  //       bottomLeft: Radius.circular(30),
-                  //       bottomRight: Radius.circular(30)),
-                  // ),
-                  padding: EdgeInsets.all(10.r),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 42.r,
-                        backgroundColor: black,
-                        child: profilePic.isEmpty || profilePic == "null"
-                            ? CircleAvatar(
-                                radius: 40.r,
-                                backgroundColor: bgColor,
-                                child: Text(
-                                    nameProfile(userName).isNotEmpty
-                                        ? nameProfile(userName)
-                                        : "NA",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 27.sp,
-                                      fontFamily: 'Outfit',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                      letterSpacing: 0.56.sp,
-                                    )),
-                              )
-                            : CircleAvatar(
-                                radius: 40.r,
-                                backgroundColor: bgColor,
-                                child: ClipOval(
-                                  child: Image.network(
-                                    profilePic,
-                                    width: 80.w,
-                                    height: 80.h,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      // Return a fallback image in case of an error
-                                      return CircleAvatar(
-                                        radius: 40.r,
-                                        backgroundColor: bgColor,
-                                        child: Text(
-                                            nameProfile(userName).isNotEmpty
-                                                ? nameProfile(userName)
-                                                : "NA",
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 27.sp,
-                                              fontFamily: 'Outfit',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                              letterSpacing: 0.56.sp,
-                                            )),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                      ),
-                      // Profile Picture of user is shown over here, default is user.png, which acts as icon.
-
-                      SizedBox(width: 20.r),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 250.w,
-                            child: Row(children: [
-                              Expanded(
-                                child: Text(
-                                  "Hello, $userName",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.bold,
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                              ),
-                            ]),
-                          ),
-                          // User Name of user is displayed
-
-                          SizedBox(
-                            width: 250.w,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.place,
-                                  color: red1,
-                                ),
-                                Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {},
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.r),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 42.r,
+                          backgroundColor: black,
+                          child: profilePic.isEmpty || profilePic == "null"
+                              ? CircleAvatar(
+                                  radius: 40.r,
+                                  backgroundColor: bgColor,
                                   child: Text(
-                                    _address,
-                                    style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        color: red1,
-                                        fontSize: 17.sp,
-                                        overflow: TextOverflow.ellipsis),
+                                      nameProfile(userName).isNotEmpty
+                                          ? nameProfile(userName)
+                                          : "NA",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 27.sp,
+                                        fontFamily: 'Outfit',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                        letterSpacing: 0.56.sp,
+                                      )),
+                                )
+                              : CircleAvatar(
+                                  radius: 40.r,
+                                  backgroundColor: bgColor,
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      profilePic,
+                                      width: 80.w,
+                                      height: 80.h,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        // Return a fallback image in case of an error
+                                        return CircleAvatar(
+                                          radius: 40.r,
+                                          backgroundColor: bgColor,
+                                          child: Text(
+                                              nameProfile(userName).isNotEmpty
+                                                  ? nameProfile(userName)
+                                                  : "NA",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 27.sp,
+                                                fontFamily: 'Outfit',
+                                                fontWeight: FontWeight.w400,
+                                                height: 0,
+                                                letterSpacing: 0.56.sp,
+                                              )),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ],
-                              //  Location is displayed here.
+                        ),
+                        // Profile Picture of user is shown over here, default is user.png, which acts as icon.
+
+                        SizedBox(width: 20.r),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 250.w,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Hello, $userName",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // User Name of user is displayed
+
+                            SizedBox(
+                              width: 250.w,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.place,
+                                    color: brown,
+                                    size: 20.sp,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      _address,
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                          color: brown,
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.w700,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ),
+                                ],
+                                //  Location is displayed here.
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Here Avatar and Name container ends.
+
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('requests')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Return a loading indicator or placeholder widget
+                        return const CircularProgressIndicator();
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.docs.isEmpty) {
+                        // Return a message or widget when no data is available
+                        return const Text('No pickup requests available.');
+                      } else {
+                        // Extract pickup requests from snapshot data
+                        final List<DocumentSnapshot> requests =
+                            snapshot.data!.docs;
+                        List<Widget> donationRequestWidgets = [];
+
+                        for (var donationRequest in requests) {
+                          final address = donationRequest['plotNo'] +
+                              ", " +
+                              donationRequest['streetController'] +
+                              ", " +
+                              donationRequest['districtController'] +
+                              ", " +
+                              donationRequest['pincodeController'];
+                          final createdTime = donationRequest['postedTime'];
+                          final cookedBefore = getCookedTime(createdTime);
+                          final donationRequestWidget = PickUpRequest(
+                            snapshot: snapshot,
+                            foodName1: donationRequest['name'],
+                            address: address,
+                            phoneNumber: donationRequest['phoneNumber'],
+                            postedTime: cookedBefore,
+                            foodCategory: donationRequest['foodCategory'],
+                          );
+
+                          donationRequestWidgets.add(donationRequestWidget);
+                        }
+
+                        return Container(
+                          margin: EdgeInsets.only(left: 5.r),
+                          height: 350.h,
+                          width: MediaQuery.of(context).size.width,
+                          child: Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: min(3, donationRequestWidgets.length),
+                              itemBuilder: (context, index) {
+                                // Build each card
+                                return Row(
+                                  children: [
+                                    donationRequestWidgets[index],
+                                    _buildButton(index),
+                                  ],
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                // Here Avatar and Name container ends.
-
-                // Container(
-                //   height : 400.h,
-                //   width: 300.w,
-                //   color: Colors.amber,
-                //   child:
-                //   GoogleMap(
-                //     initialCameraPosition: _kGooglePlex,
-                //     markers: Set<Marker>.of(_markers),
-                //     onMapCreated: (GoogleMapController controller){
-                //       _controller.complete(controller);
-                //     },
-                //   ),
-                // ),
-                // Container(
-                //   width: double.infinity,
-                //   height: 250.h,
-                //   decoration: BoxDecoration(
-                //     color: green.withOpacity(0.45),
-                //     borderRadius: BorderRadius.only(
-                //         bottomLeft: Radius.circular(30),
-                //         bottomRight: Radius.circular(30)),
-                //   ),
-                //   child: ClipRRect(
-                //     child: Image.asset(
-                //       "lib/assets/icons/animation_difference.png",
-                //       height: 200.h,
-                //     ),
-                //   ),
-                // ),
-                // Animation ends here.
-
-                // Container(
-                //   margin: EdgeInsets.only(top: 10.r, left: 10.r, right: 10.r),
-                //   padding: EdgeInsets.only(top: 15.r, right: 15.r, left: 15.r),
-                //   width: double.infinity,
-                //   height: 50.h,
-                //   child: Text(
-                //     "Explore",
-                //     style:
-                //         TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                //   ),
-                // ),
-                //Explore Ends here.
-
-                // Container(
-                //   margin: EdgeInsets.symmetric(horizontal: 10.r),
-                //   padding:
-                //       EdgeInsets.only(bottom: 15.r, right: 15.r, left: 15.r),
-                //   height: 100.h,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text(
-                //         "Food Pickup requests you can serve from",
-                //         style: TextStyle(
-                //             color: black,
-                //             fontSize: 18.sp,
-                //             overflow: TextOverflow.ellipsis),
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           SizedBox(
-                //             width: 20.w,
-                //             child: Icon(Icons.place, color: red1),
-                //           ),
-                //           Expanded(
-                //             child: Container(
-                //               padding: EdgeInsets.symmetric(horizontal: 8.r),
-                //               child: Text(
-                //                 _address,
-                //                 style: TextStyle(
-                //                   color: red1,
-                //                   fontStyle: FontStyle.italic,
-                //                   fontSize: 17.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                   overflow: TextOverflow.ellipsis,
-                //                 ),
-                //                 maxLines: 1, // Set the maximum number of lines
-                //               ),
-                //             ),
-                //           ),
-                //           //  Location is displayed, from here you can change the location. and get recommendation accordingly.
-                //
-                //           SizedBox(
-                //             width: 120.w,
-                //             height: 30.h,
-                //             child: OutlinedButton(
-                //               onPressed: () {
-                //                 context
-                //                     .pushRoute(const PickupRequestPageRoute());
-                //               },
-                //               style: OutlinedButton.styleFrom(
-                //                   backgroundColor: null),
-                //               child: Text(
-                //                 "View All",
-                //                 style: TextStyle(
-                //                   decoration: TextDecoration.underline,
-                //                   fontStyle: FontStyle.italic,
-                //                   decorationColor: red1,
-                //                   decorationThickness: 2,
-                //                   color: red1,
-                //                   fontSize: 14.sp,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // Here FoodPickup request text and viewAll button ends.
-
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('requests')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      // Return a loading indicator or placeholder widget
-                      return CircularProgressIndicator();
-                    } else if (!snapshot.hasData ||
-                        snapshot.data!.docs.isEmpty) {
-                      // Return a message or widget when no data is available
-                      return Text('No pickup requests available.');
-                    } else {
-                      // Extract pickup requests from snapshot data
-                      final List<DocumentSnapshot> requests =
-                          snapshot.data!.docs;
-                      List<Widget> donationRequestWidgets = [];
-
-                      for (var donationRequest in requests) {
-                        final address = donationRequest['plotNo'] +
-                            ", " +
-                            donationRequest['streetController'] +
-                            ", " +
-                            donationRequest['districtController'] +
-                            ", " +
-                            donationRequest['pincodeController'];
-                        final createdTime = donationRequest['postedTime'];
-                        final cookedBefore = getCookedTime(createdTime);
-                        final donationRequestWidget = PickUpRequest(
-                          snapshot: snapshot,
-                          foodName1: donationRequest['name'],
-                          address: address,
-                          phoneNumber: donationRequest['phoneNumber'],
-                          postedTime: cookedBefore,
-                          foodCategory: donationRequest['foodCategory'],
                         );
-
-                        donationRequestWidgets.add(donationRequestWidget);
                       }
+                    },
+                  ),
 
-                      return Container(
-                        height: 400.h,
-                        width: MediaQuery.of(context).size.width,
-                        child: Expanded(
+                  // Here the pickup request cards ends
+
+                  // Container(
+                  //   padding: EdgeInsets.only(top: 10.r),
+                  //   child: Text(
+                  //     "Hunger Spots",
+                  //     style: TextStyle(
+                  //         color: Colors.black,
+                  //         fontSize: 20.sp,
+                  //         fontWeight: FontWeight.bold,
+                  //         overflow: TextOverflow.ellipsis),
+                  //   ),
+                  // ),
+
+                  FutureBuilder(
+                    future: getNGOs(),
+                    builder: (_, AsyncSnapshot<List<dynamic>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SizedBox(
+                          height: 3 * 215.h,
                           child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: min(3, donationRequestWidgets.length),
-                            itemBuilder: (context, index) {
-                              // Build each card
-                              return Row(
-                                children: [
-                                  donationRequestWidgets[index],
-                                  _buildButton(index),
-                                ],
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 5.h),
+                                      height: 215.h,
+                                      decoration: ShapeDecoration(
+                                        color: white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20.w,
+                                      top: 20.h,
+                                      child: Shimmer(
+                                        gradient: const LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            colors: [
+                                              Colors.grey,
+                                              Colors.white,
+                                              Colors.grey
+                                            ]),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 60.w,
+                                              height: 60.h,
+                                              decoration: ShapeDecoration(
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.r),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Container(
+                                              width: 300.w,
+                                              height: 30.h,
+                                              decoration: ShapeDecoration(
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20.w,
+                                      top: 91.h,
+                                      child: SizedBox(
+                                        width: 380.w,
+                                        height: 30.h,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Shimmer(
+                                              gradient: const LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Colors.grey,
+                                                    Colors.white,
+                                                    Colors.grey
+                                                  ]),
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                                width: 380.w,
+                                                height: 30.h,
+                                                decoration: ShapeDecoration(
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20.w,
+                                      top: 141.h,
+                                      child: SizedBox(
+                                        width: 380.w,
+                                        height: 30.h,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Shimmer(
+                                              gradient: const LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Colors.grey,
+                                                    Colors.white,
+                                                    Colors.grey
+                                                  ]),
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                                width: 380.w,
+                                                height: 30.h,
+                                                decoration: ShapeDecoration(
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               );
                             },
                           ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-
-                // Here the pickup request cards ends
-
-                // Container(
-                //   padding: EdgeInsets.only(top: 10.r),
-                //   child: Text(
-                //     "Hunger Spots",
-                //     style: TextStyle(
-                //         color: Colors.black,
-                //         fontSize: 20.sp,
-                //         fontWeight: FontWeight.bold,
-                //         overflow: TextOverflow.ellipsis),
-                //   ),
-                // ),
-
-                FutureBuilder(
-                  future: getNGOs(),
-                  builder: (_, AsyncSnapshot<List<dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return const Center(
-                        child: Text('Error loading data'),
-                      );
-                    } else {
-                      print(snapshot.data);
-                      final dataList = snapshot.data!;
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: dataList.length,
-                        itemBuilder: (_, index) {
-                          final item = dataList[index];
-                          return DonationRequestCard(
-                            requestName: item['ngoName'],
-                            NGOName: item['displayName'],
-                            NGOImage: item['photoURL'],
-                            ngoPosition: _currentPosition,
-                            totalRequest: item['numberOfServings'],
-                            completedRequest: item['requestsFulfilled'],
-                            ngoLocation: item["plotNo"] +
-                                " " +
-                                item['streetNo'] +
-                                " " +
-                                item["district"] +
-                                " " +
-                                item["pincode"],
-                            timestamp: item['createdTime'],
-                            description: item['description'],
-                            phoneNumber: item['mobileNumber'],
-                            requestType: item['requestType'],
-                            ngoID: item['id'],
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
-
-                // StreamBuilder<QuerySnapshot>(
-                //   stream: FirebaseFirestore.instance
-                //       .collection('requests')
-                //       .snapshots(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.waiting) {
-                //       // Return shimmer loading animation while waiting for data
-                //       return CarouselSlider(
-                //         items: [
-                //           Shimmer.fromColors(
-                //             baseColor: Colors.grey[300]!,
-                //             highlightColor: Colors.grey[100]!,
-                //             child: Container(
-                //               width: 300.w,
-                //               height: 400.h,
-                //               decoration: ShapeDecoration(
-                //                 color: Colors.white,
-                //                 shape: RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(30.r),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //         options: CarouselOptions(
-                //           height: 370.h,
-                //           autoPlay: false,
-                //           viewportFraction: 0.7,
-                //           initialPage: 2,
-                //         ),
-                //       );
-                //     } else {
-                //       // Data has been loaded, build the carousel
-                //       List<PickUpRequest> donationRequestWidgets = [];
-                //       if (snapshot.hasData) {
-                //         final donationRequests =
-                //             snapshot.data?.docs.reversed.toList();
-                //         for (var donationRequest in donationRequests!) {
-                //           final address = donationRequest['plotNo'] +
-                //               ", " +
-                //               donationRequest['streetController'] +
-                //               ", " +
-                //               donationRequest['districtController'] +
-                //               ", " +
-                //               donationRequest['pincodeController'];
-                //           final createdTime = donationRequest['postedTime'];
-                //           final cookedBefore = getCookedTime(createdTime);
-                //           final donationRequestWidget = PickUpRequest(
-                //             snapshot: snapshot,
-                //             foodName1: donationRequest['name'],
-                //             address: address,
-                //             phoneNumber: donationRequest['phoneNumber'],
-                //             postedTime: cookedBefore,
-                //             foodCategory: donationRequest['foodCategory'],
-                //           );
-                //
-                //           donationRequestWidgets.add(donationRequestWidget);
-                //         }
-                //       }
-                //       return Row(
-                //         children: [
-                //           Container(
-                //             height: 370.h,
-                //             width: 366.w,
-                //             child: CarouselSlider.builder(
-                //               itemCount: donationRequestWidgets.length,
-                //               itemBuilder: (BuildContext context, int itemIndex,
-                //                       int pageViewIndex) =>
-                //                   Container(
-                //                 child: donationRequestWidgets[itemIndex],
-                //               ),
-                //               options: CarouselOptions(
-                //                 height: 370.h,
-                //                 autoPlay: false,
-                //                 viewportFraction: 0.85,
-                //                 initialPage: 2,
-                //               ),
-                //             ),
-                //           ),
-                //           Container(
-                //             child: FloatingActionButton(
-                //                 onPressed: () {
-                //                   context.pushRoute(
-                //                       const PickupRequestPageRoute());
-                //                 },
-                //                 backgroundColor: Colors.green,
-                //                 // Set the background color of the button
-                //                 child: Icon(Icons.arrow_forward),
-                //                 shape:
-                //                     CircleBorder() // Icon for the right arrow
-                //                 ),
-                //           )
-                //         ],
-                //       );
-                //     }
-                //   },
-                // ),
-                //
-                // // Here Slider for pickup requests ends...
-                //
-
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.r),
-                  padding: EdgeInsets.all(10.r),
-                  height: 100.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nearby hunger spots you can serve in ",
-                        style: TextStyle(
-                            color: black,
-                            fontSize: 18.sp,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 20.w,
-                            child: Icon(Icons.place, color: red1),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0.r),
-                              child: Text(
-                                _address,
-                                style: TextStyle(
-                                  color: red1,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                maxLines: 1, // Set the maximum number of lines
-                              ),
-                            ),
-                          ),
-                          //  Location is displayed, from here you can change the location. and get recommendation accordingly.
-
-                          SizedBox(
-                            width: 120.w,
-                            height: 30.h,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                context.pushRoute(const DonationRequestRoute());
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  backgroundColor: null),
-                              child: Text(
-                                "View All",
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontStyle: FontStyle.italic,
-                                  decorationColor: red1,
-                                  decorationThickness: 2,
-                                  color: red1,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        );
+                      } else if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return const Center(
+                          child: Text('Error loading data'),
+                        );
+                      } else {
+                        print(snapshot.data);
+                        final dataList = snapshot.data!;
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: dataList.length,
+                          itemBuilder: (_, index) {
+                            final item = dataList[index];
+                            return DonationRequestCard(
+                              requestName: item['ngoName'],
+                              NGOName: item['displayName'],
+                              NGOImage: item['photoURL'],
+                              ngoPosition: _currentPosition,
+                              totalRequest: item['numberOfServings'],
+                              completedRequest: item['requestsFulfilled'],
+                              ngoLocation: item["plotNo"] +
+                                  " " +
+                                  item['streetNo'] +
+                                  " " +
+                                  item["district"] +
+                                  " " +
+                                  item["pincode"],
+                              timestamp: item['createdTime'],
+                              description: item['description'],
+                              phoneNumber: item['mobileNumber'],
+                              requestType: item['requestType'],
+                              ngoID: item['id'],
+                            );
+                          },
+                        );
+                      }
+                    },
                   ),
-                ),
-                //       // Here hungerSpot text with view All button ends..
-              ],
+
+                  // StreamBuilder<QuerySnapshot>(
+                  //   stream: FirebaseFirestore.instance
+                  //       .collection('requests')
+                  //       .snapshots(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       // Return shimmer loading animation while waiting for data
+                  //       return CarouselSlider(
+                  //         items: [
+                  //           Shimmer.fromColors(
+                  //             baseColor: Colors.grey[300]!,
+                  //             highlightColor: Colors.grey[100]!,
+                  //             child: Container(
+                  //               width: 300.w,
+                  //               height: 400.h,
+                  //               decoration: ShapeDecoration(
+                  //                 color: Colors.white,
+                  //                 shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(30.r),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //         options: CarouselOptions(
+                  //           height: 370.h,
+                  //           autoPlay: false,
+                  //           viewportFraction: 0.7,
+                  //           initialPage: 2,
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       // Data has been loaded, build the carousel
+                  //       List<PickUpRequest> donationRequestWidgets = [];
+                  //       if (snapshot.hasData) {
+                  //         final donationRequests =
+                  //             snapshot.data?.docs.reversed.toList();
+                  //         for (var donationRequest in donationRequests!) {
+                  //           final address = donationRequest['plotNo'] +
+                  //               ", " +
+                  //               donationRequest['streetController'] +
+                  //               ", " +
+                  //               donationRequest['districtController'] +
+                  //               ", " +
+                  //               donationRequest['pincodeController'];
+                  //           final createdTime = donationRequest['postedTime'];
+                  //           final cookedBefore = getCookedTime(createdTime);
+                  //           final donationRequestWidget = PickUpRequest(
+                  //             snapshot: snapshot,
+                  //             foodName1: donationRequest['name'],
+                  //             address: address,
+                  //             phoneNumber: donationRequest['phoneNumber'],
+                  //             postedTime: cookedBefore,
+                  //             foodCategory: donationRequest['foodCategory'],
+                  //           );
+                  //
+                  //           donationRequestWidgets.add(donationRequestWidget);
+                  //         }
+                  //       }
+                  //       return Row(
+                  //         children: [
+                  //           Container(
+                  //             height: 370.h,
+                  //             width: 366.w,
+                  //             child: CarouselSlider.builder(
+                  //               itemCount: donationRequestWidgets.length,
+                  //               itemBuilder: (BuildContext context, int itemIndex,
+                  //                       int pageViewIndex) =>
+                  //                   Container(
+                  //                 child: donationRequestWidgets[itemIndex],
+                  //               ),
+                  //               options: CarouselOptions(
+                  //                 height: 370.h,
+                  //                 autoPlay: false,
+                  //                 viewportFraction: 0.85,
+                  //                 initialPage: 2,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Container(
+                  //             child: FloatingActionButton(
+                  //                 onPressed: () {
+                  //                   context.pushRoute(
+                  //                       const PickupRequestPageRoute());
+                  //                 },
+                  //                 backgroundColor: Colors.green,
+                  //                 // Set the background color of the button
+                  //                 child: Icon(Icons.arrow_forward),
+                  //                 shape:
+                  //                     CircleBorder() // Icon for the right arrow
+                  //                 ),
+                  //           )
+                  //         ],
+                  //       );
+                  //     }
+                  //   },
+                  // ),
+                  //
+                  // // Here Slider for pickup requests ends...
+                  //
+
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.r),
+                    padding: EdgeInsets.all(10.r),
+                    height: 100.h,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Nearby hunger spots you can serve in ",
+                          style: TextStyle(
+                              color: black,
+                              fontSize: 18.sp,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 18.w,
+                              child: Icon(Icons.place, color: brown),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 8.0.r),
+                                child: Text(
+                                  _address,
+                                  style: TextStyle(
+                                    color: brown,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 17.sp,
+                                    fontWeight: FontWeight.w700,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines:
+                                      1, // Set the maximum number of lines
+                                ),
+                              ),
+                            ),
+                            //  Location is displayed, from here you can change the location. and get recommendation accordingly.
+
+                            SizedBox(
+                              width: 120.w,
+                              height: 30.h,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  context
+                                      .pushRoute(const DonationRequestRoute());
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: null),
+                                child: Text(
+                                  "View All",
+                                  style: TextStyle(
+                                    decorationThickness: 2,
+                                    color: brown,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  //   Here the Hunger spots cards ends...
+                  Container(
+                      margin: EdgeInsets.all(20.h),
+                      child: Center(child: Text("No more Hunger Spots"))),
+                ],
+              ),
             ),
           ),
-
-          // StreamBuilder<QuerySnapshot>(
-          //   stream: FirebaseFirestore.instance
-          //       .collection('ngoRequests')
-          //       .snapshots(),
-          //   builder:
-          //       (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          //     if (!snapshot.hasData) {
-          //       return const SliverToBoxAdapter(
-          //         child: Center(
-          //           child: CircularProgressIndicator(),
-          //         ),
-          //       );
-          //     }
-          //     List<DocumentSnapshot> documents = snapshot.data!.docs;
-          //     return documents.isNotEmpty
-          //         ? SliverList(
-          //             delegate: SliverChildBuilderDelegate(
-          //               (BuildContext context, int index) {
-          //                 final document = documents[index];
-          //                 final reqType = document['requestType'];
-          //                 final reqStatus = document['raiseRequestStatus'];
-          //
-          //                 // late String name = "";
-          //                 // late String location;
-          //                 // late String profilePicUrl;
-          //                 //
-          //                 // Future<void> getUserData(String userId) async {
-          //                 //   try {
-          //                 //     CollectionReference users = FirebaseFirestore
-          //                 //         .instance
-          //                 //         .collection('users');
-          //                 //     DocumentSnapshot userData =
-          //                 //         await users.doc(userId).get();
-          //                 //
-          //                 //     if (userData.exists) {
-          //                 //       name = userData.get('displayName');
-          //                 //       location = userData.get('email');
-          //                 //       profilePicUrl = userData.get('photoURL');
-          //                 //
-          //                 //       print('Name: $name');
-          //                 //       print('Location: $location');
-          //                 //       print('Profile Picture URL: $profilePicUrl');
-          //                 //     } else {
-          //                 //       print('User with ID $userId does not exist.');
-          //                 //     }
-          //                 //   } catch (error) {
-          //                 //     print('Error fetching user data: $error');
-          //                 //   }
-          //                 // }
-          //                 //
-          //                 // getUserData(document['id']);
-          //
-          //                 if (selectedCategory == 1 && reqType == "Food") {
-          //                   return DonationRequestCard(
-          //                     createdTime: document['createdTime'],
-          //                     description: document['description'],
-          //                     spotCity: document['district'],
-          //                     ngoID: document['id'],
-          //                     contactNumber: document['mobileNumber'],
-          //                     requestName: document['ngoName'],
-          //                     noOfServing: document['numberOfServings'],
-          //                     pincode: document['pincode'],
-          //                     plotNo: document['plotNo'],
-          //                     requestType: document['requestType'],
-          //                     percentFulfilled: document['requestsFulfilled'],
-          //                     spotStreet: document['streetNo'],
-          //                   );
-          //                 } else if (selectedCategory == 2 &&
-          //                     reqType == "Fund") {
-          //                   return DonationRequestCard(
-          //                     createdTime: document['createdTime'],
-          //                     description: document['description'],
-          //                     spotCity: document['district'],
-          //                     ngoID: document['id'],
-          //                     contactNumber: document['mobileNumber'],
-          //                     requestName: document['ngoName'],
-          //                     noOfServing: document['numberOfServings'],
-          //                     pincode: document['pincode'],
-          //                     plotNo: document['plotNo'],
-          //                     requestType: document['requestType'],
-          //                     percentFulfilled: document['requestsFulfilled'],
-          //                     spotStreet: document['streetNo'],
-          //                   );
-          //                 } else if (selectedCategory == 0) {
-          //                   return DonationRequestCard(
-          //                     createdTime: document['createdTime'],
-          //                     description: document['description'],
-          //                     spotCity: document['district'],
-          //                     ngoID: document['id'],
-          //                     contactNumber: document['mobileNumber'],
-          //                     requestName: document['ngoName'],
-          //                     noOfServing: document['numberOfServings'],
-          //                     pincode: document['pincode'],
-          //                     plotNo: document['plotNo'],
-          //                     requestType: document['requestType'],
-          //                     percentFulfilled: document['requestsFulfilled'],
-          //                     spotStreet: document['streetNo'],
-          //                   );
-          //                 } else {
-          //                   return SizedBox();
-          //                 }
-          //               },
-          //               childCount: documents.length,
-          //             ),
-          //           )
-          //         : SliverToBoxAdapter(
-          //             child: SizedBox(
-          //               height: 50.h,
-          //               child: Center(
-          //                 child: Text(
-          //                   "No more HungerSpots",
-          //                   style: TextStyle(
-          //                     color: Colors.black,
-          //                     fontSize: 14.sp,
-          //                     fontFamily: 'Outfit',
-          //                     fontWeight: FontWeight.w500,
-          //                     height: 0,
-          //                     letterSpacing: 0.56.sp,
-          //                   ),
-          //                 ),
-          //               ),
-          //             ),
-          //           );
-          //
-          //     //   Here the hungerSpot cards ends...
-          //   },
-          // ),
         ],
       ),
     );

@@ -20,8 +20,8 @@ class AcceptPickupRequestPage extends StatelessWidget {
     required this.foodCategory,
     required this.address,
     required this.phoneNumber,
-    Key? key, // Use Key? key instead of super.key
-  }) : super(key: key); // Use super(key: key) to pass the key parameter
+    super.key, // Use Key? key instead of super.key
+  }); // Use super(key: key) to pass the key parameter
 
   Widget foodCard() {
     return GridView.builder(

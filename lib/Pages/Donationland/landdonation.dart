@@ -37,7 +37,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/community.png',
       'category': 'Community',
-      'redirect': 'CommunityHomePageRoute()',
+      'redirect': CommunityHomePageRoute(),
     },
     {
       'img': 'assets/raise_query.png',
@@ -47,22 +47,27 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/be_volunteer.png',
       'category': 'Be a Volunteer',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': RaiseRequestRoute(),
     },
     {
       'img': 'assets/raise_request.png',
       'category': 'Raise Request',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': RaiseRequestRoute(),
     },
     {
       'img': 'assets/connect.png',
       'category': 'Connect',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': RaiseRequestRoute(),
     },
     {
       'img': 'assets/your_contributions.png',
       'category': 'Contributions',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': RaiseRequestRoute(),
+    },
+    {
+      'img': 'assets/your_contributions.png',
+      'category': 'Govt. Scheme',
+      'redirect': SchemePageRoute(),
     }
   ];
 
@@ -202,7 +207,9 @@ class CharityHomePage extends ConsumerState<landDonation> {
         Map<dynamic, dynamic> item = data[index];
 
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            context.navigateTo(item['redirect']);
+          },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -266,6 +273,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     await context.pushRoute(const CommunityHomePageRoute());
                   } else if (data[index]['category'] == 'Resolve Query') {
                     await context.pushRoute(const ChatBotScreenRoute());
+                  } else if (data[index]['category'] == 'Govt. Scheme') {
+                    await context.pushRoute(SchemePageRoute());
                   } else {
                     await context.pushRoute(const RaiseRequestRoute());
                   }
