@@ -132,7 +132,7 @@ abstract class $AppRouter extends _i45.RootStackRouter {
       return _i45.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i8.ChatScreen(
-          TargetUser: args.TargetUser,
+          targetUser: args.TargetUser,
           key: args.key,
         ),
       );

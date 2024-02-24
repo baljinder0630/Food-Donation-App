@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/Community/Post.model.dart';
@@ -58,7 +57,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
 
   uploadPost() async {
     PostModel post = PostModel(
-      id: Uuid().v4(),
+      id: const Uuid().v4(),
       subject: _subjectController.text,
       description: _descriptionController.text,
       imgUrl: "",
@@ -93,7 +92,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
 
     if (await ref.watch(communityProvider.notifier).updatePost(post, context)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Post Updated Successfully"),
           backgroundColor: Colors.green,
         ),
@@ -102,8 +101,8 @@ class _PostArticleState extends ConsumerState<PostArticle> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Failed to update post"),
-          backgroundColor: Colors.red,
+          content: const Text("Failed to update post"),
+          backgroundColor: red1,
         ),
       );
       context.popRoute();
@@ -150,32 +149,30 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   }
 
   void imagecrop(XFile BeforeCrop) async {
-    if (BeforeCrop != null) {
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: BeforeCrop.path,
-        compressQuality: 50,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-        ],
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Edit Image',
-            toolbarColor: green,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false,
-          ),
-          IOSUiSettings(
-            title: 'Edit Image',
-            minimumAspectRatio: 1.0,
-          ),
-        ],
-      );
-      if (croppedFile != null) {
-        setState(() {
-          _imageFile = File(croppedFile.path);
-          _saveButtonClicked = false;
-        });
-      }
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: BeforeCrop.path,
+      compressQuality: 50,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Edit Image',
+          // toolbarColor: Color(0x1A17174B),
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(
+          title: 'Edit Image',
+          minimumAspectRatio: 1.0,
+        ),
+      ],
+    );
+    if (croppedFile != null) {
+      setState(() {
+        _imageFile = File(croppedFile.path);
+        _saveButtonClicked = false;
+      });
     }
 
     log("Cropped Image Path: ${BeforeCrop.path}");
@@ -211,7 +208,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   await _getImage(ImageSource.camera);
                   Navigator.pop(context);
                 },
-                leading: Icon(Icons.camera_alt, color: green),
+                leading: Icon(Icons.camera_alt, color: black),
                 title: Text("Camera", style: TextStyle(color: green)),
               ),
               ListTile(
@@ -219,7 +216,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   await _getImage(ImageSource.gallery);
                   Navigator.pop(context);
                 },
-                leading: Icon(Icons.photo, color: green),
+                leading: Icon(Icons.photo, color: black),
                 title: Text("Gallery", style: TextStyle(color: green)),
               ),
               SizedBox(height: 20.h)
@@ -233,7 +230,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
   showSuccessDialog() {
     showGeneralDialog(
         context: context,
-        transitionDuration: Duration(milliseconds: 300),
+        transitionDuration: const Duration(milliseconds: 300),
         barrierDismissible: true,
         barrierLabel: '',
         transitionBuilder: (context, anim1, anim2, child) {
@@ -247,7 +244,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
         },
         pageBuilder: (context, ani1, ani2) {
           int counter = 3;
-          Timer.periodic(Duration(seconds: 1), (Timer t) {
+          Timer.periodic(const Duration(seconds: 1), (Timer t) {
             if (counter < 1) {
               Navigator.of(context).pop();
               t.cancel();
@@ -265,7 +262,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   width: 378.w,
                   padding: EdgeInsets.all(19.20.r),
                   decoration: ShapeDecoration(
-                    color: Color(0xFFFEFEFE),
+                    color: const Color(0xFFFEFEFE),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28.80.r),
                     ),
@@ -286,7 +283,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                       Text(
                         'Posted Successfully',
                         style: TextStyle(
-                          color: Color(0xFF201F24),
+                          color: const Color(0xFF201F24),
                           fontSize: 19.20.sp,
                           fontFamily: 'Outfit',
                           fontWeight: FontWeight.w600,
@@ -307,11 +304,11 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'THANKYOU',
+                              'Thank You',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(0xFF5272FC),
-                                fontSize: 19.20.sp,
+                                color: green,
+                                fontSize: 20.sp,
                                 fontStyle: FontStyle.italic,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w800,
@@ -326,7 +323,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                                 '"HOPE IS LIKE A FLAME; IT CAN NEVER BE EXTINGUISHED, EVEN IN THE DARKEST OF TIMES." WE HOPE YOU GET A BETTER SUPPORT',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color(0xFF201F24),
+                                  color: const Color(0xFF201F24),
                                   fontSize: 13.44.sp,
                                   fontFamily: 'Outfit',
                                   fontWeight: FontWeight.w400,
@@ -343,7 +340,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                         'further Notifications Will be Updated ',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color(0xFF201F24),
+                          color: const Color(0xFF201F24),
                           fontSize: 13.44.sp,
                           fontFamily: 'Outfit',
                           fontWeight: FontWeight.w400,
@@ -368,7 +365,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
       pageBuilder: (context, anim1, anim2) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: SimpleDialog(
-          title: Text(
+          title: const Text(
             'Preview',
             style: TextStyle(
               fontSize: 18.0,
@@ -393,7 +390,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   });
                   context.popRoute();
                 },
-                child: Text("Remove"))
+                child: const Text("Remove"))
           ],
         ),
       ),
@@ -411,11 +408,11 @@ class _PostArticleState extends ConsumerState<PostArticle> {
           elevation: 0,
           leadingWidth: 100.w,
           centerTitle: true,
-          leading: Center(child: MyBackButton()),
+          leading: const Center(child: MyBackButton()),
           title: Text(
             widget.isEdit ? 'Edit Article' : 'Post Article',
             style: TextStyle(
-              color: Color(0xFF201F24),
+              color: black,
               fontSize: 20.sp,
               fontFamily: 'Outfit',
               fontWeight: FontWeight.w500,
@@ -425,7 +422,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
           ),
         ),
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: _formKey,
             child: Column(
@@ -434,9 +431,9 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   height: 15.h,
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: 302.w,
-                    color: Color(0xff000000),
+                    // color: const Color(0xff000000),
                     height: 1.h,
                   ),
                 ),
@@ -446,15 +443,16 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   width: 337.w,
                   // height: 55.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.r),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 5,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      )
-                    ],
+                    borderRadius: BorderRadius.circular(10.r),
+
+                    // boxShadow: const [
+                    //   BoxShadow(
+                    //     color: Color(0x3F000000),
+                    //     blurRadius: 5,
+                    //     offset: Offset(0, 0),
+                    //     spreadRadius: 0,
+                    //   )
+                    // ],
                   ),
                   child: TextFormField(
                     controller: _subjectController,
@@ -474,13 +472,13 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      counter: SizedBox.shrink(),
+                      counter: const SizedBox.shrink(),
                       contentPadding: EdgeInsets.all(10.r),
                       filled: true,
-                      fillColor: Color(0xFFFEFEFE),
+                      fillColor: const Color(0xFFFEFEFE),
                       hintText: "Subject- What's the article about",
                       hintStyle: TextStyle(
-                        color: Color(0xFF201F24),
+                        color: const Color(0xFF201F24),
                         fontSize: 14.sp,
                         fontFamily: 'Outfit',
                         fontWeight: FontWeight.w400,
@@ -488,16 +486,16 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                         letterSpacing: 1.40.sp,
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.r),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(color: green, width: 1.5),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.r),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(color: green, width: 1.5),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.r),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15.r),
+                        borderSide: BorderSide(color: green, width: 1.5),
                       ),
                     ),
                   ),
@@ -509,22 +507,22 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                   // height: 543.h,
                   height: 573.h,
                   decoration: ShapeDecoration(
-                    color: Color(0xFFFEFEFE),
+                    // color: const Color(0xFFFEFEFE),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 5,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      )
-                    ],
+                    // shadows: const [
+                    //   BoxShadow(
+                    //     color: Color(0x3F000000),
+                    //     blurRadius: 5,
+                    //     offset: Offset(0, 0),
+                    //     spreadRadius: 0,
+                    //   )
+                    // ],
                   ),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: widget.isEdit ? 565.h : 399.h,
                         child: TextFormField(
                           controller: _descriptionController,
@@ -534,7 +532,7 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                             if (value == "" || value == null) {
                               return 'Please enter some text';
                             } else if (value.trim().length < 200) {
-                              return 'Please enter atleast 200 characters';
+                              return 'Please enter atLeast 200 characters';
                             } else if (value.trim().length == 5000) {
                               return 'Maximum limit reached';
                             }
@@ -542,13 +540,13 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                           },
                           maxLines: widget.isEdit ? 25.h.toInt() : 16.h.toInt(),
                           decoration: InputDecoration(
-                            counter: SizedBox.shrink(),
+                            counter: const SizedBox.shrink(),
                             contentPadding: EdgeInsets.all(10.r),
                             filled: true,
-                            fillColor: Color(0xFFFEFEFE),
+                            fillColor: const Color(0xFFFEFEFE),
                             hintText: "Description minimum of 200 Chars",
                             hintStyle: TextStyle(
-                              color: Color(0xFF201F24),
+                              color: const Color(0xFF201F24),
                               fontSize: 14.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w400,
@@ -556,110 +554,109 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                               letterSpacing: 1.40.sp,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.r),
-                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.r),
+                              borderSide: BorderSide(color: green, width: 1.5),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.r),
-                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.r),
+                              borderSide: BorderSide(color: green, width: 1.5),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.r),
-                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.r),
+                              borderSide: BorderSide(color: green, width: 1.5),
                             ),
                           ),
                         ),
                       ),
                       widget.isEdit
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Center(
-                              child: Container(
-                                width: 284.w,
-                                color: Color(0xff000000),
-                                height: 1.h,
+                              // child: Container(
+                              //   width: 284.w,
+                              //   color: const Color(0xff000000),
+                              //   height: 1.h,
+                              // ),
                               ),
-                            ),
                       widget.isEdit
-                          ? SizedBox()
+                          ? const SizedBox()
                           : SizedBox(
                               height: 25.h,
                             ),
                       widget.isEdit
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 29.w),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showCameraOptions();
-                                    },
-                                    child: Container(
-                                      width: 103.35.w,
-                                      height: 127.40.h,
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFFFFFBFB),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        shadows: [
-                                          BoxShadow(
-                                            color: _saveButtonClicked &&
-                                                    _imageFile == null
-                                                ? Colors.red
-                                                : Color(0x3F000000),
-                                            blurRadius: 5,
-                                            offset: Offset(0, 0),
-                                            spreadRadius: 0,
-                                          )
-                                        ],
+                                // Padding(
+                                // padding: EdgeInsets.only(left: 29.w),
+                                GestureDetector(
+                                  onTap: () {
+                                    showCameraOptions();
+                                  },
+                                  child: Container(
+                                    width: 110.w,
+                                    height: 110.h,
+                                    decoration: ShapeDecoration(
+                                      color: const Color(0xFFFFFBFB),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.r),
                                       ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 45.50,
-                                            height: 45.50,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: ShapeDecoration(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
+                                      // shadows: [
+                                      //   BoxShadow(
+                                      //     color: _saveButtonClicked &&
+                                      //             _imageFile == null
+                                      //         ? Colors.red
+                                      //         : const Color(0x3F000000),
+                                      //     blurRadius: 5,
+                                      //     offset: const Offset(0, 0),
+                                      //     spreadRadius: 0,
+                                      //   )
+                                      // ],
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 45.50,
+                                          height: 45.50,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
                                             ),
-                                            child: Icon(
-                                                Icons.add_circle_rounded,
-                                                size: 45.5.r,
-                                                color: Color(0xFF76A095)),
                                           ),
-                                          SizedBox(height: 13.h),
-                                          Container(
-                                            width: 88.40.w,
-                                            child: Text(
-                                              'Upload Images',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: _saveButtonClicked &&
-                                                        _imageFile == null
-                                                    ? Colors.red
-                                                    : Color(0xFF76A095),
-                                                fontSize: 9.10.sp,
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w600,
-                                                height: 0,
-                                                letterSpacing: 0.18.sp,
-                                              ),
+                                          child: Icon(Icons.add_circle_rounded,
+                                              size: 45.5.r, color: green),
+                                        ),
+                                        SizedBox(height: 13.h),
+                                        SizedBox(
+                                          width: 88.40.w,
+                                          child: Text(
+                                            'Upload Images',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: _saveButtonClicked &&
+                                                      _imageFile == null
+                                                  ? red1
+                                                  : green,
+                                              fontSize: 10.sp,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              height: 0,
+                                              letterSpacing: 0.18.sp,
                                             ),
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 ),
+                                // ),
                                 _imageFile == null
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : Hero(
                                         tag: 'PostImage',
                                         child: GestureDetector(
@@ -715,10 +712,11 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                         _imageFile != null &&
                         uploadArticleStatus != UploadArticleStatus.processing) {
                       // Process data.
-                      if (widget.isEdit)
+                      if (widget.isEdit) {
                         await updatePost();
-                      else
+                      } else {
                         await uploadPost();
+                      }
                     }
                   },
                   child: Container(
@@ -729,8 +727,8 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                     decoration: ShapeDecoration(
                       color:
                           uploadArticleStatus == UploadArticleStatus.processing
-                              ? Color.fromARGB(255, 106, 133, 252)
-                              : Color(0xFF5272FC),
+                              ? Colors.grey
+                              : green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),
                       ),
@@ -750,11 +748,10 @@ class _PostArticleState extends ConsumerState<PostArticle> {
                             'Save',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Color(0xFFF9F8FD),
-                              fontSize: 28.sp,
+                              color: const Color(0xFFF9F8FD),
+                              fontSize: 25.sp,
                               fontFamily: 'Outfit',
                               fontWeight: FontWeight.w600,
-                              height: 0,
                               letterSpacing: 1.12.sp,
                             ),
                           ),

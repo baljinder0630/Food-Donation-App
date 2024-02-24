@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -46,7 +45,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
     final nextRcmdPostLoading =
         ref.watch(communityProvider).nextRcmdPostLoading;
 
-    Widget FeaturedArticles() {
+    Widget featuredArticles() {
       return featuredPostLoading != PostStatus.processed
           ? CarouselSlider(
               items: [
@@ -74,7 +73,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                   enlargeCenterPage: true,
                   viewportFraction: 0.7,
                   initialPage: 2,
-                  scrollPhysics: NeverScrollableScrollPhysics(),
+                  scrollPhysics: const NeverScrollableScrollPhysics(),
                   enlargeFactor: 0.4),
             )
           : Container(
@@ -125,8 +124,8 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                           height: 300.sp,
                           decoration: ShapeDecoration(
                             gradient: LinearGradient(
-                              begin: Alignment(0, 0),
-                              end: Alignment(0, 1),
+                              begin: const Alignment(0, 0),
+                              end: const Alignment(0, 1),
                               colors: [
                                 Colors.transparent,
                                 Colors.black.withOpacity(0.5),
@@ -141,7 +140,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                             ),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                             // margin: EdgeInsets.only(right: 20.w),
                             width: 300.sp,
                             height: 300.sp,
@@ -159,7 +158,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     // color: Colors.redAccent,
                                     width: 270.sp,
                                     child: Column(
@@ -175,16 +174,16 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            color: Color(0xFFB3B3B8),
-                                            fontSize: 14.sp,
+                                            color: white,
+                                            fontSize: 17.sp,
                                             fontFamily: 'Outfit',
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.bold,
                                             height: 0,
                                             letterSpacing: 0.56.sp,
                                           ),
                                         ),
                                         SizedBox(height: 5.h),
-                                        Container(
+                                        SizedBox(
                                           width: 270.w,
                                           height: 50.h,
                                           // color: Colors.red,
@@ -194,7 +193,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                               maxLines: 3,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Color(0xFFF9F8FD),
+                                                color: const Color(0xFFF9F8FD),
                                                 fontSize: 14.sp,
                                                 fontFamily: 'Outfit',
                                                 fontWeight: FontWeight.w500,
@@ -208,131 +207,124 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                                     ),
                                   ),
                                   SizedBox(height: 5.h),
-                                  Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: 30.w,
-                                                height: 30.h,
-                                                decoration: ShapeDecoration(
-                                                  shape: OvalBorder(
-                                                    side: BorderSide(
-                                                        width: 2.w,
-                                                        color:
-                                                            Color(0xFFDAACAC)),
-                                                  ),
-                                                  shadows: const [
-                                                    BoxShadow(
-                                                      color: Color(0x3F000000),
-                                                      blurRadius: 8,
-                                                      offset: Offset(0, 0),
-                                                      spreadRadius: 0,
-                                                    )
-                                                  ],
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 30.w,
+                                              height: 30.h,
+                                              decoration: ShapeDecoration(
+                                                shape: OvalBorder(
+                                                  side: BorderSide(
+                                                      width: 2.w, color: brown),
                                                 ),
-                                                child: Center(
-                                                    child: ClipOval(
-                                                        child: Image.network(
-                                                            featuredPosts[index]
-                                                                .createdByAvatar
-                                                                .toString(),
-                                                            fit: BoxFit.cover,
-                                                            errorBuilder: (context,
-                                                                    error,
-                                                                    stackTrace) =>
-                                                                Center(
-                                                                  child: Text(
-                                                                    nameProfile(
-                                                                        featuredPosts[index]
-                                                                            .username),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Color(
-                                                                          0xFFF9F8FD),
-                                                                      fontSize:
-                                                                          14.sp,
-                                                                      fontFamily:
-                                                                          'Outfit',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      height: 0,
-                                                                      letterSpacing:
-                                                                          0.56.sp,
-                                                                    ),
+                                                shadows: const [
+                                                  BoxShadow(
+                                                    color: Color(0x3F000000),
+                                                    blurRadius: 8,
+                                                    offset: Offset(0, 0),
+                                                    spreadRadius: 0,
+                                                  )
+                                                ],
+                                              ),
+                                              child: Center(
+                                                  child: ClipOval(
+                                                      child: Image.network(
+                                                          featuredPosts[index]
+                                                              .createdByAvatar
+                                                              .toString(),
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Center(
+                                                                child: Text(
+                                                                  nameProfile(featuredPosts[
+                                                                          index]
+                                                                      .username),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: const Color(
+                                                                        0xFFF9F8FD),
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontFamily:
+                                                                        'Outfit',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    height: 0,
+                                                                    letterSpacing:
+                                                                        0.56.sp,
                                                                   ),
-                                                                )))),
+                                                                ),
+                                                              )))),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              featuredPosts[index].username,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: const Color(0xFFF9F8FD),
+                                                fontSize: 14.sp,
+                                                fontFamily: 'Outfit',
+                                                fontWeight: FontWeight.w400,
+                                                height: 0,
+                                                letterSpacing: 0.56.sp,
                                               ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                featuredPosts[index].username,
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xFFF9F8FD),
-                                                  fontSize: 14.sp,
-                                                  fontFamily: 'Outfit',
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 0,
-                                                  letterSpacing: 0.56.sp,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(width: 6.w),
-                                        Container(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: 4.w,
-                                                height: 4.h,
-                                                decoration: ShapeDecoration(
-                                                  color: Color(0xFFD9D9D9),
-                                                  shape: OvalBorder(),
-                                                ),
-                                              ),
-                                              SizedBox(width: 4.w),
-                                              Text(
-                                                timeAgo(featuredPosts[index]
-                                                    .createdTime
-                                                    .toDate()),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xFF8E7474),
-                                                  fontSize: 12.sp,
-                                                  fontFamily: 'Outfit',
-                                                  fontWeight: FontWeight.w300,
-                                                  height: 0,
-                                                  letterSpacing: 0.48.sp,
-                                                ),
-                                              ),
-                                            ],
+                                      ),
+                                      SizedBox(width: 6.w),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 4.w,
+                                            height: 4.h,
+                                            decoration: const ShapeDecoration(
+                                              color: Color(0xFFD9D9D9),
+                                              shape: OvalBorder(),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                          SizedBox(width: 4.w),
+                                          Text(
+                                            timeAgo(featuredPosts[index]
+                                                .createdTime
+                                                .toDate()),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: white.withOpacity(0.7),
+                                              fontSize: 12.sp,
+                                              fontFamily: 'Outfit',
+                                              fontWeight: FontWeight.w300,
+                                              height: 0,
+                                              letterSpacing: 0.48.sp,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -344,14 +336,14 @@ class _AppPostsState extends ConsumerState<AllPosts> {
               ));
     }
 
-    Widget Recommendations() {
+    Widget recommendations() {
       return rcmdPostLoading != PostStatus.processed
-          ? Container(
+          ? SizedBox(
               height: 3 * 130.h,
               child: ListView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
@@ -362,7 +354,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                             margin: EdgeInsets.symmetric(vertical: 5.h),
                             height: 110.h,
                             decoration: ShapeDecoration(
-                              color: Color(0xFFFEFEFE),
+                              color: const Color(0xFFFEFEFE),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.r),
                               ),
@@ -403,7 +395,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                           Positioned(
                             left: 114.w,
                             top: 21.h,
-                            child: Container(
+                            child: SizedBox(
                               width: 300.w,
                               height: 90.h,
                               child: Column(
@@ -462,13 +454,13 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                     );
                   }),
             )
-          : Container(
+          : SizedBox(
               height: posts!.length * 130.h,
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: posts!.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return PostWidget(post: posts[index]);
                 },
@@ -478,7 +470,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
 
     return Column(
       children: [
-        FeaturedArticles(),
+        featuredArticles(),
         SizedBox(
           height: 28.h,
         ),
@@ -500,7 +492,7 @@ class _AppPostsState extends ConsumerState<AllPosts> {
           ),
         ),
         SizedBox(height: 20.h),
-        Recommendations(),
+        recommendations(),
         nextRcmdPostLoading == PostStatus.initial
             ? Container(
                 height: 50.h,
@@ -509,19 +501,19 @@ class _AppPostsState extends ConsumerState<AllPosts> {
                 ? SizedBox(
                     height: 50.h,
                     child: Center(
-                      child: Container(
+                      child: SizedBox(
                         height: 20.r,
                         width: 20.r,
-                        child: CircularProgressIndicator(
+                        child: const CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Color(0xFFFE4E74)),
+                              AlwaysStoppedAnimation<Color>(Color(0xFF009900)),
                           strokeWidth: 5.0,
                         ),
                       ),
                     ),
                   )
                 : nextRcmdPostLoading == PostStatus.exhausted
-                    ? Container(
+                    ? SizedBox(
                         height: 50.h,
                         child: Center(
                           child: Text(
