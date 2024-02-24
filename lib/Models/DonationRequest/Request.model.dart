@@ -8,6 +8,7 @@ class DonationRequestModel {
   String? districtController;
   String? pincodeController;
   List<FoodCategoryModel>? foodCategory;
+  // Timestamp? postedTime;
 
   DonationRequestModel({
     this.name,
@@ -17,6 +18,7 @@ class DonationRequestModel {
     this.districtController,
     this.pincodeController,
     this.foodCategory,
+    // this.postedTime
   });
 
   DonationRequestModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class DonationRequestModel {
     streetController = json['streetController'];
     districtController = json['districtController'];
     pincodeController = json['pincodeController'];
+    // postedTime = json['postedTime'];
     if (json['foodCategory'] != null) {}
   }
 
@@ -40,6 +43,7 @@ class DonationRequestModel {
     if (foodCategory != null) {
       data['foodCategory'] = foodCategory!.map((v) => v.toJson()).toList();
     }
+    // data['postedTime'] = postedTime;
     return data;
   }
 
@@ -51,6 +55,7 @@ class DonationRequestModel {
     String? districtController,
     String? pincodeController,
     List<FoodCategoryModel>? foodCategory,
+    // Timestamp? postedTime
   }) {
     return DonationRequestModel(
       name: name ?? this.name,
@@ -60,6 +65,7 @@ class DonationRequestModel {
       districtController: districtController ?? this.districtController,
       pincodeController: pincodeController ?? this.pincodeController,
       foodCategory: foodCategory ?? this.foodCategory,
+      // postedTime: postedTime ?? this.postedTime
     );
   }
 }
