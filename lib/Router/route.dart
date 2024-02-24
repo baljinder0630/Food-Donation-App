@@ -143,5 +143,8 @@ class AppRouter extends $AppRouter {
         CustomRoute(
             page: OnBoardingScreenRoute.page,
             transitionsBuilder: TransitionsBuilders.slideLeft),
+        CustomRoute(
+            page: DisasterNewsFeedPageRoute.page,
+            transitionsBuilder: TransitionsBuilders.slideTop)
       ];
 }
