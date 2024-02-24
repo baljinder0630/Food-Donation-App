@@ -211,6 +211,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
           districtController: state.districtController,
           pincodeController: state.pincodeController,
           foodCategory: foodList,
+          // postedTime: Timestamp.now()
           postedTime: Timestamp.now());
 
       final id = const Uuid().v4();

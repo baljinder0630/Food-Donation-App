@@ -27,7 +27,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
       if (await ref
           .read(authStateProvider.notifier)
           .signUp(email, password, name, context)) {
-        context.router.replace(AppBottomNavigationBarRoute());
+        context.router.replace(OnBoardingScreenRoute());
       }
     }
 
@@ -309,9 +309,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Already have an account?",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                 TextButton(
                   onPressed: () => context.replaceRoute(LoginPageRoute()),
                   child: const Text("Sign In",

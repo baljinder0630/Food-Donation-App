@@ -10,6 +10,7 @@ class DonationRequestModel {
   Timestamp? postedTime;
   String? pincodeController;
   List<FoodCategoryModel>? foodCategory;
+  // Timestamp? postedTime;
 
   DonationRequestModel(
       {this.name,
@@ -58,6 +59,7 @@ class DonationRequestModel {
     if (foodCategory != null) {
       data['foodCategory'] = foodCategory!.map((v) => v.toJson()).toList();
     }
+    // data['postedTime'] = postedTime;
     return data;
     // return {
     //   'name': name,
