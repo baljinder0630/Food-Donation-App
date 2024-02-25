@@ -108,7 +108,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                                   style: TextStyle(
                                       color: white,
                                       fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w800,
                                       overflow: TextOverflow.ellipsis),
                                 ),
                               ),
@@ -120,6 +120,7 @@ class DonationDescriptionHeader extends StatelessWidget {
                                     child: Icon(
                                       Icons.place,
                                       color: white,
+                                      size: 20.sp,
                                     ),
                                   ),
                                   Expanded(
@@ -129,8 +130,9 @@ class DonationDescriptionHeader extends StatelessWidget {
                                       ),
                                       style: TextStyle(
                                           fontStyle: FontStyle.italic,
-                                          color: white,
-                                          fontSize: 17.sp,
+                                          color: white.withOpacity(0.8),
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold,
                                           overflow: TextOverflow.ellipsis),
                                     ),
                                   ),
