@@ -21,10 +21,9 @@ class DonationRequest {
   String? streetController;
   String? districtController;
   String? pincodeController;
-
-  // Timestamp postedTime = Timestamp.now();
+  String? ngoId;
   List<FoodCategory>? foodCategory;
-  FoodCategoryStatus? foodCategoryStatus;
+  String? foodCategoryStatus;
 
   DonationRequest({
     this.name,
@@ -34,7 +33,7 @@ class DonationRequest {
     this.districtController,
     this.pincodeController,
     this.foodCategory,
-    // required this.postedTime,
+    this.ngoId,
     this.foodCategoryStatus,
   });
 
@@ -45,6 +44,7 @@ class DonationRequest {
     streetController = json['streetController'];
     districtController = json['districtController'];
     pincodeController = json['pincodeController'];
+    ngoId = json['ngoId'];
     if (json['foodCategory'] != null) {
       foodCategory = <FoodCategory>[];
       json['foodCategory'].forEach((v) {
@@ -62,6 +62,7 @@ class DonationRequest {
     data['streetController'] = streetController;
     data['districtController'] = districtController;
     data['pincodeController'] = pincodeController;
+    data['ngoId'] = ngoId;
     if (foodCategory != null) {
       data['foodCategory'] = foodCategory!.map((v) => v.toJson()).toList();
     }
@@ -76,7 +77,8 @@ class DonationRequest {
     String? districtController,
     String? pincodeController,
     List<FoodCategory>? foodCategory,
-    FoodCategoryStatus? foodCategoryStatus,
+    String? foodCategoryStatus,
+    String? ngoId,
   }) {
     return DonationRequest(
         name: name ?? this.name,
@@ -87,7 +89,8 @@ class DonationRequest {
         districtController: districtController ?? this.districtController,
         pincodeController: pincodeController ?? this.pincodeController,
         foodCategory: foodCategory ?? this.foodCategory,
-        foodCategoryStatus: foodCategoryStatus ?? this.foodCategoryStatus);
+        foodCategoryStatus: foodCategoryStatus ?? this.foodCategoryStatus,
+        ngoId: ngoId ?? this.ngoId);
   }
 }
 
@@ -104,9 +107,10 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
             streetController: '',
             districtController: '',
             pincodeController: '',
+            ngoId: '',
             foodCategory: [],
             // postedTime: Timestamp.now(),
-            foodCategoryStatus: FoodCategoryStatus.initial));
+            foodCategoryStatus: 'initial'));
 
   DonationRequest updateFoodCategory(
       String foodName, String quantity, File img) {
@@ -114,15 +118,20 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     print("here: $path");
     FoodCategory newFoodCategory =
         FoodCategory(name: foodName, quantity: quantity, imageFile: img);
-    state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
+    state = state.copyWith(foodCategoryStatus: 'processing');
 
     final foodCategory = [...state.foodCategory!, newFoodCategory];
 
     state = state.copyWith(foodCategory: foodCategory);
-    state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+    state = state.copyWith(foodCategoryStatus: 'processed');
     print("State changed");
     print(state.foodCategory?.length);
 
+    return state;
+  }
+
+  DonationRequest updateNGOID(String ngoId) {
+    state = state.copyWith(ngoId: ngoId);
     return state;
   }
 
@@ -162,8 +171,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     updatedFoodCategories[index] = updatedFoodCategory;
 
     state = state.copyWith(
-        foodCategory: updatedFoodCategories,
-        foodCategoryStatus: FoodCategoryStatus.processed);
+        foodCategory: updatedFoodCategories, foodCategoryStatus: 'processed');
 
     print("State changed");
     print(state.foodCategory?.length);
@@ -184,13 +192,13 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
     return state.foodCategory ?? [];
   }
 
-  FoodCategoryStatus getStatus() {
-    return state.foodCategoryStatus ?? FoodCategoryStatus.initial;
+  String getStatus() {
+    return state.foodCategoryStatus ?? 'initial';
   }
 
   Future<bool> raiseRequest() async {
     try {
-      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processing);
+      state = state.copyWith(foodCategoryStatus: 'processing');
       print(state.foodCategoryStatus);
       List<FoodCategoryModel> foodList = [];
 
@@ -211,7 +219,7 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
           districtController: state.districtController,
           pincodeController: state.pincodeController,
           foodCategory: foodList,
-          // postedTime: Timestamp.now()
+          ngoId: state.ngoId,
           postedTime: Timestamp.now());
 
       final id = const Uuid().v4();
@@ -220,17 +228,18 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
       print("Data uploaded Successfully");
 
       state = state.copyWith(
-          foodCategoryStatus: FoodCategoryStatus.processed,
+          foodCategoryStatus: 'processed',
           name: '',
           phoneNumber: '',
           plotNo: '',
           streetController: '',
           foodCategory: [],
+          ngoId: '',
           districtController: '');
       print(state.foodCategoryStatus);
       return true;
     } catch (e) {
-      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+      state = state.copyWith(foodCategoryStatus: 'processed');
       print(e.toString());
       return false;
     }
