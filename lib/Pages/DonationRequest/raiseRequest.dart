@@ -159,7 +159,8 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
                     SizedBox(height: 19.20),
                     ElevatedButton(
                       onPressed: () async {
-                        await context.pushRoute(const LandDonationRoute());
+                        await context
+                            .pushRoute(const AppBottomNavigationBarRoute());
                       },
                       child: const Center(child: Text('Go back')),
                     ),
