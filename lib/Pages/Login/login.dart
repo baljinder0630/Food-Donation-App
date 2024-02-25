@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/login_background.png', fit: BoxFit.cover),
+          Image.asset('assets/login_background.png', fit: BoxFit.fill),
           GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: const SingleChildScrollView(

@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final FormFieldValidator<String>? validator;
   final bool? numericKeyboard;
+  final onEditingComplete;
 
   const CustomTextFormField(
       {super.key,
@@ -15,7 +16,8 @@ class CustomTextFormField extends StatelessWidget {
       this.inputFormatters,
       required this.controller,
       this.validator,
-      this.numericKeyboard});
+      this.numericKeyboard,
+      this.onEditingComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       controller: controller,
       cursorColor: primaryColor,
+      onEditingComplete: onEditingComplete,
       keyboardType:
           numericKeyboard == true ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(

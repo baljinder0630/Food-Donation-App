@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_donation_app/Models/User.model.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 final authStateProvider = StateNotifierProvider<UserAuth, AuthState>((ref) {
@@ -34,15 +36,16 @@ class UserAuth extends StateNotifier<AuthState> {
   }
 
   String getUid() {
-    return state.user!.uid ?? "";
+    return state.user!.uid ?? FirebaseAuth.instance.currentUser!.uid;
   }
 
   String getDisplayName() {
-    return state.user!.displayName ?? "User";
+    return state.user!.displayName ??
+        FirebaseAuth.instance.currentUser!.displayName!;
   }
 
   String getPhotoUrl() {
-    return state.user!.photoURL ?? "null";
+    return state.user!.photoURL ?? FirebaseAuth.instance.currentUser!.photoURL!;
   }
 
   checkAuthentication() async {
@@ -199,6 +202,7 @@ class UserAuth extends StateNotifier<AuthState> {
 
   logout() async {
     await FirebaseAuth.instance.signOut();
+    await FirebaseFirestore.instance.clearPersistence();
     state = state.copyWith(
       user: null,
       authStatus: AuthStatus.processed,

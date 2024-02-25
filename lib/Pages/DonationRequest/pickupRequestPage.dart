@@ -119,172 +119,142 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Container(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 8,
-                offset: Offset(0, 0),
-                spreadRadius: 0,
-              )
-            ],
-          ),
-          child: FloatingActionButton(
-            backgroundColor: const Color(0xffFEFEFE),
-            shape: const OvalBorder(),
-            onPressed: () {
-              context.pushRoute(const PersonalDetailsRoute());
-            },
-            elevation: 0.0,
-            child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
-          ),
+      floatingActionButton: Container(
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 8,
+              offset: Offset(0, 0),
+              spreadRadius: 0,
+            )
+          ],
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: 5.h),
-              MyAppBar(
-                centerWidget: Padding(
-                  padding: EdgeInsets.only(left: 57.w),
-                  child: GestureDetector(
-                    onTap: () {
-                      context.pushRoute(const ProfileSearchPageRoute());
-                    },
-                    child: MySearchBar(title: "Pickup Requests"),
-                  ),
+        child: FloatingActionButton(
+          backgroundColor: const Color(0xffFEFEFE),
+          shape: const OvalBorder(),
+          onPressed: () {
+            context.pushRoute(const PersonalDetailsRoute());
+          },
+          elevation: 0.0,
+          child: Icon(Icons.add_circle_rounded, size: 36.r, color: green),
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 5.h),
+            MyAppBar(
+              centerWidget: Padding(
+                padding: EdgeInsets.only(left: 57.w),
+                child: GestureDetector(
+                  onTap: () {
+                    context.pushRoute(const ProfileSearchPageRoute());
+                  },
+                  child: MySearchBar(title: "Pickup Requests"),
                 ),
-                rightWidget: Padding(
-                  padding: EdgeInsets.only(right: 16.0.r),
+              ),
+              rightWidget: Padding(
+                padding: EdgeInsets.only(right: 16.0.w),
+                child: InkWell(
+                  onTap: () {
+                    context.pushRoute(const DonationTrackingPageRoute());
+                  },
                   child: Container(
+                    height: 40.h,
+                    width: 40.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: white,
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.browse_gallery_outlined),
-                      onPressed: () {
-                        context.pushRoute(const DonationTrackingPageRoute());
-                      },
-                    ),
+                    child: Icon(Icons.browse_gallery_outlined),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
-              categoryWidget(),
-              // SizedBox(
-              //   height: 10.h,
-              // ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            categoryWidget(),
+            // SizedBox(
+            //   height: 10.h,
+            // ),
 
-              // Here ends the AppBar and filters...
+            // Here ends the AppBar and filters...
 
-              Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('requests')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<PickUpRequest> donationRequestWidgets = [];
-                      final donationRequests =
-                          snapshot.data?.docs.reversed.toList();
-                      for (var donationRequest in donationRequests!) {
-                        final address = donationRequest['plotNo'] +
-                            ", " +
-                            donationRequest['streetController'] +
-                            ", " +
-                            donationRequest['districtController'] +
-                            ", " +
-                            donationRequest['pincodeController'];
-                        final createdTime = donationRequest['postedTime'];
-                        final cookedBefore = getCookedTime(createdTime);
-                        final donationRequestWidget = PickUpRequest(
-                          phoneNumber: donationRequest['phoneNumber'],
-                          snapshot: snapshot,
-                          foodName1: donationRequest['name'],
-                          address: address,
-                          postedTime: cookedBefore,
-                          foodCategory: donationRequest['foodCategory'],
-                        );
-
-                        donationRequestWidgets.add(donationRequestWidget);
-                      }
-
-                      return Container(
-                        margin: EdgeInsets.all(10.r),
-                        child: ListView.builder(
-                          itemCount: donationRequestWidgets.length,
-                          itemBuilder: (context, index) {
-                            return donationRequestWidgets[index];
-                          },
-                        ),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('requests')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<PickUpRequest> donationRequestWidgets = [];
+                    final donationRequests =
+                        snapshot.data?.docs.reversed.toList();
+                    for (var donationRequest in donationRequests!) {
+                      final address = donationRequest['plotNo'] +
+                          ", " +
+                          donationRequest['streetController'] +
+                          ", " +
+                          donationRequest['districtController'] +
+                          ", " +
+                          donationRequest['pincodeController'];
+                      final createdTime = donationRequest['postedTime'];
+                      final cookedBefore = getCookedTime(createdTime);
+                      final donationRequestWidget = PickUpRequest(
+                        phoneNumber: donationRequest['phoneNumber'],
+                        snapshot: snapshot,
+                        foodName1: donationRequest['name'],
+                        address: address,
+                        postedTime: cookedBefore,
+                        foodCategory: donationRequest['foodCategory'],
                       );
-                    } else {
-                      // Placeholder while loading
-                      return Shimmer(
-                          gradient: const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Colors.grey, Colors.white, Colors.grey]),
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(right: 20.w),
-                                width: MediaQuery.of(context).size.width,
-                                height: 300.h,
-                                color: Colors.white,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 20.w),
-                                width: MediaQuery.of(context).size.width,
-                                height: 300.h,
-                                color: Colors.white,
-                              )
-                            ],
-                          ));
+
+                      donationRequestWidgets.add(donationRequestWidget);
                     }
-                  },
-                ),
+
+                    return Container(
+                      margin: EdgeInsets.all(10.r),
+                      child: ListView.builder(
+                        itemCount: donationRequestWidgets.length,
+                        itemBuilder: (context, index) {
+                          return donationRequestWidgets[index];
+                        },
+                      ),
+                    );
+                  } else {
+                    // Placeholder while loading
+                    return Shimmer(
+                        gradient: const LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Colors.grey, Colors.white, Colors.grey]),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 20.w),
+                              width: MediaQuery.of(context).size.width,
+                              height: 300.h,
+                              color: Colors.white,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 20.w),
+                              width: MediaQuery.of(context).size.width,
+                              height: 300.h,
+                              color: Colors.white,
+                            )
+                          ],
+                        ));
+                  }
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: CircleNavBar(
-          activeIcons: const [
-            Icon(Icons.home, color: Colors.green),
-            Icon(Icons.chat_bubble, color: Colors.green),
-            Icon(Icons.add, color: Colors.green),
-            Icon(Icons.group, color: Colors.green),
-            Icon(Icons.account_circle, color: Colors.green),
-          ],
-          inactiveIcons: const [
-            Text("Home"),
-            Text("Chat"),
-            Text("Donate"),
-            Text("Community"),
-            Text("Profile"),
-          ],
-          color: Colors.white,
-          circleColor: Colors.white,
-          height: 60,
-          circleWidth: 60,
-          activeIndex: tabIndex,
-          onTap: (index) {
-            setState(() {
-              tabIndex = index;
-            });
-            pageController.animateToPage(index,
-                duration: Duration(milliseconds: 300), curve: Curves.ease);
-          },
-          // children: _pages,
-          // setState(() {
-          //   tabIndex = index;
-          //
-          // });
-        ));
+      ),
+    );
   }
 }
 

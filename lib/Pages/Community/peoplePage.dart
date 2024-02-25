@@ -17,30 +17,59 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: ref.watch(communityProvider.notifier).getPeoples(0),
-      builder: (context, snapshot) {
-        QuerySnapshot? data = snapshot.data as QuerySnapshot?;
-        if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.hasError) {
-            return const SizedBox();
-          }
-          if (snapshot.hasData && data!.docs.isNotEmpty) {
-            final users =
-                data.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+        stream: ref.watch(communityProvider.notifier).getPeoples(0),
+        builder: (context, snapshot) {
+          QuerySnapshot? data = snapshot.data as QuerySnapshot?;
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return const SizedBox();
+            }
+            if (snapshot.hasData && data!.docs.isNotEmpty) {
+              final users = data.docs
+                  .map((e) => e.data() as Map<String, dynamic>)
+                  .toList();
 
-            return SizedBox(
-              height: 110.h * users.length,
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return UserCard(user: UserModel.fromMap(users[index]));
-                  }),
-            );
+              return Container(
+                // height: MediaQuery.of(context).size.height,
+                child: SingleChildScrollView(
+                    padding: EdgeInsets.zero,
+                    physics: BouncingScrollPhysics(),
+                    child: StreamBuilder(
+                      stream:
+                          ref.watch(communityProvider.notifier).getPeoples(0),
+                      builder: (context, snapshot) {
+                        QuerySnapshot? data = snapshot.data as QuerySnapshot?;
+                        if (snapshot.connectionState ==
+                            ConnectionState.active) {
+                          if (snapshot.hasError) {
+                            return SizedBox();
+                          }
+                          if (snapshot.hasData && data!.docs.isNotEmpty) {
+                            final users = data.docs
+                                .map((e) => e.data() as Map<String, dynamic>)
+                                .toList();
+
+                            return Container(
+                              // height: 110.h * users.length,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.zero,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: users.length,
+                                  itemBuilder: (context, index) {
+                                    return UserCard(
+                                        user: UserModel.fromMap(users[index]));
+                                  }),
+                            );
+                          }
+                        }
+                        return SizedBox();
+                      },
+                    )),
+              );
+            }
           }
-        }
-        return const SizedBox();
-      },
-    );
+          return SizedBox();
+        });
   }
 }

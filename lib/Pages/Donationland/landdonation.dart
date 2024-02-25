@@ -83,6 +83,11 @@ class CharityHomePage extends ConsumerState<landDonation> {
       'img': 'assets/disaster_news.png',
       'category': 'Disaster News',
       'redirect': const DisasterNewsFeedPageRoute(),
+    },
+    {
+      'img': 'lib/assets/donateimg/food.png',
+      'category': 'Add Hunger Spot',
+      'redirect': const HungerSpotPageRoute(),
     }
   ];
 
@@ -94,36 +99,37 @@ class CharityHomePage extends ConsumerState<landDonation> {
           height: 50.h,
         ),
         MyAppBar(
-          centerWidget: Padding(
-            padding: EdgeInsets.only(left: 57.w),
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: 200.w,
-                height: 40.h,
-                padding: EdgeInsets.only(top: 5.h),
-                child: Text(
-                  "Our Features",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+            centerWidget: Padding(
+              padding: EdgeInsets.only(left: 67.w),
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 200.w,
+                  height: 40.h,
+                  padding: EdgeInsets.only(top: 5.h),
+                  child: Text(
+                    "Our Features",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-          rightWidget: Padding(
-            padding: EdgeInsets.only(right: 34.w),
-            child: IconButton(
-              icon: const Icon(
-                Icons.menu_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () => {},
+            rightWidget: SizedBox()
+            //  Padding(
+            //   padding: EdgeInsets.only(right: 34.w),
+            //   child: IconButton(
+            //     icon: const Icon(
+            //       Icons.menu_rounded,
+            //       color: Colors.white,
+            //     ),
+            //     onPressed: () => {},
+            //   ),
+            // ),
             ),
-          ),
-        ),
         SizedBox(height: 20.h),
         Expanded(
           child: SingleChildScrollView(
@@ -234,6 +240,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     await context.pushRoute(const ChatBotScreenRoute());
                   } else if (data[index]['category'] == 'Disaster News') {
                     await context.pushRoute(const DisasterNewsFeedPageRoute());
+                  } else if (data[index]['category'] == 'Add Hunger Spot') {
+                    await context.pushRoute(const HungerSpotPageRoute());
                   } else {
                     await context.pushRoute(const RaiseRequestRoute());
                   }

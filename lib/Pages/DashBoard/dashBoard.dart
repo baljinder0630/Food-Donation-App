@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +17,7 @@ import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -228,6 +230,17 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                                     donationRequestWidgets
                                         .add(donationRequestWidget);
                                   }
+                                }
+                                if (snapshot.data!.docs.length == 0) {
+                                  return Center(
+                                    child: Text(
+                                      "No Donation Request",
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
                                 }
                                 return Expanded(
                                   child: Container(
@@ -566,10 +579,8 @@ class _ProfileWidgetState extends ConsumerState<ProfileWidget> {
                                     ref.watch(authStateProvider).user!.photoURL,
                                 fit: BoxFit.cover,
                                 errorWidget: (context, url, error) => Text(
-                                  nameProfile(ref
-                                      .watch(authStateProvider)
-                                      .user!
-                                      .displayName),
+                                  nameProfile(FirebaseAuth
+                                      .instance.currentUser!.displayName!),
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 30.sp,
@@ -605,7 +616,9 @@ class _ProfileWidgetState extends ConsumerState<ProfileWidget> {
             width: 300.w, // Adjust the width as needed
             alignment: Alignment.center,
             child: Text(
-              ref.watch(authStateProvider).user!.displayName ?? "",
+              FirebaseAuth.instance.currentUser!.displayName! ?? "",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold,

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
+import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
+import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
 
@@ -57,41 +60,31 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: [
           Icon(Icons.home_outlined, color: green, size: 38.r),
-          Icon(Icons.group_rounded, color: green, size: 35.r),
+          Icon(Icons.article, color: Colors.green),
           Icon(Icons.explore_outlined, color: green, size: 40.r),
-          Icon(Icons.chat_outlined, color: green, size: 35.r),
+          Icon(Icons.group_rounded, color: green, size: 35.r),
           Icon(Icons.account_circle_outlined, color: green, size: 38.r),
         ],
         inactiveIcons: [
           Text(
             "Home",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
+          ),
+          Text(
+            "Articles",
+            style: TextStyle(fontSize: 14.sp),
+          ),
+          Text(
+            "Donate",
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Community",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Explore",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Chat",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Profile",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ],
         color: Colors.white,

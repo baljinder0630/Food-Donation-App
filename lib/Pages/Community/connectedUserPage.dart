@@ -19,54 +19,81 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
   Widget build(BuildContext context) {
     // final users = ref.watch(communityProvider).users;
 
-    return StreamBuilder(
-      stream: ref.watch(communityProvider.notifier).getConnectedPeoples(0),
-      builder: (context, snapshot) {
-        QuerySnapshot? data = snapshot.data as QuerySnapshot?;
-        if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.hasError) {
-            return const Text("Something went wrong");
-          }
-          if (snapshot.hasData && data!.docs.isNotEmpty) {
-            final connections =
-                data.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+    return Container(
+      // height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: StreamBuilder(
+            stream:
+                ref.watch(communityProvider.notifier).getConnectedPeoples(0),
+            builder: (context, snapshot) {
+              QuerySnapshot? data = snapshot.data as QuerySnapshot;
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasError) {
+                  return Text("Something went wrong");
+                }
+                // if (snapshot.data == null)
+                //   return Center(
+                //     child: Text("No connections yet!"),
+                //   );
+                if (snapshot.hasData && data!.docs.isNotEmpty) {
+                  final connections = data.docs
+                      .map((e) => e.data() as Map<String, dynamic>)
+                      .toList();
 
-            return SizedBox(
-              height: 103.h * connections.length,
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: connections.length,
-                  itemBuilder: (context, index) {
-                    return FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(connections[index]['userId'])
-                          .get(),
-                      initialData: "InitialData",
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const UserCardShimmerEffect();
-                        }
-                        if (snapshot.hasError) {
-                          return const Text("Something went wrong");
-                        }
-                        if (snapshot.hasData && snapshot.data.data() != null) {
-                          final userModel =
-                              snapshot.data.data() as Map<String, dynamic>;
+                  return Container(
+                    // height: 103.h * connections.length,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: connections.length,
+                        itemBuilder: (context, index) {
+                          return FutureBuilder(
+                            future: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(connections[index]['userId'])
+                                .get(),
+                            initialData: "InitialData",
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return UserCardShimmerEffect();
+                              }
+                              if (snapshot.hasError) {
+                                return Text("Something went wrong");
+                              }
+                              if (snapshot.hasData &&
+                                  snapshot.data.data() != null) {
+                                final userModel = snapshot.data.data()
+                                    as Map<String, dynamic>;
 
-                          return UserCard(user: UserModel.fromMap(userModel));
-                        }
+                                return UserCard(
+                                    user: UserModel.fromMap(userModel));
+                              }
 
-                        return const SizedBox();
-                      },
-                    );
-                  }),
-            );
-          }
-        }
-        return const Text("data");
-      },
+                              return SizedBox();
+                            },
+                          );
+                        }),
+                  );
+                } else {
+                  return Container(
+                    height: 500.h,
+                    width: 400.w,
+                    child: const Center(
+                      child: Text(
+                        'No connections yet!',
+                        style: TextStyle(fontFamily: "Poppins"),
+                      ),
+                    ),
+                  );
+                }
+              }
+              return Text("No connections yet!");
+            },
+          )),
     );
   }
 }

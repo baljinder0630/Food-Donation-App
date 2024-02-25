@@ -107,17 +107,15 @@ class DonationRequestCard extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(width: 8.w),
-                  Expanded(
-                    child: Text(
-                      toCamelCase(
-                        requestName,
-                      ),
-                      style: TextStyle(
-                        color: black,
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                  Text(
+                    toCamelCase(
+                      requestName,
+                    ),
+                    style: TextStyle(
+                      color: black,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -143,15 +141,14 @@ class DonationRequestCard extends ConsumerWidget {
                                     SizedBox(
                                       width: 8.w,
                                     ),
-                                    Expanded(
-                                        child: Text(
+                                    Text(
                                       "$requestType Donation",
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -166,15 +163,14 @@ class DonationRequestCard extends ConsumerWidget {
                                     SizedBox(
                                       width: 8.w,
                                     ),
-                                    Expanded(
-                                        child: Text(
+                                    Text(
                                       "${getServings(totalRequest)} People",
                                       style: TextStyle(
                                         color: black,
                                         fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -193,8 +189,7 @@ class DonationRequestCard extends ConsumerWidget {
                                     SizedBox(
                                       width: 8.w,
                                     ),
-                                    Expanded(
-                                        child: Text(
+                                    Text(
                                       toCamelCase(
                                         NGOName,
                                       ),
@@ -203,7 +198,7 @@ class DonationRequestCard extends ConsumerWidget {
                                         fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -218,15 +213,14 @@ class DonationRequestCard extends ConsumerWidget {
                                     SizedBox(
                                       width: 8.w,
                                     ),
-                                    Expanded(
-                                        child: Text(
+                                    Text(
                                       date,
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                    )),
+                                    ),
                                   ],
                                 ),
                               ),

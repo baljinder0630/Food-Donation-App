@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/button.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_phone_no_field.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
@@ -219,6 +220,14 @@ class _PersonalDetailsState extends ConsumerState<PersonalDetails> {
                 ),
               ),
             ),
+            AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                shadowColor: Colors.transparent,
+                foregroundColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                leading: Align(
+                    alignment: Alignment.centerRight, child: MyBackButton())),
           ],
         ),
       ),

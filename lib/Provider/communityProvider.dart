@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +54,7 @@ class Community extends StateNotifier<CommunityState> {
     try {
       final querySnapshot = await firestore
           .collection("chatRoomModel")
-          .where("participants.${ref.watch(authStateProvider).user!.uid}",
+          .where("participants.${FirebaseAuth.instance.currentUser!.uid}",
               isEqualTo: true)
           .get();
 
@@ -128,7 +129,7 @@ class Community extends StateNotifier<CommunityState> {
       });
       await firestore
           .collection("bookmarks")
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .get()
           .then((value) {
         if (value.data() != null) {
@@ -155,7 +156,7 @@ class Community extends StateNotifier<CommunityState> {
     try {
       await firestore
           .collection('bookmarks')
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
         'bookmarked': FieldValue.arrayRemove([postId])
       });
@@ -382,7 +383,7 @@ class Community extends StateNotifier<CommunityState> {
     try {
       final snapshot = await firestore
           .collection("articles")
-          .where("userId", isEqualTo: ref.watch(authStateProvider).user!.uid)
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
       final posts = snapshot.docs.map((e) {
         // convert timestamp to DateTime
@@ -399,11 +400,9 @@ class Community extends StateNotifier<CommunityState> {
 
   getBookmarkedPosts(context) async {
     try {
-      log(ref.watch(authStateProvider).user!.uid);
-
       final bookmarks = await firestore
           .collection('bookmarks')
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .get()
           .then((value) {
         if (value.data() == null) return [];
@@ -442,14 +441,14 @@ class Community extends StateNotifier<CommunityState> {
   Stream<Object?>? getPeoples(int from) {
     return firestore
         .collection("users")
-        .where("uid", isNotEqualTo: ref.read(authStateProvider).user!.uid)
+        .where("uid", isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
   }
 
   Stream<Object?>? getConnectedPeoples(int from) {
     return firestore
         .collection("users")
-        .doc(ref.watch(authStateProvider).user!.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("connections")
         .snapshots();
   }
@@ -477,7 +476,7 @@ class Community extends StateNotifier<CommunityState> {
     try {
       final querySnapshot = await firestore
           .collection("chatRoomModel")
-          .where("participants.${ref.watch(authStateProvider).user!.uid}",
+          .where("participants.${FirebaseAuth.instance.currentUser!.uid}",
               isEqualTo: true)
           .get();
 
@@ -486,7 +485,7 @@ class Community extends StateNotifier<CommunityState> {
             Chatroommodel.fromMap(doc.data() as Map<String, dynamic>);
         Map<String, dynamic>? participants = chatroommodel.participants;
         List<String> participantsKey = participants!.keys.toList();
-        participantsKey.remove(ref.watch(authStateProvider).user!.uid);
+        participantsKey.remove(FirebaseAuth.instance.currentUser!.uid);
 
         return participantsKey.first;
       });
@@ -518,7 +517,7 @@ class Community extends StateNotifier<CommunityState> {
           state = state.copyWith(currentChatRoomUid: chatRoomUid);
 
           Chatroommodel chatRoomModel = Chatroommodel(participants: {
-            ref.watch(authStateProvider).user!.uid: true,
+            FirebaseAuth.instance.currentUser!.uid: true,
             to: true
           }, chatroomuid: chatRoomUid, lastmessage: msg);
           await firestore
@@ -544,7 +543,7 @@ class Community extends StateNotifier<CommunityState> {
             messageId:
                 DateTime.now().toLocal().microsecondsSinceEpoch.toString(),
             lastmessage: msg,
-            sender: ref.watch(authStateProvider).user!.uid.toString());
+            sender: FirebaseAuth.instance.currentUser!.uid.toString());
 
         await firestore
             .collection("ChatRoom")
@@ -671,7 +670,7 @@ class Community extends StateNotifier<CommunityState> {
     try {
       await firestore
           .collection("users")
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("connections")
           .get()
           .then((value) {
@@ -693,7 +692,7 @@ class Community extends StateNotifier<CommunityState> {
   getConnectionStatus(String targetUserId) async {
     if (await firestore
         .collection("users")
-        .doc(ref.watch(authStateProvider).user!.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("connections")
         .doc(targetUserId)
         .get()
@@ -708,7 +707,7 @@ class Community extends StateNotifier<CommunityState> {
 
     if (await firestore
         .collection("users")
-        .doc(ref.watch(authStateProvider).user!.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("outgoingRequests")
         .doc(targetUserId)
         .get()
@@ -734,7 +733,7 @@ class Community extends StateNotifier<CommunityState> {
 
       if (await firestore
           .collection("users")
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("connections")
           .doc(targetUserId)
           .get()
@@ -745,7 +744,7 @@ class Community extends StateNotifier<CommunityState> {
 
       await firestore
           .collection("users")
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("outgoingRequests")
           .doc(targetUserId)
           .set(
@@ -757,10 +756,10 @@ class Community extends StateNotifier<CommunityState> {
           .collection("users")
           .doc(targetUserId)
           .collection("incomingRequests")
-          .doc(ref.watch(authStateProvider).user!.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .set(
             Connections(
-                    userId: ref.watch(authStateProvider).user!.uid,
+                    userId: FirebaseAuth.instance.currentUser!.uid,
                     status: ConnectionStatus.pending)
                 .toMap(),
             SetOptions(merge: true),
