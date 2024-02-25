@@ -47,6 +47,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
       'img': 'assets/community.png',
       'category': 'Community',
       'redirect': const CommunityHomePageRoute(),
+      'redirect': const CommunityHomePageRoute(),
     },
     {
       'img': 'assets/raise_query.png',
@@ -56,7 +57,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/be_volunteer.png',
       'category': 'Be a Volunteer',
-      'redirect': const RaiseRequestRoute(),
+      'redirect': RaiseRequestRoute(),
     },
     {
       'img': 'assets/raise_request.png',
@@ -231,8 +232,6 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     await context.pushRoute(const CommunityHomePageRoute());
                   } else if (data[index]['category'] == 'Resolve Query') {
                     await context.pushRoute(const ChatBotScreenRoute());
-                  } else if (data[index]['category'] == 'Govt. Scheme') {
-                    await context.pushRoute(SchemePageRoute());
                   } else if (data[index]['category'] == 'Disaster News') {
                     await context.pushRoute(const DisasterNewsFeedPageRoute());
                   } else {
@@ -249,7 +248,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context); // Close the dialog
+                              Navigator.pop(context);
                             },
                             child: const Text('OK'),
                           ),

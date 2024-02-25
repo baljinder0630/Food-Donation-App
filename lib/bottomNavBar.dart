@@ -96,8 +96,8 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
         ],
         color: Colors.white,
         circleColor: Colors.white,
-        height: 63.h,
-        circleWidth: 63.w,
+        height: 63.r,
+        circleWidth: 63.r,
         activeIndex: tabIndex,
         onTap: (index) {
           setState(() {

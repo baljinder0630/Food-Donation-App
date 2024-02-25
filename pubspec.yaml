@@ -81,6 +81,7 @@ dependencies:
   preload_page_view: any
   video_player: any
   share: any
+  expandable_text: any
 
 dev_dependencies:
   flutter_test:
