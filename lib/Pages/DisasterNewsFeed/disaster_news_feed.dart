@@ -8,6 +8,7 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:share/share.dart';
 import 'package:expandable_text/expandable_text.dart';
 
+//Disaster News Feed
 @RoutePage()
 class DisasterNewsFeedPage extends StatelessWidget {
   const DisasterNewsFeedPage({Key? key}) : super(key: key);
