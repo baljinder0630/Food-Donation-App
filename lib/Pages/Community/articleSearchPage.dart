@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/postWidget.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
-import 'package:auto_route/auto_route.dart';
 import '../constants/constants.dart';
 
 @RoutePage()

@@ -2,9 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_edit_dialog.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
 import 'package:food_donation_app/Provider/foodCategoryProvider.dart';
+
+import '../../constants/constants.dart';
 
 class YourDonatedItems extends StatefulWidget {
   final List<FoodCategory> foodCategories;
@@ -30,14 +34,20 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
   TextEditingController foodController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController imagePathController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Subheading(text: 'Your Donated Items'),
         Container(
-          height: 245.0,
+            padding: EdgeInsets.all(15.r),
+            child: Text(
+              'Your Donated Items',
+              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
+            )),
+        Container(
+          height: 230.h,
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -45,7 +55,7 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(8),
               child: Container(
-                width: 150,
+                width: 160.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -62,11 +72,11 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(10),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(10.r),
                       ),
                       child: Container(
-                        height: 120,
+                        height: 120.h,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
@@ -77,19 +87,24 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8.r),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.foodCategories[index].name ?? '',
+                            toCamelCase(
+                              widget.foodCategories[index].name ?? '',
+                            ),
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4.h),
                           Row(children: [
                             const Text('Quantity: '),
-                            Spacer(),
-                            Text(widget.foodCategories[index].quantity ?? ''),
+                            const Spacer(),
+                            Text(
+                              toCamelCase(
+                                  widget.foodCategories[index].quantity ?? ''),
+                            ),
                           ]),
                           const SizedBox(height: 10),
                           Row(
@@ -113,18 +128,18 @@ class _YourDonatedItemsState extends State<YourDonatedItems> {
                                           );
                                         });
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'EDIT',
-                                    style: TextStyle(color: Colors.green),
+                                    style: TextStyle(color: green),
                                   )),
                               const Spacer(),
                               InkWell(
                                   onTap: () {
                                     widget.deleteFoodCategory(index);
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'DELETE',
-                                    style: TextStyle(color: Colors.red),
+                                    style: TextStyle(color: red1),
                                   ))
                             ],
                           )

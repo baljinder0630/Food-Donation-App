@@ -11,6 +11,8 @@ import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
 import 'package:food_donation_app/Provider/userProvider.dart';
 
+import '../constants/constants.dart';
+
 @RoutePage()
 class ArticleDetail extends ConsumerStatefulWidget {
   final PostModel article;
@@ -24,7 +26,7 @@ class ArticleDetail extends ConsumerStatefulWidget {
 class _ArticleDetailState extends ConsumerState<ArticleDetail> {
   @override
   Widget build(BuildContext context) {
-    void share() {}
+    // void share() {}
 
     void toogleBookMark() {
       ref.watch(communityProvider.notifier).addToBookMark(
@@ -41,7 +43,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                 child: Text(
                   'Article Details',
                   style: TextStyle(
-                    color: Color(0xFFFEFEFE),
+                    color: const Color(0xFFFEFEFE),
                     fontSize: 20.sp,
                     fontFamily: 'Outfit',
                     fontWeight: FontWeight.w600,
@@ -66,7 +68,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
               child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 29.w),
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.only(bottom: 20.h),
               child: Column(
                 children: [
@@ -75,7 +77,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                     child: SelectableText(
                       toCamelCase(widget.article.subject),
                       style: TextStyle(
-                        color: Color(0xFF201F24),
+                        color: const Color(0xFF201F24),
                         fontSize: 20.sp,
                         fontFamily: 'Outfit',
                         fontWeight: FontWeight.w500,
@@ -95,7 +97,8 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 5.w),
-                          decoration: BoxDecoration(color: Colors.transparent),
+                          decoration:
+                              const BoxDecoration(color: Colors.transparent),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -104,6 +107,20 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                               Container(
                                 width: 30.w,
                                 height: 30.h,
+                                decoration: ShapeDecoration(
+                                  shape: OvalBorder(
+                                    side: BorderSide(width: 2.w, color: brown),
+                                  ),
+                                  color: Colors.black,
+                                  shadows: const [
+                                    BoxShadow(
+                                      color: Color(0x3F000000),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
+                                ),
                                 child: Center(
                                   child: ClipOval(
                                     child: Image.network(
@@ -117,7 +134,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                             nameProfile(
                                                 widget.article.username),
                                             style: TextStyle(
-                                              color: Color(0xFFF9F8FD),
+                                              color: const Color(0xFFF9F8FD),
                                               fontSize: 14.sp,
                                               fontFamily: 'Outfit',
                                               fontWeight: FontWeight.w400,
@@ -130,27 +147,12 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                     ),
                                   ),
                                 ),
-                                decoration: ShapeDecoration(
-                                  shape: OvalBorder(
-                                    side: BorderSide(
-                                        width: 2.w, color: Color(0xFFDAACAC)),
-                                  ),
-                                  color: Colors.black,
-                                  // shadows: const [
-                                  //   BoxShadow(
-                                  //     color: Color(0x3F000000),
-                                  //     blurRadius: 8,
-                                  //     offset: Offset(0, 0),
-                                  //     spreadRadius: 0,
-                                  //   )
-                                  // ],
-                                ),
                               ),
                               SizedBox(width: 8.w),
                               Text(
                                 widget.article.username,
                                 style: TextStyle(
-                                  color: Color(0xFF201F24),
+                                  color: const Color(0xFF201F24),
                                   fontSize: 18.sp,
                                   fontFamily: 'Outfit',
                                   fontWeight: FontWeight.w400,
@@ -162,34 +164,32 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                           ),
                         ),
                         SizedBox(width: 6.w),
-                        Container(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 4.w,
-                                height: 4.h,
-                                decoration: const ShapeDecoration(
-                                  color: Color(0xFFD9D9D9),
-                                  shape: OvalBorder(),
-                                ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 4.w,
+                              height: 4.h,
+                              decoration: ShapeDecoration(
+                                color: brown,
+                                shape: const OvalBorder(),
                               ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                timeAgo(widget.article.createdTime.toDate()),
-                                style: TextStyle(
-                                  color: Color(0xFF8E7474),
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Outfit',
-                                  fontWeight: FontWeight.w300,
-                                  height: 0,
-                                  letterSpacing: 0.56.sp,
-                                ),
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              timeAgo(widget.article.createdTime.toDate()),
+                              style: TextStyle(
+                                color: black,
+                                fontSize: 14.sp,
+                                fontFamily: 'Outfit',
+                                fontWeight: FontWeight.w300,
+                                height: 0,
+                                letterSpacing: 0.56.sp,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -199,7 +199,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                   // Image
                   Stack(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 369.w,
                         height: 285.h,
                         child: ClipRRect(
@@ -217,8 +217,8 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                         height: 285.h,
                         decoration: ShapeDecoration(
                           gradient: LinearGradient(
-                            begin: Alignment(3, 0.00),
-                            end: Alignment(0, 0),
+                            begin: const Alignment(3, 0.00),
+                            end: const Alignment(0, 0),
                             colors: [Colors.black, Colors.black.withOpacity(0)],
                           ),
                           shape: RoundedRectangleBorder(
@@ -226,7 +226,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: 285.h,
                         child: Align(
                           alignment: Alignment.bottomRight,
@@ -259,7 +259,7 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                                         onTap: () {
                                           toogleBookMark();
                                         },
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.bookmark_add_outlined,
                                           color: Colors.white,
                                         ))),
@@ -294,13 +294,14 @@ class _ArticleDetailState extends ConsumerState<ArticleDetail> {
                   ),
 
                   SizedBox(height: 20.h),
-                  //  Description
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: SelectableText(
                       widget.article.description,
+                      textAlign: TextAlign.justify,
                       style: TextStyle(
-                        color: Color(0xFF201F24),
+                        color: const Color(0xFF201F24),
                         fontSize: 16.sp,
                         fontFamily: 'Outfit',
                         fontWeight: FontWeight.w300,

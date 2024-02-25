@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
-import 'package:food_donation_app/Pages/Community/allChats.dart';
 import 'package:food_donation_app/Pages/Community/connectedUserPage.dart';
 import 'package:food_donation_app/Pages/Community/incomingRequests.dart';
 import 'package:food_donation_app/Pages/Community/peoplePage.dart';
@@ -28,7 +27,8 @@ class CommunityHomePage extends ConsumerStatefulWidget {
 class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   int selectedCategory = 0;
   List<String> categories = ["All", "Connected", "Requests"];
-  ScrollController _scrollController = ScrollController();
+
+  // final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -102,87 +102,59 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 50.h),
-            child: Column(
-              children: [
-                // Text(
-                //   'Community',
-                //   style: TextStyle(
-                //     color: Color(0xFF201F24),
-                //     fontSize: 20.sp,
-                //     fontFamily: 'Outfit',
-                //     fontWeight: FontWeight.w600,
-                //     height: 0,
-                //     letterSpacing: 0.40.sp,
-                //   ),
-                // ),
-                // SizedBox(height: 10.h),
-                MyAppBar(
-                    centerWidget: Padding(
-                      padding: EdgeInsets.only(left: 57.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pushRoute(ProfileSearchPageRoute());
-                        },
-                        child: MySearchBar(title: "Profile"),
-                      ),
-                    ),
-                    rightWidget: Padding(
-                      padding: EdgeInsets.only(right: 34.18.w),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.navigateTo(ChattingPageRoute());
-                          },
-                          child: SearchHistory(context)),
-                    )),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    physics: BouncingScrollPhysics(),
-                    controller: _scrollController,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        categoryWidget(),
-                        // SizedBox(
-                        //   height: 20.h,
-                        // ),
-                        GestureDetector(
-                            onHorizontalDragEnd: (details) {
-                              log(details.primaryVelocity.toString() +
-                                  "  " +
-                                  selectedCategory.toString());
-                              if (details.primaryVelocity! > 0) {
-                                setState(() {
-                                  selectedCategory--;
-                                  if (selectedCategory < 0) {
-                                    selectedCategory = 0;
-                                  }
-                                });
-                              } else {
-                                setState(() {
-                                  selectedCategory++;
-                                  if (selectedCategory > 2) {
-                                    selectedCategory = 2;
-                                  }
-                                });
-                              }
-                            },
-                            child: getSelectedCategoryWidget(selectedCategory))
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+          SizedBox(height: 50.h),
+          MyAppBar(
+            centerWidget: Padding(
+              padding: EdgeInsets.only(left: 57.w),
+              child: GestureDetector(
+                onTap: () {
+                  context.pushRoute(ProfileSearchPageRoute());
+                },
+                child: MySearchBar(title: "Profile"),
+              ),
             ),
+            rightWidget: Padding(
+              padding: EdgeInsets.only(right: 34.18.w),
+              child: GestureDetector(
+                onTap: () {
+                  context.navigateTo(ChattingPageRoute());
+                },
+                child: searchHistory(context),
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          categoryWidget(),
+          SizedBox(height: 20.h),
+          Expanded(
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) {
+                log(details.primaryVelocity.toString() +
+                    "  " +
+                    selectedCategory.toString());
+                if (details.primaryVelocity! > 0) {
+                  setState(() {
+                    selectedCategory--;
+                    if (selectedCategory < 0) {
+                      selectedCategory = 0;
+                    }
+                  });
+                } else {
+                  setState(() {
+                    selectedCategory++;
+                    if (selectedCategory > 2) {
+                      selectedCategory = 2;
+                    }
+                  });
+                }
+              },
+              child: getSelectedCategoryWidget(selectedCategory),
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
           ),
         ],
       ),
@@ -193,21 +165,19 @@ class _CommunityHomePageState extends ConsumerState<CommunityHomePage> {
 Widget getSelectedCategoryWidget(int selectedCategory) {
   switch (selectedCategory) {
     case 0:
-      return Container(child: PeoplePage());
+      return PeoplePage();
     case 1:
-      return Container(child: ConnectedUserPage());
+      return ConnectedUserPage();
     case 2:
-      return Container(child: IncomingRequest());
+      return IncomingRequest();
     default:
-      return Container(
-        child: Center(
-          child: Text("Error"),
-        ),
+      return Center(
+        child: Text("Error"),
       ); // Default case, return a default widget or handle accordingly
   }
 }
 
-Widget SearchHistory(context) {
+Widget searchHistory(context) {
   return Container(
     width: 28.80,
     height: 28.80,

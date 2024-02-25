@@ -361,7 +361,7 @@ class _UserCardState extends ConsumerState<UserCard> {
                               // log(widget.user.uid);
                               // if (chatroom.participants!.length == 2) {
                               context.pushRoute(
-                                  ChatScreenRoute(TargetUser: widget.user));
+                                  ChatScreenRoute(targetUser: widget.user));
                               // } else
                               //   log("Error occured");
                             },

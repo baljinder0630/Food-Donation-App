@@ -178,7 +178,7 @@ class UserCardShimmerEffect extends StatelessWidget {
               ),
               Flexible(
                   child: Shimmer(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                     colors: [Colors.grey, Colors.white, Colors.grey]),
                 child: Container(
                   width: 86.70.w,

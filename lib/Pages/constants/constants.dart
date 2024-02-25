@@ -10,6 +10,7 @@ Color green2 = const Color(0xFF70e000);
 Color green1 = const Color(0xFF9ef01a);
 Color white = const Color(0xffffffff);
 Color black = const Color(0xff000000);
+Color brown = const Color(0xFF8E7474);
 
 const String textFont = 'Outfit';
 //Extras..

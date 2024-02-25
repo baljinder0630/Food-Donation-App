@@ -93,7 +93,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                           Positioned(
                             left: 114.w,
                             top: 21.h,
-                            child: Container(
+                            child: SizedBox(
                               width: 300.w,
                               height: 90.h,
                               child: Column(
@@ -141,13 +141,13 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                     );
                   }),
             )
-          : Container(
+          : SizedBox(
               height: posts!.length * 130.h,
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: posts!.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
@@ -199,7 +199,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                           Positioned(
                             left: 114.w,
                             top: 21.h,
-                            child: Container(
+                            child: SizedBox(
                               width: 300.w,
                               height: 90.h,
                               child: Column(
@@ -230,7 +230,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Container(
+                                            SizedBox(
                                               width: 200.w,
                                               height: 15.h,
                                               child: Text(
@@ -239,10 +239,10 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                                 maxLines: 1,
                                                 textAlign: TextAlign.justify,
                                                 style: TextStyle(
-                                                  color: Color(0xFFBFAAAA),
-                                                  fontSize: 15.sp,
+                                                  color: brown,
+                                                  fontSize: 17.sp,
                                                   fontFamily: 'Outfit',
-                                                  fontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.bold,
                                                   height: 0,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -252,10 +252,12 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                             ),
                                             Row(
                                               children: [
+                                                SizedBox(width: 4.w),
                                                 Container(
                                                   width: 4.w,
                                                   height: 4.h,
-                                                  decoration: ShapeDecoration(
+                                                  decoration:
+                                                      const ShapeDecoration(
                                                     color: Color(0xFFD9D9D9),
                                                     shape: OvalBorder(),
                                                   ),
@@ -266,7 +268,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                                       .createdTime
                                                       .toDate()),
                                                   style: TextStyle(
-                                                    color: Color(0xFF8E7474),
+                                                    color: brown,
                                                     fontSize: 12.sp,
                                                     fontFamily: 'Outfit',
                                                     fontWeight: FontWeight.w300,
@@ -296,7 +298,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                                               height: 50.h,
                                               color: Colors.white),
                                         )
-                                      : Container(
+                                      : SizedBox(
                                           // color: Colors.red,
                                           width: 260.w,
                                           height: 60.h,
@@ -339,7 +341,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                 ? SizedBox(
                     height: 50.h,
                     child: Center(
-                      child: Container(
+                      child: SizedBox(
                         height: 20.r,
                         width: 20.r,
                         child: const CircularProgressIndicator(
@@ -351,7 +353,7 @@ class _AppPostsState extends ConsumerState<RecentPosts> {
                     ),
                   )
                 : nextRecentPostLoading == PostStatus.exhausted
-                    ? Container(
+                    ? SizedBox(
                         height: 50.h,
                         child: Center(
                           child: Text(

@@ -6,6 +6,9 @@ import 'package:food_donation_app/Pages/constants/constants.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../Community/Widgets/myAppBar.dart';
+import '../Community/communityScreen.dart';
+
 @RoutePage()
 class landDonation extends ConsumerStatefulWidget {
   const landDonation({super.key});
@@ -15,6 +18,12 @@ class landDonation extends ConsumerStatefulWidget {
 }
 
 class CharityHomePage extends ConsumerState<landDonation> {
+  final List<String> images = [
+    'assets/land_donation_poster1.png',
+    'assets/land_donation_poster2.png',
+    'assets/land_donation_poster3.png',
+  ];
+
   List<Map<dynamic, dynamic>> posters = [
     {
       'img': 'lib/assets/posters/pos2.jpg',
@@ -38,6 +47,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
       'img': 'assets/community.png',
       'category': 'Community',
       'redirect': const CommunityHomePageRoute(),
+      'redirect': const CommunityHomePageRoute(),
     },
     {
       'img': 'assets/raise_query.png',
@@ -57,12 +67,17 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/connect.png',
       'category': 'Connect',
-      'redirect': const ChatBotScreenRoute(),
+      'redirect': const CommunityHomePage(),
     },
     {
       'img': 'assets/your_contributions.png',
       'category': 'Contributions',
-      'redirect': const AppBottomNavigationBarRoute(),
+      'redirect': const RaiseRequestRoute(),
+    },
+    {
+      'img': 'assets/your_contributions.png',
+      'category': 'Govt. Scheme',
+      'redirect': SchemePageRoute(),
     },
     {
       'img': 'assets/disaster_news.png',
@@ -78,162 +93,108 @@ class CharityHomePage extends ConsumerState<landDonation> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          'assets/sign_up_screen.png',
-          fit: BoxFit.cover,
+    return Scaffold(
+      body: Column(children: [
+        SizedBox(
+          height: 50.h,
         ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
+        MyAppBar(
+          centerWidget: Padding(
+            padding: EdgeInsets.only(left: 57.w),
+            child: GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: 200.w,
+                height: 40.h,
+                padding: EdgeInsets.only(top: 5.h),
+                child: Text(
+                  "Our Features",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+          rightWidget: Padding(
+            padding: EdgeInsets.only(right: 34.w),
+            child: IconButton(
+              icon: const Icon(
+                Icons.menu_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () => {},
+            ),
+          ),
+        ),
+        SizedBox(height: 20.h),
+        Expanded(
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.only(top: 50.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // MyAppBar(
-                      //   centerWidget: Padding(
-                      //     padding: EdgeInsets.only(left: 57.w),
-                      //     child: GestureDetector(
-                      //       onTap: () {
-                      //         context.pushRoute(const ArticleSearchPageRoute());
-                      //       },
-                      //       child: Container(
-                      //         width: 200.w,
-                      //         height: 40.h,
-                      //         padding: EdgeInsets.only(top: 5.h),
-                      //         child: Text("Donate Now",
-                      //             textAlign: TextAlign.center,
-                      //             style: TextStyle(
-                      //                 fontSize: 24.sp,
-                      //                 fontWeight: FontWeight.bold,
-                      //                 color: Colors.white)),
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   rightWidget: Padding(
-                      //     padding: EdgeInsets.only(right: 34.18.w),
-                      //   ),
-                      // ),
-                      SizedBox(
-                        height: 350.w,
-                      ),
-                      // DonationCarousel(posters),
-                      SizedBox(
-                        height: 40.w,
-                      ),
-                    ],
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200.h,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    pauseAutoPlayOnTouch: true,
+                    aspectRatio: 2.0,
+                    onPageChanged: (index, reason) {
+                      // TODO: Handle page change
+                    },
                   ),
+                  items: images.map((image) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.r),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.r),
+                            color: Colors.white, // Background color
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15.r),
+                            child: Image.asset(
+                              image,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(10.0.r),
                   child: GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.r,
+                      mainAxisSpacing: 10.r,
                     ),
-                    itemCount: 2,
+                    itemCount: data.length,
                     itemBuilder: (context, index) {
                       return buildGridItem(context, index);
                     },
                   ),
                 ),
                 SizedBox(
-                  height: 60.r,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 24.w),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      'Explore Our Features',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.sp,
-                        fontFamily: 'Outfit',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                        letterSpacing: 0.80.sp,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40.r,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                    ),
-                    itemCount: data.length - 2,
-                    itemBuilder: (context, index) {
-                      return buildGridItem(context, index + 2);
-                    },
-                  ),
-                ),
-                SizedBox(
                   height: 40.r,
                 ),
               ],
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget DonationCarousel(List<Map<dynamic, dynamic>> data) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return CarouselSlider.builder(
-      options: CarouselOptions(
-        height: 200.0,
-        aspectRatio: screenWidth / 200.0,
-        enlargeCenterPage: true,
-        autoPlay: true,
-      ),
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-        Map<dynamic, dynamic> item = data[index];
-
-        return InkWell(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              image: DecorationImage(
-                image: AssetImage(item['img']),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      ]),
     );
   }
 
@@ -258,12 +219,12 @@ class CharityHomePage extends ConsumerState<landDonation> {
             child: Image.asset(
               data[index]['img'],
               width: 120.0.r,
-              height: 120.0.r,
+              height: 140.0.r,
             ),
           ),
           // SizedBox(height: 8.0.r),
-          Container(
-            // width: 200.w,
+          SizedBox(
+            width: 170.w,
             child: ElevatedButton(
               onPressed: () async {
                 try {
@@ -288,14 +249,15 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Redirection Failed'),
-                        content: Text('An error occurred while redirecting.'),
+                        title: const Text('Redirection Failed'),
+                        content:
+                            const Text('An error occurred while redirecting.'),
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context); // Close the dialog
+                              Navigator.pop(context);
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -304,12 +266,12 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: green2,
+                backgroundColor: green,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
                 elevation: 2.0,
-                minimumSize: Size(0, 36),
+                minimumSize: const Size(0, 36),
               ),
               child: Text(
                 data[index]['category'],
@@ -317,30 +279,13 @@ class CharityHomePage extends ConsumerState<landDonation> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14.0.r,
+                  fontSize: 14.r,
                 ),
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildIconTile(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          size: 48.0,
-          color: Colors.blue,
-        ),
-        SizedBox(height: 8.0),
-        Text(
-          label,
-          style: TextStyle(fontSize: 16.0),
-        ),
-      ],
     );
   }
 }

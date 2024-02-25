@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:food_donation_app/navBar.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../bottomNavBar.dart';
-import '../Community/communityScreen.dart';
-import '../DashBoard/dashBoard.dart';
-import '../Donationland/landdonation.dart';
 import '../HomePages/pickupRequest.dart';
-import '../Posts/PostsHomePage.dart';
 import '../constants/constants.dart';
-import '../homePage.dart';
+
+// import '../Community/communityScreen.dart';
+// import '../DashBoard/dashBoard.dart';
+// import '../Donationland/landdonation.dart';
+// import '../Posts/PostsHomePage.dart';
+// import '../homePage.dart';
 
 @RoutePage()
 class PickupRequestPage extends StatefulWidget {
@@ -43,14 +40,14 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
     super.dispose();
   }
 
-  final _pages = [
-    HomePage(),
-    PostHomePage(),
-    landDonation(),
-    CommunityHomePage(),
-    DashBoardPage(),
-    PickupRequestPage(),
-  ];
+  // final _pages = [
+  //   HomePage(),
+  //   PostHomePage(),
+  //   landDonation(),
+  //   CommunityHomePage(),
+  //   DashBoardPage(),
+  //   PickupRequestPage(),
+  // ];
 
   var selectedCategory = 0;
   List<String> categories = [
@@ -178,55 +175,79 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
                 height: 20.h,
               ),
               categoryWidget(),
-              SizedBox(
-                height: 20.h,
-              ),
+              // SizedBox(
+              //   height: 10.h,
+              // ),
 
               // Here ends the AppBar and filters...
 
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('requests')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  List<PickUpRequest> donationRequestWidgets = [];
-                  if (snapshot.hasData) {
-                    final donationRequests =
-                        snapshot.data?.docs.reversed.toList();
-                    for (var donationRequest in donationRequests!) {
-                      final address = donationRequest['plotNo'] +
-                          ", " +
-                          donationRequest['streetController'] +
-                          ", " +
-                          donationRequest['districtController'] +
-                          ", " +
-                          donationRequest['pincodeController'];
-                      final createdTime = donationRequest['postedTime'];
-                      final cookedBefore = getCookedTime(createdTime);
-                      final donationRequestWidget = PickUpRequest(
-                        phoneNumber: donationRequest['phoneNumber'],
-                        snapshot: snapshot,
-                        foodName1: donationRequest['name'],
-                        address: address,
-                        postedTime: cookedBefore,
-                        foodCategory: donationRequest['foodCategory'],
-                      );
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('requests')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<PickUpRequest> donationRequestWidgets = [];
+                      final donationRequests =
+                          snapshot.data?.docs.reversed.toList();
+                      for (var donationRequest in donationRequests!) {
+                        final address = donationRequest['plotNo'] +
+                            ", " +
+                            donationRequest['streetController'] +
+                            ", " +
+                            donationRequest['districtController'] +
+                            ", " +
+                            donationRequest['pincodeController'];
+                        final createdTime = donationRequest['postedTime'];
+                        final cookedBefore = getCookedTime(createdTime);
+                        final donationRequestWidget = PickUpRequest(
+                          phoneNumber: donationRequest['phoneNumber'],
+                          snapshot: snapshot,
+                          foodName1: donationRequest['name'],
+                          address: address,
+                          postedTime: cookedBefore,
+                          foodCategory: donationRequest['foodCategory'],
+                        );
 
-                      donationRequestWidgets.add(donationRequestWidget);
-                    }
-                  }
-                  return Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.r),
-                      height: 400.h,
-                      child: ListView.builder(
+                        donationRequestWidgets.add(donationRequestWidget);
+                      }
+
+                      return Container(
+                        margin: EdgeInsets.all(10.r),
+                        child: ListView.builder(
                           itemCount: donationRequestWidgets.length,
                           itemBuilder: (context, index) {
                             return donationRequestWidgets[index];
-                          }),
-                    ),
-                  );
-                },
+                          },
+                        ),
+                      );
+                    } else {
+                      // Placeholder while loading
+                      return Shimmer(
+                          gradient: const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [Colors.grey, Colors.white, Colors.grey]),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 20.w),
+                                width: MediaQuery.of(context).size.width,
+                                height: 300.h,
+                                color: Colors.white,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(right: 20.w),
+                                width: MediaQuery.of(context).size.width,
+                                height: 300.h,
+                                color: Colors.white,
+                              )
+                            ],
+                          ));
+                    }
+                  },
+                ),
               ),
             ],
           ),
@@ -268,10 +289,6 @@ class _PickupRequestPageState extends State<PickupRequestPage> {
 }
 
 String getCookedTime(Timestamp creationTimestamp) {
-  if (creationTimestamp == null) {
-    return "-";
-  }
-
   DateTime creationTime = creationTimestamp.toDate();
 
   DateTime currentTime = DateTime.now();

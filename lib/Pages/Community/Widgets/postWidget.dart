@@ -110,6 +110,9 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              SizedBox(
+                                height: 10.h,
+                              ),
                               Container(
                                 width: 210.w,
                                 height: 15.h,
@@ -119,10 +122,10 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                                   ),
                                   textAlign: TextAlign.justify,
                                   style: TextStyle(
-                                    color: Color(0xFFBFAAAA),
-                                    fontSize: 15.sp,
+                                    color: brown,
+                                    fontSize: 17.sp,
                                     fontFamily: 'Outfit',
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                     height: 0,
                                     overflow: TextOverflow.ellipsis,
                                     letterSpacing: 0.67.sp,
@@ -144,6 +147,7 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                               ),
                               Row(
                                 children: [
+                                  SizedBox(width: 4.w),
                                   Container(
                                     width: 4.w,
                                     height: 4.h,
@@ -156,7 +160,7 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
                                   Text(
                                     timeAgo(widget.post.createdTime.toDate()),
                                     style: TextStyle(
-                                      color: Color(0xFF8E7474),
+                                      color: brown,
                                       fontSize: 12.sp,
                                       fontFamily: 'Outfit',
                                       fontWeight: FontWeight.w300,

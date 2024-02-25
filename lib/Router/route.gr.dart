@@ -33,6 +33,7 @@ import 'package:food_donation_app/Pages/Community/profileSearchPage.dart'
 import 'package:food_donation_app/Pages/contributions/conti.dart' as _i14;
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart' as _i15;
 import 'package:food_donation_app/Pages/DisasterNewsFeed/disaster_news_feed.dart'
+<<<<<<< HEAD
     as _i16;
 import 'package:food_donation_app/Pages/Donate/camera_preview.dart' as _i17;
 import 'package:food_donation_app/Pages/Donate/confirmation_form.dart' as _i18;
@@ -67,6 +68,44 @@ import 'package:food_donation_app/Pages/foodStore/data/models/product_model.dart
 import 'package:food_donation_app/Pages/foodStore/product_item.dart' as _i35;
 import 'package:food_donation_app/Pages/foodStore2/foodStore.dart' as _i36;
 import 'package:food_donation_app/Pages/foodStore2/foodStoreDescription.dart'
+=======
+    as _i15;
+import 'package:food_donation_app/Pages/Donate/camera_preview.dart' as _i16;
+import 'package:food_donation_app/Pages/Donate/confirmation_form.dart' as _i17;
+import 'package:food_donation_app/Pages/Donate/donateform.dart' as _i18;
+import 'package:food_donation_app/Pages/Donate/donatefundfood.dart' as _i19;
+import 'package:food_donation_app/Pages/Donate/food_category_form.dart' as _i20;
+import 'package:food_donation_app/Pages/Donate/otp_screen.dart' as _i21;
+import 'package:food_donation_app/Pages/Donate/personal_details_form.dart'
+    as _i22;
+import 'package:food_donation_app/Pages/Donate/phone_screen.dart' as _i23;
+import 'package:food_donation_app/Pages/Donate/razorpay_payment_gateway.dart'
+    as _i24;
+import 'package:food_donation_app/Pages/Donationland/landdonation.dart' as _i25;
+import 'package:food_donation_app/Pages/DonationRequest/acceptPickupRequest.dart'
+    as _i26;
+import 'package:food_donation_app/Pages/DonationRequest/donationDescription.dart'
+    as _i27;
+import 'package:food_donation_app/Pages/DonationRequest/donationRequest.dart'
+    as _i28;
+import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart'
+    as _i29;
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest.dart'
+    as _i30;
+import 'package:food_donation_app/Pages/DonationRequest/raiseRequest2.dart'
+    as _i31;
+import 'package:food_donation_app/Pages/DonationRequest/SuccessRequest.dart'
+    as _i32;
+import 'package:food_donation_app/Pages/DonationRequest/YourDonationRequest.dart'
+    as _i33;
+import 'package:food_donation_app/Pages/foodStore/data/models/product_model.dart'
+    as _i55;
+import 'package:food_donation_app/Pages/foodStore/product_item.dart' as _i34;
+import 'package:food_donation_app/Pages/foodStore2/foodStore.dart' as _i35;
+import 'package:food_donation_app/Pages/foodStore2/foodStoreDescription.dart'
+    as _i36;
+import 'package:food_donation_app/Pages/GovernmentScheme/schemePage.dart'
+>>>>>>> origin/master
     as _i37;
 import 'package:food_donation_app/Pages/homePage.dart' as _i38;
 import 'package:food_donation_app/Pages/HomePages/hungerSpots.dart' as _i39;
@@ -98,7 +137,11 @@ abstract class $AppRouter extends _i48.RootStackRouter {
         child: const _i2.MyNavBar(),
       );
     },
+<<<<<<< HEAD
     HungerSpotPageRoute.name: (routeData) {
+=======
+    ChatBotScreenRoute.name: (routeData) {
+>>>>>>> origin/master
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.HungerSpotPage(),
@@ -142,8 +185,13 @@ abstract class $AppRouter extends _i48.RootStackRouter {
       final args = routeData.argsAs<ChatScreenRouteArgs>();
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i9.ChatScreen(
           TargetUser: args.TargetUser,
+=======
+        child: _i8.ChatScreen(
+          targetUser: args.targetUser,
+>>>>>>> origin/master
           key: args.key,
         ),
       );
@@ -196,41 +244,74 @@ abstract class $AppRouter extends _i48.RootStackRouter {
         child: const _i16.DisasterNewsFeedPage(),
       );
     },
+<<<<<<< HEAD
     CameraScreenRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i17.CameraScreen(),
+=======
+    DisasterNewsFeedPageRoute.name: (routeData) {
+      return _i48.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i15.DisasterNewsFeedPage(),
+      );
+    },
+    CameraScreenRoute.name: (routeData) {
+      return _i48.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i16.CameraScreen(),
+>>>>>>> origin/master
       );
     },
     ConfirmationFormRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i18.ConfirmationForm(),
+=======
+        child: const _i17.ConfirmationForm(),
+>>>>>>> origin/master
       );
     },
     DonateFormRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i19.DonateForm(),
+=======
+        child: const _i18.DonateForm(),
+>>>>>>> origin/master
       );
     },
     LandingDonationRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i20.LandingDonation(),
+=======
+        child: const _i19.LandingDonation(),
+>>>>>>> origin/master
       );
     },
     FoodCategoryFormRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i21.FoodCategoryForm(),
+=======
+        child: const _i20.FoodCategoryForm(),
+>>>>>>> origin/master
       );
     },
     OtpScreenRoute.name: (routeData) {
       final args = routeData.argsAs<OtpScreenRouteArgs>();
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i22.OtpScreen(
+=======
+        child: _i21.OtpScreen(
+>>>>>>> origin/master
           key: args.key,
           id: args.id,
         ),
@@ -239,32 +320,52 @@ abstract class $AppRouter extends _i48.RootStackRouter {
     PersonalDetailsRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i23.PersonalDetails(),
+=======
+        child: const _i22.PersonalDetails(),
+>>>>>>> origin/master
       );
     },
     PhoneScreenRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i24.PhoneScreen(),
+=======
+        child: const _i23.PhoneScreen(),
+>>>>>>> origin/master
       );
     },
     RazorpayPaymentGatewayRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i25.RazorpayPaymentGateway(),
+=======
+        child: const _i24.RazorpayPaymentGateway(),
+>>>>>>> origin/master
       );
     },
     LandDonationRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i26.landDonation(),
+=======
+        child: const _i25.landDonation(),
+>>>>>>> origin/master
       );
     },
     AcceptPickupRequestPageRoute.name: (routeData) {
       final args = routeData.argsAs<AcceptPickupRequestPageRouteArgs>();
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i27.AcceptPickupRequestPage(
+=======
+        child: _i26.AcceptPickupRequestPage(
+>>>>>>> origin/master
           foodName: args.foodName,
           postedTime: args.postedTime,
           foodCategory: args.foodCategory,
@@ -278,7 +379,11 @@ abstract class $AppRouter extends _i48.RootStackRouter {
       final args = routeData.argsAs<DonationDescriptionRouteArgs>();
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i28.DonationDescription(
+=======
+        child: _i27.DonationDescription(
+>>>>>>> origin/master
           requestName: args.requestName,
           NGOName: args.NGOName,
           NGOImage: args.NGOImage,
@@ -297,44 +402,72 @@ abstract class $AppRouter extends _i48.RootStackRouter {
     DonationRequestRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i29.DonationRequest(),
+=======
+        child: const _i28.DonationRequest(),
+>>>>>>> origin/master
       );
     },
     PickupRequestPageRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i30.PickupRequestPage(),
+=======
+        child: const _i29.PickupRequestPage(),
+>>>>>>> origin/master
       );
     },
     RaiseRequestRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i31.RaiseRequest(),
+=======
+        child: const _i30.RaiseRequest(),
+>>>>>>> origin/master
       );
     },
     RaiseRequest2Route.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i32.RaiseRequest2(),
+=======
+        child: const _i31.RaiseRequest2(),
+>>>>>>> origin/master
       );
     },
     SuccessPageRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i33.SuccessPage(),
+=======
+        child: const _i32.SuccessPage(),
+>>>>>>> origin/master
       );
     },
     DonationTrackingPageRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i34.DonationTrackingPage(),
+=======
+        child: _i33.DonationTrackingPage(),
+>>>>>>> origin/master
       );
     },
     ProductItemRoute.name: (routeData) {
       final args = routeData.argsAs<ProductItemRouteArgs>();
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: _i35.ProductItem(
+=======
+        child: _i34.ProductItem(
+>>>>>>> origin/master
           key: args.key,
           product: args.product,
         ),
@@ -343,13 +476,29 @@ abstract class $AppRouter extends _i48.RootStackRouter {
     FoodStoreRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i36.foodStore(),
+=======
+        child: const _i35.foodStore(),
+>>>>>>> origin/master
       );
     },
     FoodStoreDescriptionRoute.name: (routeData) {
       return _i48.AutoRoutePage<dynamic>(
         routeData: routeData,
+<<<<<<< HEAD
         child: const _i37.FoodStoreDescription(),
+=======
+        child: const _i36.FoodStoreDescription(),
+      );
+    },
+    SchemePageRoute.name: (routeData) {
+      final args = routeData.argsAs<SchemePageRouteArgs>(
+          orElse: () => const SchemePageRouteArgs());
+      return _i48.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i37.SchemePage(key: args.key),
+>>>>>>> origin/master
       );
     },
     HomePageRoute.name: (routeData) {
@@ -457,6 +606,7 @@ class MyNavBarRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i3.HungerSpotPage]
 class HungerSpotPageRoute extends _i48.PageRouteInfo<void> {
   const HungerSpotPageRoute({List<_i48.PageRouteInfo>? children})
@@ -472,6 +622,9 @@ class HungerSpotPageRoute extends _i48.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.ChatBotScreen]
+=======
+/// [_i3.ChatBotScreen]
+>>>>>>> origin/master
 class ChatBotScreenRoute extends _i48.PageRouteInfo<void> {
   const ChatBotScreenRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -485,7 +638,11 @@ class ChatBotScreenRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i5.AllChatsPage]
+=======
+/// [_i4.AllChatsPage]
+>>>>>>> origin/master
 class AllChatsPageRoute extends _i48.PageRouteInfo<void> {
   const AllChatsPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -499,7 +656,11 @@ class AllChatsPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i6.ArticleDetail]
+=======
+/// [_i5.ArticleDetail]
+>>>>>>> origin/master
 class ArticleDetailRoute extends _i48.PageRouteInfo<ArticleDetailRouteArgs> {
   ArticleDetailRoute({
     required _i49.PostModel article,
@@ -537,7 +698,11 @@ class ArticleDetailRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i7.ArticleHistory]
+=======
+/// [_i6.ArticleHistory]
+>>>>>>> origin/master
 class ArticleHistoryRoute extends _i48.PageRouteInfo<void> {
   const ArticleHistoryRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -551,7 +716,11 @@ class ArticleHistoryRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i8.ArticleSearchPage]
+=======
+/// [_i7.ArticleSearchPage]
+>>>>>>> origin/master
 class ArticleSearchPageRoute extends _i48.PageRouteInfo<void> {
   const ArticleSearchPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -565,16 +734,23 @@ class ArticleSearchPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i9.ChatScreen]
 class ChatScreenRoute extends _i48.PageRouteInfo<ChatScreenRouteArgs> {
   ChatScreenRoute({
     required _i51.UserModel TargetUser,
+=======
+/// [_i8.ChatScreen]
+class ChatScreenRoute extends _i48.PageRouteInfo<ChatScreenRouteArgs> {
+  ChatScreenRoute({
+    required _i51.UserModel targetUser,
+>>>>>>> origin/master
     _i50.Key? key,
     List<_i48.PageRouteInfo>? children,
   }) : super(
           ChatScreenRoute.name,
           args: ChatScreenRouteArgs(
-            TargetUser: TargetUser,
+            targetUser: targetUser,
             key: key,
           ),
           initialChildren: children,
@@ -588,22 +764,30 @@ class ChatScreenRoute extends _i48.PageRouteInfo<ChatScreenRouteArgs> {
 
 class ChatScreenRouteArgs {
   const ChatScreenRouteArgs({
-    required this.TargetUser,
+    required this.targetUser,
     this.key,
   });
 
+<<<<<<< HEAD
   final _i51.UserModel TargetUser;
+=======
+  final _i51.UserModel targetUser;
+>>>>>>> origin/master
 
   final _i50.Key? key;
 
   @override
   String toString() {
-    return 'ChatScreenRouteArgs{TargetUser: $TargetUser, key: $key}';
+    return 'ChatScreenRouteArgs{targetUser: $targetUser, key: $key}';
   }
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i10.CommunityHomePage]
+=======
+/// [_i9.CommunityHomePage]
+>>>>>>> origin/master
 class CommunityHomePageRoute extends _i48.PageRouteInfo<void> {
   const CommunityHomePageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -617,7 +801,11 @@ class CommunityHomePageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i11.IncomingRequest]
+=======
+/// [_i10.IncomingRequest]
+>>>>>>> origin/master
 class IncomingRequestRoute extends _i48.PageRouteInfo<void> {
   const IncomingRequestRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -631,7 +819,11 @@ class IncomingRequestRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i12.PostArticle]
+=======
+/// [_i11.PostArticle]
+>>>>>>> origin/master
 class PostArticleRoute extends _i48.PageRouteInfo<PostArticleRouteArgs> {
   PostArticleRoute({
     bool isEdit = false,
@@ -674,7 +866,11 @@ class PostArticleRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i13.ProfileSearchPage]
+=======
+/// [_i12.ProfileSearchPage]
+>>>>>>> origin/master
 class ProfileSearchPageRoute extends _i48.PageRouteInfo<void> {
   const ProfileSearchPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -688,7 +884,11 @@ class ProfileSearchPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i14.Contributions]
+=======
+/// [_i13.Contributions]
+>>>>>>> origin/master
 class ContributionsRoute extends _i48.PageRouteInfo<void> {
   const ContributionsRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -702,7 +902,11 @@ class ContributionsRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i15.DashBoardPage]
+=======
+/// [_i14.DashBoardPage]
+>>>>>>> origin/master
 class DashBoardPageRoute extends _i48.PageRouteInfo<void> {
   const DashBoardPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -716,7 +920,11 @@ class DashBoardPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i16.DisasterNewsFeedPage]
+=======
+/// [_i15.DisasterNewsFeedPage]
+>>>>>>> origin/master
 class DisasterNewsFeedPageRoute extends _i48.PageRouteInfo<void> {
   const DisasterNewsFeedPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -730,7 +938,11 @@ class DisasterNewsFeedPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i17.CameraScreen]
+=======
+/// [_i16.CameraScreen]
+>>>>>>> origin/master
 class CameraScreenRoute extends _i48.PageRouteInfo<void> {
   const CameraScreenRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -744,7 +956,11 @@ class CameraScreenRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i18.ConfirmationForm]
+=======
+/// [_i17.ConfirmationForm]
+>>>>>>> origin/master
 class ConfirmationFormRoute extends _i48.PageRouteInfo<void> {
   const ConfirmationFormRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -758,7 +974,11 @@ class ConfirmationFormRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i19.DonateForm]
+=======
+/// [_i18.DonateForm]
+>>>>>>> origin/master
 class DonateFormRoute extends _i48.PageRouteInfo<void> {
   const DonateFormRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -772,7 +992,11 @@ class DonateFormRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i20.LandingDonation]
+=======
+/// [_i19.LandingDonation]
+>>>>>>> origin/master
 class LandingDonationRoute extends _i48.PageRouteInfo<void> {
   const LandingDonationRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -786,7 +1010,11 @@ class LandingDonationRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i21.FoodCategoryForm]
+=======
+/// [_i20.FoodCategoryForm]
+>>>>>>> origin/master
 class FoodCategoryFormRoute extends _i48.PageRouteInfo<void> {
   const FoodCategoryFormRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -800,7 +1028,11 @@ class FoodCategoryFormRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i22.OtpScreen]
+=======
+/// [_i21.OtpScreen]
+>>>>>>> origin/master
 class OtpScreenRoute extends _i48.PageRouteInfo<OtpScreenRouteArgs> {
   OtpScreenRoute({
     _i50.Key? key,
@@ -838,7 +1070,11 @@ class OtpScreenRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i23.PersonalDetails]
+=======
+/// [_i22.PersonalDetails]
+>>>>>>> origin/master
 class PersonalDetailsRoute extends _i48.PageRouteInfo<void> {
   const PersonalDetailsRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -852,7 +1088,11 @@ class PersonalDetailsRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i24.PhoneScreen]
+=======
+/// [_i23.PhoneScreen]
+>>>>>>> origin/master
 class PhoneScreenRoute extends _i48.PageRouteInfo<void> {
   const PhoneScreenRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -866,7 +1106,11 @@ class PhoneScreenRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i25.RazorpayPaymentGateway]
+=======
+/// [_i24.RazorpayPaymentGateway]
+>>>>>>> origin/master
 class RazorpayPaymentGatewayRoute extends _i48.PageRouteInfo<void> {
   const RazorpayPaymentGatewayRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -880,7 +1124,11 @@ class RazorpayPaymentGatewayRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i26.landDonation]
+=======
+/// [_i25.landDonation]
+>>>>>>> origin/master
 class LandDonationRoute extends _i48.PageRouteInfo<void> {
   const LandDonationRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -894,7 +1142,11 @@ class LandDonationRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i27.AcceptPickupRequestPage]
+=======
+/// [_i26.AcceptPickupRequestPage]
+>>>>>>> origin/master
 class AcceptPickupRequestPageRoute
     extends _i48.PageRouteInfo<AcceptPickupRequestPageRouteArgs> {
   AcceptPickupRequestPageRoute({
@@ -953,7 +1205,11 @@ class AcceptPickupRequestPageRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i28.DonationDescription]
+=======
+/// [_i27.DonationDescription]
+>>>>>>> origin/master
 class DonationDescriptionRoute
     extends _i48.PageRouteInfo<DonationDescriptionRouteArgs> {
   DonationDescriptionRoute({
@@ -1042,7 +1298,11 @@ class DonationDescriptionRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i29.DonationRequest]
+=======
+/// [_i28.DonationRequest]
+>>>>>>> origin/master
 class DonationRequestRoute extends _i48.PageRouteInfo<void> {
   const DonationRequestRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1056,7 +1316,11 @@ class DonationRequestRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i30.PickupRequestPage]
+=======
+/// [_i29.PickupRequestPage]
+>>>>>>> origin/master
 class PickupRequestPageRoute extends _i48.PageRouteInfo<void> {
   const PickupRequestPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1070,7 +1334,11 @@ class PickupRequestPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i31.RaiseRequest]
+=======
+/// [_i30.RaiseRequest]
+>>>>>>> origin/master
 class RaiseRequestRoute extends _i48.PageRouteInfo<void> {
   const RaiseRequestRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1084,7 +1352,11 @@ class RaiseRequestRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i32.RaiseRequest2]
+=======
+/// [_i31.RaiseRequest2]
+>>>>>>> origin/master
 class RaiseRequest2Route extends _i48.PageRouteInfo<void> {
   const RaiseRequest2Route({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1098,7 +1370,11 @@ class RaiseRequest2Route extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i33.SuccessPage]
+=======
+/// [_i32.SuccessPage]
+>>>>>>> origin/master
 class SuccessPageRoute extends _i48.PageRouteInfo<void> {
   const SuccessPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1112,7 +1388,11 @@ class SuccessPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i34.DonationTrackingPage]
+=======
+/// [_i33.DonationTrackingPage]
+>>>>>>> origin/master
 class DonationTrackingPageRoute extends _i48.PageRouteInfo<void> {
   const DonationTrackingPageRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1126,7 +1406,11 @@ class DonationTrackingPageRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i35.ProductItem]
+=======
+/// [_i34.ProductItem]
+>>>>>>> origin/master
 class ProductItemRoute extends _i48.PageRouteInfo<ProductItemRouteArgs> {
   ProductItemRoute({
     _i50.Key? key,
@@ -1164,7 +1448,11 @@ class ProductItemRouteArgs {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i36.foodStore]
+=======
+/// [_i35.foodStore]
+>>>>>>> origin/master
 class FoodStoreRoute extends _i48.PageRouteInfo<void> {
   const FoodStoreRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1178,7 +1466,11 @@ class FoodStoreRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
 /// [_i37.FoodStoreDescription]
+=======
+/// [_i36.FoodStoreDescription]
+>>>>>>> origin/master
 class FoodStoreDescriptionRoute extends _i48.PageRouteInfo<void> {
   const FoodStoreDescriptionRoute({List<_i48.PageRouteInfo>? children})
       : super(
@@ -1192,6 +1484,38 @@ class FoodStoreDescriptionRoute extends _i48.PageRouteInfo<void> {
 }
 
 /// generated route for
+<<<<<<< HEAD
+=======
+/// [_i37.SchemePage]
+class SchemePageRoute extends _i48.PageRouteInfo<SchemePageRouteArgs> {
+  SchemePageRoute({
+    _i50.Key? key,
+    List<_i48.PageRouteInfo>? children,
+  }) : super(
+          SchemePageRoute.name,
+          args: SchemePageRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'SchemePageRoute';
+
+  static const _i48.PageInfo<SchemePageRouteArgs> page =
+      _i48.PageInfo<SchemePageRouteArgs>(name);
+}
+
+class SchemePageRouteArgs {
+  const SchemePageRouteArgs({this.key});
+
+  final _i50.Key? key;
+
+  @override
+  String toString() {
+    return 'SchemePageRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+>>>>>>> origin/master
 /// [_i38.HomePage]
 class HomePageRoute extends _i48.PageRouteInfo<void> {
   const HomePageRoute({List<_i48.PageRouteInfo>? children})

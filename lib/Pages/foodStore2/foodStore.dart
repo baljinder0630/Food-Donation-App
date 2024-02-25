@@ -1,22 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Pages/Donate/Widgets/button.dart';
-import 'package:food_donation_app/Pages/Donate/Widgets/custom_phone_no_field.dart';
-import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
-import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
-import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/myAppBar.dart';
 import 'package:food_donation_app/Pages/constants/constants.dart';
-
 import 'package:food_donation_app/Pages/Community/Widgets/searchBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
-import '../constants/constants.dart';
 
 @RoutePage()
 class foodStore extends ConsumerStatefulWidget {
@@ -38,12 +28,12 @@ class _foodStore extends ConsumerState<foodStore> {
     {
       'img': 'lib/assets/donateimg/food.png',
       'category': 'Food Donation',
-      'redirect': FoodCategoryFormRoute(),
+      'redirect': const FoodCategoryFormRoute(),
     },
     {
       'img': 'lib/assets/donateimg/fund.png',
       'category': 'Fund donation',
-      'redirect': DonationRequestRoute(),
+      'redirect': const DonationRequestRoute(),
     },
     {
       'img': 'assets/community.png',
@@ -53,7 +43,7 @@ class _foodStore extends ConsumerState<foodStore> {
     {
       'img': 'assets/raise_query.png',
       'category': 'Resolve Query',
-      'redirect': ChatBotScreenRoute(),
+      'redirect': const ChatBotScreenRoute(),
     },
     {
       'img': 'assets/be_volunteer.png',
@@ -121,8 +111,8 @@ class _foodStore extends ConsumerState<foodStore> {
               height: 200.0,
               enlargeCenterPage: true,
               autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
               pauseAutoPlayOnTouch: true,
               aspectRatio: 2.0,
               onPageChanged: (index, reason) {
@@ -134,7 +124,7 @@ class _foodStore extends ConsumerState<foodStore> {
                 builder: (BuildContext context) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.blue, // Background color
@@ -156,7 +146,7 @@ class _foodStore extends ConsumerState<foodStore> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0.h),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
@@ -169,11 +159,12 @@ class _foodStore extends ConsumerState<foodStore> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             height: 150,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: images.length + 1, // +1 for the "View All" arrow
+              itemCount: images.length + 1,
+              // +1 for the "View All" arrow
               itemBuilder: (context, index) {
                 if (index == images.length) {
                   return Padding(
@@ -184,12 +175,12 @@ class _foodStore extends ConsumerState<foodStore> {
                       },
                       child: Container(
                         width: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color:
                               Colors.green, // Background color for "View All"
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
@@ -204,7 +195,7 @@ class _foodStore extends ConsumerState<foodStore> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: 100,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color:
                           Colors.green, // Background color for category images
@@ -228,7 +219,7 @@ class _foodStore extends ConsumerState<foodStore> {
             padding: const EdgeInsets.all(10.0),
             child: GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10.0,
@@ -291,14 +282,15 @@ class _foodStore extends ConsumerState<foodStore> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Redirection Failed'),
-                        content: Text('An error occurred while redirecting.'),
+                        title: const Text('Redirection Failed'),
+                        content:
+                            const Text('An error occurred while redirecting.'),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context); // Close the dialog
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -312,7 +304,7 @@ class _foodStore extends ConsumerState<foodStore> {
                   borderRadius: BorderRadius.circular(20.0.r),
                 ),
                 elevation: 2.0,
-                minimumSize: Size(0, 36),
+                minimumSize: const Size(0, 36),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0.r),

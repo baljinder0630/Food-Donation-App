@@ -219,7 +219,14 @@ class DonationRequestNotifier extends StateNotifier<DonationRequest> {
       await doc.set(donationRequestModel.toJson());
       print("Data uploaded Successfully");
 
-      state = state.copyWith(foodCategoryStatus: FoodCategoryStatus.processed);
+      state = state.copyWith(
+          foodCategoryStatus: FoodCategoryStatus.processed,
+          name: '',
+          phoneNumber: '',
+          plotNo: '',
+          streetController: '',
+          foodCategory: [],
+          districtController: '');
       print(state.foodCategoryStatus);
       return true;
     } catch (e) {

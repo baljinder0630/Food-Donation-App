@@ -59,14 +59,15 @@ class DonationRequestCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(left: 10.r, right: 10.r, bottom: 10.r),
-      width: 200,
-      height: 205.h,
+      width: double.infinity,
+      height: 220.h,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: white,
         ),
       ], borderRadius: BorderRadius.circular(20.r)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
@@ -119,7 +120,7 @@ class DonationRequestCard extends StatelessWidget {
               ),
               SizedBox(
                 width: double.infinity,
-                height: 72.h,
+                height: 75.h,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

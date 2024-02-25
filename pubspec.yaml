@@ -80,6 +80,8 @@ dependencies:
   smooth_page_indicator: any
   preload_page_view: any
   video_player: any
+  share: any
+  expandable_text: any
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +114,7 @@ flutter:
     - images/
     - assets/
     - assets/chatBg.png
+    - assets/SchemeImages/
     - lib/assets/icons/
     - lib/assets/images/
     - lib/assets/donateimg/
