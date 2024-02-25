@@ -60,68 +60,31 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: [
           Icon(Icons.home_outlined, color: green, size: 38.r),
-          Icon(Icons.group_rounded, color: green, size: 35.r),
-          Icon(Icons.explore_outlined, color: green, size: 40.r),
-          Icon(Icons.chat_outlined, color: green, size: 35.r),
-          Icon(Icons.account_circle_outlined, color: green, size: 38.r),
-        activeIcons: const [
-          Icon(Icons.home, color: Colors.green),
           Icon(Icons.article, color: Colors.green),
-          Icon(Icons.add, color: Colors.green),
-          Icon(Icons.group, color: Colors.green),
-          Icon(Icons.account_circle, color: Colors.green),
+          Icon(Icons.explore_outlined, color: green, size: 40.r),
+          Icon(Icons.group_rounded, color: green, size: 35.r),
+          Icon(Icons.account_circle_outlined, color: green, size: 38.r),
         ],
         inactiveIcons: [
           Text(
             "Home",
-            style: TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Articles",
-            style: TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Donate",
-            style: TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Community",
-            style: TextStyle(fontSize: 16.sp),
+            style: TextStyle(fontSize: 14.sp),
           ),
           Text(
             "Profile",
-            style: TextStyle(fontSize: 16.sp),
-          ),
-        inactiveIcons: [
-          Text(
-            "Home",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Community",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Explore",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Chat",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
-          ),
-          Text(
-            "Profile",
-            style: TextStyle(
-              fontSize: 14.sp,
-            ),
+            style: TextStyle(fontSize: 14.sp),
           ),
         ],
         color: Colors.white,
