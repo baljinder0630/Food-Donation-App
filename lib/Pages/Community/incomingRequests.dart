@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
       child: StreamBuilder(
         stream: firestore
             .collection("users")
-            .doc(ref.watch(authStateProvider).user!.uid)
+            .doc(FirebaseAuth.instance.currentUser!.uid)
             .collection("incomingRequests")
             .where("status", isEqualTo: "pending")
             // .where({"status": "pending"})

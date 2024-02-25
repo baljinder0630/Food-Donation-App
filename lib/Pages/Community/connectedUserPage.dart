@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/Community/connections.dart';
 import 'package:food_donation_app/Models/User.model.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/userCard.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
@@ -28,11 +27,15 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
             stream:
                 ref.watch(communityProvider.notifier).getConnectedPeoples(0),
             builder: (context, snapshot) {
-              QuerySnapshot? data = snapshot.data as QuerySnapshot?;
+              QuerySnapshot? data = snapshot.data as QuerySnapshot;
               if (snapshot.connectionState == ConnectionState.active) {
                 if (snapshot.hasError) {
                   return Text("Something went wrong");
                 }
+                // if (snapshot.data == null)
+                //   return Center(
+                //     child: Text("No connections yet!"),
+                //   );
                 if (snapshot.hasData && data!.docs.isNotEmpty) {
                   final connections = data.docs
                       .map((e) => e.data() as Map<String, dynamic>)
@@ -73,9 +76,20 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
                           );
                         }),
                   );
+                } else {
+                  return Container(
+                    height: 500.h,
+                    width: 400.w,
+                    child: const Center(
+                      child: Text(
+                        'No connections yet!',
+                        style: TextStyle(fontFamily: "Poppins"),
+                      ),
+                    ),
+                  );
                 }
               }
-              return Text("data");
+              return Text("No connections yet!");
             },
           )),
     );

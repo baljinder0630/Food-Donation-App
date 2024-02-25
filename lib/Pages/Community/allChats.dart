@@ -1,14 +1,11 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_donation_app/Models/User.model.dart';
-import 'package:food_donation_app/Pages/Community/Functions/nameProfile.dart';
 import 'package:food_donation_app/Pages/Community/Widgets/userCard.dart';
 import 'package:food_donation_app/Provider/communityProvider.dart';
-import 'package:food_donation_app/Router/route.gr.dart';
 
 @RoutePage()
 class AllChatsPage extends ConsumerStatefulWidget {
@@ -252,16 +249,18 @@ class _AllChatsPageState extends ConsumerState<AllChatsPage> {
 
     return Container(
       child: users!.length == 0
-          ? Text(
-              "No users found",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF201F24),
-                fontSize: 17.10.sp,
-                fontFamily: 'Outfit',
-                fontWeight: FontWeight.w400,
-                height: 0,
-                letterSpacing: 0.34.sp,
+          ? Center(
+              child: Text(
+                "No users found",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF201F24),
+                  fontSize: 17.10.sp,
+                  fontFamily: 'Outfit',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                  letterSpacing: 0.34.sp,
+                ),
               ),
             )
           : SingleChildScrollView(
