@@ -1,4 +1,4 @@
-import 'dart:io'; 
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,28 +32,20 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
     final foodCategories =
         ref.watch(donationRequestProvider.notifier).getFoodCategories();
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Scaffold(
-         appBar: AppBar(
+    return Stack(fit: StackFit.expand, children: [
+      Scaffold(
+        appBar: AppBar(
           toolbarHeight: 240.h,
-          
           flexibleSpace: Stack(
             fit: StackFit.expand,
             children: [
               Image.asset(
                 'assets/food_c.png',
-                
                 width: 450.h,
               ),
-
-              
-              
             ],
           ),
         ),
-          
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
@@ -63,8 +55,6 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  
-                  
                   Container(
                     // margin: const EdgeInsets.symmetric(
                     //     horizontal: 7.0, vertical: 30.0),
@@ -117,7 +107,8 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                                         File img,
                                         WidgetRef ref) {
                                       ref
-                                          .read(donationRequestProvider.notifier)
+                                          .read(
+                                              donationRequestProvider.notifier)
                                           .updateFoodCategory(
                                               foodName, quantity, img);
                                     },
@@ -176,7 +167,8 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                               String quantity, File img, WidgetRef ref) {
                             ref
                                 .read(donationRequestProvider.notifier)
-                                .editFoodCategory(index, foodName, quantity, img);
+                                .editFoodCategory(
+                                    index, foodName, quantity, img);
                           },
                           deleteFoodCategory: (index) {
                             ref
@@ -188,8 +180,7 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                   CustomButton(
                       text: 'Next',
                       onPressed: () {
-                        if(foodCategories.isEmpty){
-      
+                        if (foodCategories.isEmpty) {
                           Fluttertoast.showToast(
                               msg: "Please select at least one category.",
                               toastLength: Toast.LENGTH_SHORT,
@@ -197,11 +188,9 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
                               timeInSecForIosWeb: 1,
                               backgroundColor: Colors.green,
                               textColor: Colors.white,
-                              fontSize: 16.0
-                          );
+                              fontSize: 16.0);
                           return;
-                        }
-                        else {
+                        } else {
                           context.pushRoute(const ConfirmationFormRoute());
                         }
                       })
@@ -210,7 +199,7 @@ class _FoodCategoryFormState extends ConsumerState<FoodCategoryForm> {
             ),
           ),
         ),
-      ),]
-    );
+      ),
+    ]);
   }
 }

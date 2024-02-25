@@ -25,8 +25,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       if (await ref
           .read(authStateProvider.notifier)
           .login(email, password, context)) {
-        // context.router.replace(AppBottomNavigationBarRoute());
-        context.router.replace(OnBoardingScreenRoute());
+        context.router.replace(AppBottomNavigationBarRoute());
+        // context.router.replace(OnBoardingScreenRoute());
       }
     }
 
