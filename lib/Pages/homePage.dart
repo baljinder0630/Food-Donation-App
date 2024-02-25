@@ -704,20 +704,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                       return Container(
                         height: 400.h,
                         width: MediaQuery.of(context).size.width,
-                        child: Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: min(3, donationRequestWidgets.length),
-                            itemBuilder: (context, index) {
-                              // Build each card
-                              return Row(
-                                children: [
-                                  donationRequestWidgets[index],
-                                  _buildButton(index),
-                                ],
-                              );
-                            },
-                          ),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: min(3, donationRequestWidgets.length),
+                          itemBuilder: (context, index) {
+                            // Build each card
+                            return Row(
+                              children: [
+                                donationRequestWidgets[index],
+                                _buildButton(index),
+                              ],
+                            );
+                          },
                         ),
                       );
                     }

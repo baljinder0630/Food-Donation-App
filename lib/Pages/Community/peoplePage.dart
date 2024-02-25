@@ -38,9 +38,11 @@ class _PeoplePageState extends ConsumerState<PeoplePage> {
                       .toList();
 
                   return Container(
-                    height: 110.h * users.length,
+                    // height: 110.h * users.length,
                     child: ListView.builder(
+                        shrinkWrap: true,
                         padding: EdgeInsets.zero,
+                        physics: NeverScrollableScrollPhysics(),
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           return UserCard(

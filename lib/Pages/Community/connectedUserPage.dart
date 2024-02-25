@@ -42,8 +42,10 @@ class _ConnectedUserPageState extends ConsumerState<ConnectedUserPage> {
                       .toList();
 
                   return Container(
-                    height: 103.h * connections.length,
+                    // height: 103.h * connections.length,
                     child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
                         itemCount: connections.length,
                         itemBuilder: (context, index) {

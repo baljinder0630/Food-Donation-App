@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,15 +36,16 @@ class UserAuth extends StateNotifier<AuthState> {
   }
 
   String getUid() {
-    return state.user!.uid ?? "";
+    return state.user!.uid ?? FirebaseAuth.instance.currentUser!.uid;
   }
 
   String getDisplayName() {
-    return state.user!.displayName ?? "User";
+    return state.user!.displayName ??
+        FirebaseAuth.instance.currentUser!.displayName!;
   }
 
   String getPhotoUrl() {
-    return state.user!.photoURL ?? "null";
+    return state.user!.photoURL ?? FirebaseAuth.instance.currentUser!.photoURL!;
   }
 
   checkAuthentication() async {
