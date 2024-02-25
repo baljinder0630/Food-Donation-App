@@ -99,36 +99,37 @@ class CharityHomePage extends ConsumerState<landDonation> {
           height: 50.h,
         ),
         MyAppBar(
-          centerWidget: Padding(
-            padding: EdgeInsets.only(left: 57.w),
-            child: GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: 200.w,
-                height: 40.h,
-                padding: EdgeInsets.only(top: 5.h),
-                child: Text(
-                  "Our Features",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+            centerWidget: Padding(
+              padding: EdgeInsets.only(left: 67.w),
+              child: GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 200.w,
+                  height: 40.h,
+                  padding: EdgeInsets.only(top: 5.h),
+                  child: Text(
+                    "Our Features",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-          rightWidget: Padding(
-            padding: EdgeInsets.only(right: 34.w),
-            child: IconButton(
-              icon: const Icon(
-                Icons.menu_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () => {},
+            rightWidget: SizedBox()
+            //  Padding(
+            //   padding: EdgeInsets.only(right: 34.w),
+            //   child: IconButton(
+            //     icon: const Icon(
+            //       Icons.menu_rounded,
+            //       color: Colors.white,
+            //     ),
+            //     onPressed: () => {},
+            //   ),
+            // ),
             ),
-          ),
-        ),
         SizedBox(height: 20.h),
         Expanded(
           child: SingleChildScrollView(

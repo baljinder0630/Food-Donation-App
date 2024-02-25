@@ -19,7 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/sign_up_background.png', fit: BoxFit.cover),
+          Image.asset('assets/sign_up_background.png', fit: BoxFit.fill),
           GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: const SingleChildScrollView(

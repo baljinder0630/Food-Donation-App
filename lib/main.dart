@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
     );
     return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         routerConfig: _appRouter.config(),
         title: 'Food Donation App',
         theme: ThemeData(
