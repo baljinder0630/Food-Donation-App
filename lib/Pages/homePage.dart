@@ -395,7 +395,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           padding: EdgeInsets.only(left: 57.w),
                           child: GestureDetector(
                             onTap: () {
-                              context.pushRoute(const NgoSearchPageRoute());
+                              context.pushRoute(const ProfileSearchPageRoute());
                             },
                             child: MySearchBar(title: "Hunger Spots"),
                           ),
@@ -596,20 +596,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                           margin: EdgeInsets.only(left: 5.r),
                           height: 350.h,
                           width: MediaQuery.of(context).size.width,
-                          child: Expanded(
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: min(3, donationRequestWidgets.length),
-                              itemBuilder: (context, index) {
-                                // Build each card
-                                return Row(
-                                  children: [
-                                    donationRequestWidgets[index],
-                                    _buildButton(index),
-                                  ],
-                                );
-                              },
-                            ),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: min(3, donationRequestWidgets.length),
+                            itemBuilder: (context, index) {
+                              // Build each card
+                              return Row(
+                                children: [
+                                  donationRequestWidgets[index],
+                                  _buildButton(index),
+                                ],
+                              );
+                            },
                           ),
                         );
                       }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_phone_no_field.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_subheading.dart';
 import 'package:food_donation_app/Pages/Donate/Widgets/custom_text_form_field.dart';
@@ -178,268 +179,300 @@ class _RaiseDonationReq extends ConsumerState<RaiseRequest> {
     final submissionStatus = ref.watch(raiseRequestProvider).raiseRequestStatus;
     return Scaffold(
       body: SafeArea(
-        child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 40.h, 0.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 250.h,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child:
-                            const Center(child: Text("Space for some image")),
-                      ),
-                      Subheading(text: 'Raise Donation Request'),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 7.0, vertical: 30.0),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Column(
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'Name of organisation',
-                              controller: _ngoController,
-                              validator: (text) {
-                                if (text == null || text.isEmpty) {
-                                  return 'Name cannot be empty';
-                                } else if (text.length < 2 ||
-                                    text.length > 49) {
-                                  return 'Please enter a valid name';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(50)
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                "assets/form_bg.png",
+                // Replace this with your actual image path
+                fit: BoxFit.cover,
+              ),
+            ),
+            GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: SingleChildScrollView(
+                  child: Container(
+                      padding: EdgeInsets.fromLTRB(0.0, 40.h, 0.0, 0.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 250.h,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: const Center(
+                                child: Text("Space for some image")),
+                          ),
+                          Subheading(text: 'Raise Donation Request'),
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 7.0, vertical: 30.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
                               ],
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
-                            SizedBox(
-                              height: 10.0.h,
-                            ),
-                            CustomPhoneNumberField(
-                                hintText: 'Phone Number',
-                                controller: _mobileNumberController),
-                            SizedBox(
-                              height: 15.0.h,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Plot No',
-                              controller: _plotnoController,
-                              validator: (text) {
-                                if (text == null || text.length > 49) {
-                                  return 'Please enter valid details.';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(50)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15.0.h,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Street Name',
-                              controller: _streetnoController,
-                              validator: (text) {
-                                if (text == null || text.length > 49) {
-                                  return 'Please enter valid details.';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(50)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15.0.h,
-                            ),
-                            Row(
+                            child: Column(
                               children: [
-                                Flexible(
-                                  child: CustomTextFormField(
-                                    hintText: 'District',
-                                    controller: _districtController,
-                                    validator: (text) {
-                                      if (text == null || text.length > 49) {
-                                        return 'Please enter valid details.';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(50)
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                                Flexible(
-                                  child: CustomTextFormField(
-                                    hintText: 'PinCode',
-                                    controller: _pincodeController,
-                                    validator: (text) {
-                                      if (text == null || text.length > 49) {
-                                        return 'Please enter valid details.';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(50)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.0.h,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Number of servings',
-                              controller: _servingsController,
-                              validator: (text) {
-                                if (text == null || text.length > 49) {
-                                  return 'Please enter valid details.';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(50)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.0.h,
-                            ),
-                            CustomTextField(
-                                hintText: 'Description',
-                                controller: _descriptionController),
-                            SizedBox(
-                              height: 20.0.h,
-                            ),
-                            ElevatedButton(
-                                child: (submissionStatus == 'processing')
-                                    ? Center(
-                                        child: SizedBox(
-                                          width: 20.r,
-                                          height: 20.r,
-                                          child:
-                                              const CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2,
-                                          ),
-                                        ),
-                                      )
-                                    : Text(
-                                        'Save',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFF9F8FD),
-                                          fontSize: 28.sp,
-                                          fontFamily: 'Outfit',
-                                          fontWeight: FontWeight.w600,
-                                          height: 0,
-                                          letterSpacing: 1.12.sp,
-                                        ),
-                                      ),
-                                onPressed: () async {
-                                  if (_ngoController.text.trim().isEmpty ||
-                                      _mobileNumberController.text
-                                          .trim()
-                                          .isEmpty ||
-                                      _plotnoController.text.trim().isEmpty ||
-                                      _streetnoController.text.trim().isEmpty ||
-                                      _districtController.text.trim().isEmpty ||
-                                      _pincodeController.text.trim().isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            "Please fill all fields before proceeding.",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.green,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                    return;
-                                  } else {
-                                    String ngoName = _ngoController.text;
-                                    String mobileNumber =
-                                        _mobileNumberController.text;
-                                    String plotNo = _plotnoController.text;
-                                    String streetNo = _streetnoController.text;
-                                    String district = _districtController.text;
-                                    String pincode = _pincodeController.text;
-                                    String description = "";
-                                    String numberOfServings =
-                                        _servingsController.text;
-                                    String requestsFulfilled = "0";
-                                    bool uploaded = await ref
-                                        .read(raiseRequestProvider.notifier)
-                                        .uploadFoodDonationRequest(
-                                            ngoName,
-                                            mobileNumber,
-                                            plotNo,
-                                            streetNo,
-                                            district,
-                                            pincode,
-                                            description,
-                                            numberOfServings,
-                                            requestsFulfilled);
-
-                                    _descriptionController.text = "";
-                                    _districtController.text = "";
-                                    _mobileNumberController.text = "";
-                                    _ngoController.text = "";
-                                    _pincodeController.text = "";
-                                    _plotnoController.text = "";
-                                    _servingsController.text = "";
-                                    _streetnoController.text = "";
-
-                                    if (uploaded == true) {
-                                      showSuccessDialog(context);
+                                CustomTextFormField(
+                                  hintText: 'Name of organisation',
+                                  controller: _ngoController,
+                                  validator: (text) {
+                                    if (text == null || text.isEmpty) {
+                                      return 'Name cannot be empty';
+                                    } else if (text.length < 2 ||
+                                        text.length > 49) {
+                                      return 'Please enter a valid name';
                                     } else {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Error while submitting the form.",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.green,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
+                                      return null;
                                     }
-                                    print('Submitted');
-                                  }
-                                })
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
-            )),
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(50)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.0.h,
+                                ),
+                                CustomPhoneNumberField(
+                                    hintText: 'Phone Number',
+                                    controller: _mobileNumberController),
+                                SizedBox(
+                                  height: 15.0.h,
+                                ),
+                                CustomTextFormField(
+                                  hintText: 'Plot No',
+                                  controller: _plotnoController,
+                                  validator: (text) {
+                                    if (text == null || text.length > 49) {
+                                      return 'Please enter valid details.';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(50)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15.0.h,
+                                ),
+                                CustomTextFormField(
+                                  hintText: 'Street Name',
+                                  controller: _streetnoController,
+                                  validator: (text) {
+                                    if (text == null || text.length > 49) {
+                                      return 'Please enter valid details.';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(50)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15.0.h,
+                                ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: CustomTextFormField(
+                                        hintText: 'District',
+                                        controller: _districtController,
+                                        validator: (text) {
+                                          if (text == null ||
+                                              text.length > 49) {
+                                            return 'Please enter valid details.';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(50)
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Flexible(
+                                      child: CustomTextFormField(
+                                        hintText: 'PinCode',
+                                        controller: _pincodeController,
+                                        validator: (text) {
+                                          if (text == null ||
+                                              text.length > 49) {
+                                            return 'Please enter valid details.';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(50)
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.0.h,
+                                ),
+                                CustomTextFormField(
+                                  hintText: 'Number of servings',
+                                  controller: _servingsController,
+                                  validator: (text) {
+                                    if (text == null || text.length > 49) {
+                                      return 'Please enter valid details.';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(50)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.0.h,
+                                ),
+                                CustomTextField(
+                                    hintText: 'Description',
+                                    controller: _descriptionController),
+                                SizedBox(
+                                  height: 20.0.h,
+                                ),
+                                ElevatedButton(
+                                    child: (submissionStatus == 'processing')
+                                        ? Center(
+                                            child: SizedBox(
+                                              width: 20.r,
+                                              height: 20.r,
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            'Save',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFFF9F8FD),
+                                              fontSize: 28.sp,
+                                              fontFamily: 'Outfit',
+                                              fontWeight: FontWeight.w600,
+                                              height: 0,
+                                              letterSpacing: 1.12.sp,
+                                            ),
+                                          ),
+                                    onPressed: () async {
+                                      if (_ngoController.text.trim().isEmpty ||
+                                          _mobileNumberController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _plotnoController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _streetnoController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _districtController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _pincodeController.text
+                                              .trim()
+                                              .isEmpty) {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Please fill all fields before proceeding.",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                        return;
+                                      } else {
+                                        String ngoName = _ngoController.text;
+                                        String mobileNumber =
+                                            _mobileNumberController.text;
+                                        String plotNo = _plotnoController.text;
+                                        String streetNo =
+                                            _streetnoController.text;
+                                        String district =
+                                            _districtController.text;
+                                        String pincode =
+                                            _pincodeController.text;
+                                        String description = "";
+                                        String numberOfServings =
+                                            _servingsController.text;
+                                        String requestsFulfilled = "0";
+                                        bool uploaded = await ref
+                                            .read(raiseRequestProvider.notifier)
+                                            .uploadFoodDonationRequest(
+                                                ngoName,
+                                                mobileNumber,
+                                                plotNo,
+                                                streetNo,
+                                                district,
+                                                pincode,
+                                                description,
+                                                numberOfServings,
+                                                requestsFulfilled);
+
+                                        _descriptionController.text = "";
+                                        _districtController.text = "";
+                                        _mobileNumberController.text = "";
+                                        _ngoController.text = "";
+                                        _pincodeController.text = "";
+                                        _plotnoController.text = "";
+                                        _servingsController.text = "";
+                                        _streetnoController.text = "";
+
+                                        if (uploaded == true) {
+                                          showSuccessDialog(context);
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Error while submitting the form.",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.green,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+                                        }
+                                        print('Submitted');
+                                      }
+                                    })
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                )),
+            AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                shadowColor: Colors.transparent,
+                foregroundColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                leading: Align(
+                    alignment: Alignment.centerRight, child: MyBackButton())),
+          ],
+        ),
       ),
     );
   }

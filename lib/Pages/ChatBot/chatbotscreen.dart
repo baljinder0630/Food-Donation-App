@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'package:food_donation_app/Pages/ChatBot/messagesscreen.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 
 @RoutePage()
 class ChatBotScreen extends StatefulWidget {
@@ -64,10 +65,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
               Container(
                 height: MediaQuery.of(context).padding.top + kToolbarHeight,
                 child: AppBar(
+                  leading: Align(
+                      alignment: Alignment.centerRight, child: MyBackButton()),
                   title: const Text(
                     'Aahar',
                     style: TextStyle(fontSize: 25.0),
                   ),
+                  centerTitle: true,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                 ),

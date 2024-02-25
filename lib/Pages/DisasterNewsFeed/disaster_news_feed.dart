@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:get/get.dart';
 import 'package:food_donation_app/Pages/DisasterNewsFeed/controller.dart';
 import 'package:food_donation_app/Pages/DisasterNewsFeed/player.dart';
@@ -122,7 +123,15 @@ class DisasterNewsFeedPage extends StatelessWidget {
                     collapseOnTextTap: true,
                     maxLines: 2,
                   ),
-                ))
+                )),
+            AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                shadowColor: Colors.transparent,
+                foregroundColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                leading: Align(
+                    alignment: Alignment.centerRight, child: MyBackButton())),
           ],
         ),
       ),

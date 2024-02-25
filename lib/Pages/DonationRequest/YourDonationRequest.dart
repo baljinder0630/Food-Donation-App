@@ -50,8 +50,9 @@ class _DonationTrackingPageState extends State<DonationTrackingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Tracking Donation'),
-        leading: MyBackButton(),
+        leading: Align(alignment: Alignment.centerRight, child: MyBackButton()),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

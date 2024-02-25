@@ -356,277 +356,295 @@ class _HungerSpotPageState extends State<HungerSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        leading: Align(alignment: Alignment.centerRight, child: MyBackButton()),
-      ),
-      extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(0.0, 40.h, 0.0, 0.0),
-        child: Column(
-          children: [
-            Container(
-              height: 250.h,
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: const Center(child: Text("Space for some image")),
+    return SafeArea(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              "assets/form_bg.png",
+              // Replace this with your actual image path
+              fit: BoxFit.cover,
             ),
-            Subheading(text: 'Add Hunger Spot Details'),
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 7.0, vertical: 30.0),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
+          ),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              leading: Align(
+                  alignment: Alignment.centerRight, child: MyBackButton()),
+            ),
+            extendBodyBehindAppBar: true,
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(0.0, 40.h, 0.0, 0.0),
+              child: Column(
+                children: [
+                  Container(
+                    height: 250.h,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: const Center(child: Text("Space for some image")),
                   ),
-                ],
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    CustomTextFormField(
-                      hintText: "Plot No",
-                      controller: plotNoController,
-                      numericKeyboard: true,
-                      onEditingComplete: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Plot no';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextFormField(
-                      hintText: "Street Name",
-                      controller: streetController,
-                      onEditingComplete: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Steet Name';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextFormField(
-                      hintText: "Landmark",
-                      controller: landMarkController,
-                      onEditingComplete: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter landmark';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: CustomTextFormField(
-                            hintText: "District",
-                            controller: districtController,
-                            onEditingComplete: () {
-                              FocusScope.of(context).nextFocus();
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter district';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 10.w),
-                        Expanded(
-                          child: CustomTextFormField(
-                            hintText: "PinCode",
-                            numericKeyboard: true,
-                            controller: pinCodeController,
-                            onEditingComplete: () {
-                              FocusScope.of(context).nextFocus();
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter pincode';
-                              } else if (value.length != 6) {
-                                return 'Please enter valid pincode';
-                              }
-                              return null;
-                            },
-                          ),
+                  Subheading(text: 'Add Hunger Spot Details'),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 7.0, vertical: 30.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
                         ),
                       ],
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    SizedBox(height: 20.h),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 29.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              showCameraOptions();
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          CustomTextFormField(
+                            hintText: "Plot No",
+                            controller: plotNoController,
+                            numericKeyboard: true,
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
                             },
-                            child: Container(
-                              width: 103.35.w,
-                              height: 127.40.h,
-                              decoration: ShapeDecoration(
-                                color: Color(0xFFFFFBFB),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Plot no';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10.h),
+                          CustomTextFormField(
+                            hintText: "Street Name",
+                            controller: streetController,
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter Steet Name';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10.h),
+                          CustomTextFormField(
+                            hintText: "Landmark",
+                            controller: landMarkController,
+                            onEditingComplete: () {
+                              FocusScope.of(context).nextFocus();
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter landmark';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10.h),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: CustomTextFormField(
+                                  hintText: "District",
+                                  controller: districtController,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context).nextFocus();
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter district';
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                shadows: [
-                                  BoxShadow(
-                                    color:
-                                        _saveButtonClicked && _imageFile == null
-                                            ? Colors.red
-                                            : Color(0x3F000000),
-                                    blurRadius: 5,
-                                    offset: Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 45.50,
-                                    height: 45.50,
-                                    clipBehavior: Clip.antiAlias,
+                              SizedBox(width: 10.w),
+                              Expanded(
+                                child: CustomTextFormField(
+                                  hintText: "PinCode",
+                                  numericKeyboard: true,
+                                  controller: pinCodeController,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context).nextFocus();
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter pincode';
+                                    } else if (value.length != 6) {
+                                      return 'Please enter valid pincode';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20.h),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 29.w),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showCameraOptions();
+                                  },
+                                  child: Container(
+                                    width: 103.35.w,
+                                    height: 127.40.h,
                                     decoration: ShapeDecoration(
+                                      color: Color(0xFFFFFBFB),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
+                                      shadows: [
+                                        BoxShadow(
+                                          color: _saveButtonClicked &&
+                                                  _imageFile == null
+                                              ? Colors.red
+                                              : Color(0x3F000000),
+                                          blurRadius: 5,
+                                          offset: Offset(0, 0),
+                                          spreadRadius: 0,
+                                        )
+                                      ],
                                     ),
-                                    child: Icon(Icons.add_circle_rounded,
-                                        size: 45.5.r, color: Color(0xFF76A095)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 45.50,
+                                          height: 45.50,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                          ),
+                                          child: Icon(Icons.add_circle_rounded,
+                                              size: 45.5.r,
+                                              color: Color(0xFF76A095)),
+                                        ),
+                                        SizedBox(height: 13.h),
+                                        Container(
+                                          width: 88.40.w,
+                                          child: Text(
+                                            'Upload Image of Trust',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: _saveButtonClicked &&
+                                                      _imageFile == null
+                                                  ? Colors.red
+                                                  : Color(0xFF76A095),
+                                              fontSize: 9.10.sp,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w600,
+                                              height: 0,
+                                              letterSpacing: 0.18.sp,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(height: 13.h),
-                                  Container(
-                                    width: 88.40.w,
-                                    child: Text(
-                                      'Upload Image of Trust',
+                                ),
+                              ),
+                              _imageFile == null
+                                  ? SizedBox()
+                                  : Hero(
+                                      tag: 'PostImage',
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          imagePreview();
+                                        },
+                                        child: Container(
+                                            width: 125.r,
+                                            height: 125.r,
+                                            margin: EdgeInsets.only(left: 29.w),
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: FileImage(_imageFile!),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.r),
+                                              ),
+                                              shadows: const [
+                                                BoxShadow(
+                                                  color: Color(0x3F000000),
+                                                  blurRadius: 5,
+                                                  offset: Offset(0, 0),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
+                                            )),
+                                      ),
+                                    )
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: _isUploading
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _saveButtonClicked = true;
+                                      });
+                                      if (_formKey.currentState!.validate() &&
+                                          _imageFile != null) {
+                                        _uploadDocument();
+                                      }
+                                    },
+                              child: _isUploading
+                                  ? Center(
+                                      child: SizedBox(
+                                        width: 20.r,
+                                        height: 20.r,
+                                        child: const CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      ),
+                                    )
+                                  : Text(
+                                      'Submit',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        color: _saveButtonClicked &&
-                                                _imageFile == null
-                                            ? Colors.red
-                                            : Color(0xFF76A095),
-                                        fontSize: 9.10.sp,
-                                        fontFamily: 'Poppins',
+                                        color: Color(0xFFF9F8FD),
+                                        fontSize: 28.sp,
+                                        fontFamily: 'Outfit',
                                         fontWeight: FontWeight.w600,
                                         height: 0,
-                                        letterSpacing: 0.18.sp,
+                                        letterSpacing: 1.12.sp,
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
                             ),
                           ),
-                        ),
-                        _imageFile == null
-                            ? SizedBox()
-                            : Hero(
-                                tag: 'PostImage',
-                                child: GestureDetector(
-                                  onTap: () {
-                                    imagePreview();
-                                  },
-                                  child: Container(
-                                      width: 125.r,
-                                      height: 125.r,
-                                      margin: EdgeInsets.only(left: 29.w),
-                                      decoration: ShapeDecoration(
-                                        image: DecorationImage(
-                                          image: FileImage(_imageFile!),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                        ),
-                                        shadows: const [
-                                          BoxShadow(
-                                            color: Color(0x3F000000),
-                                            blurRadius: 5,
-                                            offset: Offset(0, 0),
-                                            spreadRadius: 0,
-                                          )
-                                        ],
-                                      )),
-                                ),
-                              )
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: _isUploading
-                            ? null
-                            : () {
-                                setState(() {
-                                  _saveButtonClicked = true;
-                                });
-                                if (_formKey.currentState!.validate() &&
-                                    _imageFile != null) {
-                                  _uploadDocument();
-                                }
-                              },
-                        child: _isUploading
-                            ? Center(
-                                child: SizedBox(
-                                  width: 20.r,
-                                  height: 20.r,
-                                  child: const CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              )
-                            : Text(
-                                'Submit',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xFFF9F8FD),
-                                  fontSize: 28.sp,
-                                  fontFamily: 'Outfit',
-                                  fontWeight: FontWeight.w600,
-                                  height: 0,
-                                  letterSpacing: 1.12.sp,
-                                ),
-                              ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

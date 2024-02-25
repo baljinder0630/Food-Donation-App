@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_donation_app/Pages/Community/Widgets/myBackButton.dart';
 import 'package:food_donation_app/Provider/fundRequestProvider.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -368,6 +369,14 @@ class _RazorpayPaymentGatewayState
             ],
           ),
         )),
+        AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            shadowColor: Colors.transparent,
+            foregroundColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
+            leading:
+                Align(alignment: Alignment.centerRight, child: MyBackButton())),
       ]),
     );
   }
