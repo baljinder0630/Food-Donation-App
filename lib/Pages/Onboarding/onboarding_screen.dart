@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Onboarding/onboarding_screens/intro_screen1.dart';
 import 'package:food_donation_app/Pages/Onboarding/onboarding_screens/intro_screen2.dart';
 import 'package:food_donation_app/Pages/Onboarding/onboarding_screens/intro_screen3.dart';
@@ -18,6 +19,7 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _controller = PageController();
   bool onLastPage = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,20 +50,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: GestureDetector(
-                    onTap: () {
-                      _controller.jumpToPage(3);
-                    },
-                    child: const Text(
+                  onTap: () {
+                    _controller.jumpToPage(3);
+                  },
+                  child: const SizedBox(
+                    width: 42,
+                    child: Text(
                       'Skip',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
-                    )),
+                    ),
+                  ),
+                ),
               ),
               SmoothPageIndicator(
                 controller: _controller,
                 count: 4,
-                effect: const SlideEffect(
-                    spacing: 8.0,
+                effect: SlideEffect(
+                    dotHeight: 12.r,
+                    dotWidth: 12.r,
+                    spacing: 8,
+                    radius: 10.r,
                     dotColor: Colors.white,
                     activeDotColor: Colors.green),
               ),
@@ -74,16 +84,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: GestureDetector(
-                          onTap: () {
-                            context.router
-                                .replace(const AppBottomNavigationBarRoute());
-                          },
-                          child: const Text(
+                        onTap: () {
+                          context.router
+                              .replace(const AppBottomNavigationBarRoute());
+                        },
+                        child: const SizedBox(
+                          width: 42,
+                          child: Text(
                             'Done',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
-                          )),
+                          ),
+                        ),
+                      ),
                     )
                   : Container(
                       padding: const EdgeInsets.symmetric(
@@ -98,10 +113,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.easeIn);
                         },
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        child: const SizedBox(
+                          width: 42,
+                          child: Text(
+                            'Next',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     )

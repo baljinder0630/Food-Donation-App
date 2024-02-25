@@ -9,6 +9,7 @@ import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
 
 import 'Pages/DashBoard/dashBoard.dart';
 import 'Pages/GovernmentScheme/schemePage.dart';
+import 'Pages/Onboarding/onboarding_screen.dart';
 import 'Pages/constants/constants.dart';
 
 @RoutePage()

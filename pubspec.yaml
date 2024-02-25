@@ -87,6 +87,8 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^2.1.4
   auto_route_generator: 6.2.0
+  flutter_launcher_icons: any
+
   # just_audio: ^0.9.36
   # just_audio_cache: ^0.1.2
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -149,6 +151,7 @@ flutter:
     - assets/screen2.png
     - assets/screen3.png
     - assets/screen4.png
+    - assets/splash_background_img.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

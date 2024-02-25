@@ -16,17 +16,19 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(authStateProvider, (previous, next) {
+    ref.listen(authStateProvider, (previous, next) async {
       if (next.appStatus == AppStatus.authenticated) {
+        await Future.delayed(Duration(seconds: 2)); // Wait for 2 seconds
         context.router.replace(const AppBottomNavigationBarRoute());
       } else {
+        await Future.delayed(Duration(seconds: 2)); // Wait for 2 seconds
         context.router.replace(const SignUpPageRoute());
       }
     });
 
     return Scaffold(
       body: Image.asset(
-        'assets/splash_screen_animation.gif',
+        'assets/splash_background_img.png',
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
