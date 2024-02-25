@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/Functions/toCamelCase.dart';
+import 'package:food_donation_app/Provider/donateRequestProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../Router/route.gr.dart';
 import '../constants/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DonationRequestCard extends StatelessWidget {
+class DonationRequestCard extends ConsumerWidget {
   final String requestName;
   final String NGOName;
   final String NGOImage;
@@ -53,7 +55,7 @@ class DonationRequestCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     DateTime dateTime = timestamp.toDate(); // Convert Timestamp to DateTime
     String date = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
 
@@ -288,7 +290,26 @@ class DonationRequestCard extends StatelessWidget {
                 SizedBox(
                   width: 190.w,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await ref
+                          .read(donationRequestProvider.notifier)
+                          .updateNGOID(ngoID);
+
+                      print('updated');
+                      print(ref.read(donationRequestProvider).ngoId);
+                      context.pushRoute(DonationDescriptionRoute(
+                          requestName: requestName,
+                          NGOName: NGOName,
+                          NGOImage: NGOImage,
+                          ngoPosition: ngoPosition,
+                          totalRequest: totalRequest,
+                          completedRequest: completedRequest,
+                          ngoLocation: ngoLocation,
+                          timestamp: timestamp,
+                          description: description,
+                          phoneNumber: phoneNumber,
+                          requestType: requestType));
+                    },
                     style: OutlinedButton.styleFrom(backgroundColor: green),
                     child: SizedBox(
                       width: 250.w,

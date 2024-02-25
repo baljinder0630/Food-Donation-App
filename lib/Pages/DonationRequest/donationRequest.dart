@@ -8,18 +8,19 @@ import 'package:food_donation_app/Pages/DonationRequest/requestCard.dart';
 import 'package:food_donation_app/Router/route.gr.dart';
 import 'package:geolocator/geolocator.dart';
 import '../constants/constants.dart';
-import '../homePage.dart';
-import 'YourDonationRequest.dart';
+// import '../homePage.dart';
+// import 'YourDonationRequest.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
-class DonationRequest extends StatefulWidget {
+class DonationRequest extends ConsumerStatefulWidget {
   const DonationRequest({super.key});
 
   @override
-  State<DonationRequest> createState() => _DonationRequestState();
+  ConsumerState<DonationRequest> createState() => _DonationRequestState();
 }
 
-class _DonationRequestState extends State<DonationRequest> {
+class _DonationRequestState extends ConsumerState<DonationRequest> {
   var selectedCategory = 0;
   late Position _currentPosition;
   List<String> categories = ["All", "Food Request", "Fund Request"];
