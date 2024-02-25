@@ -47,7 +47,7 @@ class CharityHomePage extends ConsumerState<landDonation> {
     {
       'img': 'assets/be_volunteer.png',
       'category': 'Be a Volunteer',
-      'redirect': 'RaiseRequestRoute()',
+      'redirect': RaiseRequestRoute(),
     },
     {
       'img': 'assets/raise_request.png',
@@ -68,6 +68,11 @@ class CharityHomePage extends ConsumerState<landDonation> {
       'img': 'assets/disaster_news.png',
       'category': 'Disaster News',
       'redirect': const DisasterNewsFeedPageRoute(),
+    },
+    {
+      'img': 'lib/assets/donateimg/food.png',
+      'category': 'Add Hunger Spot',
+      'redirect': const HungerSpotPageRoute(),
     }
   ];
 
@@ -273,6 +278,8 @@ class CharityHomePage extends ConsumerState<landDonation> {
                     await context.pushRoute(const ChatBotScreenRoute());
                   } else if (data[index]['category'] == 'Disaster News') {
                     await context.pushRoute(const DisasterNewsFeedPageRoute());
+                  } else if (data[index]['category'] == 'Add Hunger Spot') {
+                    await context.pushRoute(const HungerSpotPageRoute());
                   } else {
                     await context.pushRoute(const RaiseRequestRoute());
                   }

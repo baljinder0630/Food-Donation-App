@@ -1,16 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_donation_app/Pages/Community/communityScreen.dart';
 import 'package:food_donation_app/Pages/DashBoard/dashBoard.dart';
-import 'package:food_donation_app/Pages/DonationRequest/pickupRequestPage.dart';
 import 'package:food_donation_app/Pages/Posts/PostsHomePage.dart';
 import 'package:food_donation_app/Pages/homePage.dart';
 import 'package:food_donation_app/Pages/Donationland/landdonation.dart';
-import 'package:food_donation_app/Pages/foodStore2/foodStoreDescription.dart';
-import 'package:food_donation_app/Pages/foodStore2/foodStore.dart';
-
-import 'Pages/constants/constants.dart';
 
 @RoutePage()
 class AppBottomNavigationBar extends StatefulWidget {
@@ -57,17 +53,32 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: const [
           Icon(Icons.home, color: Colors.green),
-          Icon(Icons.group, color: Colors.green),
+          Icon(Icons.article, color: Colors.green),
           Icon(Icons.add, color: Colors.green),
-          Icon(Icons.chat_bubble, color: Colors.green),
+          Icon(Icons.group, color: Colors.green),
           Icon(Icons.account_circle, color: Colors.green),
         ],
-        inactiveIcons: const [
-          Text("Home"),
-          Text("Community"),
-          Text("Donate"),
-          Text("Chat"),
-          Text("Profile"),
+        inactiveIcons: [
+          Text(
+            "Home",
+            style: TextStyle(fontSize: 16.sp),
+          ),
+          Text(
+            "Articles",
+            style: TextStyle(fontSize: 16.sp),
+          ),
+          Text(
+            "Donate",
+            style: TextStyle(fontSize: 16.sp),
+          ),
+          Text(
+            "Community",
+            style: TextStyle(fontSize: 16.sp),
+          ),
+          Text(
+            "Profile",
+            style: TextStyle(fontSize: 16.sp),
+          ),
         ],
         color: Colors.white,
         circleColor: Colors.white,

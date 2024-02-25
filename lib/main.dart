@@ -13,7 +13,7 @@ void main() async {
           body: Center(
         child: Text(
           "Something Went wrong.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Colors.grey),
         ),
       ));
 

@@ -73,61 +73,119 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.r)),
                           ),
-                          child: ListTile(
-                            leading: Container(
-                              height: 50.r,
-                              width: 50.r,
-                              child: ClipOval(
-                                child: Image.network(
-                                  data['photoURL'],
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Icon(
-                                    Icons.account_circle_rounded,
-                                    size: 50.r,
+                          child: Center(
+                            child: ListTile(
+                              leading: Container(
+                                height: 50.r,
+                                width: 50.r,
+                                child: ClipOval(
+                                  child: Image.network(
+                                    data['photoURL'],
+                                    errorBuilder:
+                                        (context, error, stackTrace) => Icon(
+                                      Icons.account_circle_rounded,
+                                      size: 50.r,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            title: Text(data['displayName']),
-                            subtitle: const Text('Connection Request'),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                TextButton(
-                                  child: const Text('Accept'),
-                                  onPressed: () async {
-                                    try {
-                                      await firestore
-                                          .collection("users")
-                                          .doc(ref
-                                              .watch(authStateProvider)
-                                              .user!
-                                              .uid)
-                                          .collection("connections")
-                                          .doc(userId)
-                                          .set(Connections(
-                                                  userId: userId,
-                                                  status:
-                                                      ConnectionStatus.accepted)
-                                              .toMap());
-                                      await firestore
-                                          .collection("users")
-                                          .doc(userId)
-                                          .collection("connections")
-                                          .doc(ref
-                                              .watch(authStateProvider)
-                                              .user!
-                                              .uid)
-                                          .set(Connections(
-                                                  userId: ref
-                                                      .watch(authStateProvider)
-                                                      .user!
-                                                      .uid,
-                                                  status:
-                                                      ConnectionStatus.accepted)
-                                              .toMap());
+                              title: Text(data['displayName'],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold)),
+                              subtitle: Text('Connection Request',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: "Poppins",
+                                      color: Colors.grey)),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  TextButton(
+                                    child: const Text('Accept'),
+                                    onPressed: () async {
+                                      try {
+                                        await firestore
+                                            .collection("users")
+                                            .doc(ref
+                                                .watch(authStateProvider)
+                                                .user!
+                                                .uid)
+                                            .collection("connections")
+                                            .doc(userId)
+                                            .set(Connections(
+                                                    userId: userId,
+                                                    status: ConnectionStatus
+                                                        .accepted)
+                                                .toMap());
+                                        await firestore
+                                            .collection("users")
+                                            .doc(userId)
+                                            .collection("connections")
+                                            .doc(ref
+                                                .watch(authStateProvider)
+                                                .user!
+                                                .uid)
+                                            .set(Connections(
+                                                    userId: ref
+                                                        .watch(
+                                                            authStateProvider)
+                                                        .user!
+                                                        .uid,
+                                                    status: ConnectionStatus
+                                                        .accepted)
+                                                .toMap());
 
-                                      await firestore
+                                        await firestore
+                                            .collection("users")
+                                            .doc(ref
+                                                .watch(authStateProvider)
+                                                .user!
+                                                .uid)
+                                            .collection("incomingRequests")
+                                            .doc(userId)
+                                            .delete();
+
+                                        await firestore
+                                            .collection("users")
+                                            .doc(userId)
+                                            .collection("outgoingRequests")
+                                            .doc(ref
+                                                .watch(authStateProvider)
+                                                .user!
+                                                .uid)
+                                            .delete();
+                                        await firestore
+                                            .collection("users")
+                                            .doc(ref
+                                                .watch(authStateProvider)
+                                                .user!
+                                                .uid)
+                                            .update({
+                                          "totalConnects":
+                                              FieldValue.increment(1)
+                                        });
+                                        await firestore
+                                            .collection("users")
+                                            .doc(userId)
+                                            .update({
+                                          "totalConnects":
+                                              FieldValue.increment(1)
+                                        });
+                                        log("Connect accepted successfully");
+                                      } catch (e) {
+                                        log(e.toString());
+                                      }
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Ignore'),
+                                    onPressed: () {
+                                      firestore
                                           .collection("users")
                                           .doc(ref
                                               .watch(authStateProvider)
@@ -136,8 +194,7 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                           .collection("incomingRequests")
                                           .doc(userId)
                                           .delete();
-
-                                      await firestore
+                                      firestore
                                           .collection("users")
                                           .doc(userId)
                                           .collection("outgoingRequests")
@@ -146,51 +203,10 @@ class _IncomingRequestState extends ConsumerState<IncomingRequest> {
                                               .user!
                                               .uid)
                                           .delete();
-                                      await firestore
-                                          .collection("users")
-                                          .doc(ref
-                                              .watch(authStateProvider)
-                                              .user!
-                                              .uid)
-                                          .update({
-                                        "totalConnects": FieldValue.increment(1)
-                                      });
-                                      await firestore
-                                          .collection("users")
-                                          .doc(userId)
-                                          .update({
-                                        "totalConnects": FieldValue.increment(1)
-                                      });
-                                      log("Connect accepted successfully");
-                                    } catch (e) {
-                                      log(e.toString());
-                                    }
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Ignore'),
-                                  onPressed: () {
-                                    firestore
-                                        .collection("users")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .collection("incomingRequests")
-                                        .doc(userId)
-                                        .delete();
-                                    firestore
-                                        .collection("users")
-                                        .doc(userId)
-                                        .collection("outgoingRequests")
-                                        .doc(ref
-                                            .watch(authStateProvider)
-                                            .user!
-                                            .uid)
-                                        .delete();
-                                  },
-                                ),
-                              ],
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
